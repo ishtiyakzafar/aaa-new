@@ -1,0 +1,14 @@
+<div class="nifty-block desktop-visibility">
+    <div class="section" *ngFor="let dataObj of displayHeaderDetails" (click)="details(dataObj)">
+        <span class="label">{{dataObj['Symbol']}}</span>
+        <div class="value-section" [ngStyle]="{'color':(dataObj.PerChange == 0) ? '#656565' : (dataObj.PerChange > 0 ? '#17C257' : '#F55858')}">
+            <span class="value">{{dataObj['LastRate'] | formatNumerDecimal}}</span>
+            <span class="changed-value">{{dataObj['Change'] | formatNumerDecimal}}({{dataObj['PerChange'] | formatNumerDecimal}}%)</span>
+        </div>
+    </div>
+</div>
+<!-- <div class="iglc-contest-block desktop-visibility" *ngIf="iglcScore !== null && userType === 'SUB BROKER'">
+    <span class="igcl">IGLC Contest!</span>
+    <span class="total">Total Points Earned: </span>
+    <span class="value" (click)="score()">{{iglcScore ? iglcScore : 0}}</span>
+</div> -->

@@ -1,0 +1,239 @@
+<ion-header class="mobile-visibility">
+	<ion-toolbar color="tertiary">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">SIP Revenue Calculator</ion-title>
+			</div>
+			<div class="reset-section-mobile">
+				<div class="reset-block" (click)="resetValues()">
+					<img class="reset-img" src="assets/svg/refresh.svg" alt="">
+					<span class="reset">Reset</span>
+				</div>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="container calculator mobile-visibility">
+		<div class="form-block-section">
+			<form class="form-block">
+				<div class="field-block">
+					<ion-item lines="none">
+						<div class="field m-t-43">
+							<ion-label [ngClass]="{'focus-label': isFocus1}">No. of SIP's</ion-label>
+							<ion-input [ngClass]="{'focus-input': isFocus1}" class="p-end-32"
+								clearOnEdit="false" autocomplete="off" type="number" name="noOfSip" [(ngModel)]="noOfSip"  placeholder="No. of SIP's"
+								(ionFocus)="focus1()" #sipNovalidate="ngModel" (ionChange)="changeSipNo($event,sipNovalidate)" (ionBlur)="focusOut1()">
+							</ion-input>
+							<span class="font-small loser-colors">
+								<span *ngIf="sipNovalidate.model == null"> SIP No is Required</span>
+								<span *ngIf="isNotInt(sipNovalidate.model) == false && sipNovalidate.model != null">Decimal Numbers are not allowed </span>
+								<span *ngIf="sipNovalidate.model < 1 && sipNovalidate.model != null">Please Enter valid no of SIP</span>
+								<span *ngIf="SipNoLength > 8">MaxLength length cannot be more than 8</span>
+							</span>
+						</div>
+					</ion-item>
+					<ion-item lines="none">
+						<div class="field m-t-43">
+							<ion-label [ngClass]="{'focus-label': isFocus2}">Avg. SIP Amount (₹)</ion-label>
+							<ion-input [ngClass]="{'focus-input': isFocus2}" class="p-end-32"
+								clearOnEdit="false" autocomplete="off" type="number" name="sipAmount" [(ngModel)]="sipAmount"  placeholder="Avg. SIP Amount (₹)"
+								(ionFocus)="focus2()"  #avgSipvalidate="ngModel" (ionChange)="changeAvgSip($event,avgSipvalidate)" (ionBlur)="focusOut2()" >
+							</ion-input>
+							<span class="font-small loser-colors">
+								<span *ngIf="avgSipvalidate.model == null"> SIP Amount is Required</span>
+								<span *ngIf="isNotInt(avgSipvalidate.model) == false && avgSipvalidate.model != null">Decimal Numbers are not allowed </span>
+								<span *ngIf="avgSipvalidate.model < 1 && avgSipvalidate.model != null">Please Enter valid average SIP amount</span>
+								<span *ngIf="SipAmountLength > 10">MaxLength length cannot be more than 10</span>
+							</span>
+						</div>
+					</ion-item>
+					<ion-item lines="none">
+						<div class="field m-t-43">
+							<ion-label [ngClass]="{'focus-label': isFocus3}">Tenure of SIP (Max 5 Years)</ion-label>
+							<ion-input [ngClass]="{'focus-input': isFocus3}" class="p-end-32"
+								clearOnEdit="false" autocomplete="off" type="number" name="years" [(ngModel)]="years" 
+								placeholder="Tenure of SIP (Max 5 Years)" (ionFocus)="focus3()" #tenureSip="ngModel" (ionChange)="changeTenureSip($event,tenureSip)" (ionBlur)="focusOut3()"
+								>
+							</ion-input>
+							<span class="font-small loser-colors">
+								<span *ngIf="tenureSip.model == null"> Tenure is Required</span>
+								<span *ngIf="isNotInt(tenureSip.model) == false && tenureSip.model != null">Decimal Numbers are not allowed </span>
+								<span *ngIf="tenureSip.model < 1 && tenureSip.model != null">Please Enter valid tenure of SIP</span>
+								<span *ngIf="tenureSip.model > 5">Tenure cannot be more than 5</span>
+							</span>
+						</div>
+					</ion-item>
+					<ion-item lines="none">
+						<div class="field m-t-43">
+							<ion-label [ngClass]="{'focus-label': isFocus4}">Expected Returns (%)</ion-label>
+							<ion-input [ngClass]="{'focus-input': isFocus4}" class="p-end-32"
+								clearOnEdit="false" autocomplete="off" type="number" name="monthlyReturn" [(ngModel)]="monthlyReturn"  placeholder="Expected Returns (%)"
+								(ionFocus)="focus4()" #exReturnValidate="ngModel" (ionChange)="changeExReturn($event,exReturnValidate)" (ionBlur)="focusOut4()">
+							</ion-input>
+							<span class="font-small loser-colors">
+								<span *ngIf="exReturnValidate.model == null">Rate of Return is Required</span>
+								<span *ngIf="exReturnValidate.model != null && exReturnValidate.model > 100">Rate of Return can not be more than 100%</span>
+								<span *ngIf="checkDecimal(exReturnValidate.viewModel) > 3">Cannot Enter more than 3 Dicimal Digits</span>
+								<span *ngIf="exReturnValidate.model < 0 && exReturnValidate.model != null">Please Enter valid Expected Returns</span>
+							</span>
+						</div>
+					</ion-item>
+					<ion-item lines="none">
+						<div class="field m-t-43">
+							<ion-label [ngClass]="{'focus-label': isFocus5}">Trail (%)</ion-label>
+							<ion-input [ngClass]="{'focus-input': isFocus5}" class="p-end-32"
+								clearOnEdit="false" autocomplete="off" type="number" name="trailPer" [(ngModel)]="trailPer"  placeholder="Trail (%)"
+								(ionFocus)="focus5()" #trailValidate="ngModel" (ionChange)="changeTrailReturn($event,trailValidate)" (ionBlur)="focusOut5()" >
+							</ion-input>
+							<span class="font-small loser-colors">
+								<span *ngIf="trailValidate.model == null">Trail (%) is Required</span>
+								<span *ngIf="trailValidate.model != null && trailValidate.model > 2">Trail can not be more than 2%</span>
+								<span *ngIf="checkDecimal(trailValidate.viewModel) > 2">Cannot Enter more than 2 Dicimal Digits</span>
+								<span *ngIf="trailValidate.model < 0 && trailValidate.model != null">Please Enter valid Trail (%)</span>
+							</span>
+						</div>
+					</ion-item>
+				</div>
+
+			</form>
+		</div>
+		<div class="login-btn">
+			<ion-button shape="round" expand="full" (click)="calculateRevenue()" [disabled]="inputField || inputField1 || inputField2 || inputField3 || inputField4">Calculate</ion-button>
+		</div>
+		<div class="call-section">
+			<div class="total-block value-block" *ngIf="expectedAmount">
+				<span class="text">Total Revenue</span>
+				<span class="value">
+					<img class="rupee" src="assets/svg/rupee.svg" alt="">{{expectedAmount | formatNumerDecimal}}
+				</span>
+			</div>
+			<div class="duration-amount-block" *ngIf="yearlyRevenue">
+				<div class="value-block" *ngFor="let dataObj of yearlyRevenue">
+					<span class="text">{{dataObj['duration']}}</span>
+					<span class="value">
+						<img class="rupee smaller-rupee" src="assets/svg/rupee.svg" alt="">{{dataObj['amount'] | formatNumerDecimal}}
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</ion-content>
+
+
+<div class="calculator desktop-visibility">
+	<div class="reset-section">
+		<div class="reset-block" (click)="resetValues()">
+			<img class="reset-img" src="assets/svg/refresh_colored.svg" alt="">
+			<span class="reset">Reset</span>
+		</div>
+	</div>
+	<div class="form-block-section">
+		<form class="form-block">
+			<div class="field-block">
+				<ion-item lines="none">
+					<div class="field m-t-43">
+						<ion-label [ngClass]="{'focus-label': isFocus1}">No. of SIP's</ion-label>
+						<ion-input [ngClass]="{'focus-input': isFocus1}" class="p-end-32" clearOnEdit="false"
+							autocomplete="off" type="number" placeholder="No. of SIP's" (ionFocus)="focus1()"
+							name="noOfSip" [(ngModel)]="noOfSip" #sipNovalidate="ngModel" (ionChange)="changeSipNo($event,sipNovalidate)"  (ionBlur)="focusOut1()" >
+						</ion-input>
+						<span class="font-small loser-colors">
+							<span *ngIf="sipNovalidate.model == null"> SIP No is Required</span>
+							<span *ngIf="isNotInt(sipNovalidate.model) == false && sipNovalidate.model != null">Decimal Numbers are not allowed </span>
+							<span *ngIf="sipNovalidate.model < 1 && sipNovalidate.model != null">Please Enter valid no of SIP</span>
+							<span *ngIf="SipNoLength > 8">MaxLength length cannot be more than 8</span>
+						</span>
+					</div>
+				</ion-item>
+				<ion-item lines="none">
+					<div class="field m-t-43">
+						<ion-label [ngClass]="{'focus-label': isFocus2}">Avg. SIP Amount (₹)</ion-label>
+						<ion-input [ngClass]="{'focus-input': isFocus2}" class="p-end-32" clearOnEdit="false"
+							autocomplete="off" type="number" placeholder="Avg. SIP Amount (₹)" (ionFocus)="focus2()"
+							name="sipAmount" [(ngModel)]="sipAmount"  #avgSipvalidate="ngModel" (ionChange)="changeAvgSip($event,avgSipvalidate)" (ionBlur)="focusOut2()">
+						</ion-input>
+						<span class="font-small loser-colors">
+							<span *ngIf="avgSipvalidate.model == null"> SIP Amount is Required</span>
+							<span *ngIf="isNotInt(avgSipvalidate.model) == false && avgSipvalidate.model != null">Decimal Numbers are not allowed </span>
+							<span *ngIf="avgSipvalidate.model < 1 && avgSipvalidate.model != null">Please Enter valid average SIP amount</span>
+							<span *ngIf="SipAmountLength > 10">MaxLength length cannot be more than 10</span>
+						</span>
+					</div>
+				</ion-item>
+				<ion-item lines="none">
+					<div class="field m-t-43">
+						<ion-label [ngClass]="{'focus-label': isFocus3}">Tenure of SIP (Max 5 Years)</ion-label>
+						<ion-input [ngClass]="{'focus-input': isFocus3}" class="p-end-32" clearOnEdit="false"
+							autocomplete="off" type="number" placeholder="Tenure of SIP (Max 5 Years)"  name="years" [(ngModel)]="years"
+							(ionFocus)="focus3()"  #tenureSip="ngModel" (ionChange)="changeTenureSip($event,tenureSip)" (ionBlur)="focusOut3()">
+						</ion-input>
+						<span class="font-small loser-colors">
+							<span *ngIf="tenureSip.model == null"> Tenure is Required</span>
+							<span *ngIf="isNotInt(tenureSip.model) == false && tenureSip.model != null">Decimal Numbers are not allowed </span>
+							<span *ngIf="tenureSip.model < 1 && tenureSip.model != null">Please Enter valid tenure of SIP</span>
+							<span *ngIf="tenureSip.model > 5">Tenure cannot be more than 5</span>
+						</span>
+					</div>
+				</ion-item>
+				<ion-item lines="none">
+					<div class="field m-t-43">
+						<ion-label [ngClass]="{'focus-label': isFocus4}">Expected Returns (%)</ion-label>
+						<ion-input [ngClass]="{'focus-input': isFocus4}" class="p-end-32" name="monthlyReturn" [(ngModel)]="monthlyReturn"  clearOnEdit="false"
+							autocomplete="off" type="number" placeholder="Expected Returns (%)" (ionFocus)="focus4()"
+							#exReturnValidate="ngModel" (ionChange)="changeExReturn($event,exReturnValidate)" (ionBlur)="focusOut4()" >
+						</ion-input>
+						<span class="font-small loser-colors">
+							<span *ngIf="exReturnValidate.model == null">Rate of Return is Required</span>
+							<span *ngIf="exReturnValidate.model != null && exReturnValidate.model > 100">Rate of Return can not be more than 100%</span>
+							<span *ngIf="checkDecimal(exReturnValidate.viewModel) > 3">Cannot Enter more than 3 Dicimal Digits</span>
+							<span *ngIf="exReturnValidate.model < 0 && exReturnValidate.model != null">Please Enter valid Expected Returns</span>
+						</span>
+					</div>
+				</ion-item>
+				<ion-item lines="none">
+					<div class="field m-t-43">
+						<ion-label [ngClass]="{'focus-label': isFocus5}">Trail (%)</ion-label>
+						<ion-input [ngClass]="{'focus-input': isFocus5}" class="p-end-32" name="trailPer" [(ngModel)]="trailPer" clearOnEdit="false"
+							autocomplete="off" type="number" placeholder="Trail (%)" (ionFocus)="focus5()"
+							#trailValidate="ngModel" (ionChange)="changeTrailReturn($event,trailValidate)" (ionBlur)="focusOut5()">
+						</ion-input>
+						<span class="font-small loser-colors">
+							<span *ngIf="trailValidate.model == null">Trail (%) is Required</span>
+							<span *ngIf="trailValidate.model != null && trailValidate.model > 2">Trail can not be more than 2%</span>
+							<span *ngIf="checkDecimal(trailValidate.viewModel) > 3">Cannot Enter more than 3 Dicimal Digits</span>
+							<span *ngIf="trailValidate.model < 0 && trailValidate.model != null">Please Enter valid Trail (%)</span>
+						</span>
+					</div>
+				</ion-item>
+			</div>
+
+		</form>
+		<div class="right-section">
+			<div class="image-section desktop-visibility">
+				<img src="assets/svg/sip_revenue_calculator.svg" alt="">
+			</div>
+		</div>
+	</div>
+	<div class="login-btn">
+		<ion-button shape="round" expand="full" (click)="calculateRevenue()" [disabled]="inputField || inputField1 || inputField2 || inputField3 || inputField4">Calculate</ion-button>
+	</div>
+	<div class="call-section"  *ngIf="expectedAmount">
+		<div class="total-block value-block">
+			<span class="text">Expected Amount</span>
+			<span class="value">
+				<img class="rupee" src="assets/svg/rupee.svg" alt="">{{expectedAmount | formatNumerDecimal}}
+			</span>
+		</div>
+		<div class="duration-amount-block" *ngIf="yearlyRevenue">
+			<div class="value-block" *ngFor="let dataObj of yearlyRevenue">
+				<span class="text">{{dataObj['duration']}}</span>
+				<span class="value">
+					<img class="rupee" src="assets/svg/rupee.svg" alt="">{{dataObj['amount'] | formatNumerDecimal}}
+				</span>
+			</div>
+		</div>
+	</div>
+</div>

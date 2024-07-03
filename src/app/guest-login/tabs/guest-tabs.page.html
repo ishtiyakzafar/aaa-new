@@ -1,0 +1,229 @@
+<!-- <ion-tabs [ngClass]="moreOption? 'smaller-tab-height' : 'bigger-tab-height'"> -->
+<ion-tabs>
+<!-- <ion-tabs class="mobile-visibility"> -->
+  <ion-tab-bar class="hideTabs" *ngIf="!hideIonTabBar">
+    <!-- <ion-tab-button tab="dashboard"> -->
+    <ion-tab-button *ngFor="let obj of ionTabButtonData" routerLink="{{obj['routerLink']}}" (click) = "selectTabButton(obj['ionLabel'])" 
+    [ngClass]="{ 'tab-button-selected': obj['ionLabel'] === tabSelectedValue || obj['routerLink'] === lastPath || 
+    ((lastPath.split('/')[1] === 'client-trades' || lastPath.split('/')[1] === 'client-equity-commodity' || lastPath.split('/')[1] === 'client-details') && obj['ionLabel'] === 'Clients & Trades') || 
+    (lastPath === '/support-feedback' && obj['ionLabel'] === 'More') ||
+    (lastPath.split('/')[1] === 'dashboard-revamp' && obj['ionLabel'] === 'Home')}">
+      <ion-icon class="not-selected-icon" src="{{obj['ionIconNotSelected']}}"></ion-icon>
+      <ion-icon class="selected-icon" src="{{obj['ionIconSelected']}}"></ion-icon>
+      <ion-label>{{obj['ionLabel']}}</ion-label>
+    </ion-tab-button>
+    <!-- <ion-tab-button [routerLink]="['/dashboard']" (click) = "selectTabButton('value')" [ngClass]="{ 'class1': 'value' === tabSelectedValue }">
+      <ion-icon src="./assets/svg/Home.svg"></ion-icon>
+      <ion-label>Home</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button [routerLink]="['/markets']">
+      <ion-icon src="./assets/svg/markets.svg"></ion-icon>
+      <ion-label>Markets</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button [routerLink]="['/invest']">
+      <ion-icon src="./assets/svg/invest.svg"></ion-icon>
+      <ion-label>Invest</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button [routerLink]="['/guest/guest-client-trades']">
+      <ion-icon src="./assets/svg/person.svg"></ion-icon>
+      <ion-label>Clients & Trades</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button [routerLink]="['/tools']">
+      <ion-icon src="./assets/svg/more.svg"></ion-icon>
+      <ion-label>More</ion-label>
+    </ion-tab-button> -->
+  </ion-tab-bar>
+
+</ion-tabs>
+
+<!-- <div *ngIf="isDesktop" class="desktop"> -->
+<div class="desktop desktop-visibility">
+  <ion-header mode="ios">
+    <!-- <div class="container-parent mega-menu" [ngClass]="{'dashboard-menu': dashboardMenu}" (mouseenter)="showDashboardMenu()" (mouseleave)="hideDashboardMenu()">
+        <div class="container">
+            <div class="more-option-block">
+                <div class="item" *ngFor="let dataObj of dashboardMenuItems" (click)="goToDashboardSeg(dataObj['item'])"><span class="pointer">{{dataObj['item']}}</span></div>
+            </div>
+        </div>
+    </div> -->
+    <div class="container-parent mega-menu  mega-menu-reports" [ngClass]="{'report-menu': reportMenu}" (mouseenter)="showReportsMenu()" (mouseleave)="hideReportstMenu()">
+      <div class="container">
+        <div class="vertical-mega-menu">
+        <div class="vertical-tabs-container" (mouseenter)="setHoverState(true)" (mouseleave)="setHoverState(false)">
+          <div
+            class="tab-item"
+            *ngFor="let tab of tabs; let i = index"
+            [class.active]="i === activeTabIndex"
+            (click)="selectTab(i)"
+          >
+            {{ tab.title }}
+          </div>
+          <div class="btnFamilyPortfolio" value="Family Portfolio" (click)="setTitle('Family Portfolio')">
+            <span><img src="./assets/svg/family-portfolio-icon.svg" width="18px"> Family Portfolio</span>
+          </div>
+
+        </div>
+        <div class="tab-content" >
+          <ng-container *ngFor="let tab of tabs; let i = index">
+            <div *ngIf="i === activeTabIndex">
+             
+              <ul class="main-{{ tab.title }}">
+                <li *ngFor="let innerItem of tab.innerItems; let j = index">
+                  <span class="inner-title">{{ innerItem.innerTitle }}</span>
+                  <ul>
+                    <li *ngFor="let item of innerItem.innerOption">
+                      <a (click)="redirectReportsItem(item)"  href="javascript:void(0);">{{ item.option }}</a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </ng-container>
+        </div>
+      </div> 
+        
+
+
+
+        
+      </div>
+  </div>
+    <div class="container-parent mega-menu" [ngClass]="{'markets-menu': marketsMenu}" (mouseenter)="showMarketsMenu()" (mouseleave)="hideMarketsMenu()">
+        <div class="container">
+            <div class="more-option-block"> 
+                <div class="item" *ngFor="let dataObj of marketsMenuItems" (click)="goToMarketSeg(dataObj['item'])"><span class="pointer">{{dataObj['item']}}</span></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container-parent mega-menu mega-menu-invest" [ngClass]="{'invest-menu': investMenu}" (mouseenter)="showInvestMenu()" (mouseleave)="hideInvestMenu()">
+        <div class="container">
+            <div class="more-option-block">
+                <div class="item" *ngFor="let dataObj of investMenuItems">
+                    <div class="item-block">
+                        <span class="item-heading pointer" [routerLink]='dataObj["routeTo"]'>{{dataObj['item']}}</span>
+                        <span class="inner-item" *ngFor="let dataItem of dataObj['innerItems']" (click)='redirectInvest(dataItem["option"])'>{{dataItem['option']}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-parent mega-menu mega-menu-clients" [ngClass]="{'clients-trades-menu': clientsTradesMenu}" (mouseenter)="showClientsTradesMenu()" (mouseleave)="hideClientsTradesMenu()">
+        <div class="container">
+            <div class="more-option-block">
+                <div class="item" *ngFor="let dataObj of clientsTradesMenuItems" (click)="clientTradesMenu(dataObj['item'])"><span class="pointer">{{dataObj['item']}}</span></div>
+            </div>
+        </div>
+    </div>
+    <ion-toolbar style="--padding-top:0; --padding-bottom:0;">
+      <div class="container container-change">
+          <div class="top-parent-block">
+        <!-- <ion-row class="ion-align-items-center"> -->
+          <!-- <ion-col size="1" class="ion-no-padding"> -->
+              <div class="logo-block">
+                    <!-- <img src="./assets/logo.png" class="logo ion-text-left"> -->
+                    <div class="logo" routerLink="/guest-dashboard">
+                    <!-- Logo -->
+                    <img src="assets/svg/web_logo.svg" width="60" alt="">
+                    </div>
+              </div>
+            
+          <!-- </ion-col> -->
+          <!-- <ion-col size="10" class="ion-no-padding" [style.visibility]="subscripOption ? 'hidden' : 'visible' "> -->
+              <div class="segment-block-top" [style.visibility]="subscripOption ? 'hidden' : 'visible' ">
+                <div class="navbar" class="ion-text-center">
+                    <ion-segment scrollable (ionChange)="dashboardTopMenuSegment()" class="dashboard-segment" [(ngModel)] = "dashboardSegmentSelectedValue">
+                      <!-- <ion-segment-button (mouseenter)="showDashboardMenu()" (mouseleave)="hideDashboardMenu()" routerLink="/dashboard/aum" value="dashboard" (click)="setTitle( 'IIFL AAA Dashboard' )"> -->
+                        <ion-segment-button (mouseenter)="showDashboardMenu()" (mouseleave)="hideDashboardMenu()" routerLink="/guest/guest-dashboard" value="dashboard" (click)="setTitle( 'IIFL AAA Dashboard' )">
+                        <div class="block">
+                          <span>Dashboard</span>
+                          <span class="line"></span>
+                        </div>
+                      </ion-segment-button>
+                      <ion-segment-button (mouseenter)="showReportsMenu()" (mouseleave)="hideReportstMenu()" routerLink="/guest/guest-reports" value="reports" (click)="setTitle( 'IIFL AAA Dashboard' )">
+                        <div class="block">
+                          <span>Reports</span>
+                          <span class="line"></span>
+                        </div>
+                      </ion-segment-button>
+                      <ion-segment-button (mouseenter)="showMarketsMenu()" (mouseleave)="hideMarketsMenu()" routerLink="/guest/guest-markets" value="markets" (click)="setTitle( 'IIFL AAA Markets' )">
+                        <div class="block">
+                          <span>Markets</span>
+                          <span class="line"></span>
+                        </div>
+                      </ion-segment-button>
+                      <ion-segment-button (mouseenter)="showInvestMenu()" (mouseleave)="hideInvestMenu()" routerLink="/guest/guest-invest" value="invest" (click)="setTitle( 'IIFL AAA Invest' )">
+                        <div class="block">
+                          <span>Invest</span>
+                          <span class="line"></span>
+                        </div>
+                      </ion-segment-button>
+                      <ion-segment-button (mouseenter)="showClientsTradesMenu()" (mouseleave)="hideClientsTradesMenu()" routerLink="/guest/guest-client-trades" value="client" (click)="setTitle( 'IIFL AAA Client & Trades' )">
+                        <div class="block">
+                          <span>Trades</span>
+                          <span class="line"></span>
+                        </div>
+                      </ion-segment-button>
+                      <ion-segment-button routerLink="/guest/guest-more" value="more" class="more-segment" (click)="setTitle( 'More Options' )">
+                        <div class="block">
+                          <span>More</span>
+                          <span class="line"></span>
+                        </div>
+                      </ion-segment-button>
+                      
+                    </ion-segment>
+                  </div>
+              </div>
+          <!-- </ion-col> -->
+          <!-- <ion-col size="1" class="ion-no-padding profile-call-block" style="position: relative;"> -->
+            <div class="profile-column profile-call-block" style="position: relative;">
+                <!-- <ion-button class="open-account" (click)="openAccount()">
+                    Open Account
+                </ion-button>   -->
+                <!-- <img src="assets/svg/earn.svg" (click)="refer()" class="open-account earn" alt=""> -->
+                <!-- R&E BTN Removal -->
+                 
+                <!-- R&E BTN Removal -->
+                <!-- <div class="call-block">
+                    <ion-icon src="assets/svg/raise_query.svg"></ion-icon>
+                </div> -->                
+                <div class="profile-block">
+                  <ion-button class="mobile" (click)="openProfile($event)">
+                      <!-- Profile -->
+                      <div class="profile-circle">
+                          <ion-icon name="person"></ion-icon>
+                      </div>
+                    <ion-icon class="chevron-down" name="chevron-down"></ion-icon>
+                  </ion-button>
+                </div>
+            </div>
+          <!-- </ion-col> -->
+        <!-- </ion-row> -->
+      </div>
+    </div>
+    </ion-toolbar>
+    <!-- <common-header *ngIf="!moreOption"></common-header> -->
+  </ion-header>
+  <ion-spinner *ngIf="loading"></ion-spinner>
+  <!-- <ion-router-outlet class="desktop-wrapper"></ion-router-outlet> -->
+ 
+ 
+</div>
+<!-- quick link section -->
+<div class="quick_link_menu desktop-visibility">
+  <div class="quick_links">Quick Links</div>
+		<ul class="quick_menu" [ngClass]="{'quicklinkboxremove': quicklinkboxremove}">
+		<a href="javascript:void(0)" (click)="helpclick()">Help/Partner Queries</a>
+		<a href="javascript:void(0)" (click)="redirectToExchReport()">Real time Margin Shortfall</a>
+		<a href="javascript:void(0)" (click)="riskReportlink()">Risk Report</a>
+		<a href="https://distributionbackoffice.iifl.in/Login.aspx" target="_blank" >ACE Backoffice</a>
+		<a href="https://live.indiainfoline.com/business-partners/training.html?param=AAA" target="_blank" >Training Portal</a>
+		<a href="https://docs.google.com/forms/d/1o2hHuWsOSV6yVQYxormJQu3iYVMFY8VAsRsyTjdJj5w/edit" target="_blank" >Feedback Form</a>
+		<a href="https://images.indiainfoline.com/mailers/factsheet-2023/iifl-dashboard.html" target="_blank" >Product Dashboard</a>
+	</ul>
+</div>
+<!-- quick link section -->

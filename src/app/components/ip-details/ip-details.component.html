@@ -1,0 +1,67 @@
+<ion-header>
+    <div class="close" (click)="dismiss()">x</div>
+    <!-- <div class="title">         
+    </div> -->
+</ion-header>
+<ion-content>
+    <div style="overflow: auto;height: 350px;">
+        <div class="section" style="margin-top: 15px;">
+            <div class="label">Select Partner ID<span class="labelColor"></span></div>
+            <ng-select [items]="partnerList" bindLabel="ChildFanCode" bindValue="ChildFanCode" [clearable]="false"
+                [searchable]="false" [placeholder]="'Select Partner ID'" name="ChildFanCode" [(ngModel)]="partnerId"
+                (change)="onChangeEvent($event)" required>
+            </ng-select>
+            <div *ngIf="noPId" class="invalid-feedback">
+                <div>Partner ID is required.</div>
+            </div>
+        </div>
+        <div class="section ip_cls">
+            <div class="label">Static IP<span class="labelColor"></span></div>
+            <ion-input type="text" name="staticIp" [(ngModel)]="staticIp" placeholder="Type Static IP" class="ion-input"
+                [disabled]="isDisableIP && staticIp?.trim() != ''"></ion-input>
+            <div *ngIf="staticIp?.trim() === ''" class="invalid-feedback">
+                <div>Static IP is required.</div>
+            </div>
+            <div (click)="onisDisableIPClick()" class="edit_icon">
+                <img src="/assets/svg/edit_icon.svg" alt="icon">
+            </div>
+        </div>
+        <div class="section">
+            <div class="label">Address<span class="labelColor"></span></div>
+            <ion-textarea type="text" readonly [value]="address" name="address" class="ion-textarea"
+                placeholder="Address"></ion-textarea>
+        </div>
+        <div class="section">
+            <div class="label">Reason<span class="labelColor"></span></div>
+            <ion-input type="text" name="Reason" [(ngModel)]="reason" placeholder="Type Reason"
+                class="ion-input"></ion-input>
+        </div>
+        <div class="section">
+            <div class="fileUpload">
+                <div class='file file--upload'>
+                    <label for='input-file'>
+                        <span class="upload_icon"><img src="assets/svg/upload_new.svg" alt="">
+                            Upload Document
+                        </span>
+                    </label>
+                    <div *ngIf="isUpload" class="d-flex after_upload">
+                        <div class="af_left">
+                          <div class="d-flex after_upload_inner">
+                            <span class="fileName">{{ fileTitle }}</span>
+                            <span (click)="removeFile()" class="remove_doc"><img src="assets/svg/close_delete.svg"
+                                alt=""></span>
+                          </div>
+                        </div>
+                      </div>
+                    <input id='input-file' type='file' accept="application/pdf" (change)="uploadPdf($event)" />
+                    <div *ngIf="fileError" class="invalid-feedback">
+                        <div>{{fileError}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section section-button btn-center">
+        <ion-button [disabled]="!partnerId || !staticIp" (click)="onSubmitClick()">Submit</ion-button>
+    </div>
+</ion-content>

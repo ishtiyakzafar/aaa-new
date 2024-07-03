@@ -1,0 +1,72 @@
+<ion-header>
+	<div class="mobile-visibility">
+		<ion-toolbar color="tertiary">
+			<div class="title-block title-block-custom">
+				<div class="icon-title">
+					<ion-icon name="arrow-back-outline" class="back-button" (click)="dismiss()"></ion-icon>
+					<ion-title class="title">{{titleName}}</ion-title>
+				</div>
+			</div>
+		</ion-toolbar>
+	</div>
+	<div class="close" (click)="dismiss()">x</div>
+	<div class="title desktop-visibility">
+		<span>{{titleName}}</span>
+	</div>
+	<div class="graph-section">
+		<!-- <img src="assets/imgs/indices-details.png"> -->
+		<!-- <iframe [src]='Urlfunction(displayChart)' width="100%" height="300px" frameborder="0">
+      </iframe> -->
+		<iframe #iframe frameborder="0" width="100%" height="100%" sandbox="allow-scripts allow-same-origin allow-modals"></iframe>
+		
+	</div>
+	<table class="header-table">
+		<thead>
+			<tr>
+				<th>Scrip</th>
+				<th>Volume (K)</th>
+				<th>LTP</th>
+			</tr>
+		</thead>
+	</table>
+</ion-header>
+<ion-content>
+	<div class="table-wrapper thin-scroll">
+		<table class="body-table" *ngIf="dataLoad">
+			<tbody *ngIf="indDetailsList.length">
+				<tr *ngFor="let dataObj of indDetailsList; let i = index" (click)="goToCompanyDetails(dataObj)" style="cursor: pointer;">
+					<td>
+						<div class="scrip">
+							{{dataObj['Symbol']}}
+						</div>
+					</td>
+					<td>
+						<span>{{changeVolNumberFormat(dataObj['Volume'])}}</span>
+					</td>
+					<td>
+						<div class="value-block"
+						[ngStyle]="{'color':(dataObj.PreviousClose == 0 || dataObj.LTP == dataObj.PreviousClose) ? '#656565' : (dataObj.LTP > dataObj.PreviousClose ? '#17C257' : '#F55858')}">
+							<!-- [ngStyle]="{'color':(dataObj.ltpColor < 0 ) ? '#656565' : (dataObj.ltpColor > 0 ? '#17C257' : '#F55858')}"> -->
+							<div class="upper">{{dataObj['LTP'] | formatNumerDecimal }}</div>
+							<div class="lower">
+								<span
+									*ngIf="dataObj.PreviousClose != 0 ">{{dataObj.LTP - dataObj.PreviousClose | formatNumerDecimal: dataObj.ExchType}}({{(dataObj.LTP - dataObj.PreviousClose)/dataObj.PreviousClose *100 | formatNumerDecimal: dataObj.ExchType}}%)</span>
+								<span
+									*ngIf="dataObj.PreviousClose == 0">{{dataObj.LTP - dataObj.PreviousClose | formatNumerDecimal: dataObj.ExchType}}(0.00%)</span>
+							</div>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+			<tbody *ngIf="indDetailsList.length == 0" style="text-align: center;">
+				<tr>
+					<td class="no-data-found" style="height: calc(100vh - 505px)">No data found</td>
+				</tr>
+
+			</tbody>
+		</table>
+        <!-- <div class="loader" *ngIf="!dataLoad" style="min-height: calc(100vh - 505px)">
+            <img src="/assets/imgs/loader.gif" alt="">
+        </div> -->
+	</div>
+</ion-content>

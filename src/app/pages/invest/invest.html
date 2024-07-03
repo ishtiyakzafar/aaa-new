@@ -1,0 +1,203 @@
+<ng-container *ngIf="goldenPiUrl; else mainPage">
+    <span class="dismiss" (click)="dismissIframe()">X</span>
+        <iframe [src]="goldenPiUrl" scrolling="yes" frameborder="0" id="frm" width="100%" height="100%" title="Iframe goldenpi"></iframe>
+</ng-container>
+<ng-template #mainPage>
+    <ion-header>
+        <!-- header for mobile -->
+        <div class="overlay-div mobile-visibility" (click)="overlayVisible = !overlayVisible" [ngClass]="{'visible': overlayVisible}">
+            <div class="bg-img select-search-block mobile-header">
+                <div class="text-left">
+                    <div class="container mobile-visibility select-block">
+                        <div class="select">
+                            <ion-title mode="md" (click)="titleClick($event)" class="font-bold">Invest</ion-title>
+                            <!-- <span class="title" (click)="titleClick($event)"></span> -->
+                            <img class="arrow-down-white" src="assets/svg/arrow-down-white.svg" alt="arrow">
+                        </div>
+                        <div class="search-block">
+                            <ion-buttons class="header-icon-block">
+                                <ion-icon class="iconsize first-icon" src="./assets/svg/white-home-icon.svg" (click)="goToDashboard()">
+							
+                                </ion-icon>
+                                <ion-icon class="iconsize first-icon" src="./assets/svg/notification.svg" (click)="goToNotification()"></ion-icon>
+                                <ion-icon class="iconsize" src="./assets/svg/search.svg" (click)="goToSearch()"></ion-icon>
+                            </ion-buttons>
+                        </div>
+                    </div>
+                </div>
+                <div class="sensex-parent-block">
+                    <div class="item-block" *ngFor="let dataObj of displayHeader" (click)="headerClick($event, dataObj)">
+                        <h6>{{dataObj['Symbol']}}</h6>
+                        <label class="lbl" for="">{{dataObj['LastRate'] | formatNumerDecimal}}</label>
+                        <label class="lbl2" for="" [ngStyle]="{'color':(dataObj.PerChange == 0) ? '#656565' : (dataObj.PerChange > 0 ? '#17C257' : '#F55858')}">
+                        <img class="arrow-green-up" *ngIf="dataObj.PerChange > 0" src="assets/imgs/arrow-green-up.png" alt="arrow">
+                        <img class="arrow-red-down" *ngIf="dataObj.PerChange < 0" src="assets/imgs/arrow-red-down.png" alt="arrow">
+                            {{dataObj['Change'] | formatNumerDecimal}} ({{dataObj['PerChange'] | formatNumerDecimal}}%)</label>
+                    </div>
+                </div>
+                <div class="text-center view-details">
+                    <span>Tap on the index to view details</span>
+                </div>
+            </div>
+        </div>
+        <ion-toolbar class="mobile-header mobile-visibility top-header-mobile">
+            <!-- <div class="header-block mobile-visibility"> -->
+                <div class="select-search-block mobile-visibility">
+                    <div class="container mobile-visibility select-block">
+                        <div class="select">
+                            <ion-title mode="md" (click)="overlayVisible = !overlayVisible" class="font-bold">Invest</ion-title>
+                            <!-- <span class="title" (click)="overlayVisible = !overlayVisible">Invest</span> -->
+                            <img class="arrow-down-white" src="assets/svg/arrow-down-white.svg" alt="arrow">
+                        </div>
+                        <div class="search-block">
+                            <ion-buttons class="header-icon-block">
+                                <ion-icon class="iconsize first-icon" src="./assets/svg/white-home-icon.svg" (click)="goToDashboard()">
+							
+                                </ion-icon>
+                                <ion-icon class="iconsize first-icon" (click)="goToNotification()" src="./assets/svg/notification.svg"></ion-icon>
+                                <ion-icon class="iconsize" src="./assets/svg/search.svg" (click)="goToSearch()"></ion-icon>
+                            </ion-buttons>
+                        </div>
+                    </div>
+                </div>
+            <!-- </div> -->
+        </ion-toolbar>
+        <!-- <common-header [displayHeaderDetails]="displayHeader"></common-header> -->
+        
+        <!-- updated -->
+        <ion-toolbar>
+            <div class="container">
+                <ion-row class="colorback border-bottom">
+                    <ion-segment scrollable mode="md" class="destop-segment-middle wathlist-block-segment equity-block-segment d-flex"
+                        [(ngModel)]="equityBlockTabValue" (ionChange)="segmentChange($event)">
+                        <div *ngFor="let data of buttonData">
+                            <ion-segment-button value="{{data['value']}}">{{data['name']}}</ion-segment-button>
+                        </div>
+                    </ion-segment>
+                </ion-row>
+            </div>
+        </ion-toolbar>
+    </ion-header>
+    
+    
+    <!-- updated -->
+    <ion-content>    
+        <div class="parent-block-section">
+            <div class="tab-content container desktop-visibility" [ngSwitch]="equityBlockTabValue">
+                <div class="tab-content-data" *ngSwitchCase="'equity'">
+                    <div class="card-container">
+                        <div class="cards" *ngFor="let dataObj of equityData" [ngClass]="{'hideMF': !isRMFAN && (dataObj['key'] === 'fp_360' || dataObj['key'] === 'small_case' || dataObj['key'] === 'narnolia'|| dataObj['key'] === 'grobox') }" (click)="equityLinks(dataObj.key, $event)">
+                            <div class="card-detail">
+                                <span *ngIf="dataObj.key=='narnolia'" class="new_gp">NEW</span>
+                                <img src="assets/svg/{{dataObj['icon']}}" alt="">
+                                <span class="card-name">{{dataObj['cardName']}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content-data" *ngSwitchCase="'mutual'">
+                    <div class="card-container">
+                        <div class="cards" *ngFor="let dataObj of mutualData" [ngClass]="{'hideMF': isProd && dataObj['key'] === 'fund_monitor' }" (click)="mutalFundLinks($event,dataObj.key)">
+                            <div class="card-detail">
+                                <img src="assets/svg/{{dataObj['icon']}}" alt="">
+                                <span class="card-name">{{dataObj['cardName']}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content-data" *ngSwitchCase="'insurance'">
+                    <div class="card-container">
+                        <div class="cards" *ngFor="let dataObj of insuranceData" (click)="investService.insuranceLinks(dataObj.key)">
+                            <div class="card-detail">
+                                <span *ngIf="dataObj.key=='renewal-mapping' || dataObj.key=='new-mapping'" class="new_gp">NEW</span>
+                                    
+                                <img src="assets/svg/{{dataObj['icon']}}" alt="" style="width: 35px; margin:0 auto">
+                                <span class="card-name">{{dataObj['cardName']}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content-data" *ngSwitchCase="'bonds'">
+                    <div class="card-container">
+                        <div class="cards" *ngFor="let dataObj of bondData" (click)="equityLinks(dataObj.key, $event)">
+                            <div class="card-detail">
+                                <!-- <span class="new_gp">NEW</span> -->
+                                <img src="assets/svg/{{dataObj['icon']}}" alt="">
+                                <span class="card-name">{{dataObj['cardName']}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content-data" *ngSwitchCase="'other'">
+                    <div class="card-container other-container">
+                        <div class="cards" *ngFor="let dataObj of otherData" (click)="otherLinks(dataObj.key)">
+                            <div class="card-detail">
+                                <img src="assets/svg/{{dataObj['icon']}}" alt="">
+                                <span class="card-name">{{dataObj['cardName']}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tabs-content" class="mobile-visibility">
+                <swiper-container class="updated-slides" [ngSwitch]="equityBlockTabValue" #slidesUpdated [options]="{ autoHeight: 'true' }" (slidechangetransitionstart)="slideChanged($event)">
+                    <swiper-slide *ngSwitchCase="'equity'">
+                        <div class="card-container">
+                            <div class="cards" *ngFor="let dataObj of equityData" [ngClass]="{'hideMF': !isRMFAN && (dataObj['key'] === 'fp_360' || dataObj['key'] === 'small_case' || dataObj['key'] === 'narnolia' || dataObj['key'] === 'grobox') }" (click)="equityLinks(dataObj.key)">
+                                <div class="card-detail">
+                                    <span *ngIf="dataObj.key=='narnolia'" class="new_gp">NEW</span>
+                                    <img src="assets/svg/{{dataObj['icon']}}" alt="" [ngClass]="{'fp-plan': dataObj['icon'] === 'logo_fp.svg'}">
+                                    <span class="card-name">{{dataObj['cardName']}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </swiper-slide>
+                    <swiper-slide *ngSwitchCase="'mutual'">
+                        <div class="card-container">
+                            <div class="cards" *ngFor="let dataObj of mutualData" [ngClass]="{'hideMF': isProd && dataObj['key'] === 'fund_monitor' }" (click)="mutalFundLinks($event,dataObj.key)">
+                                <div class="card-detail">
+                                    <img src="assets/svg/{{dataObj['icon']}}" alt="" [ngClass]="{'mutual-fund': dataObj['icon'] === 'mutuafund_web.svg'}">
+                                    <span class="card-name">{{dataObj['cardName']}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </swiper-slide>
+                    <swiper-slide *ngSwitchCase="'insurance'">
+                        <div class="card-container">
+                            <div class="cards" *ngFor="let dataObj of insuranceData" (click)="investService.insuranceLinks(dataObj.key)">
+                                <div class="card-detail">
+                                    <span *ngIf="dataObj.key=='renewal-mapping' || dataObj.key=='new-mapping'" class="new_gp">NEW</span>
+                                    <img src="assets/svg/{{dataObj['icon']}}" alt="" style="width: 35px; margin:0 auto">
+                                    <span class="card-name">{{dataObj['cardName']}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </swiper-slide>
+                    <swiper-slide *ngSwitchCase="'bonds'">
+                        <div class="card-container">
+                            <div class="cards" *ngFor="let dataObj of bondData" (click)="equityLinks(dataObj.key)">
+                                <div class="card-detail">
+                                    <img src="assets/svg/{{dataObj['icon']}}" alt="">
+                                    <span class="card-name">{{dataObj['cardName']}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </swiper-slide>
+                    <swiper-slide *ngSwitchCase="'other'">
+                        <div class="card-container">
+                            <div class="cards" *ngFor="let dataObj of otherData" (click)="otherLinks(dataObj.key)">
+                                <div class="card-detail">
+                                    <img src="assets/svg/{{dataObj['icon']}}" alt="" [ngClass]="{'bonds-icon': dataObj['icon'] === 'bonds_invest.svg'}">
+                                    <span class="card-name">{{dataObj['cardName']}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </swiper-slide>
+                </swiper-container>
+            </div>
+            <div class="learn-more" (click)="viewMore('https://iiflproducts.zohosites.in/')">
+                Learn More About Our Products
+            </div>
+        </div>
+    </ion-content>
+</ng-template>

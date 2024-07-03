@@ -1,0 +1,83 @@
+<ion-header>
+  <div class="close" (click)="dismiss()">x</div>
+  <div class="title"> 
+    <span>Add User</span>  
+  </div>
+</ion-header>
+<ion-content>
+  <!-- desktop popup view -->
+  <!-- <div class="desktop-visibility">
+    <div class="user-block">
+      <div class="user-item" (click)="dismiss('addClient')">
+        <div class="icon">
+          <img src="assets/svg/add_user.svg" alt="">
+        </div>
+        <span>Add Client</span>
+      </div>
+      <div class="user-item" (click)="dismiss('advisor')">
+        <div class="icon">
+          <img src="assets/svg/ .svg" alt="">
+        </div>
+        <span>Register Advisor</span>
+      </div>
+      <div class="user-item" (click)="dismiss('NRI')">
+        <div class="icon">
+          <img src="assets/svg/nri_user.svg" alt="">
+        </div>
+        <span>NRI User</span>
+      </div>
+    </div>
+  </div> -->
+
+  <ion-segment [(ngModel)]="addUserTabValue" class="add-user-segment">
+    <ion-segment-button value={{data.value}} *ngFor="let data of addUserButton; let i = index" (click)="dismiss(data['value'])">
+        <div class="segment-inner-data" >
+            <div class="icon">
+                <img src="assets/svg/{{data.icon}}" alt="">
+            </div>
+            <div class="user-type-block">
+                <span class="user">{{data.user}}</span>
+                <span class="user-type">{{data.userType}}</span>
+            </div>
+        </div>
+    </ion-segment-button>
+  </ion-segment>
+  <!-- mobile popup view -->
+  <!-- <div class="mobile-visibility">
+    <div class="user-block mobile-user-block">
+      <div class="user-item" (click)="dismiss('addClient')">
+        <div class="icon-user-block">
+          <div class="icon">
+            <img src="assets/svg/add_user.svg" alt="">
+          </div>
+          <span>Add Client</span>
+        </div>
+        <div class="arrow">
+          <img src="assets/svg/right-arrow.svg" alt="">
+        </div>
+      </div>
+      <div class="user-item" (click)="dismiss('advisor')">
+        <div class="icon-user-block">
+          <div class="icon">
+            <img src="assets/svg/register_adviser.svg" alt="">
+          </div>
+          <span>Register Advisor</span>
+        </div>
+        <div class="arrow">
+          <img src="assets/svg/right-arrow.svg" alt="">
+        </div>
+      </div>
+      <div class="user-item" (click)="dismiss('NRI')">
+        <div class="icon-user-block">
+          <div class="icon">
+            <img src="assets/svg/nri_user.svg" alt="">
+          </div>
+          <span>NRI User</span>
+        </div>
+        <div class="arrow">
+          <img src="assets/svg/right-arrow.svg" alt="">
+        </div>
+      </div>
+    </div>
+  </div> -->
+</ion-content>

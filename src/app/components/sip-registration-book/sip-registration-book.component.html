@@ -1,0 +1,127 @@
+<div>
+    <div class="web-equity thin-scroll">
+        <!-- old code -->
+        <!-- <div class="segment-search-block input-search-padding">
+            <ion-segment class="header-segment-top" [(ngModel)]="tabValue"  (ionChange)="segmentChange($event)">
+                <ion-segment-button value="{{dataObj['value']}}" *ngFor="let dataObj of tabOptions">
+                    {{dataObj['name']}}
+                </ion-segment-button>
+            </ion-segment>
+            <ion-searchbar class="custom-searchbar" name="searchCode" [(ngModel)]="searchCode" placeholder="Search for SIP"></ion-searchbar>
+        </div> -->
+        <!-- new code -->
+        <div class="segment-search-block header-segment-with-border-parent input-search-padding">
+            <ion-segment class="header-segment-with-border" [(ngModel)]="tabValue"  (ionChange)="segmentChange($event)">
+                <ion-segment-button [ngClass]="{'first': dataObj['value'] === 'activeSip', 'second': dataObj['value'] === 'inactiveSip'}" value="{{dataObj['value']}}" *ngFor="let dataObj of tabOptions">
+                    <div class="segment-inner-data">
+                        <img class="checkmar-img" src="assets/svg/checkmark.svg" alt="">
+                        <span class="segment-value">{{dataObj['name']}}</span>
+                    </div> 
+                </ion-segment-button>
+            </ion-segment>
+            <div class="desktop-visibility">
+                <div class="search-filter-parent">
+                    <ion-searchbar class="custom-searchbar" name="searchCode" [(ngModel)]="searchCode" placeholder="Search for SIP"></ion-searchbar>
+                </div>
+            </div>
+            <div class="mobile-visibility">
+                <div class="search-filter-parent-mobile">
+                    <ion-searchbar class="custom-searchbar" name="searchCode" [(ngModel)]="searchCode" placeholder="Search for SIP"></ion-searchbar>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main-section thin-scroll" *ngIf="dataLoad">
+        
+        <div *ngIf="(sipRegList | filterSearch: searchCode : 'Symbole').length > 0">
+            <div class="section"  *ngFor="let dataObj of sipRegList | filterSearch: searchCode : 'Symbole'; let i = index" (click)="dropClick(i , sipRegList)">
+                <div class="title date_value mobile-visibility">{{dataObj.SipStart}}</div>
+                <div class="top-section">
+                    <div class="title">{{dataObj.Symbole}}</div>
+                    <div class="status-section">
+                        <span class="status">{{splitStatus(dataObj['Status'])}}</span>
+                        <span><img class="status-icon" *ngIf="dataObj['Status'] == 'Accepted'" src="assets/svg/approved.svg" alt=""></span>
+                        <span><img class="status-icon" *ngIf="dataObj['Status'] == 'Rejected'" src="assets/svg/rejected.svg" alt=""></span>
+                        <span><img class="status-icon" *ngIf="splitStatus(dataObj['Status']) == 'Stopped'" src="assets/svg/process.svg" alt=""></span>
+                        <span *ngIf="splitStatus(dataObj['Status']) == 'Paused'" class="circle"></span>
+                    </div>
+                </div>
+                <div class="lower-section">
+                    <div class="section-block">
+                        <span class="section-title">SIP Amount (₹)</span>
+                        <span class="section-value">{{dataObj.SIPAmount}}</span>
+                    </div>
+                    <div class="section-block desktop-visibility">
+                        <span class="section-title">Start Date</span>
+                        <span class="section-value">{{dataObj.SipStart}}</span>
+                    </div>
+                    <div class="section-block">
+                        <span class="section-title">Payment Mode</span>
+                        <span class="section-value">{{dataObj.PaymentMode == null ? '-':dataObj.PaymentMode}}</span>
+                    </div>
+                    <div class="section-block">
+                        <span class="section-title">Bank Name</span>
+                        <span class="section-value">{{dataObj.BankName == "" ? '-':dataObj.BankName}}</span>
+                    </div>
+
+                    <div class="section-block" *ngIf="device == 'desktop'">
+                        <span class="section-title">Frequency</span>
+                        <span class="section-value">
+                            <span *ngIf="dataObj.SIPFFrequency == 'M'">Monthly</span>
+                            <span *ngIf="dataObj.SIPFFrequency == 'W'">Weekly</span>
+                            <span *ngIf="dataObj.SIPFFrequency == 'D'">Daily</span>   
+                        </span>
+                    </div>
+                    <div class="section-block" *ngIf="device == 'desktop'">
+                        <span class="section-title">Duration</span>
+                        <span class="section-value">{{dataObj.SIPInstalmen}}</span>
+                    </div>
+                    <div class="section-block" *ngIf="device == 'desktop'">
+                        <span class="section-title">Installments Due</span>
+                        <span class="section-value">{{dataObj.Due}}</span>
+                    </div>
+                    <!-- <div class="section-block">
+                        <span class="section-title">Current Value</span>
+                        <span class="section-value">{{dataObj.CurrentValue == null ? '-':dataObj.CurrentValue}}</span>
+                    </div> -->
+                    <div class="section-block" *ngIf="device == 'mobile'">
+                        <ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg"
+                            *ngIf="!dataObj['isVisible']"></ion-icon>
+                        <ion-icon *ngIf="dataObj['isVisible']" class="rotate arrow-button down-arrow-button"
+                            src="./assets/svg/down-arrow.svg"></ion-icon>
+                    </div>
+                </div>
+                <div class="detail-section" *ngIf="dataObj['isVisible'] && device == 'mobile'">
+                    <div class="section-block">
+                        <span class="section-title">Frequency</span>
+                        <span class="section-value">
+                            <span *ngIf="dataObj.SIPFFrequency == 'M'">Monthly</span>
+                            <span *ngIf="dataObj.SIPFFrequency == 'W'">Weekly</span>
+                            <span *ngIf="dataObj.SIPFFrequency == 'D'">Daily</span>    
+                        </span>
+                    </div>
+                    <div class="section-block">
+                        <span class="section-title">Duration</span>
+                        <span class="section-value">{{dataObj.SIPInstalmen}}</span>
+                    </div>
+                    <!-- <div class="section-block">
+                        <span class="section-title installment_label">Installments Done</span>
+                        <span class="section-value">{{dataObj.SIPInstalmen - dataObj.Due}}</span>
+                    </div> -->
+                    <div class="section-block">
+                        <span class="section-title">Installments Due</span>
+                        <span class="section-value">{{dataObj.Due}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="no-data-found" *ngIf="(sipRegList | filterSearch: searchCode : 'Symbole').length == 0 && dataLoad">
+            <span>No Data Found</span>
+        </div>
+        
+    </div>
+    <div class="loader" *ngIf="!dataLoad" style="min-height: 336px;">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+</div>

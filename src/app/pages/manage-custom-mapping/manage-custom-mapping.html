@@ -1,0 +1,107 @@
+<ion-content class="raise_query" appScrollbarTheme>
+	<ion-header>
+		<ion-toolbar color="tertiary" class="mobile-visibility">
+			<div class="title-block title-block-custom">
+				<div class="icon-title">
+					<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+					<ion-title class="title">Custom Mapping Management</ion-title>
+				</div>
+			</div>
+		</ion-toolbar>
+	</ion-header>
+
+	<ion-content class="desktop-visibility">
+		<div class="container">
+			<div class="custom-mapping-header">
+				<img (click)="goBack()" src="../../../assets/svg/back-icon.svg" alt="img">
+				<p>Custom Mapping Management</p>
+			</div>
+			<div class="custom-mapping-tabs">
+				<div (click)="toggleMapping('Area')" [ngClass]="mappingType === 'Area' ? 'tab_box active':'tab_box'">
+					Parent Mapping
+				</div>
+				<div (click)="toggleMapping('Branch')" [ngClass]="mappingType === 'Area'? 'tab_box':'tab_box active'">
+					Child Mapping
+				</div>
+			</div>
+
+			<div class="loader-wrap" *ngIf="loading; else loader">
+				<div class="loader client-loader">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div>
+			</div>
+
+			<ng-template #loader>
+				<div class="no-client-found" *ngIf="clientList.length===0; else showClientData">
+					<img src="../../../assets/svg/no-data.svg" alt="img">
+					<p>Currently no Partners / RMs are mapped as Child</p>
+				</div>
+
+				<ng-template #showClientData>
+					<div class="client-list-info">
+						<span>
+							<img src="../../../assets/svg/client_sm-icon.svg" alt="img">
+							<p>{{mappingType === 'Area' ? 'The Partner/ RM list below can view your clients' : 'The Partner/ RM list below allows
+								you to view their clients'}}</p>
+						</span>
+						<small>Got it</small>
+					</div>
+					<div class="search-box">
+						<small>Search by</small>
+						<div class="employee-btn active">Code / Name</div>
+						<ion-input (ionInput)="handleSearch($event)" type="text"
+							class="ion-input employee-input">
+						</ion-input>
+					</div>
+					<div class="client-table">
+						<div class="client-table-heading">
+							<p>Total Partner/RM:{{clientList.length}}</p>
+						</div>
+						<div class="client-table-content">
+							<div class="client_card_box">
+								<div class="client_card" *ngFor="let item of clientData">
+									<ion-checkbox [(ngModel)]="item['isChecked']" (click)="selectClient(item)"
+										class="custom-checkbox client-checkbox" slot="start"></ion-checkbox>
+									<div>
+										<p>{{item.clientName}}</p>
+										<small>{{item.clientCode}}</small>
+									</div>
+								</div>
+							</div>
+							<div *ngIf="clientData.length===0" class="no-search-found">
+								No data found!
+							</div>
+						</div>
+					</div>
+				</ng-template>
+			</ng-template>
+
+			<div *ngIf="selectedClient.length" class="remove-access-box">
+				<p>{{selectedClient.length}} Partners/RMs <span>selected</span></p>
+				<div (click)="handleRemoveAccess()" class="remove-access-btn">
+					Remove Access
+				</div>
+			</div>
+		</div>
+
+
+		<style>
+			::-webkit-scrollbar {
+				width: 4px;
+				height: 4px;
+				background-color: #F5F5F5;
+			}
+
+			::-webkit-scrollbar-track {
+				-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+				background-color: #F5F5F5;
+			}
+
+			::-webkit-scrollbar-thumb {
+				background-color: #2D197F;
+			}
+
+			::-webkit-scrollbar-thumb:hover {}
+		</style>
+
+	</ion-content>

@@ -1,0 +1,151 @@
+<ion-content class="mobile-visibility">
+  <div class="data-block-parent" *ngIf="netPosHoldingDataDesk.length > 0 && dataLoad">
+    <div class="data-block" *ngFor="let dataObj of netPosHoldingDataDesk; let i = index">
+      <div class="upper-section" (click)="dropClick(i, netPosHoldingDataDesk)">
+        <div class="qty-block">
+          <span class="qty">Qty.</span><span class="qty-value">{{getQty(dataObj.Qty,dataObj.NetPosition,dataObj.BuyRate)}}</span>
+        </div>
+        <div class="data-section">
+          <div class="item">
+            <div class="upper scrip-name" (click)="goToCompanyDetails(dataObj)">{{dataObj.Name | splitNameDate: "name"}}</div>
+            <div class="lower">{{dataObj.Name | splitNameDate: "date"}}</div>
+          </div>
+          <div class="item">
+            <div class="upper">Total P&L</div>
+            <div class="lower" [ngStyle]="{'color':(getTodayPl(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) < 0) ? '#F55858' :(getTodayPl(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) > 0 ? '#17C257' : '#656565')}">
+
+              <span class="rupees">₹</span>{{getTodayPl(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) | formatNumerDecimal: dataObj.ExchType}}
+
+            </div>
+          </div>
+          <div class="item">
+            <div class="upper">Till date P&L</div>
+            <div class="lower" [ngStyle]="{'color':(gettilldatePl(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) < 0) ? '#F55858' :(gettilldatePl(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) > 0 ? '#17C257' : '#656565')}">
+
+              <span class="rupees">₹</span>{{gettilldatePl(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) | formatNumerDecimal: dataObj.ExchType}}
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="detail-section" *ngIf="dataObj['isVisible']">
+        <div class="detail-item">
+          <div class="detail-upper">Investment</div>
+
+          <div class="detail-lower" [ngStyle]="{'color':(getInvestValue(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) < 0) ? '#F55858' :(getInvestValue(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) > 0 ? '#17C257' : '#656565')}"><span class="rupees">₹</span>{{getInvestValue(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) | formatNumerDecimal: dataObj.ExchType}}</div>
+
+        </div>
+        <div class="detail-item">
+          <div class="detail-upper">Value</div>
+          <div class="detail-lower"><span class="rupees">₹</span>{{getHoldingValue(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) | formatNumerDecimal: dataObj.ExchType}}</div>
+        </div>
+        <!-- <div class="detail-item">
+          <div class="detail-upper">Avg. Buy Price</div>
+          <div class="detail-lower">{{dataObj['price']}}</div>
+        </div> -->
+        <div class="detail-item">
+          <div class="detail-upper">LTP</div>
+
+          <div class="detail-lower" [ngStyle]="{'color':(getLTP(dataObj.LastRate1,dataObj.NetPosition,dataObj.BuyRate) < 0) ? '#F55858' :(getLTP(dataObj.LastRate1,dataObj.NetPosition,dataObj.BuyRate) > 0 ? '#17C257' : '#656565')}">{{getLTP(dataObj.LastRate1,dataObj.NetPosition,dataObj.BuyRate) | formatNumerDecimal: dataObj.ExchType}}</div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="data-block-parent" *ngIf="netPosHoldingDataDesk.length == 0 && dataLoad">
+    <span class="no-data-found">No Records Found</span>
+  </div>
+  <div class="loader loader-height-210" *ngIf="!dataLoad">
+    <img src="/assets/imgs/loader.gif" alt="">
+  </div>
+</ion-content>
+<div class="desktop-visibility">
+  <div class="desktop-visibility">
+    <div class="web-equity thin-scroll">
+      <div class="header-part">
+        <div class="section-1">
+          <ion-searchbar [(ngModel)]="searchTerm" placeholder="Search  for a Holding" (ngModelChange)="searchWithInput($event)"></ion-searchbar>
+        </div>
+        <div class="section-2">
+          <div class="refresh-block pointer" (click)="doRefresh()">
+            <ion-icon class="refresh" src="assets/svg/refresh_colored.svg"></ion-icon>
+            <span>Refresh</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-table">
+        <table class="desktop-header-table width-100">
+          <thead>
+            <tr>
+              <th>
+                Scrip
+              </th>
+              <th>
+                LTP
+              </th>
+              <th>
+                Open Qty.
+              </th>
+              <th>
+                Holding Value
+              </th>
+              <th>
+                Investment Value
+              </th>
+              <th>
+                Today's P&L 
+              </th>
+              <th>
+                Till date P&L 
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="main-table thin-scroll" *ngIf="dataLoad">
+        <table class="mobile-table width-100">
+          <tbody *ngIf="netPosHoldingDataDesk.length > 0">
+              <tr *ngFor="let dataObj of netPosHoldingDataDesk">
+                  <td> 
+                    <div class="td-heading first-column">
+                      <span class="first-span-block">
+                        <span class="first-span" (click)="goToCompanyDetails(dataObj)">{{dataObj.Name | splitNameDate: "name"}}</span> 
+                        <span class="spanStyle">&nbsp;{{getExchAndExchType(dataObj.Exch,dataObj.ExchType,dataObj.NetPosition,dataObj.BuyRate)}}</span>
+                      </span>
+                      <span class="date">{{dataObj.Name | splitNameDate: "date"}}</span>
+                    </div>
+                  </td>
+                  <td [ngStyle]="{'color':(getLTP(dataObj.LastRate1,dataObj.NetPosition,dataObj.BuyRate) < 0) ? '#F55858' :(getLTP(dataObj.LastRate1,dataObj.NetPosition,dataObj.BuyRate) > 0 ? '#17C257' : '#656565')}">
+                   {{getLTP(dataObj.LastRate1,dataObj.NetPosition,dataObj.BuyRate) | formatNumerDecimal: dataObj.ExchType}}
+                  </td>
+                  <td>
+                    {{getQty(dataObj.Qty,dataObj.NetPosition,dataObj.BuyRate)}}
+                  </td>
+                  <td>
+                    <span class="rupees">₹</span> {{getHoldingValue(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) | formatNumerDecimal: dataObj.ExchType}}
+                  </td>
+                  <td [ngStyle]="{'color':(getInvestValue(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) < 0) ? '#F55858' :(getInvestValue(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) > 0 ? '#17C257' : '#656565')}">
+                    <span class="rupees">₹</span>{{getInvestValue(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) | formatNumerDecimal: dataObj.ExchType}}
+                  </td>
+                  <td [ngStyle]="{'color':(getTodayPl(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) < 0) ? '#F55858' :(getTodayPl(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) > 0 ? '#17C257' : '#656565')}">
+                    <span class="rupees">₹</span>{{getTodayPl(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) | formatNumerDecimal: dataObj.ExchType}}
+                  </td>
+                  <td [ngStyle]="{'color':(gettilldatePl(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) < 0) ? '#F55858' :(gettilldatePl(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) > 0 ? '#17C257' : '#656565')}">
+                    <span class="rupees">₹</span>{{gettilldatePl(dataObj.Qty,dataObj.LastRate1,dataObj.Pclose,dataObj.NetPosition,dataObj.BuyRate) | formatNumerDecimal: dataObj.ExchType}}
+                  </td>
+              </tr>
+          </tbody>
+          <tbody *ngIf= "netPosHoldingDataDesk.length == 0">
+            <tr>
+              <td class="no-data-found text-center">No Record Found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- show loader -->
+      <div class="loader loader-height-120" *ngIf="!dataLoad">
+        <img src="/assets/imgs/loader.gif" alt="">
+      </div>
+    </div>
+  </div>
+</div>

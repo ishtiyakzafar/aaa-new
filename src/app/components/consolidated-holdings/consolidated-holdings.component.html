@@ -1,0 +1,276 @@
+<ion-header>
+  <ion-toolbar class="desktop-visibility">
+    <div class="filter-part">
+      <div class="filter-option">
+        <ion-select class="filter-select" placeholder="Select One" [(ngModel)]="filterOption"
+          (ngModelChange)="selectFilterOption($event)">
+          <ion-select-option value="client_code">Client Code </ion-select-option>
+          <ion-select-option value="scrip_name"> Scrip Name</ion-select-option>
+          <ion-select-option value="segment">Segment</ion-select-option>
+        </ion-select>
+      </div>
+      <div class="filter-block" [ngSwitch]="filterOption">
+        <div *ngSwitchCase="'client_code'">     
+          <ion-searchbar [(ngModel)]="searchTerm" placeholder="Search by Client Code" (ngModelChange)="searchType($event,'1')"></ion-searchbar>
+        </div>
+        <div *ngSwitchCase="'scrip_name'">     
+          <ion-searchbar [(ngModel)]="searchTerm" placeholder="Search by Scrip Name" (ngModelChange)="searchType($event,'2')"></ion-searchbar>
+        </div>
+        <div *ngSwitchCase="'segment'" class="status-block product-block">
+          <div class="select-block">
+            <ion-button class="drop-down-select" type="text" placeholder="Select" (click)="openPopover($event)">
+              <span slot="start" class="select-value">{{selectedValue}}</span>
+              <ion-icon class="select-icon" slot="end" name="chevron-down-outline"></ion-icon>
+            </ion-button>
+          </div>
+          <div class="refresh-parent-block refresh-parent-block-holding">
+            <div class="a-z-sorting" [class.active]="order === 'ExchType'" (click)="setOrder('ExchType')"> Sort by<span class="sort-by"> Segment (A - Z)
+              <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+              <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+              <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                </span>
+              </div>
+            <div class="refresh-block" (click)="resetData()">
+              <img src="assets/svg/refresh_colored.svg" alt="">
+              <span class="reset">Reset</span>
+            </div>
+          </div>
+        </div>
+    
+        
+      </div>
+    </div>
+    <div class="table-header">
+      <table class="desktop-table">
+        <thead class="width-100">
+          <tr>
+            <th>Client Id</th>
+            <th>Type</th>
+            <th>Scrip</th>
+            <th>LTP</th>
+            <th>P.Close</th>
+            <th [class.active]="order === 'Quantity'" class="pointer" (click)="setOrder('Quantity')">Quantity
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+            </th>
+            <th [class.active]="order === 'CurrentValue'" class="pointer" (click)="setOrder('CurrentValue')">Holding Val
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+            </th>
+            <th [class.active]="order === 'CurrentPL'" class="pointer" (click)="setOrder('CurrentPL')">P&L
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+            </th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+   
+  </ion-toolbar>
+  <ion-toolbar class="search-toolbar mobile-visibility">
+
+    <div class="filter-block" [ngSwitch]="mobilefilterOption">
+      <div *ngSwitchCase="'client_code' ">
+        <div class="search-block">
+          <ion-searchbar [(ngModel)]="searchTerm" class="ion-searchbar"
+          placeholder={{SearchPlaceHolder}} (ngModelChange)="searchType($event,'1')"></ion-searchbar>
+          <img class="filter-icon" src="assets/svg/filter.svg" alt="" (click)="filterPopup()" *ngIf="!colorFilterIcon">
+          <img class="filter-icon" src="assets/svg/filter_colored.svg" alt="" (click)="filterPopup()"
+            *ngIf="colorFilterIcon">
+        </div>
+      </div>
+      <div *ngSwitchCase="'scrip_name'">
+        <div class="search-block">
+          <ion-searchbar [(ngModel)]="searchTerm" class="ion-searchbar"
+          placeholder={{SearchPlaceHolder}} (ngModelChange)="searchType($event,'2')"></ion-searchbar>
+          <img class="filter-icon" src="assets/svg/filter.svg" alt="" (click)="filterPopup()" *ngIf="!colorFilterIcon">
+          <img class="filter-icon" src="assets/svg/filter_colored.svg" alt="" (click)="filterPopup()"
+            *ngIf="colorFilterIcon">
+        </div>
+      </div>
+      <div *ngSwitchCase="'segment'" class="status-block quantity-block">
+        <div class="segment-block">
+          <div class="select-block">
+            <ion-button class="drop-down-select" type="text" placeholder="Select" (click)="openPopover($event)">
+              <span slot="start" class="select-value">{{selectedValue}}</span>
+              <ion-icon class="select-icon" slot="end" name="chevron-down-outline"></ion-icon>
+            </ion-button>
+          </div>
+          <img class="filter-icon" src="assets/svg/filter.svg" alt="" (click)="filterPopup()" *ngIf="!colorFilterIcon">
+          <img class="filter-icon" src="assets/svg/filter_colored.svg" alt="" (click)="filterPopup()"
+            *ngIf="colorFilterIcon">
+        </div>
+        <div class="refresh-parent-block">
+          <div class="a-z-sorting" [class.active]="order === 'ExchType'" (click)="setOrder('ExchType')"> Sort by<span class="sort-by"> Segment (A - Z)
+            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+          </span>
+        </div>
+          <div class="refresh-block" (click)="resetData()">
+            <img src="assets/svg/refresh_colored.svg" alt="">
+            <span class="reset">Reset</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<!-- <ion-content> -->
+<div class="desktop-visibility">
+  <div class="main-table thin-scroll table-block" id="desktopTableContainer" (scroll)="tableScroll($event)">
+    <table class="desktop-table" *ngIf="!isRefresh">
+      <tbody *ngIf="concatHoldingData.length > 0">
+
+        <tr *ngFor="let dataObj of concatHoldingData | orderBy: order:val | slice: 0:endIndex; let i = index">
+        <!-- <tr *ngFor="let dataObj of concatHoldingData; let i = index"> -->
+          <td>
+            <div class="upper-part justify-content-start">{{dataObj.ClientCode}}</div>
+          </td>
+          <td>
+            <div class="upper-part">
+              <div class="type-data" [ngClass]="{'buy': dataObj.Quantity > 0, 'sell': dataObj.Quantity < 0}">
+                <span *ngIf="dataObj.Quantity > 0">Buy</span>
+                <span *ngIf="dataObj.Quantity < 0">Sell</span>
+                <span *ngIf="dataObj.Quantity == 0">-</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="upper-part justify-content-start">
+              <div class="td-heading first-column">
+                <span class="first-span-block">
+                  <span class="first-span pointer" (click)="goToClientDetails(dataObj)">{{dataObj.Symbol | splitNameDate: "name"}}</span>
+                  <span class="spanStyle">&nbsp;{{dataObj.Exch}},{{dataObj.ExchType}}</span>
+                </span>
+                <span class="date">{{dataObj.Symbol | splitNameDate: "date"}}</span>
+              </div>
+            </div>
+
+          </td>
+          <td>
+            <div class="upper-part">
+              <!-- <span class="rupees">₹</span>  -->
+              ₹ {{dataObj.CurrentPrice | formatNumerDecimal: dataObj.ExchType}}
+            </div>
+            <!-- <div class="detail-part" *ngIf="dataObj['isVisible']"></div> -->
+          </td>
+          <td>
+            <div class="upper-part">
+              {{dataObj.PreviousClose | formatNumerDecimal: dataObj.ExchType}}
+            </div>
+          </td>
+
+          <td>
+            <div class="upper-part">{{dataObj['Quantity']}}</div>
+
+          </td>
+          <td>
+            <div class="upper-part">{{dataObj['CurrentValue'] | formatNumerDecimal}}</div>
+            <!-- <div class="detail-part" *ngIf="dataObj['isVisible']"></div> -->
+          </td>
+          <td
+            [ngStyle]="{'color':(dataObj.CurrentPL == 0) ? '#656565' : (dataObj.CurrentPL > 0 ? '#17C257' : '#F55858')}">
+            <div class="upper-part">
+              <!-- <span class="rupees">₹</span> -->
+              ₹ {{dataObj['CurrentPL'] | formatNumerDecimal}}
+              ({{percentChangeValue(dataObj.Quantity,dataObj.CurrentPrice,dataObj.PreviousClose,dataObj.PerChange) | formatNumerDecimal: dataObj.ExchType}}%)
+            </div>
+
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="concatHoldingData.length == 0">
+        <tr>
+          <td class="no-data-found">No Data Found</td>
+        </tr>
+        <!-- <span>No Data Found</span> -->
+      </tbody>
+    </table>
+  </div>
+  <div class="loader" *ngIf="isRefresh">
+    <img src="/assets/imgs/loader.gif" alt="">
+  </div>
+</div>
+
+<ion-content>
+  <div class="data-block-parent mobile-visibility"  id="mobileTableContainer"
+    *ngIf="concatHoldingData.length > 0 && !isRefresh">
+
+    <div class="data-block" *ngFor="let dataObj of concatHoldingData | orderBy: order:val | slice: 0:endIndex; let i = index">
+      <div class="upper-section" (click)="dropClick(dataObj.srNo, concatHoldingData)">
+        <div class="qty-block">
+          <div class="buy-block">
+            <div class="client-code">
+              <span class="option">Client</span>
+              <span class="client-value">{{dataObj.ClientCode}}</span>
+            </div> |
+            <span class="status" [ngClass]="{'buy': dataObj.Quantity > 0, 'sell': dataObj.Quantity < 0}">
+              <span *ngIf="dataObj.Quantity > 0">Buy</span>
+              <span *ngIf="dataObj.Quantity < 0">Sell</span>
+            </span>
+          </div>
+          <div class="pl-section">
+            <span class="pl">P/L: </span>
+            <span  [ngStyle]="{'color':(dataObj.CurrentPL == 0) ? '#656565' : (dataObj.CurrentPL > 0 ? '#17C257' : '#F55858')}" class="current-pl">
+                <span class="rupees">₹</span>{{dataObj['CurrentPL']}}({{percentChangeValue(dataObj.Quantity,dataObj.CurrentPrice,dataObj.PreviousClose,dataObj.PerChange) | formatNumerDecimal: dataObj.ExchType}}%)
+            </span>
+          </div>
+          <!-- <span class="buy intraday">Intraday</span> -->
+        </div>
+        <div class="data-section">
+          <div class="item">
+            <div class="upper scrip-name" (click)="goToClientDetails(dataObj)">{{dataObj.Symbol | splitNameDate: "name"}}<span
+                class="gray-block">&nbsp;{{dataObj.Exch}}{{dataObj.ExchType}}</span></div>
+            <div class="lower">{{dataObj.Symbol | splitNameDate: "date"}}</div>
+          </div>
+          <div class="item">
+            <div class="upper text-right">
+              <span class="option m-r-8">Value:</span><span class="rupees">₹</span><span
+                class="value">{{dataObj['CurrentValue'] | formatNumerDecimal: dataObj.ExchType}}</span>
+            </div>
+            <div class="upper text-right">
+              <span class="option m-r-8">Quantity:</span><span class="value">{{dataObj['Quantity']}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="detail-section" *ngIf="dataObj['isVisible']">
+        <!-- <div class="detail-item">
+            <div class="detail-upper">Requester ID</div>
+            <div class="detail-lower">{{dataObj['orderId']}}</div>
+          </div>
+          <div class="detail-item">
+            <div class="detail-upper">Exch. Order ID</div>
+            <div class="detail-lower">{{dataObj['brokerId']}}</div>
+          </div> -->
+        <div class="detail-item">
+          <div class="detail-upper">LTP</div>
+          <div class="detail-lower">{{dataObj['CurrentPrice'] | formatNumerDecimal: dataObj.ExchType}}</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-upper">Prev Close</div>
+          <div class="detail-lower">{{dataObj['PreviousClose'] | formatNumerDecimal: dataObj.ExchType}}</div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <ion-infinite-scroll *ngIf="enableNextMobile" threshold="100px" (ionInfinite)="loadDataMobile($event)">
+		<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data">
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+  <div class="mobile-visibility">
+      <div class="loader" *ngIf="isRefresh">
+          <img src="/assets/imgs/loader.gif" alt="">
+      </div>
+  </div>
+  <div class="data-block-parent mobile-visibility" *ngIf="concatHoldingData.length === 0 && !isRefresh">
+    <span class="no-data-found">No Data Found</span>
+  </div>
+
+</ion-content>
+<!-- </ion-content> -->

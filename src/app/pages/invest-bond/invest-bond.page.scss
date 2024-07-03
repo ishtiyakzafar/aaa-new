@@ -1,0 +1,140 @@
+.title {
+    margin: 28px 0 20px;
+    font-size: 24px;
+    font-family: nunitoBold;
+    color: #212121;
+}
+
+.deposit-type-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 55px;
+    .devider {
+        width: 2px;
+        height: 136px;
+        background: #f2f4f4;
+    }
+    .type-section {
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        // border-right: 1px solid #f2f4f4;
+        align-items: center;
+        .type-name {
+            margin-bottom: 5px;
+            color: #707070;
+            font-family: nunitoBold;
+            font-size: 16px;
+        }
+        .type-img {
+            width: 200px;
+            height: 110px;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+        }
+    }
+}
+
+.more-block {
+    color: #593CC7;
+    font-size: 16px;
+    padding: 16px 24px;
+    border: 2px solid #593CC7;
+    border-radius: 8px;
+    text-align: center;
+    margin: 48px auto;
+    width: 334px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    .offline {
+        font-size: 12px;
+        color: #707070;
+    }
+}
+
+.hide {
+    display: none !important;
+}
+
+
+
+.paragraph {
+    color: #707070;
+    font-size: 14px;
+    padding: 0px 8px 8px 40px;
+}
+
+.block-heading {
+    color: #000000;
+    font-size: 14px;
+    margin: 20px 0;
+    font-family: 'nunitoSemiBold';
+}
+
+@media screen and (max-width: 500px) {
+    .paragraph {
+        padding: 16px;
+    }
+    .block-heading {
+        padding: 16px;
+        margin: 0;
+        font-family: 'nunitoBold';
+    }
+    .more-block {
+        padding: 16px 18px;
+        border: 2px solid #593CC7;
+        border-radius: 4px;
+        text-align: center;
+        margin: 24px auto;
+        // width: 328px;
+        width: 80vw;
+    }
+    .deposit-type-block {
+        display: flex;
+        flex-direction: column;
+        align-content: space-between;
+        // height: calc(100vh - 186px);
+        height: 358px;
+        .devider {
+            width: 70vw;
+            height: 1px;
+        }
+        .type-section {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            .type-img {
+                width: auto;
+                height: 79px;
+                max-width: 163px;
+            }
+            // border-right: 1px solid #f2f4f4;
+        }
+    }
+}
+
+
+
+@media screen and (min-width: 768px) {
+    .container {
+        width: 620px;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .container {
+        width: 860px;
+    }
+}
+
+
+@media screen and (min-width: 1200px) {
+    .container {
+        width: 1140px;
+    }
+}

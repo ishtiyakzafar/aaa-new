@@ -1,0 +1,483 @@
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="select-search-block">
+			<div class="title-toggle-block">
+				<div class="title-block">
+					<!-- <ion-buttons slot="start">
+				  <ion-back-button></ion-back-button>
+				  </ion-buttons> -->
+					<ion-icon name="arrow-back-outline" class="back-button" (click)="goToPrevious()"></ion-icon>
+					<div class="title">{{cashScripName}}</div>
+					<!-- <ion-title class="title">{{cashScripName}}</ion-title> -->
+				</div>
+				<label *ngIf="!isCommodityValueVisible" class="switch">
+					<input type="checkbox" id="togBtn" name="changeBtn" [(ngModel)]="changeBtn"
+						(ngModelChange)="toggleNscButton($event)">
+					<div class="slider round">
+						<!--ADDED HTML --><span class="on">BSE</span><span class="off">NSE</span>
+						<!--END-->
+					</div>
+				</label>
+				<span *ngIf="isCommodityValueVisible"
+					class="commodity-type commodity-type-mobile">{{commodityName}}</span>
+			</div>
+			<div class="segment-section">
+				<ion-segment scrollable mode="md" class="header-segment-top" [(ngModel)]="cashBlockTabValue">
+					<div *ngFor="let data of segmentButtons">
+						<ion-segment-button mode="md" value={{data.Value}} class="segmentStyle"
+							(click)="segmentTab(data.Value)">
+							{{data.Name}}
+						</ion-segment-button>
+					</div>
+				</ion-segment>
+			</div>
+		</div>
+	</ion-toolbar>
+	<ion-toolbar class="mobile-visibility client-block-toolbar" *ngIf="!optionChain && cashBlockTabValue !== 'news'">
+		<div class="option-chain-block">
+			<div class="option-chain" *ngIf="!optionChain && cashBlockTabValue === 'options'"
+				(click)="optionChainVisible()">
+				<ion-icon name="chevron-down-outline" class="back-option-chain"></ion-icon>
+				Option Chain
+			</div>
+			<div class="clients-block clients-block-mobile">
+				<div class="section" *ngIf="cashBlockTabValue === 'future' && isCommodityValueVisible"
+					(click)="contractInfo()">
+					<img src="/assets/svg/contract_info_colored.svg" alt="">
+					<span>Contract Info</span>
+				</div>
+				<div class="section" (click)="gotoClientList()" *ngIf="scripCodeUnavailable">
+					<img src="/assets/svg/clients_colored.svg" alt="">
+					<span>Clients</span>
+				</div>
+				<div class="section" (click)="superstars()" *ngIf="cashBlockTabValue === 'cash'">
+					<img src="/assets/svg/superstars.svg" alt="">
+					<span>Superstars</span>
+				</div>
+				<div class="section" (click)="addToWatchlist()" *ngIf="scripCodeUnavailable">
+					<img src="/assets/svg/watchlist_colored.svg" alt="">
+					<span>Watchlist</span>
+				</div>
+				<div class="section" (click)="newsLink()" *ngIf="scripCodeUnavailable">
+					<img src="/assets/svg/news_icon.svg" alt="">
+					<span>News</span>
+				</div>
+			</div>
+		</div>
+	</ion-toolbar>
+	<div class="container">
+		<ion-toolbar class="desktop-visibility">
+			<div class="company-title-block">
+				<div class="title-block">
+					<span class="title">{{cashScripName}}</span>
+					<!-- <ion-toggle mode="ios"></ion-toggle> -->
+					<label *ngIf="!isCommodityValueVisible" class="switch">
+						<input type="checkbox" id="togBtn" name="changeBtn" [(ngModel)]="changeBtn"
+							(ngModelChange)="toggleNscButton($event)">
+						<div class="slider round">
+							<!--ADDED HTML --><span class="on">BSE</span><span class="off">NSE</span>
+							<!--END-->
+						</div>
+					</label>
+					<span *ngIf="isCommodityValueVisible" class="commodity-type">{{commodityName}}</span>
+				</div>
+				<div class="clients-block" *ngIf="!optionChain && cashBlockTabValue !== 'news'">
+					<div class="section" *ngIf="cashBlockTabValue === 'future' && isCommodityValueVisible"
+						(click)="contractInfo()">
+						<img src="/assets/svg/contract_info_colored.svg" alt="">
+						<span>Contract Info</span>
+					</div>
+					<div class="section" (click)="gotoClientList()" *ngIf="scripCodeUnavailable">
+						<img src="/assets/svg/clients_colored.svg" alt="">
+						<span>Clients</span>
+					</div>
+					<div class="section" (click)="superstars()" *ngIf="cashBlockTabValue === 'cash'">
+						<img src="/assets/svg/superstars.svg" alt="">
+						<span>Superstars</span>
+					</div>
+					<div class="section" (click)="addToWatchlist()" *ngIf="scripCodeUnavailable">
+						<img src="/assets/svg/watchlist_colored.svg" alt="">
+						<span>Watchlist</span>
+					</div>
+					<div class="section" (click)="newsLink()" *ngIf="scripCodeUnavailable">
+						<img src="/assets/svg/news_icon.svg" alt="">
+						<span>News</span>
+					</div>
+				</div>
+			</div>
+		</ion-toolbar>
+		<ion-toolbar class="desktop-visibility">
+			<div class="seg-one">
+				<ion-segment scrollable class="header-segment-bottom d-flex" [(ngModel)]="cashBlockTabValue">
+					<div *ngFor="let data of segmentButtons; let i = index">
+						<ion-segment-button value={{data.Value}} (click)="segmentTab(data.Value)">
+							{{data.Name}}
+						</ion-segment-button>
+					</div>
+				</ion-segment>
+			</div>
+		</ion-toolbar>
+	</div>
+</ion-header>
+<ion-content>
+	<div class="thin-scroll content-block" *ngIf="!optionChain && cashBlockTabValue !== 'news'">
+		<div class="container">
+			<div class="ltp-block" *ngIf="dataLoad">
+				<div class="ltp-section">
+					<div class="upper-section">
+						<div class="ltp-heading-section">
+							<div class="left-section" *ngIf="scripCodeUnavailable">
+								<span class="heading">LTP</span>
+								<div class="ltp-numbers"
+									[ngClass]="{'ltp-greater': cashLastRate > cashPClose && cashPClose != 0, 'ltp-smaller': cashLastRate < cashPClose && cashPClose != 0}">
+									<span class="number">{{cashLastRate | formatNumerDecimal: urlExchParameter}}</span>
+									<span class="number-percentage">
+									
+										<span
+											*ngIf="cashPClose != 0">{{(cashLastRate - cashPClose) | formatNumerDecimal: urlExchParameter}}
+											({{((cashLastRate - cashPClose)/cashPClose *100) | formatNumerDecimal: urlExchParameter}}%)</span>
+										<span
+											*ngIf="cashPClose == 0">{{(cashLastRate - cashPClose) | formatNumerDecimal: urlExchParameter}}
+											(0.00%)</span>
+									</span>
+								</div>
+
+							</div>
+							<div class="right-section" *ngIf="cashBlockTabValue === 'future'">
+								<div class="date_selectfield custom-select" *ngIf="expiryDates.length > 0">
+									<h5 class="datetitle p0_m0">Expiry Date</h5>
+									<ion-select class="align-from-right" [(ngModel)]="selectdate"
+										(ngModelChange)="expiryDateChange($event)">
+										<ion-select-option *ngFor="let obj of expiryDates" [value]="obj['Expiry']">
+											{{obj['Expiry']}}</ion-select-option>
+									</ion-select>
+								</div>
+							</div>
+							<div class="option-block option-block-toggle mobile-visibility"
+								*ngIf="cashBlockTabValue === 'options'">
+								<label class="switch">
+									<input type="checkbox" id="togBtn" [(ngModel)]="callPutBtn"
+										(ngModelChange)="toggleCallPutBtn()" name="callPutBtn">
+									<div class="slider round">
+										<!--ADDED HTML --><span class="on">Put</span><span class="off">Call</span>
+										<!--END-->
+									</div>
+								</label>
+							</div>
+							<div class="option-chain desktop-visibility m-r-16" *ngIf="cashBlockTabValue === 'options'">
+								<ion-button class="outline-button" (click)="optionChainVisible()">Option Chain
+								</ion-button>
+							</div>
+						</div>
+
+						<div class="expiry-block" *ngIf="cashBlockTabValue === 'options' && expiryDatesOption.length>0">
+							<div class="date_selectfield custom-select" *ngIf="expiryDatesOption.length>0">
+								<h5 class="datetitle p0_m0 right-0 text-left">Expiry Date</h5>
+								<ion-select [(ngModel)]="selectdateOption"
+									(ngModelChange)="expiryDateChangeOption($event)">
+									<ion-select-option *ngFor="let obj of expiryDatesOption" [value]="obj['Expiry']">
+										{{obj['Expiry']}}</ion-select-option>
+								</ion-select>
+							</div>
+
+							<div class="date_selectfield custom-select">
+								<h5 class="datetitle p0_m0">Strike Price</h5>
+								<ion-select class="align-from-right" [(ngModel)]="selectStrikePrice"
+									(ngModelChange)="strikeRateChangeOption($event)">
+									<ion-select-option *ngFor="let obj of strikePriceList" [value]="obj['StrikeRate']">
+										{{obj['StrikeRate']}}</ion-select-option>
+								</ion-select>
+							</div>
+							<div class="desktop-visibility">
+								<div class="option-block option-block-toggle">
+									<span>Option Type:</span>
+									<label class="switch">
+										<input type="checkbox" id="togBtn" [(ngModel)]="callPutBtn"
+											(ngModelChange)="toggleCallPutBtn()" name="callPutBtn">
+										<div class="slider round">
+											<!--ADDED HTML --><span class="on">Put</span><span class="off">Call</span>
+											<!--END-->
+										</div>
+									</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="ltp-detail-section" *ngIf="cashBlockTabValue === 'cash'">
+						<div class="detail-block" *ngFor="let cashobj of ltpDetails">
+							<span class="title">{{cashobj.name}}</span>
+							<span *ngIf="ltpDetails.length > 0" class="detail-number">{{cashobj.value}}
+							</span>
+						</div>
+					</div>
+					<div class="ltp-detail-section ltp-detail-section-commodity"
+						*ngIf="(cashBlockTabValue === 'options' || cashBlockTabValue === 'future') && scripCodeUnavailable">
+						<div class="detail-block" *ngFor="let cashobj of futureOptDetails">
+
+							<span *ngIf="futureOptDetails.length > 0" class="title">{{cashobj.name}}</span>
+							<span *ngIf="futureOptDetails.length > 0" class="detail-number">{{cashobj.value}}
+							</span>
+						</div>
+
+					</div>
+
+					<div *ngIf="!scripCodeUnavailable" class="nodataFoundClass">
+						No Data Found
+					</div>
+				</div>
+                <div class="table-title mobile-visibility" *ngIf="scripCodeUnavailable">Market Depth</div>
+				<div class="table-block" *ngIf="marketDepthData.length > 0">
+					<div class="vertical-devider"></div>
+					<div class="table-first">
+						<div class="table-section common-header-table ">
+							<table>
+								<thead>
+									<tr>
+										<th>Qty</th>
+										<th class="text-right">Bid</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div class="common-body-table thin-scroll">
+							<table>
+								<tbody>
+									<tr *ngFor="let data of bidList">
+										<td>{{displayDecimalDigits(data.Quantity) | numberformat}}</td>
+										<td class="text-right">
+											{{data.Price | formatNumerDecimal: urlExchParameter}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="common-footer-table">
+							<table class="left-table">
+								<tfoot>
+									<tr>
+										<td>{{totalBidQ | numberformat}}</td>
+										<td class="text-right">Total</td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					</div>
+					<div class="table-second">
+						<div class="table-section common-header-table ">
+							<table>
+								<thead>
+									<tr>
+										<th>Ask</th>
+										<th class="text-right">Qty</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div class="common-body-table thin-scroll">
+							<table>
+								<tbody>
+									<tr *ngFor="let data of askList">
+										<td>{{data.Price | formatNumerDecimal: urlExchParameter}}</td>
+										<td class="text-right">
+											{{displayDecimalDigits(data.Quantity) | numberformat}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="common-footer-table">
+							<table class="right-table">
+								<tfoot>
+									<tr>
+										<td>Total</td>
+										<td class="text-right">{{totalOffQ | numberformat}}</td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="loader loader-height-275" *ngIf="!dataLoad">
+				<img src="/assets/imgs/loader.gif" alt="">
+			</div>
+			<div class="advance-chart-block">
+				<div class="time-segment">
+
+				</div>
+				<div class="advance-section" *ngIf="scripCodeUnavailable">
+					<div class="chart-block">
+						<img src="/assets/imgs/dummy-graph-icon.png" alt="">
+						<!-- <span><img [src]="chartspecific" target="_blank">Advance Charts</span> -->
+						<span *ngIf="hideChart == false" class="main-item pointer"
+							(click)="renderAdvanceChart()">Advance Charts</span>
+						<span *ngIf="hideChart == true" class="main-item pointer"
+							(click)="renderAdvanceFuCoChart()">Advance Charts</span>
+					</div>
+
+				</div>
+			</div>
+			<div class="chart-img width-100" *ngIf="scripCodeUnavailable">
+				<!-- <iframe [src]='Urlfunction(displayBasicChart)' width="100%" height="300px" frameborder="0">
+			</iframe> -->
+				<iframe *ngIf="hideChart == false && showSetTimeGraph" [cachedSrc]="displayBasicChart" frameborder="0" width="100%"
+					height="300px" sandbox="allow-top-navigation allow-forms allow-popups allow-scripts  allow-same-origin"></iframe>
+				<iframe *ngIf="hideChart == true && showSetTimeGraph" [cachedSrc]="displayfuCoChart" frameborder="0" width="100%"
+					height="300px" sandbox="allow-top-navigation allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
+			</div>
+		</div>
+	</div>
+	<div class="container" *ngIf="optionChain && dataLoad">
+		<div class="option-chain" *ngIf="expiryDatesOption.length>0">
+			<div class="expiry-date-block">
+				<div class="date_selectfield custom-select">
+					<h5 class="datetitle p0_m0">Expiry Date</h5>
+					<ion-select class="align-from-right" [(ngModel)]="selectdateOption"
+						(ngModelChange)="expiryDateChangeOption($event)">
+						<ion-select-option *ngFor="let obj of expiryDatesOption" [value]="obj['Expiry']">
+							{{obj['Expiry']}}</ion-select-option>
+					</ion-select>
+				</div>
+				<div *ngIf="expiryDatesOption.length == 0" class="align-items-center">
+
+				</div>
+				<div class="option-price-calculator hide">
+					<ion-button class="outline-button" (click)="goToCalculator()">Option Price Calculator</ion-button>
+
+				</div>
+			</div>
+			<div class="main-block thin-scroll" *ngIf="optionList.length > 0 ">
+				<div class="table-section-block fix-table-section tab_ui">
+					<div class="table-block">
+						<div class="table-section common-header call">
+							<table>
+								<thead>
+									<tr>
+										<th>Call</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div class="table-section common-header-table call-table">
+							<table>
+								<thead>
+									<tr>
+										<th>OI</th>
+										<th>VOL</th>
+										<th>LTP</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+					<div class="strike-price">
+						<div class="heading pointer" (click)="sortByStrikeRate()">
+							<span>Strike Price </span>
+
+							<div class="sorting-icons">
+								<div class="arrow-up"></div>
+								<div class="arrow-down"></div>
+							</div>
+						</div>
+					</div>
+					<div class="table-block">
+						<div class="table-section common-header put">
+							<table>
+								<thead>
+									<tr>
+										<th>Put</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div class="table-section common-header-table put-table">
+							<table>
+								<thead>
+									<tr>
+										<th>LTP</th>
+										<th>VOL</th>
+										<th>OI</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="table-section-block table-body-for-all-parent">
+					<div class="table-body-for-all table-block thin-scroll">
+						<div class="common-body-table thin-scroll call-table">
+							<table>
+								<tbody>
+									<tr *ngFor="let data of callDataList" (click)="optionsDetails(data)">
+										<td>{{data['OpenInterest'] | formatNumberUnit}}</td>
+										<td>{{data['Volume'] | numberformat}}</td>
+										<td
+											[ngStyle]="{'color': (data.PreviousClose == 0 || data.LastRate == data.PreviousClose) ? '#656565' : (data.LastRate > data.PreviousClose ? '#17C257' : '#F55858')}">
+											<div class="desktop-visibility data-same-line">
+												<span class="m-pt0">{{data['LastRate'] | number: '1.2-2'}}</span>
+												<span *ngIf="data.PreviousClose != 0">
+													({{(((data['LastRate'] - data['PreviousClose'])*100)/data.PreviousClose) | number: '1.2-2'}}%)</span>
+												<span *ngIf="data.PreviousClose == 0"> (0.00%)</span>
+											</div>
+											<div class="mobile-visibility data-break-line">
+												<div class="m-pt0">{{data['LastRate'] | number: '1.2-2'}}</div>
+												<span
+													*ngIf="data.PreviousClose != 0">{{(data['LastRate'] - data['PreviousClose']/data.PreviousClose *100) | number: '1.2-2'}}%</span>
+												<span *ngIf="data.PreviousClose == 0">(0.00%)</span>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="price-block thin-scroll">
+							<div class="price" *ngFor="let dataObj of callDataList">
+								{{dataObj['StrikeRate'] | numberformat}}
+								<!-- <p class="m-pt0">{{dataObj['StrikeRate'] | numberformat}}</p>  -->
+								<!-- <p style="visibility: hidden;" class="m-pt0">{{dataObj['StrikeRate'] | numberformat}}</p> -->
+							</div>
+						</div>
+						<div class="common-body-table thin-scroll put-table">
+							<table>
+								<tbody>
+									<tr *ngFor="let data of putDataList" (click)="optionsDetails(data)">
+										<!-- <td [ngClass]="{'green': data['ltpStatus']==='green', 'red': data['ltpStatus']==='red'}">{{data['LastRate']}}</td> -->
+										<td
+											[ngStyle]="{'color': data.PreviousClose == 0 ? '#656565' : (data.LastRate > data.PreviousClose ? '#17C257' : '#F55858')}">
+											<div class="desktop-visibility data-same-line">
+												<span class="m-pt0">{{data['LastRate'] | number: '1.2-2'}}</span>
+												<span *ngIf="data.PreviousClose != 0">
+													({{(((data['LastRate'] - data['PreviousClose'])*100)/data.PreviousClose) | number: '1.2-2'}}%)</span>
+												<span *ngIf="data.PreviousClose == 0"> (0.00%)</span>
+											</div>
+											<div class="mobile-visibility data-break-line">
+												<div class="m-pt0">{{data['LastRate'] | number: '1.2-2'}}</div>
+												<span
+													*ngIf="data.PreviousClose != 0">{{(data['LastRate'] - data['PreviousClose']/data.PreviousClose *100) | number: '1.2-2'}}%</span>
+												<span *ngIf="data.PreviousClose == 0">(0.00%)</span>
+											</div>
+										</td>
+										<td>{{data['Volume'] | numberformat}}</td>
+										<td>{{data['OpenInterest'] | formatNumberUnit}}</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div *ngIf="optionList.length == 0" class="text-center font-bold">
+				<p>{{noDataOptionList}}</p>
+			</div>
+		</div>
+		<div class="option-chain" class="nodataFoundClass m-t-20"
+			*ngIf="expiryDatesOption.length == 0">
+			No Data Found
+		</div>
+	</div>
+	<div class="loader loader-height-275" *ngIf="optionChain && !dataLoad">
+		<img src="/assets/imgs/loader.gif" alt="">
+	</div>
+	<div class="container news" *ngIf="cashBlockTabValue === 'news'">
+		<div class="coming-soon">Coming Soon</div>
+	
+	</div>
+</ion-content>

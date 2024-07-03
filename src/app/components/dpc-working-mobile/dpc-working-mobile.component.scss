@@ -1,0 +1,115 @@
+@media screen and (min-width: 1200px) {
+    .dp_report_main {
+        width: 1140px;
+        margin: auto;
+       }
+    
+    }
+.dp_report_main{margin-top: 20px;}  
+.dp_report_card{background: #e9e8ef; border-radius: 4px; padding: 1.25rem; margin: 0px 10px;}
+.dp_report_card h2{font-size: 24px; color: #010101; margin-top: 0px;}
+.dp_report_card p{color: #010101; font-size: 16px; margin-top: 0px;}
+.dp_report_download_box{ margin: 0 auto;}
+.radio_group{display: flex; justify-content: center;}
+.radio_group .radio_box{ background: #fff; border-radius:10px; padding: 1rem; text-align: center; width: 90px; height: 90px; margin: 0 10px;}
+.radio_box .d-block{display: block;}
+.radio_box span{font-size: 14px; color: #808080;}
+.radio_box img{margin: 13px 0 5px 0;}
+.radio_box{position: relative;}
+.radio_box input[type="radio"]{display: none;}
+.radio{position: absolute; top: -8px; left:7px;}
+.download_btn{margin: 0 auto; display: block; text-align: center;}
+
+
+  .radio [type="radio"]:checked,
+  .radio [type="radio"]:not(:checked) {
+      position: absolute;
+      
+  }
+  .radio [type="radio"]:checked + label,
+  .radio [type="radio"]:not(:checked) + label
+  {
+      position: relative;
+      padding-left: 28px;
+      cursor: pointer;
+      line-height: 20px;
+      display: inline-block;
+      color: #666;
+  }
+  .radio [type="radio"]:checked + label:before,
+  .radio [type="radio"]:not(:checked) + label:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 16px;
+      height: 16px;
+      border: 1px solid #CED4DA;
+      border-radius: 100%;
+      background: #fff;
+  }
+  .radio [type="radio"]:checked + label:after,
+  .radio [type="radio"]:not(:checked) + label:after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: #F37921;
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      border-radius: 100%;
+      -webkit-transition: all 0.2s ease;
+      transition: all 0.2s ease;
+  }
+  .radio [type="radio"]:not(:checked) + label:after {
+      opacity: 0;
+      -webkit-transform: scale(0);
+      transform: scale(0);
+  }
+  .radio [type="radio"]:checked + label:after {
+      opacity: 1;
+      -webkit-transform: scale(1);
+      transform: scale(1);
+  }
+
+
+ion-button {
+    border-radius: 25px;
+    --border-radius: 25px;
+    --background: #F37921;
+    width: 230px;
+    box-shadow: 0px 2px 12px #f37921ad;
+    font-size: 15px;
+    font-family: "nunitoExtraBold";
+    height: 41px;
+    margin: 40px 0 30px 0; font-weight: 400;
+   
+}
+.orange_line_active{border: 1px solid #F37921;}
+
+@media screen and (max-width: 768px) {
+    ion-button{margin: 20px  0 0 0;}
+    .dp_report_main{margin-top: 5px;padding-bottom: 60px;}
+    .dp_report_card{padding: 1.5rem;}
+    .radio [type="radio"]:checked,
+  .radio [type="radio"]:not(:checked) {
+      position: absolute;
+      top: 19px;
+    z-index: 9;
+    left: 3px;
+      
+  }
+  .radio_box input[type="radio"]{opacity: 0 !important; z-index: 9999; display: inherit;}
+}
+
+@media screen and (min-width: 768px){
+.mobile-visibility {
+    display: none !important;
+}
+
+
+
+}
+
+
+

@@ -1,0 +1,160 @@
+// Ionic Variables and Theming. For more info, please see:
+// http://ionicframework.com/docs/theming/
+
+
+// font css
+@font-face {
+  font-family: 'nunitoExtraLight';
+  src: url('../assets/fonts/Nunito-ExtraLight.ttf');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'nunitoLight';
+  src: url('../assets/fonts/Nunito-Light.ttf');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'nunitoRegular';
+  src: url('../assets/fonts/Nunito-Regular.ttf');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'nunitoSemiBold';
+  src: url('../assets/fonts/Nunito-SemiBold.ttf');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'nunitoBold';
+  src: url('../assets/fonts/Nunito-Bold.ttf');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'nunitoExtraBold';
+  src: url('../assets/fonts/Nunito-ExtraBold.ttf');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'nunitoBlack';
+  src: url('../assets/fonts/Nunito-Black.ttf');
+  font-weight: 800;
+  font-style: normal;
+}
+
+/** Ionic CSS Variables **/
+:root {
+  --ion-font-family: 'nunitoRegular';
+  /** primary **/
+  --ion-color-primary: #3880ff;
+  --ion-color-primary-rgb: 56, 128, 255;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #3171e0;
+  --ion-color-primary-tint: #4c8dff;
+
+  /** secondary **/
+  --ion-color-secondary: #3dc2ff;
+  --ion-color-secondary-rgb: 61, 194, 255;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #36abe0;
+  --ion-color-secondary-tint: #50c8ff;
+
+  /** tertiary **/
+  --ion-color-tertiary: #2e037e;
+  --ion-color-tertiary-rgb: 82, 96, 255;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #0716b3;
+  --ion-color-tertiary-tint: #0618dd;
+
+  /** success **/
+  --ion-color-success: #2dd36f;
+  --ion-color-success-rgb: 45, 211, 111;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #28ba62;
+  --ion-color-success-tint: #42d77d;
+
+  /** warning **/
+  --ion-color-warning: #ffc409;
+  --ion-color-warning-rgb: 255, 196, 9;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #e0ac08;
+  --ion-color-warning-tint: #ffca22;
+
+  /** danger **/
+  --ion-color-danger: #eb445a;
+  --ion-color-danger-rgb: 235, 68, 90;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #cf3c4f;
+  --ion-color-danger-tint: #ed576b;
+
+  /** dark **/
+  --ion-color-dark: #222428;
+  --ion-color-dark-rgb: 34, 36, 40;
+  --ion-color-dark-contrast: #ffffff;
+  --ion-color-dark-contrast-rgb: 255, 255, 255;
+  --ion-color-dark-shade: #1e2023;
+  --ion-color-dark-tint: #383a3e;
+
+  /** medium **/
+  --ion-color-medium: #92949c;
+  --ion-color-medium-rgb: 146, 148, 156;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #808289;
+  --ion-color-medium-tint: #9d9fa6;
+
+  /** light **/
+  --ion-color-light: #f4f5f8;
+  --ion-color-light-rgb: 244, 245, 248;
+  --ion-color-light-contrast: #000000;
+  --ion-color-light-contrast-rgb: 0, 0, 0;
+  --ion-color-light-shade: #d7d8da;
+  --ion-color-light-tint: #f5f6f9; 
+
+  ion-button{
+    text-transform: none;
+  }
+
+  /** Custom Variable **/
+
+  /** font size**/
+  --ion-micro-font-size:10x;
+  --ion-smallest-font-size:12px;
+  --ion-smaller-font-size:14px;
+  --ion-small-font-size:16px;
+  --ion-medium-font-size:18px;
+  --ion-large-font-size:20px;
+  --ion-larger-font-size:22px;
+  --ion-largest-font-size:24px;
+
+  /** color **/
+  --ion-blue-primary-color: #2D197F;
+  --ion-blue-secondary-color: #341793;
+  --ion-blue-tertiary-color: #593CC7;
+  --ion-green-primary-color: #17C257;
+  --ion-red-primay-color: #F55858;
+  --ion-red-secondary-color: #F37921;
+  --ion-gray-primary-color: #586A7A;
+  --ion-gray-seconary-color: #BBBBBB;
+  --ion-gray-tertiary-color: #716A90;
+  --ion-gray-fourth-color: #64798C;
+  --ion-gray-fifth-color: #EEEEEE;
+  --ion-table-heading-color: #6E6E6E;
+}
+

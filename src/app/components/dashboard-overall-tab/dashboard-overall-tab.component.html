@@ -1,0 +1,99 @@
+<div class="overview">
+    <div class="overview-main-card">
+   <div class="aum-card" (click)="onAumClick()">
+    <div class="d-flex ion-justify-content-between ion-align-items-start">
+        <div class="d-flex aum-ti">
+            <img src="assets/svg/aum-icon.svg" alt="aum-icon" width="45px">
+            <span>AUM <img src="assets/svg/next-arrow-purple.svg" alt="next-arrow" width="9px"></span>
+        </div>
+        <!-- <div class="d-flex stats ion-align-items-center">
+            <img src="assets/svg/stats-purple.svg" alt="stats">
+        <span>Stats</span>
+        </div> -->
+    </div>
+    <div *ngIf="!showHideDashboardValue" class="aum-amt"><span class="rupees">₹</span> {{overallDashboardData[0]?.TotalAUM ? convertFormat(overallDashboardData[0]?.TotalAUM) : '0'}} </div>
+    <span class="showstar" *ngIf="showHideDashboardValue"><span class="rupees">₹</span>xxxx</span>
+    <!-- <div class="growth-map-msg d-flex ion-align-items-baseline">
+        <img src="assets/svg/growth-path.svg" alt="growth-path" width="22px">
+        <span class="positive percentage">{{overallDashboardData[0]?.AUMIncDecPercentage ? overallDashboardData[0]?.AUMIncDecPercentage : '0'}}% <label>Higher AUM generated from last month</label></span>
+     </div> -->
+   </div>
+   <div class="overview-right-card d-flex">
+    <div class="overview-small-card" (click)="onBrokerageClick()" *ngIf="showBrokerage">
+        <div class="d-flex ion-justify-content-between ion-align-items-start">
+        <span class="overview-small-card-amt-ti">Brokerage (YTD) <img src="assets/svg/next-arrow-orange.svg" alt="next-arrow" width="8px"></span>
+        <!-- <div class="d-flex stats ion-align-items-center">
+            <img src="assets/svg/stats-orange.svg" alt="stats">
+            <span>Stats</span>
+        </div> -->
+    </div>
+
+    <div class="growth-map-msg d-flex ion-align-items-baseline">
+        <div *ngIf="!showHideDashboardValue" class="overview-small-card-amt"><span class="rupees">₹</span> {{overallDashboardData[0]?.Brokerage ? convertFormat(overallDashboardData[0]?.Brokerage) : '0'}}</div>
+        <span class="showstar" *ngIf="showHideDashboardValue"><span class="rupees">₹</span>xxxx</span>
+        <!-- <img src="assets/svg/growth-path.svg" alt="growth-path" width="20px">
+        <span class="positive percentage">{{overallDashboardData[0]?.BrokerageIncDecPercentage ? overallDashboardData[0]?.BrokerageIncDecPercentage : '0'}}% <label>Higher from last month</label></span> -->
+        
+    </div>
+
+    </div>
+
+    <div class="overview-small-card" (click)="onClientsClick('Total')">
+        <div class="d-flex ion-justify-content-between ion-align-items-start">
+        <span class="overview-small-card-amt-ti">Clients <img src="assets/svg/next-arrow-orange.svg" alt="next-arrow" width="8px">
+            <span class="active-client-main"><img src="assets/svg/client-info-icon.svg"  alt="info" width="13px" (mouseenter)="dashClientinfomsg = !dashClientinfomsg" (mouseleave)="dashClientinfomsg = !dashClientinfomsg"><div class="active-client-msg client-msg-L20" *ngIf="dashClientinfomsg">Includes Non-Registered Clients.</div></span>
+        </span>
+        <!-- <div class="d-flex stats ion-align-items-center">
+            <img src="assets/svg/stats-orange.svg" alt="stats">
+            <span>Stats</span>
+        </div> -->
+    </div>
+
+    <div class="growth-map-msg d-flex ion-align-items-baseline">
+        <div *ngIf="!showHideDashboardValue" class="overview-small-card-amt">{{overallDashboardData[0]?.TotalClients ? convertFormat(overallDashboardData[0]?.TotalClients) : '0'}}</div>
+        <span class="showstar" *ngIf="showHideDashboardValue">xxxx</span>
+        <!-- <img src="assets/svg/growth-path.svg" alt="growth-path" width="20px">
+        <span class="positive percentage">{{overallDashboardData[0]?.ClientIncDecPercentage ? overallDashboardData[0]?.ClientIncDecPercentage : '0'}} <label>Added from last month</label></span> -->
+    </div>
+
+    </div>
+   </div>
+    </div>
+    <div class="overview-child-card">
+        <div class="ov-ch-card pointing-arr" (click)="onDashClients('EquityAUM')">
+            <label>Equity AUM</label>
+            <div *ngIf="!showHideDashboardValue" class="amt d-flex ion-align-items-center"><span class="rupees">₹</span> {{overallDashboardData[0]?.EquityAUM ? convertFormat(overallDashboardData[0]?.EquityAUM) : '0'}}</div>
+            <span class="showstar" *ngIf="showHideDashboardValue"><span class="rupees">₹</span>xxxx</span>
+        </div>
+        <div class="ov-ch-card pointing-arr" (click)="onDashClients('MFAUM')">
+            <label>MF AUM</label>
+            <div *ngIf="!showHideDashboardValue" class="amt d-flex ion-align-items-center"><span class="rupees">₹</span> {{overallDashboardData[0]?.MFAUM ? convertFormat(overallDashboardData[0]?.MFAUM) : '0'}}</div>
+            <span class="showstar" *ngIf="showHideDashboardValue"><span class="rupees">₹</span>xxxx</span>
+        </div>
+        <div class="ov-ch-card" (click)="onDashClients('CROSSELL')">
+            <label>Cross Sell AUM</label>
+            <div *ngIf="!showHideDashboardValue" class="amt d-flex ion-align-items-center"><span class="rupees">₹</span> {{overallDashboardData[0]?.OtherAUM ? convertFormat(overallDashboardData[0]?.OtherAUM) : '0'}}</div>
+            <span class="showstar" *ngIf="showHideDashboardValue"><span class="rupees">₹</span>xxxx</span>
+        </div>
+        <div class="ov-ch-card pointing-arr" (click)="onClientsClick('Active')">
+            <label>Active Clients
+                <span class="active-client-main"><img src="assets/svg/info.svg"  alt="info" width="11px" (mouseenter)="activClientinfomsg = !activClientinfomsg" (mouseleave)="activClientinfomsg = !activClientinfomsg"><div class="active-client-msg" *ngIf="activClientinfomsg">Active clients traded in the last 12 months and not frozen</div></span>
+            </label>
+            <div *ngIf="!showHideDashboardValue" class="amt">{{overallDashboardData[0]?.ActiveClientCount ? convertFormat(overallDashboardData[0]?.ActiveClientCount) : '0'}}</div>
+            <span class="showstar" *ngIf="showHideDashboardValue">xxxx</span>
+        </div>
+        <div class="ov-ch-card pointing-arr" (click)="onClientsClick('Dormant')">
+            <label>Dormant Clients
+                <span class="active-client-main"><img src="assets/svg/info.svg"  alt="info" width="11px" (mouseenter)="DormantClientinfomsg = !DormantClientinfomsg" (mouseleave)="DormantClientinfomsg = !DormantClientinfomsg"><div class="active-client-msg" *ngIf="DormantClientinfomsg">Clients who haven't traded in the past 12 months</div></span>
+            </label>
+            <div *ngIf="!showHideDashboardValue" class="amt">{{overallDashboardData[0]?.DormantClientCount ? convertFormat(overallDashboardData[0]?.DormantClientCount) : '0'}}</div>
+            <span class="showstar" *ngIf="showHideDashboardValue">xxxx</span>
+        </div>
+    </div>
+</div>
+
+<div class="loader-backdrop" *ngIf="loader">
+    <div class="loader">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+</div>

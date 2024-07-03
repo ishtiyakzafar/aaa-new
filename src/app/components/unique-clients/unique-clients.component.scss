@@ -1,0 +1,178 @@
+.unique-client{
+    th:first-child, td:first-child {width: 15% !important;}
+}
+.unique-client{
+    th,td {text-align: center;}
+}
+.web-equity {
+    .header-table {
+   
+        th:last-child{
+            width: 15% !important;
+            text-align: center !important;
+        }
+        th:nth-child(2) {
+            text-align: left; padding-right: 15px;
+        }
+        th:nth-child(3) {
+            text-align: left;
+        }
+        th:nth-child(4) {
+            text-align: left;
+        }
+        th:nth-child(5) {
+            width: 12% !important;
+            text-align: center !important;
+        }
+    }
+    .main-table {
+        // max-height: 385px;
+        // max-height: 468px;
+        // overflow: auto;
+       
+
+        td:last-child{
+            width: 15% !important;
+            text-align: center !important;
+        }
+        td:nth-child(2) {
+            text-align: left; padding-right: 15px;
+        }
+        td:nth-child(3) {
+            text-align: left;
+        }
+        td:nth-child(4) {
+            text-align: left;
+        }
+        td:nth-child(5) {
+            width: 12% !important;
+            text-align: center !important;
+        }
+       
+        .option-type {
+            position: relative;
+            display: inline-block;
+          }
+         
+          .option-type .tooltiptext {
+            visibility: hidden;
+            width: auto;
+            top: 100%;
+            right: -20px;
+            margin-left: -60px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+         
+            /* Position the tooltip */
+           position: absolute;
+            z-index: 999;
+          }
+         
+          .option-type:hover .tooltiptext {
+            visibility: visible;
+          }
+    }
+    // td:nth-child(3), th:nth-child(3) {
+    //     text-align: center !important;
+    // }
+}
+
+.overflow-auto {
+    overflow: auto !important;
+}
+
+@media screen and (max-width: 768px) {
+    .web-equity {
+        .main-table {
+            border: none;
+            td {
+                width: 25% !important;
+                vertical-align: baseline;
+                position: relative;
+            }
+        }
+        .header-table {
+            th {
+                width: 25% !important;
+            }
+        }
+    }
+    .contact-option {
+        position: absolute;
+        background: #F9F9F9;
+        border-radius: 10px;
+        justify-content: center;
+        padding: 12px 0;
+        height: 40px;
+        bottom: 15px;
+        width: calc(100vw - 46px);
+        .option {
+            padding: 0 18px;
+        }
+    }
+
+    .detail-part-aum-inner {
+        .code-block {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding-bottom: 72px;
+        }
+    }
+    .inner-content {
+        // height: calc(100vh - 417px);
+        height: calc(100vh - 252px);
+    }
+    .web-equity .main-table td:last-child{padding-right: 0px !important;}
+}
+.loader_wrap{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    background: rgba(0, 0, 0, 0.297);
+    opacity: 0.7;
+    position: fixed;
+    top:0; left: 0; right: 0; bottom: 0;
+    width: 100%; z-index: 1060;
+}
+.download_file {
+    display: flex;
+    justify-content: flex-end;
+    gap: 25px;
+    margin: 20px 0;
+}
+.download_file>div {
+    cursor: pointer;
+}
+.download_file img {
+    width: 25px;
+}
+.option-type-dp-modification {
+    position: relative;
+    display: inline-block;
+}
+.option-type-dp-modification .tooltiptext {
+    visibility: hidden;
+    width: 150px;
+    top: 100%;
+    left: 55%;
+    margin-left: -60px;
+    background-color: black;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 999;
+}
+.option-type-dp-modification:hover .tooltiptext {
+    visibility: visible;
+}
+.option-type-dp-modification:hover .tooltiptext span {
+    color: #fff;
+}
+.group-code{display: flex; gap: 10px; position: absolute; width: max-content; bottom: 60px;}
+.group-code span{color: #6E6E6E; font-weight: 600;}

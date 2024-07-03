@@ -1,0 +1,398 @@
+<ion-header class="mobile-visibility">
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Most Active Stock & Index</ion-title>
+			</div>
+			<div class="search-block">
+				<ion-buttons class="header-icon-block">
+					<ion-icon class="iconsize first-icon noti-icon" src="./assets/svg/white-home-icon.svg" (click)="goToDashboard()"></ion-icon>
+					<ion-icon class="iconsize first-icon noti-icon" src="./assets/svg/notification.svg"
+						(click)="goToNotification()"></ion-icon>
+					<ion-icon class="iconsize" src="./assets/svg/search.svg" (click)="goToAddScript()"></ion-icon>
+				</ion-buttons>
+			</div>
+		</div>
+	</ion-toolbar>
+
+</ion-header>
+
+<ion-content class="custom-content displayoffmobile">
+	<div class="custom-content-inner" *ngIf="!loader">
+		<div>
+			<!-- header for gainers & losers in snapshot tab -->
+			<div>
+				<div class="gainer-container">
+					<div class="displaytabletitle mt10">
+						<span class="titleheader"> Most Active Stock </span>
+						<!-- <label class="switch">
+                        <input type="checkbox" id="togBtn" name="gainersLosers" [(ngModel)]="gainersLosers"
+                        (ngModelChange)="optionCheckValue($event)">
+                        <div class="slider round">
+                            <span class="on">BSE</span><span class="off">NSE</span>
+                        </div>
+                    </label> -->
+						<!-- <span class="titleheader" style="color: #B92121"> Deliver (%) </span> -->
+					</div>
+					<div class="gainerstable">
+						<div class="gainertableleft">
+							<table class="mt10">
+								<thead class="snapshot-mobile-header-first-table">
+									<tr>
+										<th>Scrip</th>
+										<th>Date</th>
+										<th>Strike Price</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="gainer-container displayoffmobile fix-table-height">
+			<div class="gainerstable">
+				<div class="gainertableleft">
+					<table class="no-wrap-table">
+						<tbody style="height:195px;overflow: auto;" *ngIf="mostActiveStock.length > 0">
+							<tr *ngFor="let data of mostActiveStock.slice(0, 3)" (click)="goToCompanydetail(data)">
+								<td style="color: #000000;font-family: 'nunitoBold';">{{data['Symbol']}}</td>
+								<td style="color: #000000;">{{moment(data['Expiry']).format("DD MMM YYYY")}}</td>
+								<td style="color: #17C257;">
+									<p class="m-pt0 ltp">{{data['LTP']}}</p>
+									<p class="m-pt0 percentage-change">{{data['OIChangePerc'] && +data['OIChangePerc'] !== 0 ? (data['OIChangePerc'] | number: '1.2-2') : '0'}}%</p>
+								</td>
+							</tr>
+						</tbody>
+						<tbody *ngIf="mostActiveStock.length == 0">
+							<tr class="cursor-auto">
+							   <td class="no-data-found" colspan="2">No Data Found</td>
+							</tr>
+						 </tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+        <p style="text-align: center;color:#2680EB;margin-bottom: 0;" *ngIf="!loader" [ngClass]="{'hide': (mostActiveStock.length == 0)}" (click)="openModal('most-active-stock-mobile', mostActiveStock)">View All</p>
+	</div>
+	<div class="custom-content-inner m-t-40" *ngIf="!loader">
+		<div>
+			<!-- header for gainers & losers in snapshot tab -->
+			<div>
+				<div class="gainer-container">
+					<div class="displaytabletitle mt10">
+						<span class="titleheader"> Most Active Index Option </span>
+						<!-- <label class="switch">
+                        <input type="checkbox" id="togBtn" name="gainersLosers" [(ngModel)]="gainersLosers"
+                        (ngModelChange)="optionCheckValue($event)">
+                        <div class="slider round">
+                            <span class="on">BSE</span><span class="off">NSE</span>
+                        </div>
+                    </label> -->
+						<!-- <span class="titleheader" style="color: #B92121"> Deliver (%) </span> -->
+					</div>
+					<div class="gainerstable">
+						<div class="gainertableleft lower-table-header">
+							<table class="mt10">
+								<thead class="snapshot-mobile-header-first-table">
+									<tr>
+										<th>Scrip</th>
+										<th>Date</th>
+										<th>Strike Price</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="gainer-container displayoffmobile fix-table-height">
+			<div class="gainerstable">
+				<div class="gainertableleft lower-table-header">
+					<table class="no-wrap-table">
+						<tbody style="height:195px;overflow: auto;" *ngIf="mostActiveIndex.length > 0">
+							<tr *ngFor="let data of mostActiveIndex.slice(0, 3)" (click)="goToCompanydetail(data)">
+								<td style="color: #000000;font-family: 'nunitoBold';">{{data['Symbol']}}</td>
+								<td style="color: #000000;">{{moment(data['Expiry']).format("DD MMM YYYY")}}</td>
+								<td style="color: #F55858;">
+									<p class="m-pt0 ltp">{{data['LTP']}}</p>
+									<p class="m-pt0 percentage-change">{{data['OIChangePerc'] && +data['OIChangePerc'] !== 0 ? (data['OIChangePerc'] | number: '1.2-2') : '0'}}%</p>
+								</td>
+							</tr>
+						</tbody>
+						<tbody *ngIf="mostActiveIndex.length == 0">
+							<tr class="cursor-auto">
+							   <td class="no-data-found" colspan="2">No Data Found</td>
+							</tr>
+						 </tbody>
+					</table>
+                   
+				</div>
+			</div>
+		</div>
+        <p style="text-align: center;color:#2680EB;margin-bottom: 0;" *ngIf="!loader" [ngClass]="{'hide': (mostActiveIndex.length == 0)}" (click)="openModal('most-active-index-mobile', mostActiveIndex)">View All</p>
+	</div>
+	<div class="loader" *ngIf="loader" style="min-height: 275px;">
+		<img src="/assets/imgs/loader.gif" alt="">
+	</div>
+</ion-content>
+
+<div class="gainer-container gainer-container-second displayoffweb">
+	<div class="displaytabletitle">
+		<span class="titleheader"> Most Active Stock </span>
+		<!-- <span> -->
+		<label class="switch">
+			<input type="checkbox" id="togBtn" [(ngModel)]="optionValue"
+			(ngModelChange)="loader = true; optionCheckValue($event);" name="gainersLosers">
+			<div class="slider round">
+				<span class="on">PUT</span><span class="off">Call</span>
+			</div>
+		</label>
+		<!-- </span> -->
+		<span class="titleheader" style="color: #B92121"> Most Active Index </span>
+	</div>
+	<div class="gainerstable desktop-table-snapshot">
+		<div class="gainertableleft">
+			<table class="no-wrap-table">
+				<thead>
+					<tr>
+						<th>Scrip (Date Wise)</th>
+						<th>Strike Price</th>
+					</tr>
+				</thead>
+				<tbody *ngIf="mostActiveStock.length > 0 && !loader">
+					<tr *ngFor="let data of mostActiveStock.slice(0, 3);" (click)="goToCompanydetail(data)">
+						<td class="fontboldblack">
+							<p class="m-pt0">{{data['Symbol']}}</p>
+							<p class="m-pt0 date">{{moment(data['Expiry']).format("DD MMM YYYY")}}</p>
+						</td>
+						<td class="fontgreen">
+							<p class="m-pt0 ltp">{{data['LTP']}}</p>
+							<p class="m-pt0 percentage-change">{{data['OIChangePerc'] && +data['OIChangePerc'] !== 0 ? (data['OIChangePerc'] | number: '1.2-2') : '0'}}%</p>
+						</td>
+					</tr>
+				</tbody>
+				<tbody *ngIf="mostActiveStock.length == 0 && !loader">
+					<tr class="cursor-auto">
+						<td class="no-data-found" colspan="2">No Data Found</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="gainertableright">
+			<table class="no-wrap-table">
+				<thead style="background: #FCCCCC">
+					<tr>
+						<th>Scrip (Date Wise)</th>
+						<th>Strike Price</th>
+					</tr>
+				</thead>
+				<tbody *ngIf="mostActiveIndex.length > 0 && !loader">
+					<tr *ngFor="let data of mostActiveIndex.slice(0, 3);" (click)="goToCompanydetail(data)">
+						<td class="fontboldblack">
+							<p class="m-pt0">{{data['Symbol']}}</p>
+							<p class="m-pt0 date">{{moment(data['Expiry']).format("DD MMM YYYY")}}</p>
+						</td>
+						<td class="loser-colors">
+							<p class="m-pt0 ltp">{{data['LTP']}}</p>
+							<p class="m-pt0 percentage-change">{{data['OIChangePerc'] && +data['OIChangePerc'] !== 0 ? (data['OIChangePerc'] | number: '1.2-2') : '0'}}%</p>
+						</td>
+					</tr>
+				</tbody>
+				<tbody *ngIf="mostActiveIndex.length == 0 && !loader">
+					<tr class="cursor-auto">
+						<td class="no-data-found" colspan="2">No Data Found</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="viewall" *ngIf="!loader">
+		<span (click)="openModal('most-active-stock')"
+			[ngClass]="{'disabled': (mostActiveStock.length == 0 && mostActiveIndex.length == 0)}">View All</span>
+	</div>
+	<div class="loader" *ngIf="loader" style="min-height: 275px;">
+		<img src="/assets/imgs/loader.gif" alt="">
+	</div>
+</div>
+
+<jw-modal id="most-active-stock">
+	<div class="gainers-losers">
+		<div class="header">
+			<span class="fal fa-times modal-dismiss jw-modal-close" (click)="closeModal('most-active-stock');">X</span>
+		</div>
+
+		<div class="container-head gainer-container">
+			<div class="displaytabletitle">
+				<span class="titleheader"> Most Active Stock </span>
+				<!-- <span> -->
+				<!-- <label class="switch">
+                   <input type="checkbox" id="togBtn" [(ngModel)]="gainersLosers"
+                   (ngModelChange)="optionCheckValue($event)">
+                   <div class="slider round">
+                      <span class="on">BSE</span><span class="off">NSE</span>
+                   </div>
+                </label> -->
+				<!-- </span> -->
+				<span class="titleheader" style="color: #B92121"> Most Active Index </span>
+			</div>
+		</div>
+
+		<div class="gainers-losers_contains gainer-container snapshot-modal-parent gainer-modal-parent">
+
+			<div class="gainerstable">
+				<div class="gainertableleft">
+					<table class="no-wrap-table">
+						<thead style="background: #D5EFCC" class="snapshot-mobile-header-first-table">
+							<tr>
+								<th>Scrip (Date Wise)</th>
+								<th>Strike Price</th>
+							</tr>
+						</thead>
+						<tbody style="height:350px;overflow: auto;">
+							<tr *ngFor="let data of mostActiveStock" (click)="goToCompanydetail(data,'most-active-stock')">
+								<!-- <td style="color: #000000;font-family: 'nunitoBold';">{{data['Symbol']}}</td> -->
+								<td class="fontboldblack">
+									<p class="m-pt0">{{data['Symbol']}}</p>
+									<p class="m-pt0 date">{{moment(data['Expiry']).format("DD MMM YYYY")}}</p>
+								</td>
+								<td class="font-green">
+									<p class="m-pt0 ltp">{{data['LTP']}}</p>
+									<p class="m-pt0 percentage-change">{{data['OIChangePerc'] && +data['OIChangePerc'] !== 0 ? (data['OIChangePerc'] | number: '1.2-2') : '0'}}%</p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="gainertableright">
+					<table class="no-wrap-table">
+						<thead style="background: #FCCCCC">
+							<tr>
+								<th>Scrip (Date Wise)</th>
+								<th>Strike Price</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let data of mostActiveIndex" (click)="goToCompanydetail(data,'most-active-stock')">
+								<td class="fontboldblack">
+									<p class="m-pt0">{{data['Symbol']}}</p>
+									<p class="m-pt0 date">{{moment(data['Expiry']).format("DD MMM YYYY")}}</p>
+								</td>
+								<td class="loser-colors">
+									<p class="m-pt0 ltp">{{data['LTP']}}</p>
+									<p class="m-pt0 percentage-change">{{data['OIChangePerc'] && +data['OIChangePerc'] !== 0 ? (data['OIChangePerc'] | number: '1.2-2') : '0'}}%</p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</jw-modal>
+
+<jw-modal id="most-active-stock-mobile">
+   
+    <div class="header">
+       <span class="fal fa-times modal-dismiss cross" (click)="closeModal('most-active-stock-mobile');">X</span>
+   </div>
+   <div class="weekhigh_title head_weekhighlow pb-5">
+       <span class="pr-15">
+          Most Active Stock
+       </span>
+       <!-- <label class="switch">
+          <input type="checkbox" id="togBtn" [(ngModel)]="nscBschigh"
+          (ngModelChange)="changehighBtn($event)">
+          <div class="slider round">
+             <span class="on">BSE</span><span class="off">NSE</span>
+          </div>
+       </label> -->
+    </div>
+ 
+    <div class="gainer-container week_hl_contains weekhighlow_container modal-container" style="margin-top: 0;">
+     
+       <div class="gainertableleft weekhighlist table-parent">
+          <table class="commontablewidth no-wrap-table">
+             <thead class="commonlowhightable snapshot-mobile-header-single-table">
+                <tr>
+                    <th class="leftalignwithpadding commonth p-l-5" style="padding-left: 5px !important;">Scrip</th>
+                    <th class="commonth" style="text-align: right;">Date</th>
+                    <th class="rightalignwithpadding commonth">Strke Price</th>
+                </tr>
+             </thead>
+             <tbody *ngIf="mostActiveStock.length > 0" class="tbodydone tbodyscroll">
+                <tr *ngFor="let data of mostActiveStock" (click)="goToCompanydetail(data, 'most-active-stock-mobile')">
+                    <td style="color: #000000;font-family: 'nunitoBold';">{{data['Symbol']}}</td>
+                    <td style="color: #000000;">{{moment(data['Expiry']).format("DD MMM YYYY")}}</td>
+                    <td style="color: #17C257;">
+                        <p class="m-pt0 ltp">{{data['LTP']}}</p>
+                        <p class="m-pt0 percentage-change">{{data['OIChangePerc'] && +data['OIChangePerc'] !== 0 ? (data['OIChangePerc'] | number: '1.2-2') : '0'}}%</p>
+                    </td>
+                </tr>
+             </tbody>
+             <!-- <tbody *ngIf="mostActiveIndex.length == 0">
+                <tr class="cursor-auto">
+                   <td class="no-data-found" colspan="3" style="font-family: nunitoRegular !important; text-align: center !important; color: #212121 !important; ">No Data Found</td>
+                </tr>
+             </tbody> -->
+          </table>
+       
+       </div>
+    </div>
+ 
+ 
+ </jw-modal>
+
+<jw-modal id="most-active-index-mobile">
+   
+    <div class="header">
+       <span class="fal fa-times modal-dismiss cross" (click)="closeModal('most-active-index-mobile');">X</span>
+   </div>
+   <div class="weekhigh_title head_weekhighlow pb-5">
+       <span class="pr-15">
+          Most Active Index Option
+       </span>
+       <!-- <label class="switch">
+          <input type="checkbox" id="togBtn" [(ngModel)]="nscBschigh"
+          (ngModelChange)="changehighBtn($event)">
+          <div class="slider round">
+             <span class="on">BSE</span><span class="off">NSE</span>
+          </div>
+       </label> -->
+    </div>
+ 
+    <div class="gainer-container week_hl_contains weekhighlow_container modal-container" style="margin-top: 0;">
+     
+       <div class="gainertableleft lower-table-header weekhighlist table-parent">
+          <table class="commontablewidth no-wrap-table">
+             <thead class="commonlowhightable snapshot-mobile-header-single-table">
+                <tr>
+                   <th class="leftalignwithpadding commonth p-l-5" style="padding-left: 5px !important;">Scrip</th>
+                   <th class="commonth" style="text-align: right;">Date</th>
+                   <th class="rightalignwithpadding commonth">Strke Price</th>
+                </tr>
+             </thead>
+             <tbody *ngIf="mostActiveIndex.length > 0" class="tbodydone tbodyscroll">
+                <tr *ngFor="let data of mostActiveIndex" (click)="goToCompanydetail(data, 'most-active-index-mobile')">
+                    <td style="color: #000000;font-family: 'nunitoBold';">{{data['Symbol']}}</td>
+                    <td style="color: #000000;">{{moment(data['Expiry']).format("DD MMM YYYY")}}</td>
+                    <td style="color: #F55858;">
+                        <p class="m-pt0 ltp">{{data['LTP']}}</p>
+                        <p class="m-pt0 percentage-change">{{data['OIChangePerc'] && +data['OIChangePerc'] !== 0 ? (data['OIChangePerc'] | number: '1.2-2') : '0'}}%</p>
+                    </td>
+                </tr>
+             </tbody>
+             <!-- <tbody *ngIf="mostActiveIndex.length == 0">
+                <tr class="cursor-auto">
+                   <td class="no-data-found" colspan="3" style="font-family: nunitoRegular !important; text-align: center !important; color: #212121 !important; ">No Data Found</td>
+                </tr>
+             </tbody> -->
+          </table>
+       
+       </div>
+    </div>
+ 
+ 
+ </jw-modal>

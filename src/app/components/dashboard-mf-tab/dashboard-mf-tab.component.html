@@ -1,0 +1,104 @@
+<div class="overview">
+    <div class="overview-main-card">
+   <div class="aum-card" (click)="onAumClick()">
+    <div class="d-flex ion-justify-content-between ion-align-items-start">
+        <div class="d-flex aum-ti">
+            <img src="assets/svg/aum-icon.svg" alt="aum-icon" width="45px">
+            <span>MF AUM <img src="assets/svg/next-arrow-purple.svg" alt="next-arrow" width="9px"></span>
+        </div>
+        <!-- <div class="d-flex stats ion-align-items-center">
+            <img src="assets/svg/stats-purple.svg" alt="stats">
+        <span>Stats</span>
+        </div> -->
+    </div>
+    <div *ngIf="!showHideDashboardValue" class="aum-amt"><span class="rupees">₹</span> {{mfDashboardData[0]?.TotalMFAUM ? convertFormat(mfDashboardData[0]?.TotalMFAUM) : '0'}} </div>
+    <span class="showstar" *ngIf="showHideDashboardValue"><span class="rupees">₹</span>xxxx</span>
+    <!-- <div class="growth-map-msg d-flex ion-align-items-baseline">
+        <img src="assets/svg/growth-path.svg" alt="growth-path" width="22px">
+        <span class="positive percentage">{{mfDashboardData[0]?.MFAUMIncDecPercentage ? mfDashboardData[0]?.MFAUMIncDecPercentage : '0'}}% <label>Higher AUM generated from last month</label></span>
+    </div> -->
+   </div>
+   <div class="overview-right-card d-flex">
+    <div class="overview-small-card" (click)="onPayoutClick()" *ngIf="showBrokerage">
+        <div class="d-flex ion-justify-content-between ion-align-items-start">
+        <span class="overview-small-card-amt-ti">Payout (YTD) <img src="assets/svg/next-arrow-orange.svg" alt="next-arrow" width="8px"></span>
+        <!-- <div class="d-flex stats ion-align-items-center">
+            <img src="assets/svg/stats-orange.svg" alt="stats">
+            <span>Stats</span>
+        </div> -->
+    </div>
+
+    <div class="growth-map-msg d-flex ion-align-items-baseline">
+        <div *ngIf="!showHideDashboardValue" class="overview-small-card-amt"><span class="rupees">₹</span> {{mfDashboardData[0]?.TotalMFPayout ? convertFormat(mfDashboardData[0]?.TotalMFPayout) : '0'}}</div>
+        <span class="showstar" *ngIf="showHideDashboardValue"><span class="rupees">₹</span>xxxx</span>
+        <!-- <img src="assets/svg/growth-path.svg" alt="growth-path" width="20px">
+        <span class="positive percentage">{{mfDashboardData[0]?.MFPayoutIncDecPercentage ? mfDashboardData[0]?.MFPayoutIncDecPercentage : '0'}}% <label>Higher from last month</label></span> -->
+    </div>
+
+    </div>
+
+    <div class="overview-small-card" (click)="onClientsClick()">
+        <div class="d-flex ion-justify-content-between ion-align-items-start">
+        <span class="overview-small-card-amt-ti">Clients <img src="assets/svg/next-arrow-orange.svg" alt="next-arrow" width="8px">
+            <span class="active-client-main"><img src="assets/svg/client-info-icon.svg"  alt="info" width="13px" (mouseenter)="dashClientinfomsg = !dashClientinfomsg" (mouseleave)="dashClientinfomsg = !dashClientinfomsg"><div class="active-client-msg client-msg-L20" *ngIf="dashClientinfomsg">Clients with MF AUM greater than 0.</div></span>
+ 
+        </span>
+        <!-- <div class="d-flex stats ion-align-items-center">
+            <img src="assets/svg/stats-orange.svg" alt="stats">
+            <span>Stats</span>
+        </div> -->
+    </div>
+
+    <div class="growth-map-msg d-flex ion-align-items-baseline">
+        <div *ngIf="!showHideDashboardValue" class="overview-small-card-amt">{{mfDashboardData[0]?.TotalClients ? convertFormat(mfDashboardData[0]?.TotalClients) : '0'}}</div>
+        <span class="showstar" *ngIf="showHideDashboardValue">xxxx</span>
+        <!-- <img src="assets/svg/growth-path.svg" alt="growth-path" width="20px">
+        <span class="positive percentage">{{mfDashboardData[0]?.ClientIncDecPercentage ? mfDashboardData[0]?.ClientIncDecPercentage : '0'}} <label>Added from last month</label></span> -->
+    </div>
+
+    </div>
+   </div>
+    </div>
+    <div class="overview-child-card tab-child-card-wrap">
+        <div class="ov-ch-card" (click)="onDashClients('TotalNew')">
+            <label>Total New SIP <span>(MTD)</span></label>
+            <div *ngIf="!showHideDashboardValue" class="amt d-flex ion-align-items-center">{{mfDashboardData[0]?.NewSIPCountMTD ? convertFormat(mfDashboardData[0]?.NewSIPCountMTD) : '0'}}</div>
+            <span class="showstar" *ngIf="showHideDashboardValue">xxxx</span>
+        </div>
+        <div class="ov-ch-card" (click)="onDashClients('NewSip')">
+            <label>New SIP Amt <span>(MTD)</span></label>
+            <div *ngIf="!showHideDashboardValue" class="amt d-flex ion-align-items-center"><span class="rupees">₹</span> {{mfDashboardData[0]?.NewSIPAmtMTD ? convertFormat(mfDashboardData[0]?.NewSIPAmtMTD) : '0'}}</div>
+            <span class="showstar" *ngIf="showHideDashboardValue"><span class="rupees">₹</span>xxxx</span>    
+        </div>
+        <div class="ov-ch-card" (click)="onDashClients('LiveSip')">
+            <label>Live SIP Amt</label>
+            <div *ngIf="!showHideDashboardValue" class="amt d-flex ion-align-items-center"><span class="rupees">₹</span> {{mfDashboardData[0]?.LiveSIPAmount ? convertFormat(mfDashboardData[0]?.LiveSIPAmount) : '0'}}</div>
+            <span class="showstar" *ngIf="showHideDashboardValue"><span class="rupees">₹</span>xxxx</span>
+        </div>
+        <div class="ov-ch-card" (click)="onDashClients('TotalLive')">
+            <label>Total Live SIP</label>
+            <div *ngIf="!showHideDashboardValue" class="amt">{{mfDashboardData[0]?.LiveSIPCount ? convertFormat(mfDashboardData[0]?.LiveSIPCount) : '0'}}</div>
+            <span class="showstar" *ngIf="showHideDashboardValue">xxxx</span>
+        </div>
+        <div class="ov-ch-card pointing-arr" (click)="onDashClients('NonReg')">
+            <label>Non-Registered Clients
+                <span class="active-client-main"><img src="assets/svg/info.svg"  alt="info" width="11px" (mouseenter)="NonRegisteredinfomsg = !NonRegisteredinfomsg" (mouseleave)="NonRegisteredinfomsg = !NonRegisteredinfomsg"><div class="active-client-msg" *ngIf="NonRegisteredinfomsg">Clients with no demat/only MF account and AUM greater than 0</div></span>
+            </label>
+            <div *ngIf="!showHideDashboardValue" class="amt">{{mfDashboardData[0]?.NonBrokingClientCount ? convertFormat(mfDashboardData[0]?.NonBrokingClientCount) : '0'}}</div>
+            <span class="showstar" *ngIf="showHideDashboardValue">xxxx</span>
+        </div>
+        <div class="ov-ch-card pointing-arr" (click)="onDashClients('OnlyMF')">
+            <label>Only MF Clients
+                <span class="active-client-main"><img src="assets/svg/info.svg"  alt="info" width="11px" (mouseenter)="OnlyMFnfomsg = !OnlyMFnfomsg" (mouseleave)="OnlyMFnfomsg = !OnlyMFnfomsg"><div class="active-client-msg" *ngIf="OnlyMFnfomsg">Clients with only MF account</div></span>
+            </label>
+            <div *ngIf="!showHideDashboardValue" class="amt">{{mfDashboardData[0]?.OnlyMFClientCount ? convertFormat(mfDashboardData[0]?.OnlyMFClientCount) : '0'}}</div>
+            <span class="showstar" *ngIf="showHideDashboardValue">xxxx</span>
+        </div>
+    </div>
+</div>
+
+<div class="loader-backdrop" *ngIf="loader">
+    <div class="loader">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+</div>

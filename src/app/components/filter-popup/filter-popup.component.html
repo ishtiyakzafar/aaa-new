@@ -1,0 +1,37 @@
+<div class="filter-block" *ngIf="!clientFilter">
+    <!-- <div class="filter-option">
+        <div class="option">
+
+        </div>
+    </div> -->
+    <ion-list class="scroll-list thin-scroll">
+        <ion-item lines="none">
+            <ion-label>All</ion-label>
+            <ion-checkbox slot="start" [(ngModel)]="isAllChecked" (ionChange)="selectAll($event.detail.checked)"></ion-checkbox>
+        </ion-item>
+        <ion-item lines="none" *ngFor="let entry of options; let i = index">
+            <ion-label>{{entry.val}}</ion-label>
+            <ion-checkbox slot="start" [(ngModel)]="entry.isChecked" (ionChange)="filterData(options, i)"></ion-checkbox>
+        </ion-item>
+    </ion-list>
+    <div class="button-section">
+        <ion-button (click)="closepopover()">Apply Filters</ion-button>
+    </div>
+</div>
+
+<div class="filter-block" *ngIf="clientFilter">
+    <ion-radio-group [value] = "radioBoxValue" class="filter-radio-group" (ionChange)="radioGroupChange($event.detail.value)">
+                <ion-item lines="none">
+                    <ion-label>Client Code</ion-label>
+                    <ion-radio slot="start" value="clientCode"></ion-radio>
+                </ion-item>
+                <ion-item lines="none">
+                    <ion-label>Client Name</ion-label>
+                    <ion-radio slot="start" value="clientName"></ion-radio>
+                </ion-item>
+                <ion-item *ngIf="toggleVal == 'Hierarchy' && !fromBrokerage" lines="none">
+                    <ion-label>Group Code</ion-label>
+                    <ion-radio slot="start" value="groupCode"></ion-radio>
+                </ion-item>
+    </ion-radio-group>
+</div>

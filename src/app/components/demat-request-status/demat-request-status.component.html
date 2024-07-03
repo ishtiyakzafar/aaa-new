@@ -1,0 +1,168 @@
+<div>
+    <ion-toolbar color="tertiary" class="mobile-visibility">
+      <div class="title-block title-block-custom">
+        <div class="icon-title">
+          <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+          <ion-title class="title">DRF Status</ion-title>
+        </div>
+      </div>
+    </ion-toolbar>
+  </div>
+  <div>
+    <div class="container" *ngIf="!dataLoad">
+      <div class="search-section brokerage_search" style="margin-top: 10px;">
+        <ion-searchbar class="custom-searchbar search-section-changed-revamped" (ngModelChange)="searchText($event)" [(ngModel)]="searchCode"
+          placeholder="Search for DRF No or client code"></ion-searchbar>
+        <div class="downloads-section" (click)="onExcelDownload()">
+          <img src="assets/svg/download_excel.svg" alt="" class="downloadIcon">
+          <span>Download Report</span>
+        </div>
+      </div>
+      <div class="block-request-section ">
+          <div class="request-section" *ngFor="let request of dematRequestStatus; let i = index">
+            <div class="upper-section">
+              <div class="client">
+                <span class="serial">DRF No. {{request['DRFNo']}}</span>
+                <span class="id">{{request['ClientCode']}}</span>
+              </div>
+              <div class="status-block" *ngIf="request['DRFStatus'] == 'Pending for Demat'">
+                <span>Pending for Demat</span>
+                <img class="status-icon" src="assets/svg/In_Progress.svg" alt="">
+              </div>
+              <div class="status-block" *ngIf="request['DRFStatus'] == 'Pending with Issuer/RTA'">
+                <span>Pending with Issuer/RTA</span>
+                <img class="status-icon" src="assets/svg/In_Progress.svg" alt="">
+              </div>
+              <div class="status-block" *ngIf="request['DRFStatus'] == 'Under Process'">
+                <span>In Process</span>
+                <img class="status-icon" src="assets/svg/In_Progress.svg" alt="">
+              </div>
+              <div class="status-block" *ngIf="request['DRFStatus'] == 'Demat Confirmed'">
+                <span>Demat Confirmed</span>
+                <img class="status-icon" src="assets/svg/approved.svg" alt="">
+              </div>
+              <div class="status-block" *ngIf="request['DRFStatus'] == 'Partially Confirmed'">
+                <span>Partially Confirmed</span>
+                <img class="status-icon" src="assets/svg/approved.svg" alt="">
+              </div>
+              <div class="status-block" *ngIf="request['DRFStatus'] == 'Confirmed'">
+                <span>Confirmed</span>
+                <img class="status-icon" src="assets/svg/approved.svg" alt="">
+              </div>
+              <div class="status-block" *ngIf="request['DRFStatus'] == 'Rejected By RTA'">
+                <span>Rejected By RTA</span>
+                <img class="status-icon" src="assets/svg/rejected.svg" alt="">
+              </div>
+              <div class="status-block" *ngIf="request['DRFStatus'] == 'Rejected By DP'">
+                <span>Rejected By DP</span>
+                <img class="status-icon" src="assets/svg/rejected.svg" alt="">
+              </div>
+              <div class="status-block" *ngIf="request['DRFStatus'] == 'Rejected by Issuer/RTA'">
+                <span>Rejected by Issuer/RTA</span>
+                <img class="status-icon" src="assets/svg/rejected.svg" alt="">
+              </div>
+              <div class="status-block" *ngIf="request['DRFStatus'] == 'Rejected'">
+                <span>Rejected</span>
+                <img class="status-icon" src="assets/svg/rejected.svg" alt="">
+              </div>
+            </div>
+  
+            <div (click)="dropClick(request.DRFNo, dematRequestStatus)">
+              <div class="detail-section">
+                <div class="section">
+                  <span class="section-title">DP Type</span>
+                  <span class="section-value">{{request['DPType']}}</span>
+                </div>
+                <div class="section">
+                  <span class="section-title">Group Code</span>
+                  <span class="section-value">{{request['GroupCode']}}</span>
+                </div>
+                <div class="section">
+                  <span class="section-title">Demat A/C No.</span>
+                  <span class="section-value">{{request['DematActNo']}}</span>
+                </div>
+                <div class="section">
+                  <span class="section-title">ISIN</span>
+                  <span class="section-value">{{request['ISIN']}}</span>
+                </div>
+                <div class="section desktop-visibility ISINName-box">
+  
+                  <div *ngIf="request['ISINName']" class="ISINName-tooltip">{{request['ISINName']}}
+                    <div class="tooltip-tring"></div>
+                  </div>
+                  <span class="section-title">ISIN Name</span>
+                  <span *ngIf="request['ISINName']" class="section-value ISINName">{{request['ISINName']}}</span>
+                  <span *ngIf="!request['ISINName']" class="section-value ISINName">-</span>
+                </div>
+                <div class="desktop-visibility">
+                  <ion-icon *ngIf="!request['isVisible']" src="./assets/svg/down-arrow.svg"
+                    class="arrow-button"></ion-icon>
+                  <ion-icon *ngIf="request['isVisible']" src="./assets/svg/down-arrow.svg"
+                    class="rotate arrow-button down-arrow-button"></ion-icon>
+                </div>
+              </div>
+              <div class="detail-section isin-mobile mobile-visibility">
+                <div class="section">
+                  <span class="section-title">ISIN Name</span>
+                  <span *ngIf="request['ISINName']" class="section-value">{{request['ISINName']}}</span>
+                  <span *ngIf="!request['ISINName']" class="section-value">-</span>
+                </div>
+                <ion-icon *ngIf="!request['isVisible']" src="./assets/svg/down-arrow.svg" class="arrow-button"></ion-icon>
+                <ion-icon *ngIf="request['isVisible']" src="./assets/svg/down-arrow.svg"
+                  class="rotate arrow-button down-arrow-button"></ion-icon>
+              </div>
+            </div>
+            <div class="more-details" *ngIf="request['isVisible']">
+              <div class="detail-section">
+                <div class="section">
+                  <span class="section-title">Qty</span>
+                  <span class="section-value">{{request['Qty'] * 1}}</span>
+                </div>
+                <div class="section">
+                  <span class="section-title">DRN</span>
+                  <span *ngIf="request['DRN']" class="section-value">{{request['DRN']}}</span>
+                  <span *ngIf="!request['DRN']" class="section-value">-</span>
+                </div>
+                <div class="section">
+                  <span class="section-title">DRN Generation Date</span>
+                  <span class="section-value">{{request['DRNGenerationDate']}}</span>
+                </div>
+                <div class="section">
+                  <span class="section-title">DRN Confirmed Date</span>
+                  <span class="section-value">{{request['DRNConfirmationDate']}}</span>
+                </div>
+                <div class="section">
+                  <span class="section-title">DRF Rejected Date</span>
+                  <span class="section-value">{{request['DRFRejectDate']}}</span>
+                </div>
+              </div>
+              <div class="detail-section extra">
+                <div class="section">
+                  <span class="section-title">DRF Rejected Reason</span>
+                  <span class="section-value">{{request['DRFRejectedReason']}}</span>
+                </div>
+                <div class="section">
+                  <span class="section-title">DP Remark</span>
+                  <span class="section-value">{{request['DPRemark']}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+       
+  
+        <div *ngIf="dematRequestStatus.length == 0 && !dataLoad" style="height: 50px;
+        display: flex;
+        color: #000;
+        justify-content: center;
+        align-items: center;">
+          <span>No Data Found</span>
+        </div>
+  
+      </div>
+    </div>
+  
+  
+    <div style="position:absolute;top:50%; left:50%" *ngIf="dataLoad">
+      <img style="width:40px" src="/assets/imgs/loader.gif" alt="">
+    </div>
+  </div>

@@ -1,0 +1,223 @@
+<ion-header class="mobile-visibility">
+  <ion-toolbar color="tertiary">
+      <div class="title-block title-block-custom">
+          <div class="icon-title">
+              <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+              <ion-title class="title">Client Mapping</ion-title>
+          </div>
+      </div>
+</ion-toolbar>
+</ion-header>
+<div class="limit-change-block">
+<form name="form" #productAct="ngForm" >
+   
+  <div class="field-block" style="margin-bottom: 0px;">
+      <div class="section headingnew">Mapping Details</div>
+      <div class="section mb_field" style="margin-bottom: 0px;">
+         
+      
+    <div class="section">
+      <div class="label">Select Mapping</div>
+      <ng-select (change)="changeMap($event)" class="ng-select ng-select-single" [items]="clientMapDetails" bindLabel="clientName" bindValue="clientValue" [clearable]="false" name="clientLis" [(ngModel)]="clientEntry.clientName"  #clientLis="ngModel" required>
+      </ng-select>  
+          <div *ngIf="mapSelect.length > 0" class="invalid-feedback">
+              <span>{{mapSelect}}</span>
+          </div>
+    </div>
+          <div class="section">
+      <div class="label">Mapping Type</div>
+      <ion-segment class="calculator-segment" name="fileBlockValue" [(ngModel)]="fileBlockValue" (ionChange)="mapSegmentChanged($event.detail.value)">
+        <ion-segment-button value="singleClient">Single Client</ion-segment-button>          
+        <ion-segment-button value="fileUpload">File Upload</ion-segment-button>
+        </ion-segment>
+    </div>
+    <div class="section" *ngIf="clientEntry.clientName =='algo'">
+   
+      <div  class="label">Algo/XTS</div>
+        <ion-segment class="client-mapping-Algo calculator-segment" name="activateBlockValue"  [(ngModel)]="activateBlockValue" (ionChange)="actionSegmentChanged($event.detail.value)">
+                    <ion-segment-button value="A" [disabled]="isClientCodeDisable">Online</ion-segment-button>
+                    <ion-segment-button value="D">Offline</ion-segment-button>
+        </ion-segment>
+        
+        <div class="msg_main" (mouseenter)="onHover = !onHover" (mouseleave)="onHover = !onHover">
+          <div style="cursor: pointer;">
+            <img src="assets/svg/info.svg" width="18px" alt="info" class="info_img">
+          </div>
+          <div class="box_msg" *ngIf="onHover">
+            Online client mapping refers to Individual client mapping and Offline Client mapping refers to Client - Dealer mapping
+          </div>
+        </div>
+      </div>
+      <div class="section  mobile-visibility">
+        <div class="label">Dealer ID</div>
+        <ion-input [disabled]="disableDealer" [ngModelOptions]="{standalone: true}" type="text" class="ion-input" [(ngModel)]="dealerListObjInput" (keyup)="typeDealerText($event)"></ion-input>
+        <!-- <ng-select (change)="changeDealerId($event)" class="ng-select ng-select-single" [disabled]="disableDealer" [clearable]="false" [items]="dealerList" bindLabel="Branch" bindValue="Branch" name="dealerListIn" [(ngModel)]="dealerListObj"  #dealerListIn="ngModel" required>
+        </ng-select>  -->
+        <!-- <div *ngIf="dealerIdErr.length > 0" class="invalid-feedback">
+          <span>{{dealerIdErr}}</span>
+        </div> -->
+            </div>
+            <div class="section" *ngIf="!isClientCodeDisable">
+              <div class="label">Client Code</div>
+              <ion-input [ngModelOptions]="{standalone: true}" type="text" class="ion-input" [(ngModel)]="clientListObjInput" (keyup)="typeClientText($event)"></ion-input>
+              <!-- <ng-select (change)="changeClientId($event)" class="ng-select ng-select-single" [disabled]="disableClientCode" [clearable]="false" [items]="clientCodeList" bindLabel="ClientCode" bindValue="ClientCode" name="clientList" [(ngModel)]="clientListObj"  #clientList="ngModel" required>
+                      </ng-select>  -->
+                      <!-- <div *ngIf="clientCodeErr.length > 0" class="invalid-feedback">
+                        <span>{{clientCodeErr}}</span>
+                      </div> -->
+              </div>
+    <div class="section file-upload" *ngIf="fileBlockValue === 'fileUpload'">
+      <div class="label">Upload File</div>
+          <input type="file" #uploadFile (change)="handleFileInput($event)" id="file-2" class="inputfile inputfile-2">
+      <label for="file-2">
+          <span class="file_name" style="width:230px;overflow: hidden;">{{fileName}}</span>
+          <img class="svg" src="assets/svg/upload.svg" alt="">
+      </label>
+      <div class="format-message">
+        Upload .txt/.csv file for client mapping by entering client codes and corresponding dealer ids in two separate columns
+      </div>
+     <span class="invalid-feedback" *ngIf="fileNotFound.length > 0">{{fileNotFound}}</span> 
+  </div>
+  <div *ngIf="clientEntry.clientName =='algo' || clientEntry.clientName =='algocdc'" class="section algo-message">
+    <p>*Note: NSE Cash and BSE Cash will not be activated for clients with no POA.</p>
+  </div>
+  <div class="section section-button" style="margin-bottom: 0px;">
+    <ion-button type="submit" (click)="onSubmit()" >Submit Request</ion-button>
+  </div>
+  <button *ngIf="clientEntry?.clientName == 'NOW'" class="download_partner_cat" (click)="onViewTTMapping()">
+           View TT Mapping Status
+         </button>
+  </div>
+      </div>
+      <div class="loader-position" *ngIf="dataLoad">
+    <img src="/assets/imgs/loader.gif" alt="">
+  </div>
+</form>
+
+
+  <!-- <div class="amc_non_client custom-date-block brokerage_datepicker">
+    <div class="" style="position: relative; align-items: center;z-index:1;">
+      <div class="select-date">
+        <div class="title ngx-daterangepicker-action">Select Date</div>
+        <input
+          ngxDaterangepickerMd
+          [(ngModel)]="selectedDate"
+          [maxDate]="maxDate"
+          [minDate]="minDate"
+          [showDropdowns]="true"
+          [showCustomRangeLabel]="true"
+          [ranges]="ranges"
+          [alwaysShowCalendars]="false"
+          [showRangeLabelOnInput]="true"
+          startKey="start"
+          endKey="end"
+          [showCancel]="cancelBtn"
+          [locale]="{applyLabel: 'Apply Filters', format: 'DD-MM-YYYY', customRangeLabel: 'Custom Range', firstDay: 1}"
+          (datesUpdated)="datesUpdated($event)"
+          readonly
+          class="date-ranngeCss"
+        />
+      </div>
+      <ion-icon
+        class="arrow-button mob-arrow-button"
+        style="right: 0px"
+        src="assets/svg/down-arrow.svg"
+      ></ion-icon>
+    </div>
+  </div>
+
+  <div class="amc_mob_card">
+    <div
+      class="sfsd loader loader-height-300"
+      *ngIf="dataLoad; else loader"
+    >
+  </div>
+    <ng-template #loader>
+    <div class="amc_mob_card_box" *ngIf="clientMappingTableDetails.length>0; else noData">
+      <div class="amc_mob_list" *ngFor="let item of clientMappingTableDetails">
+        <div class="mb_list">
+          <label>Client Code</label>
+          <span>{{item.ClientCode}}</span>
+        </div>
+        <div class="mb_list">
+          <label>Dealer ID</label>
+          <span>{{item.DealerID}}</span>
+        </div>
+        <div class="mb_list">
+          <label>Maker ID</label>
+          <span>{{item.MakerID}}</span>
+        </div>
+        <div class="mb_list">
+          <label>Maker Date</label>
+          <span>{{item.MakerDate}}</span>
+        </div>
+
+        <div class="mb_list">
+          <label>Status</label>
+          <span>{{item.Status}}</span>
+        </div>
+        <div class="mb_list">
+          <label>Checker Date</label>
+          <span>{{item.CheckerDate}}</span>
+        </div>
+        <div class="mb_list">
+          <label>Rejection Reason</label>
+          <span>{{item.Reason}}</span>
+        </div>
+        <div class="mb_list">
+          <label>Existing Dealer ID</label>
+          <span>{{item.ExistingDealerID}}</span>
+        </div>
+
+      </div>
+    </div>
+    <ng-template #noData>
+      <div class="no-data-found">
+        <span>No records found</span>
+      </div>
+    </ng-template>
+    </ng-template>
+   
+  </div> -->
+  <!-- <table class="desktop-table amc_non_client_table">
+    <thead class="width-100">
+      <tr>
+        <th>Client Code</th>
+        <th>Dealer ID</th>
+        <th>Maker ID</th>
+        <th>Maker Date</th>
+        <th>Status</th>
+        <th>Checker Date</th>
+        <th>Rejection Reason</th>
+        <th>Existing Dealer ID</th>
+      </tr>
+    </thead>
+
+    <tr
+      class="sfsd loader-table loader-height-300"
+      *ngIf="dataLoad; else loader"
+    >
+     <td colspan="8"><img src="/assets/imgs/loader.gif" alt="loader" /></td> 
+  </tr>
+
+    <ng-template #loader>
+      <tbody *ngIf="clientMappingTableDetails.length>0; else noData">
+        <tr *ngFor="let item of clientMappingTableDetails">
+          <td>{{item.ClientCode}}</td>
+          <td>{{item.DealerID}}</td>
+          <td>{{item.MakerID}}</td>
+          <td>{{item.MakerDate}}</td>
+          <td>{{item.Status}}</td>
+          <td>{{item.CheckerDate}}</td>
+          <td>{{item.Reason}}</td>
+          <td>{{item.ExistingDealerID}}</td>
+        </tr>
+      </tbody>
+      <ng-template #noData>
+        <div class="sfsd no-data-found">
+          <span>No Data Found</span>
+        </div>
+      </ng-template>
+    </ng-template>
+  </table> -->
+</div>

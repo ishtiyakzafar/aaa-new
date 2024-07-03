@@ -1,0 +1,220 @@
+.head-section{
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    .profile-circle {
+        width: 40px;
+        height: 40px;
+        background: #fff;
+        border-radius: 50%;
+    }
+    .profile-name{
+        display:flex;
+        flex-direction: column;
+        margin-left: 10px;
+        .name{
+            color:#212121;
+            font-size: 20px;
+            font-family: 'nunitoSemiBold';
+        }
+        .code{
+            color:#6E6E6E;
+            font-size: 15px;
+        }
+    }
+}
+
+.heading{
+    margin:15px 0;
+    font-size: 25px;
+    color: #212121;
+    //padding: 26px 0 22px;
+    font-family: nunitoBold;
+}
+
+.section-title{
+    color:#3A15A6;
+    font-size: 20px;
+}
+
+.details-container.isSubBroker{
+    margin-bottom: 20px;
+}
+
+.details-container{
+    margin-top: 20px;
+    display: flex;
+    width:100%;
+    flex-direction: row;
+    .info-section{
+        width:45%;
+       // display:flex;
+        .section-details{
+            display:flex;
+            padding:4%;
+            margin-top: 15px;
+            flex-direction: row;
+            justify-content: space-between;
+            border: 1px solid #CBCBCB;
+            border-radius: 10px;
+            .info-row{
+                display:flex;
+                flex:1;
+                flex-direction: column;
+                .col-info{
+                    display:flex;
+                    color:#212121;
+                    margin: 10px 0;
+                }
+            }
+        }
+    }
+}
+
+
+.table-block-parent{
+    display:flex;
+    margin: 15px 0;
+    .table-width{
+        width:98%;
+        .upper{
+            font-family: 'nunitoSemiBold';
+            font-size: 14px;
+
+        }
+    }
+}
+
+.fullWidth {
+    width: 100% !important;
+}
+
+.web-equity {
+    .header-table {
+        th {
+            width: 20% !important;
+            color:#6E6E6E;
+            font-size: 14px;
+        }
+        td{
+            padding:20px 0;
+        }
+       
+        th:nth-child(4) {
+            width: 40% !important;
+        }
+        th:nth-child(2) {
+            text-align: left;
+        }
+        th:nth-child(3) {
+            text-align: left;
+        }
+        th:nth-child(4) {
+            text-align: left;
+        }
+        tr{
+            border-bottom: 1px solid #CBCBCB;
+            border-width:0 1px;
+        }
+        tr:last-child {
+            border: none;
+        }
+    }
+}
+
+.prof-label{
+    width:20%;
+}
+
+.prof-value{
+    width:72%;
+    font-family: 'nunitoSemiBold';
+}
+
+.prof-label1{
+    width:30%;
+}
+
+.prof-value1{
+    width:62%;
+    font-family: 'nunitoSemiBold';
+}
+
+.prof-icon{
+    width:6%;
+}
+
+.margin-l{
+    margin-left: 5%;
+}
+
+.mobile-title{
+    width:90%;
+    color:#3A15A6;
+    font-size: 16px;
+}
+
+.width-i{
+    width:40%;
+}
+
+
+@media screen and (max-width: 1280px) {
+
+    .head-section{
+        .profile-circle {
+            width: 25px;
+            height: 25px;
+            margin-left: 10px;
+        }
+        .profile-name{
+            .name{
+                color:#212121;
+                font-size: 14px;
+                font-family: 'nunitoSemiBold';
+            }
+            .code{
+                color:#6E6E6E;
+                font-size: 12px;
+            }
+        }
+    }
+    
+    .details-container{
+        margin-top: 0px;
+        display: flex;
+        width:100%;
+        flex-direction: column;
+       
+        .info-section{
+            width:95%;
+            margin:0 auto;
+            .section-details{
+                flex-direction: column;
+                margin-top:5px;
+                padding:10px;
+            }
+        }    
+
+    }
+    .margin-l{
+        margin-left: 0;
+    } 
+
+    .prof-label{
+        width:30%;
+    }
+    .prof-value{
+        width:63%;
+    }
+    .width-i{
+        width:30%;
+    }
+
+}
+.btn-edit{ --background: none !important;border: none; color: #593CC7; --box-shadow: none; font-weight: 500;font-size: 16px;z-index: 1060 !important}
+.terminal-box{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

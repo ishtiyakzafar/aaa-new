@@ -1,0 +1,20 @@
+
+.thank_you{padding: 20px 20px 50px 20px;background: #fff;}
+.thank_you img{margin-top: 20px;}
+.thank_you h2{font-size: 24px; color: #000; font-weight: 700;}
+.thank_you p{color: #454545; font-size: 14px; margin: 0px; font-weight: 600;} 
+.text-center{text-align: center;}
+.pop_close{position: absolute; right: 20px; top: 0px;cursor: pointer;}
+.thnk_links{display: flex;justify-content: space-between; padding-top: 2.5rem;}
+.thnk_links a{text-decoration: none; font-size: 14px; color: #1186DB; cursor: pointer;}
+
+@media screen and (max-width: 788px){
+.thank_you img{width: 35px;}
+.pop_close img{width: 15px !important;}
+.thank_you h2{font-size: 20px; margin-top: 0px !important; padding: 10px 0 5px;}
+.thank_you p{font-size: 13px;}
+.thnk_links{flex-direction: column; padding-top: 25px; gap: 8px;flex-direction: column-reverse;
+a{font-weight: 600;}
+}
+.view-link-btn{color: #fff !important; text-decoration: none; text-align: center; display: flex; font-weight: 500; background: #F37921; border-radius: 25px; padding: 12px 35px; font-size: 16px; margin: 0 auto; width: max-content; z-index: 1060; position: relative;}
+}

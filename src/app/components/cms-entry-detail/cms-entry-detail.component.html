@@ -1,0 +1,57 @@
+<ion-header class="mobile-visibility">
+    <ion-toolbar>
+        <div class="title-block title-block-custom">
+            <div class="icon-title">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <ion-title class="title">Client Data</ion-title>
+            </div>
+        </div>
+        <div class="segment-search-block search-section search-section-changed search-section-changed-revamped">
+            <ion-segment [(ngModel)]="clientBlockSegmentValue" mode="md" (ionChange)="segmentChange($event.detail.value)">
+                <ion-segment-button *ngFor="let entry of segmentButtonOption" value="{{entry['value']}}">{{entry['name']}}
+                </ion-segment-button>
+            </ion-segment>
+            <ion-searchbar class="custom-searchbar" name="searchCode" [(ngModel)]="searchCode" placeholder="Search by Client code"></ion-searchbar>
+        </div>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <div class="main-table thin-scroll" *ngIf="dataLoad">
+        <div *ngIf="(equityCmsData | filterSearch: searchCode : 'UserID').length > 0">
+            <div class="table-block" *ngFor="let data of equityCmsData  | filterSearch: searchCode : 'UserID'; let i = index">
+                <div class="section-header-mob">
+                    <span class="value-mob">{{data['ClientName']}}</span>
+                    <span class="title-mob">
+                        <span *ngIf="data['BranchStatus'] == 'R'">Reject</span>
+                        <span *ngIf="data['BranchStatus'] == 'A'">Accept</span>
+                        <!-- <ion-icon *ngIf="data['status'] === 'Rejected' " class="edit-icon" src="./assets/svg/updated_pencil.svg"></ion-icon> -->
+                    </span>
+                </div>
+
+                <div class="section-details">
+                    <div class="sec-column">
+                        <span class="label">Amount(₹)</span>
+                        <span class="value">{{data['UserID']}}</span>
+                    </div>
+                    <div class="sec-column">
+                        <span class="label">Deposit bank</span>
+                        <span class="value">{{data['DepositBank']}}</span>
+                    </div>
+                    <div class="sec-column">
+                        <span class="label">Date</span>
+                        <span class="value">{{data['ScanDate']}}</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="no-data-found" *ngIf="(equityCmsData | filterSearch: searchCode : 'UserID').length == 0">
+            <span>No Data Found </span>
+        </div>
+    </div>
+
+    <div class="loader loader-height" *ngIf="!dataLoad">
+        <img  src="/assets/imgs/loader.gif" alt="">
+    </div>
+</ion-content>

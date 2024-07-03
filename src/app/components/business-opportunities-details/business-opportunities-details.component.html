@@ -1,0 +1,577 @@
+<ion-header>
+    <div class="title" *ngIf="!isBirthday">{{titleBusinessOpps(option, 'displayName')}}</div>
+    <div class="title" *ngIf="isBirthday">Clients Birthday</div>
+
+    <div class="close" (click)="dismiss()">x</div>
+</ion-header>
+<ion-content class="ionclass-content client-not-traded-select" appScrollbarTheme>
+    <div class="top-section">
+    </div>
+
+    <div class="desktop-visibility">
+        <div class="search-section search-section-changed search-section-changed-revamped">
+            <ion-label>Search by</ion-label>                 
+            <ng-container *ngIf="option == 'P1P2Clients' || option == 'otherclients' || option == 'Last30bday'; else otherBO">
+                <ion-segment [(ngModel)]="clientBlockSegmentValue" mode="md" (ionChange)="segmentChange()">
+                    <ion-segment-button *ngFor="let entry of segmentButtonOptionNew"
+                        value="{{entry['value']}}">{{entry['name']}}</ion-segment-button>
+                </ion-segment>
+                <ion-searchbar search-icon="false" class="custom-searchbar" [(ngModel)]="searchTerm" customValidate
+                    [placeholder]='placeholderInput' (ngModelChange)="searchType($event)"></ion-searchbar>
+            </ng-container>
+            <ng-template #otherBO>
+                <ion-segment [(ngModel)]="clientBlockSegmentValue" mode="md" (ionChange)="segmentChange()">
+                    <ion-segment-button *ngFor="let entry of segmentButtonOption"
+                        value="{{entry['value']}}">{{entry['name']}}</ion-segment-button>
+                </ion-segment>
+                <ion-searchbar search-icon="false" class="custom-searchbar" [(ngModel)]="searchTerm" customValidate
+                    [placeholder]='placeholderInput' (ngModelChange)="searchType($event)"></ion-searchbar>
+            </ng-template>
+            <ion-button class="search-button" *ngIf="filterApiCall" (click)="searchText()">
+                <img src="assets/svg/updated_search.svg" alt="">
+            </ion-button>
+        </div>
+    </div>
+    <div class="mobile-visibility">
+        <div class="search-section search-section-changed search-section-changed-revamped">
+            <!-- <div class="switch-block">
+                <ion-label>Search by</ion-label>
+            <label class="switch">
+                <input type="checkbox" id="togBtn">
+                <div class="slider round">
+                   <span class="on">Name</span><span class="off">Client Code</span>
+                </div>
+             </label>
+            </div> -->
+            <!-- <div class="search-button-block">
+                <ion-searchbar search-icon="false" class="custom-searchbar" [(ngModel)]="searchTerm" customValidate [placeholder]='placeholderInput'></ion-searchbar>
+                <ion-button class="search-button" (click)="searchText()">
+                    <img src="assets/svg/filter_portfolio.svg" (click)="filterOption($event)">
+                </ion-button>
+            </div> -->
+            <div class="mobile-visibility header-segment-with-border-parent">
+                <div class="search-filter-parent-mobile m-v-12 ion_btn">
+                    <ion-searchbar search-icon="false"  class="custom-searchbar custom-searchbar-mobile"  [(ngModel)]="searchTerm" [placeholder]='placeholderInput' (ngModelChange)="searchTypeMobile($event)"></ion-searchbar>
+                    <ion-button *ngIf="filterApiCall" class="search-button" (click)="searchText()">
+                        <img src="assets/svg/updated_search.svg" alt="">
+                    </ion-button>
+                    <img src="assets/svg/filter_portfolio.svg" (click)="filterOption($event)">
+       
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="desktop-visibility">
+            <!-- local Filter for Desktop -->
+            <div class="web-equity thin-scroll" *ngIf="!filterApiCall">
+                <div class="header-table otherclientTable" *ngIf="!isBirthday">
+                    <table style="width: 100%" class="desktop-header-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Client ID
+                                </th>
+                                <th *ngIf="option == 'P1P2Clients' || option == 'otherclients'">
+                                    Group Code
+                                </th>
+                                <th *ngIf="option == 'P1P2Clients' || option == 'otherclients'">
+                                    Client Name 
+                                </th>
+                                <th *ngIf="option != 'P1P2Clients' && option != 'otherclients'" class="pointer" [class.active]="order === 'ClientName'" (click)="setOrder('ClientName')">
+                                    Client Name 
+                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                                </th>
+                                <th *ngIf="option != 'P1P2Clients' && option != 'otherclients'" class="pointer" [class.active]="order === 'aumSort'" (click)="setOrder('aumSort')">
+                                    {{changeHeader}}
+                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                                </th>
+                                <th class="pointer" *ngIf="option == 'NotInvestedInMF'">
+                                    Ledger Balance (₹)
+                                </th>
+                                <!-- review. added ternary -->
+                                <!-- <th *ngIf="option != 'P1P2Clients' && option != 'otherclients'" [ngStyle]="option == 'NotInvestedInMF' && { 'text-align': 'center' }"> -->
+                                <th *ngIf="option != 'P1P2Clients' && option != 'otherclients'" [ngStyle]="option == 'NotInvestedInMF' ? { 'text-align': 'center' } : {}">
+
+                                    Status
+                                </th>
+                                <th class="pointer" *ngIf="option == 'P1P2Clients' || option == 'otherclients'" [class.active]="order === 'LastMeetingDate1'" (click)="setOrder('LastMeetingDate1')">
+                                    Last Meeting Date
+                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                                </th>
+                                <th class="pointer" *ngIf="option == 'P1P2Clients' || option == 'otherclients'">
+                                    Meeting Subject
+                                </th>
+                                <th class="pointer" *ngIf="option == 'P1P2Clients' || option == 'otherclients'">
+                                    Phone Number
+                                </th>
+                            <th class="pointer" *ngIf="option == 'P1P2Clients' || option == 'otherclients'">
+                                Email ID
+                            </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="main-table thin-scroll otherclientTable" *ngIf="!isBirthday">
+                    <table style="width: 100%" class="mobile-table" *ngIf="dataLoad">
+                        <tbody *ngIf="(datas|filter:searchTerm).length > 0"> 
+                            <tr *ngFor="let dataObj of datas | orderBy: order:val | filter:searchTerm; let i = index">
+                                <td>
+                                    {{dataObj['ClientCode']}}
+                                </td>
+                                <td>{{dataObj['Group_CD']}}</td>
+                                <td>
+                                    <span style="cursor:pointer" class="hyperlinkstyle" (click)="goToClientDetails(dataObj)">{{dataObj['ClientName']}}</span>
+                                </td>
+                                <td *ngIf="option != 'P1P2Clients' && option != 'otherclients'">
+                                    {{dataObj['AUM']}}
+                                </td>
+
+                                <td *ngIf="option == 'NotInvestedInMF'">
+                                    {{dataObj['LedBal']}}  
+                                </td>
+                                <td *ngIf="option != 'P1P2Clients' && option != 'otherclients'">
+                                    <ion-radio-group value="{{dataObj['Status']}}" (ionChange)="radioGroupChange($event.detail.value)">
+                                        <!-- <ng-select [items]="shareReportTypeList"  [(ngModel)]="dataObj['Status']" bindLabel="shareType" bindValue="value" [inputAttrs]="inputattr" appendTo=".ionclass-content" [clearable]="false" [searchable] ="false"> -->
+                                            <ng-select [items]="shareReportTypeList"  [(ngModel)]="dataObj['Status']" bindLabel="shareType" bindValue="value" [clearable]="false" [searchable] ="false">
+                                            <ng-template ng-label-tmp let-item="item">
+                                                <div>{{item.value}}</div>
+                                            </ng-template>
+                                            <ng-template ng-option-tmp let-item="item">
+                                                <ion-item lines="none">
+                                                    <ion-label>{{item.value}}</ion-label>
+                                                    <!-- <input type="radio" [(ngModel)]="item.status"> -->
+                                                    <ion-radio (ion-focus)="statusSelect($event)" slot="start" value="{{item.value}}"></ion-radio>
+                                                </ion-item>
+                                            </ng-template>
+                                        </ng-select>
+                                    </ion-radio-group>
+                                </td>
+                                <td *ngIf="option == 'P1P2Clients' || option == 'otherclients'">
+                                    {{dataObj['LastMeetingDate']}}  
+                                </td> 
+                                <td *ngIf="option == 'P1P2Clients' || option == 'otherclients'">
+                                    {{dataObj['MeetingSubject']}}  
+                                </td> 
+                                <td *ngIf="option == 'P1P2Clients' || option == 'otherclients'">
+                                    {{dataObj['Mobile']}}  
+                                </td> 
+                                <td *ngIf="option == 'P1P2Clients' || option == 'otherclients'">
+                                    {{dataObj['EMail']}}  
+                                </td>
+                                
+                                <!-- <td>
+                                    {{dataObj['value']}}
+                                </td> -->                              
+                            </tr>
+                        </tbody>
+
+                        <div class="no-data-found loader" *ngIf="(datas | filter:searchTerm).length == 0">
+                            <span>No Data Found</span>
+                        </div>
+                        <!-- <div class="loader loader-height-240" *ngIf="dataLoad">
+                            <h4>No records found.</h4>
+                        </div> -->
+                       
+                    </table>
+                        <div class="loader loader-height-240" *ngIf="!dataLoad">
+                            <img src="/assets/imgs/loader.gif" alt="">
+                        </div>
+                </div>
+
+                <!-- ````````````````````````````````````````````````````````````` -->
+
+                <div class="header-table birthdayTable" *ngIf="isBirthday">
+                    <table style="width: 100%" class="desktop-header-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Client ID
+                                </th>
+                                <th>Group Code</th>
+                                <th>
+                                    Client Name
+                                </th>
+                                <th class="pointer" [class.active]="orderType === 'DOB1'" (click)="setOrderDOB('DOB1')">
+                                    Date Of Birth
+                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                                </th> 
+                                <th class="pointer">
+                                    Phone Number
+                                </th>
+                                <th class="pointer">
+                                    Email ID
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+                <div class="main-table thin-scroll birthdayTable" *ngIf="isBirthday">
+                    <table style="width: 100%" class="mobile-table" *ngIf="dataLoad">
+                        <!-- review. removed filter and orderBy -->
+                        <!-- <tbody *ngIf="(datas|filter:searchTerm).length > 0"> 
+                            <tr *ngFor="let dataObj of datas | sortDate: orderType: reverse | filter:searchTerm; let i = index"> -->
+
+                        <tbody *ngIf="(datas|filter:searchTerm).length > 0"> 
+                            <tr *ngFor="let dataObj of datas | sortDate: orderType: reverse | filter:searchTerm; let i = index">
+                                <!-- <td>
+                                    {{dataObj['ClientCode']}}
+                                </td> -->
+                                <td>
+                                    {{dataObj['ClientCode']}}
+                                </td>
+                                <td>
+                                    {{dataObj['Group_CD']}}
+                                </td>
+                                <td (click)="goToClientDetails(dataObj)">
+                                   <span class="hyperlinkstyle" style="cursor:pointer"> {{dataObj['ClientName']}}</span>
+                                </td>
+                                <td>
+                                    {{dataObj['DOB1']}}
+                                </td>
+                                <td>
+                                    <div class="option-type">
+                                        <img src="assets/svg/client_phone.svg" alt="">
+                                        <span class="tooltiptext" style="width: max-content;">
+                                            <span>{{dataObj['Mobile']}}</span>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="option-type">
+                                        <img src="assets/svg/email.svg" alt="">
+                                        <span class="tooltiptext" style="width: 120px;">
+                                            <span>{{dataObj['EMail']}}</span>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <div class="no-data-found loader" *ngIf="(datas |filter:searchTerm).length == 0">
+                            <span>No Data Found</span>
+                        </div>
+                        <!-- <div class="loader loader-height-240" *ngIf="dataLoad">
+                            <h4>No records found.</h4>
+                        </div> -->
+                       
+                    </table>
+                        <div class="loader loader-height-240" *ngIf="!dataLoad">
+                            <img src="/assets/imgs/loader.gif" alt="">
+                        </div>
+                </div>
+            </div>
+            <!-- filter the data from API Call for Desktop-->
+            <div class="web-equity thin-scroll" *ngIf="filterApiCall">
+                <div class="header-table" *ngIf="!isBirthday">
+                    <table style="width: 100%" class="desktop-header-table" >
+                        <thead>
+                            <tr>
+                                <th>
+                                    Client ID
+                                </th>
+                                <th class="pointer" [class.active]="order === 'clientName'" (click)="setOrder('clientName')">
+                                    Client Name 
+                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                                </th>
+                                <th class="pointer" [class.active]="order === 'dynamic'" (click)="setOrder('dynamic')">
+                                    {{changeHeader}}                      
+                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                                </th>   
+                                <!-- <th *ngIf="option == 'PMSAIFLeadsCount'">
+                                    Total AUM (₹)                            
+                                </th> -->
+                                <th class="pointer" *ngIf="option == 'NotInvestedInMF'">
+                                    Ledger Balance (₹)
+                                </th>
+                                <th *ngIf="option != 'NCDorDebtHoldings'">
+                                    Status
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="main-table thin-scroll max-height-unset-in-mobile" (scroll)="divScroll($event)" *ngIf="!isBirthday">
+                    <table style="width: 100%" class="mobile-table">
+                        <tbody *ngIf="datas && datas.length > 0 && dataLoad" >
+                            <tr *ngFor="let dataObj of datas">
+                                <td>
+                                    {{dataObj['ClientCode']}}
+                                </td>
+                                <td (click)="goToClientDetails(dataObj)">
+                                    <span class="hyperlinkstyle" style="cursor:pointer">{{dataObj['ClientName']}}</span>
+                                </td>
+                                <td>
+                                    {{dataObj['AUM']}}
+                                </td>
+                                <td *ngIf="option == 'NotInvestedInMF'">
+                                    {{dataObj['LedBal']}}  
+                                </td>
+                                <td *ngIf="option != 'NCDorDebtHoldings'">
+                                    <ion-radio-group value="{{dataObj['Status']}}" (ionChange)="radioGroupChange($event.detail.value)">
+                                        <!-- <ng-select [items]="shareReportTypeList"  [(ngModel)]="dataObj['Status']" bindLabel="shareType" bindValue="value" [inputAttrs]="inputattr" appendTo=".ionclass-content" [clearable]="false" [searchable] ="false"> -->
+                                            <ng-select [items]="shareReportTypeList"  [(ngModel)]="dataObj['Status']" bindLabel="shareType" bindValue="value" [clearable]="false" [searchable] ="false">
+                                            <ng-template ng-label-tmp let-item="item">
+                                                <div>{{item.value}}</div>
+                                            </ng-template>
+                                            <ng-template ng-option-tmp let-item="item">
+                                                <ion-item lines="none">
+                                                    <ion-label>{{item.value}}</ion-label>
+                                                    <!-- <input type="radio" [(ngModel)]="item.status"> -->
+                                                    <ion-radio (ion-focus)="statusSelect($event)" slot="start" value="{{item.value}}"></ion-radio>
+                                                </ion-item>
+                                            </ng-template>
+                                        </ng-select>
+                                    </ion-radio-group>
+                                </td>
+                            </tr>
+                        </tbody>
+                       
+                        <div class="loader" *ngIf="datas.length == 0 && dataLoad" style="min-height: 259px;">
+                            <h4>No records found.</h4>
+                        </div>
+                        <div class="loader" *ngIf="!dataLoad" style="min-height: 259px;">
+                            <img src="/assets/imgs/loader.gif" alt="">
+                        </div>
+                    </table>
+                </div>
+
+                <!-- ````````````````````````````````````````````````````````````````````` -->
+            </div>
+        </div>
+
+        <div class="mobile-visibility">
+             <!-- filter the data from local Filter for Mobile-->
+            <div class="web-equity thin-scroll" *ngIf="!filterApiCall">
+                <div class="header-table" *ngIf="!isBirthday">
+                    <table style="width: 100%" class="desktop-header-table">
+                        <thead>
+                            <tr>
+                                <th class="pointer" [class.active]="order === 'ClientName'" (click)="setOrder('ClientName')">
+                                    Client Name
+                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                                </th>
+                                <th>
+                                    Status
+                                    <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending"> -->
+                                </th>
+                                <th class="pointer" [class.active]="order === 'aumSort'" (click)="setOrder('aumSort')">
+                                    {{changeHeader}}
+                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <ion-content class="inner-content" *ngIf="!isBirthday">
+                    <div class="main-table thin-scroll">
+                        <table style="width: 100%" class="mobile-table" *ngIf="dataLoad">
+                            <!-- review. removed filter and orderBy -->
+                            <!-- <tbody *ngIf="(datas|filter:searchTerm).length > 0">
+                                <tr *ngFor="let dataObj of datas | orderBy: order:reverse | filter:searchTerm; let i = index"> -->
+
+                            <tbody *ngIf="(datas|filter:searchTerm).length > 0">
+                                <tr *ngFor="let dataObj of datas | filter:searchTerm; let i = index">
+                                    <td>
+                                        <div class="data-block">
+                                            <span class="code">{{dataObj['ClientCode']}}</span>
+                                            <span class="name" (click)="goToClientDetails(dataObj)">{{dataObj['ClientName']}}</span>
+                                            <!-- <span class="status">{{dataObj['Status']}}</span> -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{dataObj['Status'] ? dataObj['Status'] : '-'}}
+                                    </td>
+                                    <td>
+                                        {{dataObj['AUM']}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <!-- review. removed filter -->
+                            <!-- <div class="loader loader-height-240" *ngIf="(datas|filter:searchTerm).length == 0"> -->
+
+                            <div class="loader loader-height-240" *ngIf="(datas |filter:searchTerm).length == 0">
+                                <h4>No records found.</h4>
+                            </div>
+                           
+                        </table>
+                        <div class="loader loader-height-240" *ngIf="!dataLoad">
+                            <img src="/assets/imgs/loader.gif" alt="">
+                        </div>
+                    </div>
+
+                </ion-content>
+
+                <!-- ````````````````````````````````````````````````````````````````````` -->
+
+                <div class="header-table" *ngIf="isBirthday">
+                    <table style="width: 100%" class="desktop-header-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Client ID
+                                </th>
+                                <th>Group Code</th>
+                                <th>
+                                    Client Name
+                                </th>
+                                <th class="pointer" [class.active]="orderType === 'DOB1'" (click)="setOrderDOB('DOB1')">
+                                    Date Of Birth
+                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                                </th>                                 
+                                <th class="pointer">
+                                    Phone Number
+                                </th>
+                                <th class="pointer">
+                                    Email ID
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+
+                <ion-content class="inner-content" *ngIf="isBirthday">
+                    <div class="main-table thin-scroll">
+                        <table style="width: 100%" class="mobile-table" *ngIf="dataLoad">
+                            <tbody *ngIf="(datas|filter:searchTerm).length > 0">
+                                <tr *ngFor="let dataObj of datas | sortDate: orderType:reverse | filter:searchTerm; let i = index">
+                                    <td>
+                                        {{dataObj['ClientCode']}}
+                                    </td>
+                                    <td>
+                                        {{dataObj['Group_CD']}}
+                                    </td>
+                                    <td (click)="goToClientDetails(dataObj)">
+                                        <span class="hyperlinkstyle" style="cursor:pointer"> {{dataObj['ClientName']}}</span>
+                                     </td>
+                                    <td>
+                                        {{dataObj['DOB1']}}
+                                    </td>
+                                    <td>
+                                        <div class="birthday_mobile_call_img" (click)="mobEmailPhoneClickTooltip = 'Mob'+i">
+                                            <img src="assets/svg/client_phone.svg" alt="">
+                                        </div>
+                                        <span *ngIf="mobEmailPhoneClickTooltip === 'Mob'+i">
+                                            <span>{{dataObj['Mobile']}}</span>
+                                        </span>
+                                    </td>
+                                    <td style="text-align: center !important;">
+                                        <div class="birthday_mobile_call_img" (click)="mobEmailPhoneClickTooltip = 'Email'+i">
+                                            <img src="assets/svg/email.svg" alt="">
+                                        </div>
+                                        <span *ngIf="mobEmailPhoneClickTooltip === 'Email'+i">
+                                            <span>{{dataObj['EMail']}}</span>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <div class="loader loader-height-240" *ngIf="(datas|filter:searchTerm).length == 0">
+                                <h4>No records found.</h4>
+                            </div>
+                           
+                        </table>
+                        <div class="loader loader-height-240" *ngIf="!dataLoad">
+                            <img src="/assets/imgs/loader.gif" alt="">
+                        </div>
+                    </div>
+
+                </ion-content>
+          
+            </div>
+
+             <!-- filter the data from API for Mobile-->
+            <div class="web-equity thin-scroll" *ngIf="filterApiCall">
+                <div class="header-table" *ngIf="!isBirthday">
+                    <table style="width: 100%" class="desktop-header-table">
+                        <thead>
+                            <tr>
+                                <th class="pointer" [class.active]="order === 'ClientName'" (click)="setOrder('ClientName')">
+                                    Client Name
+                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                                </th>
+                                <th>
+                                    Status
+                                    <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending"> -->
+                                </th>
+                                <th class="pointer" [class.active]="order === 'dynamic'" (click)="setOrder('dynamic')" >
+                                         {{changeHeader}}                                  
+                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                                </th>
+
+                                <!-- <th *ngIf="option == 'PMSAIFLeadsCount'">
+                                    Total AUM (₹)                            
+                                </th> -->
+                             
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <ion-content class="inner-content" *ngIf="!isBirthday">
+                    <div class="main-table thin-scroll">
+                        <table style="width: 100%" class="mobile-table" *ngIf="dataLoad">
+                            <tbody *ngIf="datas && datas.length > 0">
+                                <tr *ngFor="let dataObj of datas">
+                                    <td>
+                                        <div class="data-block">
+                                            <span class="code">{{dataObj['ClientCode']}}</span>
+                                            <span class="name" (click)="goToClientDetails(dataObj)">{{dataObj['ClientName']}}</span>
+                                            <!-- <span class="status">{{dataObj['Status']}}</span> -->
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{dataObj['Status'] ? dataObj['Status'] : '-'}}
+                                    </td>
+                                    <td>
+                                        {{dataObj['AUM']}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <div class="loader loader-height-240" *ngIf="datas.length == 0">
+                                <h4>No records found.</h4>
+                            </div>
+                           
+                        </table>
+                        <div class="loader loader-height-240" *ngIf="!dataLoad">
+                            <img src="/assets/imgs/loader.gif" alt="">
+                        </div>
+                    </div>
+                    <ion-infinite-scroll *ngIf="enableNext && filterApiCall" threshold="100px" (ionInfinite)="loadData($event)">
+                        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+                        </ion-infinite-scroll-content>
+                    </ion-infinite-scroll>
+                </ion-content>
+
+
+                <!-- ````````````````````````````````````````````````````````````````` -->      
+            </div>
+
+       
+        </div>
+    </div>
+</ion-content>

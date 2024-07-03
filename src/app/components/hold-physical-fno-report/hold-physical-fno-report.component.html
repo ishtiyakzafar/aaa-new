@@ -1,0 +1,195 @@
+<div class="container desktop-visibility">
+	<div class="desktop-table overflow-hidden">
+
+		<div class="search_main_box">	
+<div class="search-section search-section-changed search-section-changed-revamped w-60 hold_report">
+	<ion-searchbar search-icon="false" class="custom-searchbar hold_search" placeholder="Client ID"
+		[(ngModel)]="searchValue">
+	</ion-searchbar>
+
+	
+	<ion-button class="search-button" (click)="searchText()">
+		<img src="assets/svg/updated_search.svg" alt="">
+	</ion-button>
+	
+</div>
+
+<div class="section desktop-visibility button-section" style="width: inherit; margin-right: inherit;" >
+	<ion-button [disabled]="onselectatleast" (click)="onHoldSelectedReports()" style="max-width: max-content; margin-right: 10px;"
+>Hold Contract
+	</ion-button>
+</div>
+
+<div class="download_file">
+	<div style="margin-right: 15px;" class="option-type" (click)="onPdfExcelDownload('pdf')">
+		<img src="assets/svg/pdf.svg" alt="">
+	</div>
+	<div class="option-type" (click)="onPdfExcelDownload('excel')">
+		<img src="assets/svg/download_excel.svg" alt="">
+	</div>
+</div>
+</div>
+		<!-- <div class="search-section">
+			<ion-searchbar search-icon="false" class="custom-searchbar" [(ngModel)]="searchValue" [placeholder]='placeholderInput'>
+            </ion-searchbar>
+            
+            <ion-button class="search-button" (click)="searchText()">
+                <img src="assets/svg/search_new.svg" alt="">
+            </ion-button>
+			
+			<ion-toolbar class="drop-down-toolbar" *ngIf="isDropDownVisible">
+				<div class="drop-down thin-scroll" *ngIf="dataLoad">
+					<div class="item" *ngFor="let data of clientList | filter:clientSearchValue" (click)="onSelectedClient(data.ClientCode) ">
+						<span class="name">{{data.ClientCode}}</span>
+						<span class="first">{{data.ClientName}}</span>
+					</div>
+				</div>
+				<div class="loader" *ngIf="!dataLoad">
+					<img src="/assets/imgs/loader.gif" alt="">
+				  </div>
+				<div class="drop-down thin-scroll" *ngIf="clientList.length == 0">
+					<span>No Data Found</span>
+				</div>
+			</ion-toolbar>
+			
+			
+		</div> -->
+		<div *ngIf="!monthinclude" class="hold_message_box d-flex">
+			<div> <img src="assets/svg/info.svg" alt="info"></div>
+			<ul class="hold_list">
+				<li>Hold allowed only on expiry before 1:30pm</li>
+				<li>All open positions will be held from RMS liquidation for hold client case</li>
+			</ul>
+			<a ><img src="assets/svg/close.svg" class="hold_msg_close_btn" alt="" (click)="onClosePopup()"></a>
+		</div>
+		<!-- <div class="total_record d-flex">
+			<div class="total_grid text-center">
+				<label class="d-block">Total Contracts </label>
+				<span class="d-block">{{clientHolddata?.length}}</span>
+			</div>
+
+			<div class="total_grid text-center">
+				<label class="d-block">Days to Upcoming Expiry</label>
+				<span class="d-block">{{dayvalue}}<span class="hold_re_date">{{thursdayPeriod[1]}}</span></span>
+			</div>
+			<div class="total_grid text-center">
+				<label class="d-block">Some intersting highlight</label>
+				<span class="d-block">##</span>
+			</div>
+
+
+
+
+		</div> -->
+		
+		<div class="table-header">
+			<table class="desktop-table">
+				<thead class="raatableHeader" style="width: 100%;" >
+					<tr>
+						
+						 <th> 
+							<input type="checkbox" style="transform: scale(1.2,1.2); visibility: hidden;" ></th> 
+						<th  class="pointer" >Client
+							Code
+						</th>
+
+						<th  class="pointer"  >
+							Contract Name
+						
+						</th>
+						<th>Product Type</th>
+						<th>LTP(₹)</th>
+						
+						<th>BOD Quantity</th>
+						<th>Total Net Quantity</th>
+						<th>Status</th>
+						<th>&nbsp;</th>
+					
+					</tr>
+				</thead>
+				
+
+				
+			</table>
+		</div>
+		<div class="main-table ">
+			<!-- <table style="width: 100%" class="mobile-table"> -->
+			<div class="table-block" >
+				<table class="desktop-table">
+					
+					<tbody >
+						<tr class="main_tr"
+							*ngFor="let dataObj of clientHolddata | filterClientCode:searchValue;let i=index">
+             
+			  
+			  
+	<div>
+		<td>
+			<input [disabled] ="dataObj.HOLD === '1' ? true : false" type="checkbox" [checked]="isChecked[i]" [(ngModel)]="dataObj.isChecked" (change)="selectclient($event,dataObj ,i)" style="transform: scale(1.2,1.2);">
+		  </td>
+							<td>{{dataObj.ClientCode}}</td>
+							<td>{{dataObj.ContractName}}</td>
+								<td>{{dataObj.ProductType.toUpperCase()}}</td>
+							<td>{{dataObj.LTP}}</td>
+								<td>{{dataObj.BODQuantity}}</td>
+							
+
+							<td >{{dataObj.TotalNetQuantity}}</td>
+							<td>
+								<span *ngIf="dataObj.HOLD === '1'" style="color: green;" >On HOLD</span>
+								<span *ngIf="dataObj.HOLD === '0'" style="color:#000;" >-</span>
+								
+							</td>
+							<td>
+                                 <ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg"
+                                        *ngIf="!collapsed[i]" (click)="onCollapse(i)"></ion-icon>
+                                    <ion-icon *ngIf="collapsed[i]" class="rotate arrow-button down-arrow-button"
+                                        src="./assets/svg/down-arrow.svg" (click)="onCollapse(i)"></ion-icon>
+                            </td>
+						</div>
+						<div *ngIf="collapsed[i]" class="details_part" >
+							<div class="d-flex" style="padding-left:0px !important; padding-right:0px !important;">
+								
+							  <div class="deatils_part_grid">
+								  <label>Spot Price</label>
+								  <div>
+							  <span class="details_value">{{dataObj.Spotprice}}</span>
+							</div>
+							  </div>
+							  <div class="deatils_part_grid">
+								  <label>Today Net Quantity</label>
+								  <div>
+							  <span class="details_value">{{dataObj.TodayNetQuantity}}</span>
+							</div>
+							  </div>
+			  
+							  <div class="deatils_part_grid">
+								  <label>Cash Available Quantity</label>
+								  <div>
+							  <span class="details_value">{{dataObj.CashAvailableQuantity}}</span>
+							</div>
+							  </div>
+					  </div>
+							</div>
+					
+							
+						</tr>
+						
+						
+				
+						
+					</tbody>
+					<div *ngIf="(clientHolddata==null || clientHolddata.length==0) && !dataLoad">
+						<tr>
+							<td class="no-data-found">No Data Found</td>
+						</tr>
+					</div>
+				</table>
+			</div>
+
+			<div class="loader" *ngIf="dataLoad">
+				<img src="/assets/imgs/loader.gif" alt="">
+			</div>
+		</div>
+	</div>
+</div>

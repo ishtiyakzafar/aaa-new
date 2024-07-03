@@ -1,0 +1,176 @@
+<div class="card_details_pop">
+    <div *ngIf="!showMsgDiv">
+      <div class="modal_title demapTitle">
+        <span>Manager Demapping</span>
+        <div class="pop_close" (click)="dismiss()"><img src="assets/svg/close_black.svg" width="18" alt="close"></div>
+      </div>
+      <div class="container demapdetails">
+        <div class="heightCls">
+          <table class="desktop-table amc_non_client_table demap_table">
+          <thead class="width-100">
+            <tr>
+              <th><input type="checkbox" style="transform: scale(1.2,1.2); visibility: hidden;"></th>
+              <th>Map ID</th>
+              <th>Client Code</th>
+              <th>Dealer ID</th>
+              <th>Maker ID</th>
+              <th>Maker Date & Time</th>
+            </tr>
+          </thead>
+          <tr class="loader-table loader-height-300" *ngIf="dataLoad; else loader">
+            <td colspan="8"><img src="/assets/imgs/loader.gif" alt="loader" /></td>
+          </tr>
+          <ng-template #loader>
+            <tbody *ngIf="demapList.length>0; else noData">
+              <tr *ngFor="let item of demapList;let i=index">
+                <td><input type="checkbox" [checked]="isChecked[i]" [(ngModel)]="item.isChecked"
+                    (change)="selectclient($event,item ,i)" style="transform: scale(1.2,1.2);">
+                </td>
+                <td>{{item['srno']}}</td>
+                <td> {{item['clientcode']}}</td>
+                <td> {{item['admincode'] }}</td>
+                <td> {{item['createby']}}</td>
+                <td> {{item['createon'] }}</td>
+              </tr>
+            </tbody>
+            <ng-template #noData>
+              <div class="sfsd no-data-found">
+                <span>No records found</span>
+              </div>
+            </ng-template>
+          </ng-template>
+        </table></div>
+        <div class="section section-button">
+          <ion-button type="submit" [disabled]="selectedClients.length<=0" (click)="onDemapbtnClick()">Demap</ion-button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showMsgDiv">
+      <!-- <div class="modal_title demapTitle demapTitleWhite">
+        <span></span>
+      <div class="pop_close" (click)="dismiss()"><img src="assets/svg/close_black.svg" width="18" alt="close"></div>
+     </div> -->
+      <div class="card_details_pop1 massageBox">
+        <div *ngIf="bothMsg" class="table-wrapper">
+          <div class="ion-icon text-center">
+            <img src="assets/svg/successful.svg" alt="">
+        </div>
+          <div class="text-center">
+            <h5>Successfully Demapped</h5>
+            <p>{{ successMsg }}</p>
+          </div>
+          <div class="text-center">
+            <p>Note: Could not demap {{ failMsg }} since they are not under your hierarchy</p>
+          </div>
+        </div>
+        <div *ngIf="onlySuccess" class="table-wrapper">
+          <div class="ion-icon text-center">
+            <img src="assets/svg/successful.svg" alt="">
+        </div>
+          <div class="text-center">
+            <h5>Successfully Demapped</h5>
+            <p>{{ successMsg }}</p>
+          </div>        
+        </div>
+        <div *ngIf="onlyFail" class="table-wrapper">
+          <div class="ion-icon text-center">
+            <img src="assets/svg/close-fill-red.svg" alt="">
+        </div>
+          <div class="text-center">
+            <h5>Demapping Failed</h5>
+            <p>Could not demap {{ failMsg }} since they are not under your hierarchy</p>
+          </div>         
+        </div>
+      </div>
+      <div class="section section-button">
+        <ion-button type="submit" (click)="dismiss()">Okay</ion-button>
+      </div>
+    </div>
+</div>
+  
+  
+  <!-- <div class="card_details_pop">
+    <div class="modal_title demapTitle">
+      <span>Manager Demapping</span>
+      <div class="pop_close" (click)="dismiss()"><img src="assets/svg/close_black.svg" width="18" alt="close"></div>
+    </div>
+      <div class="container demapdetails">
+        <table class="desktop-table amc_non_client_table demap_table">
+          <thead class="width-100">
+            <tr>
+              <th><input type="checkbox" style="transform: scale(1.2,1.2); visibility: hidden;"></th>
+              <th>Map ID</th>
+              <th>Client Code</th>
+              <th>Dealer ID</th>
+              <th>Maker ID</th>
+              <th>Maker Date & Time</th>
+            </tr>
+          </thead>
+          <tr class="loader-table loader-height-300" *ngIf="dataLoad; else loader">
+            <td colspan="8"><img src="/assets/imgs/loader.gif" alt="loader" /></td>
+          </tr>
+          <ng-template #loader>
+            <tbody *ngIf="demapList.length>0; else noData">
+              <tr *ngFor="let item of demapList;let i=index">
+                <td><input type="checkbox" [checked]="isChecked[i]" [(ngModel)]="item.isChecked"
+                    (change)="selectclient($event,item ,i)" style="transform: scale(1.2,1.2);">
+                </td>
+                <td>{{item['srno']}}</td>
+                <td> {{item['clientcode']}}</td>
+                <td> {{item['admincode'] }}</td>
+                <td> {{item['createby']}}</td>
+                <td> {{item['createon'] }}</td>
+              </tr>
+            </tbody>
+            <ng-template #noData>
+              <div class="sfsd no-data-found">
+                <span>No records found</span>
+              </div>
+            </ng-template>
+          </ng-template>
+        </table>
+        <div class="section section-button">
+          <ion-button type="submit" [disabled]="selectedClients.length<=0" (click)="onDemapbtnClick()">Demap</ion-button>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showMsgDiv">
+      <div class="pop_close" (click)="dismiss()"><img src="assets/svg/close_black.svg" width="18" alt="close"></div>
+      <div class="card_details_pop1">
+        <div *ngIf="bothMsg" class="table-wrapper">
+          <div class="ion-icon">
+            <img src="assets/svg/successful.svg" alt="">
+        </div>
+          <div class="text-center">
+            <h5>Successfully Demapped</h5>
+            <h5>{{ successMsg }}</h5>
+          </div>
+          <div class="text-center">
+            <h5>Note: Could not demap {{ failMsg }} since they are not under your hiearchy</h5>
+          </div>
+        </div>
+        <div *ngIf="onlySuccess" class="table-wrapper">
+          <div class="ion-icon">
+            <img src="assets/svg/successful.svg" alt="">
+        </div>
+          <div class="text-center">
+            <h5>Successfully Demapped</h5>
+            <h5>{{ successMsg }}</h5>
+          </div>        
+        </div>
+        <div *ngIf="onlyFail" class="table-wrapper">
+          <div class="ion-icon">
+            <img src="assets/svg/close-fill-red.svg" alt="">
+        </div>
+          <div class="text-center">
+            <h5>Demapping Failed</h5>
+            <h5>Could not demap {{ failMsg }} since they are not under your hiearchy</h5>
+          </div>         
+        </div>
+      </div>
+      <div class="section section-button">
+        <ion-button type="submit" (click)="dismiss()">Okay</ion-button>
+      </div>
+  </div>
+  </div> -->
+  

@@ -1,0 +1,133 @@
+<ion-header class="mobile-visibility">
+	<ion-toolbar color="tertiary">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Risk Report</ion-title>
+			</div>
+		</div>
+	</ion-toolbar>
+
+	<ion-toolbar class="search-section">
+		<ion-searchbar class="custom-searchbar" placeholder="Search by Client Code / Name"
+			[(ngModel)]="searchClientCode">
+		</ion-searchbar>
+	</ion-toolbar>
+	<div class="download_file">
+		<div style="margin-right: 15px;" class="option-type" (click)="onPdfExcelDownload('pdf')">
+			<img src="assets/svg/pdf.svg" alt="">            
+		</div>
+		<div class="option-type" (click)="onPdfExcelDownload('excel')">
+			<img src="assets/svg/download_excel.svg" alt="">            
+		</div>
+	</div>
+</ion-header>
+
+<ion-content class="mobile-visibility">
+	<div class="data-block-parent card_mobile_view" *ngIf="riskDataList && riskDataList.length > 0 && dataLoad">
+		<div class="data-block bod_card"
+			*ngFor="let dataObj of riskDataList | filterSearch: searchClientCode : 'Loginid'; let i = index">
+			<div class="upper-section" (click)="dropClick(dataObj.Loginid, riskDataList)">
+				<div class="qty-block">
+					<span class="status">
+						<span class="item-title item-value"><span class="font-weight-normal">Client Code:</span> {{dataObj.Loginid}}</span>
+					</span>
+					
+				</div>
+			</div>
+			
+			<ul class="bod_card_list table_card_bod" *ngIf="route.snapshot.queryParams['reportType'] == 5 || route.snapshot.queryParams['reportType'] == 6">
+				<li>
+					<label> Branch Code</label>
+					<span>{{dataObj && dataObj.Branch ? dataObj.Branch : '0'}}</span>
+				</li>
+				<li>
+					<label> Ledger Bal (&#8377;)</label>
+					<span>{{dataObj && dataObj.LedBalance ? dataObj.LedBalance : '0'}}</span>
+				</li>
+				
+				<li>
+					<label>BuyValue(&#8377;)</label>
+					<span> {{dataObj && dataObj.BuyVal ? dataObj.BuyVal : '0'}}</span>
+				</li>
+				
+				<li>
+					<label>Span Exp</label>
+					<span>&#8377; {{dataObj && dataObj.SpanExp ? dataObj.SpanExp : '0'}}</span>
+				</li>
+
+				<li>
+					<label>ODAmount(&#8377;)</label>
+					<span>{{dataObj && dataObj.NewLB ? dataObj.NewLB : '0'}}</span>
+				</li>
+
+				<li>
+					<label>GHV</label>
+					<span>{{dataObj && dataObj.GHV ? dataObj.GHV : '0'}}</span>
+				</li>
+
+				<li>
+					<label>THV</label>
+					<span>{{dataObj && dataObj.THV ? dataObj.THV : '0'}}</span>
+				</li>
+				
+				<li>
+					<label>NetWorth</label>
+					<span>{{dataObj && dataObj.Networth ? dataObj.Networth : '0'}}</span>
+				</li>
+				
+				<li>
+					<label>Status</label>
+					<span>{{dataObj && dataObj.Status ? dataObj.Status : '-'}}</span>
+				</li>
+				
+				</ul>
+
+				<ul class="bod_card_list table_card_bod" *ngIf="route.snapshot.queryParams['reportType'] == 30 || route.snapshot.queryParams['reportType'] == 90">
+					<li>
+						<label>Branch code</label>
+						<span>{{dataObj && dataObj.Branch ? dataObj.Branch : '0'}}</span>
+					</li>
+					
+					<li>
+						<label>SPAN</label>
+						<span>{{dataObj && dataObj.SPAN ? dataObj.SPAN : '0'}}</span>
+					</li>
+					
+					<li>
+						<label>Adj. Led Bal</label>
+						<span>{{dataObj && dataObj.ALB ? dataObj.ALB : '0'}}</span>
+					</li>
+	
+					<li>
+						<label>GHV</label>
+						<span>{{dataObj && dataObj.GHV ? dataObj.GHV : '0'}}</span>
+					</li>
+	
+					<li>
+						<label>THV</label>
+						<span>{{dataObj && dataObj.THV ? dataObj.THV : '0'}}</span>
+					</li>
+
+					<li>
+						<label>Net Worth</label>
+						<span>{{dataObj && dataObj.Networth ? dataObj.Networth : '0'}}</span>
+					</li>
+
+					<li>
+						<label>Maker Date</label>
+						<span>{{dataObj && dataObj.Mkrdt ? moment(dataObj['Mkrdt']).format('DD/MM/YYYY') : '0'}}</span>
+					</li>
+					
+					</ul>
+
+			</div>
+		</div>
+	<div class="data-block-parent" *ngIf="riskDataList && riskDataList.length == 0 && dataLoad">
+		<span class="no-data-found">No Records Found</span>
+	</div>
+
+	<div class="loader" *ngIf="!dataLoad">
+		<img src="/assets/imgs/loader.gif" alt="">
+	</div>
+</ion-content>

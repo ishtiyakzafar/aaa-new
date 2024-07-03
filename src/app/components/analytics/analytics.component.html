@@ -1,0 +1,28 @@
+<!-- <ion-header>
+  <div class="info-drop">  </div>
+  <ion-toolbar class="desktop-visibility">
+    <div class="analytic-container">
+      <div class="heading-part notificationheader">
+        <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+        <span class="heading">Analytics</span>
+      </div>
+    </div>
+  </ion-toolbar>
+  <ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Analytics</ion-title>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header> -->
+<div *ngIf="displayAnalyticsSection">
+  <div class="container1">
+    <!-- <iframe #iframe *ngIf="holdingData.length > 0"></iframe> -->
+    <iframe #iframe id="trendlyne" src="https://newsiifl.trendlyne.com/clientapi/irwin/webview/FHZVJwFXDC/portfolio-report/" *ngIf="holdingData.length > 0"  (load)="loadIframe()"></iframe>
+    <div class="noData" *ngIf="holdingData.length == 0">
+        No Data Found
+    </div>
+  </div>
+</div>

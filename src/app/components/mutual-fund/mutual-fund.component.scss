@@ -1,0 +1,104 @@
+@import '../../../app/pages/client-equity-commodity/client-equity-commodity.page.scss';
+
+// .mutual-fund-holding-block {
+//     display: flex;
+//     width: 100%;
+//     justify-content: space-around;
+// }
+
+// .title {
+//     color: #2D197F;
+//     font-size: 18px;
+// }
+
+// .equity-block {
+//     display: flex;
+//     justify-content: space-between;
+//     flex-direction: column;
+//     .name {
+//         font-size: 14px;
+//     }
+//     .equity {
+//         color: #1D83D4;
+//     }
+//     .debt {
+//         color: #FFC107;
+//     }
+//     .hybrid {
+//         color: #00ADAF;
+//     }
+//     .others {
+//         color: #EB2A1C;
+//     }
+//     .line {
+//         width: 1px;
+//         height: 20px;
+//         background: #eee;
+//     }
+//     .part {
+//         display: flex;
+//         align-items: center;
+//         justify-content: space-around;
+//     }
+//     .section {
+//         width: 100px;
+//     }
+// }
+
+// .total-value-block {
+//     .block-title {
+//         color: #6E6E6E;
+//         font-size: 17px;
+//     }
+//     .block-value {
+//         font-size: 24px;
+//         color: #000000;
+//         .rupees {
+//             font-size: 18px;
+//         }
+//     }
+//     .total-pl {
+//         color: #17C257;
+//     }
+//     .block {
+//         margin-bottom: 8px;
+//     }
+// }
+
+
+.header-segment-bottom {
+    .segment-button-checked {
+        border-bottom: 4px solid #2D197F;
+    }
+}
+
+.Equity {
+    justify-content: flex-start;
+    padding-left: 49px;
+}
+
+
+
+.desktop-segment-top {
+    ion-segment-button {
+        --color: #586A7A;
+        --color-checked: #fff;
+    }
+    ion-segment-button {
+        &::part(native) {
+            // color: #fff;
+            color: unset;
+        }
+    }
+}
+
+
+.holding-block-segment {
+    width: 625px;
+    margin: 8px 0 0 0;
+    overflow: hidden;
+    ion-segment-button {
+        margin: 0;
+    }
+}
+

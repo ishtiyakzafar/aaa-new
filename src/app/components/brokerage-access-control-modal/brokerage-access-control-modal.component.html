@@ -1,0 +1,95 @@
+<div class="card_details_pop" >
+    <div class="modal_head">
+    <div class="modal_title">
+        <div>
+            <span>Brokerage View Rights</span>
+            <p>Select the child IDs to make Brokerage visible on respective view</p>
+            
+        </div>
+        <div class="pop_close" (click)="dismiss()"><img src="assets/svg/close_black.svg" width="18" alt="close"></div>
+       
+    </div>
+        <div class="master_user">
+            <div class="master_user_details">
+                <img src="assets/svg/user_master.svg" width="20" alt="close"> 
+                <div class="client_grid">
+                    <div class="client_name">{{userName}}</div>
+                    
+                </div> 
+            </div>
+            <div class="cli_right client_grid">
+                <!-- You’re a MASTER -->
+                <span>{{loginId}}</span>
+            </div>
+        </div>
+    </div>  
+    
+    <div class="card_details_inner" id="BrokeragePanel">
+        <div class="search-section search-section-changed search-section-changed-revamped">
+        <ion-label>Search by</ion-label>                 
+        <ng-container>
+            <ion-searchbar search-icon="false" class="custom-searchbar" [(ngModel)]="searchTerm" customValidate
+             placeholder="Type Child Code/ Name" (ngModelChange)="changeSearchText($event)"></ion-searchbar>
+        </ng-container>
+        <!-- <ion-button class="search-button">
+            <img src="assets/svg/search_new.svg" alt="">
+        </ion-button> -->
+    </div>
+
+    <div class="web-equity thin-scroll detail-table desktop-visibility" style="margin-top:10px">
+        <div class="header-table">
+          <table style="width: 100%" class="desktop-header-table ">
+            <thead>
+              <tr>
+                <th>Child ID</th>
+                <th [class.active]="order === 'PartnerName'" class="pointer" (click)="setOrder('PartnerName')">Child Name
+                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                </th>
+                <th><input [(ngModel)]="isChecked" (ngModelChange)="checkValue($event)" type="checkbox"></th> </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="main-table thin-scroll crtr_main_tbl">
+          <div class="table-block">
+            <table class="desktop-table thin-scroll">
+        
+              <tr *ngFor="let dataObj of accessControlDataFilter | orderBy: order:val;let i = index">
+                <td>{{dataObj.PartnerCode}}</td>
+                <td>{{dataObj.PartnerName}}</td>
+                <td><input [(ngModel)]="dataObj.isCheckedKey" (ngModelChange)="checkValueRow($event,dataObj.DashboardBrkgRights,i)" [checked]="dataObj.isCheckedKey" type="checkbox"></td>
+              </tr>
+              <!-- </tbody> -->
+              <tbody>
+                <tr class="center"> 
+                  <td colspan="3" *ngIf="dataLoad">
+                    <div class="loader center">
+                      <img src="/assets/imgs/loader.gif" alt="">
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center" colspan="3" *ngIf="!accessControlDataFilter.length">
+                    <div class="center tableLoader"> <img class="raise-image" src="assets/svg/not_raised.svg" alt="">
+                      <div class="raise-message">No Data</div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+
+    <div class="child_count_grid">
+        <span><span class="chl_cuont">{{count}} childs</span> selected</span>
+        <a href="javascript:avoid(0)" (click)="onSubmit()" class="primary_btn">Submit</a>
+    </div>
+    
+</div>
+       
+    </div>
+    
+    
+  

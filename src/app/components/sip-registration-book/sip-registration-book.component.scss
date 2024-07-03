@@ -1,0 +1,164 @@
+.main-section {
+    border: 1px solid #CBCBCB;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    max-height: 464px;
+    overflow: auto;
+    .section {
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px solid #cbcbcb;
+        padding: 10px 16px;
+        cursor: pointer;
+        .top-section {
+            display: flex;
+            justify-content: space-between;
+            .title {
+                font-size: 18px;
+                color: #000000;
+                font-family: 'nunitoBold';
+            }
+            .status-section {
+                color:#000000;
+              
+                font-size: 14px;
+                font-family: 'nunitoSemiBold';
+                display: flex;
+                align-items: center;
+                .circle {
+                    width: 15px;
+                    height: 15px;
+                    background: #E5AC00;
+                    display: inline-block;
+                    border-radius: 50%;
+                    margin-left: 4px;
+                }
+            }
+            .status-section-inactive {
+                color: #DF514C;
+                .circle {
+                    background: #DF514C;
+                }
+            }
+        }
+        .lower-section {
+            display: flex;
+            justify-content: space-between;
+            margin: 16px 0;
+        }
+        .detail-section {
+            display: flex;
+            justify-content: space-around;
+            background: #F4F3F9;
+            padding: 14px;
+        }
+        .section-block {
+            display: flex;
+            flex-direction: column;
+            font-family: 'nunitoSemiBold';
+            align-items: center;
+            max-width: 20%;
+            .section-title {
+                font-size: 14px;
+                color: #716A90;
+            }
+            .section-value {
+                font-size: 14px;
+                color: #212121;
+                max-width: 100%;
+            }
+        }
+    }
+}
+
+.arrow-button {
+    right: 3px;
+    width: 13px;
+    top: 8px;
+}
+
+.date_value{
+    color:#9C9C9C;
+    font-size: 12px;
+}
+
+
+@media screen and (max-width: 500px) {
+    .main-section {
+        max-height: unset;
+        border-radius: 0;
+        border: none;
+        .section {
+            padding: 10px 8px;
+            .date-section {
+                color: #9C9C9C;
+                font-size: 12px;
+                font-family: 'nunitoSemiBold';
+                margin-bottom: 2px;
+            }
+            .top-section {
+                .title {
+                    font-size: 16px;
+                    max-width: 56vw;
+                }
+                .status-section {
+                    align-items: flex-start;
+                    .circle {
+                        position: relative;
+                        top: 2px;
+                    }
+                }
+            }
+            .section-block {
+                max-width: 25%;
+                .section-title {
+                    font-size: 12px;
+                }
+                .section-value {
+                    font-size: 12px;
+                    text-align: center;
+                }
+                .installment_label{
+                    font-size: 10px !important; 
+                }
+            }
+            .detail-section {
+                padding: 14px 2px;
+                
+                .section-block {
+                    .section-title {
+                        font-size: 11px;
+                    }
+                }
+            }
+        }
+    }
+    .arrow-button {
+        width: 8px;
+        top: 3px;
+        right: 1px;
+    }
+}
+
+@media screen and (max-width: 370px) {
+    .main-section {
+        .section {
+            padding: 10px 8px;
+            .section-block {
+                .section-title {
+                    font-size: 12px;
+                }
+                .section-value {
+                    font-size: 12px;
+                }
+            }
+            .detail-section {
+                .section-block {
+                    .section-title {
+                        font-size: 10px;
+                    }
+                }
+            }
+        }
+    }
+}

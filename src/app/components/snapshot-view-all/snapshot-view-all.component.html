@@ -1,0 +1,62 @@
+<div id="custom-modal-mobile-1">
+   
+    <div class="header">
+       <span class="fal fa-times modal-dismiss cross" (click)="closeModal();">X</span>
+   </div>
+   <div class="weekhigh_title head_weekhighlow pb-5">
+       <span class="pr-15">
+          52 Week High
+       </span>
+       <label class="switch">
+          <input type="checkbox" id="togBtn" [(ngModel)]="nscBscValue">
+          <div class="slider round">
+             <span class="on">BSE</span><span class="off">NSE</span>
+          </div>
+       </label>
+    </div>
+ 
+    <div class="week_hl_contains weekhighlow_container modal-container" style="margin-top: 0;">
+     
+       <div class="weekhighlist table-parent">
+          <table class="commontablewidth no-wrap-table">
+             <thead class="commonlowhightable snapshot-mobile-header-single-table">
+                <tr>
+                   <th class="leftalignwithpadding commonth">Scrip</th>
+                   <th class="commonth" style="text-align: right;">52 Wk Low</th>
+                   <th class="rightalignwithpadding commonth">LTP</th>
+                </tr>
+             </thead>
+             <tbody class="tbodydone tbodyscroll">
+                <tr>
+                   <td class="leftalignwithpadding fontboldblack">symbol</td>
+                   <td style="text-align:right;font-size: 14px;">1,863.65</td>
+                   <td class="rightalignwithpadding fontgreen">
+                      <p class="m-pt0" style="font-size:14px">1,815.55</p>
+                      <p class="m-pt0" style="font-size:13px">
+                        -0.67% 
+                       </p>
+                   </td>
+                </tr>
+                <tr>
+                    <td class="leftalignwithpadding fontboldblack">symbol</td>
+                    <td style="text-align:right;font-size: 14px;">1,863.65</td>
+                    <td class="rightalignwithpadding fontgreen">
+                       <p class="m-pt0" style="font-size:14px">1,815.55</p>
+                       <p class="m-pt0" style="font-size:13px">
+                         -0.67% 
+                        </p>
+                    </td>
+                 </tr>
+             </tbody>
+             <!-- <tbody *ngIf="weekListHigh.length == 0">
+                <tr class="cursor-auto">
+                   <td class="no-data-found" colspan="3" style="font-family: nunitoRegular !important; text-align: center !important; color: #212121 !important; ">No Data Found</td>
+                </tr>
+             </tbody> -->
+          </table>
+       
+       </div>
+    </div>
+ 
+ 
+</div>

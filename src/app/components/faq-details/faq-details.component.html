@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar color="tertiary" class="mobile-visibility">
+      <div class="title-block title-block-custom">
+          <div class="icon-title">
+              <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+              <ion-title class="title">FAQs</ion-title>
+          </div>
+          <!-- <div class="icon-title"> -->
+            <!-- <ion-title (click)="gotoHelp()" class="title">IIFL Help
+            </ion-title> -->
+        <!-- </div> -->
+         <div class="icon-title">
+          <ion-title class="title">{{faqTitle}}
+          </ion-title>
+      </div>
+      </div>
+  </ion-toolbar>
+  <ion-toolbar class=" desktop-visibility">
+      <div class="container">
+          <div class="heading-part notificationheader">
+              <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+              <span class="heading">FAQs</span>
+          </div>
+          <!-- <div class="heading-part notificationheader"> -->
+            <!-- <span (click)="gotoHelp()" class="heading ">IIFL Help
+            </span> -->
+
+
+            <div class="bed_crum">
+                <a href="javascript:void(0)" (click)="onBradcrum()">Home</a>
+                <a href="javascript:void(0)" (click)="gotoHelp()">FAQs</a>
+            </div>
+        <!-- </div> -->
+         <div class="heading-part notificationheader">
+          <h2>{{faqTitle}}
+          </h2>
+      </div>
+      </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="desktop-visibility">
+    <div *ngIf="newFaqData.length > 0" class="container">
+  <div *ngFor="let data of newFaqData; let i = index">
+    <ol class="list" (click)="onFaqClick(data)">
+        <img src="/assets/svg/doc_icon.png" width="15px" style="margin-right:5px" alt=""> {{data.title}}
+    </ol>
+</div>
+</div>
+<div *ngIf="newFaqData.length < 1" class="container">
+    <h3> No FAQs Found!</h3>
+</div>
+
+<!-- <div class="raise-query-submit-box">
+    <div class="container">
+<div class="sub_section">
+    <div>
+        <h2>Still can’t find an answer? </h2>
+        <p>Raise a query and we will get back to you.</p>
+    </div>
+    <div class="raise_btn_bottom">
+        <div class="section section-button">
+            <ion-button type="submit" (click)="raiseQueryClick()">Raise a Query </ion-button>
+          </div>
+    </div>
+</div>
+    </div>
+</div> -->
+</ion-content>

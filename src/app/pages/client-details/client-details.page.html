@@ -1,0 +1,119 @@
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Client Details</ion-title>
+			</div>
+			<ion-icon class="Search-Icon" src="./assets/svg/search.svg" (click)="goToAddScript()"></ion-icon>
+		</div>
+	</ion-toolbar>
+	<!-- <clients-tabs (passTabParams)="clientTabChange($event)"></clients-tabs> -->
+</ion-header>
+
+<ion-content>
+	<div *ngIf="selectedClientTab == 'rmView'">
+		<div *ngFor="let clientData of clientDetails">
+			<div class="upper-block">
+				<div class="first-section">
+					<div class="name-block">
+						<span class="name">{{passClientName}}</span>
+						<span class="code">{{passClientID}}</span>
+					</div>
+					<div class="more-option-block">
+						<div class="icon-block" (click)="clientDetailsPopup()">
+							<img src="assets/svg/client_details_person.svg" alt="" class="width-8">
+							<span>Clients Details</span>
+						</div>
+						<div class="icon-block" (click)="goToShareReport()">
+							<img src="assets/svg/client_details_share.svg" alt="">
+							<span>Share Report</span>
+						</div>
+						<div class="icon-block" (click)="goToBrokeragePlan()"> 
+							<img src="assets/imgs/search_detail.png" alt="">
+							<span>Brokerage Plan</span>
+						  </div>
+						  <div *ngIf="isOnlyRM == 'RM'" class="icon-block pointer"  (click)="goToClientInteractions()">
+							<img src="assets/imgs/client_interactions.svg" alt="">
+							<span>Client Interactions</span>
+						  </div>
+					  
+						  <div class="icon-block pointer" (click)="displyPopupClientProfile()">
+							<img src="assets/imgs/client_profile_icon.svg" alt="">
+							<span>Client Profile</span>
+						  </div>
+					</div>
+				</div>
+				<!-- <div class="chart-section">
+					<canvas #dognutChart baseChart
+						[datasets]="newChartData"
+						[labels]="newChartLabels"
+						[options]="newChartOptions"
+						[type]="'doughnut'"
+					></canvas>
+				</div> -->
+				<div class="client-risk-evaluation client-visible {{riskProfileClass}}">
+					<img *ngIf="!clientRiskProfile || clientCap == null" src="assets/svg/risk-evaluation.svg" alt="" class="">
+					<img *ngIf="clientRiskProfile" src="{{riskProfileImg}}" alt="" class="">
+					<span *ngIf="clientRiskProfile">You're <b>{{riskProfileMsg}}</b> Risk Taker</span>
+					<span *ngIf="!clientRiskProfile || clientCap == null">Make better decisions by knowing the investing behaviour</span>
+					<span *ngIf="clientRiskProfile" class="risklink" (click)="goToReEvaluate()">Re-evaluate</span>
+					<span *ngIf="!clientRiskProfile || clientCap == null" class="risklink" (click)="goToRiskEvaluation()">Risk Evaluation</span>
+				 </div>
+				<!-- <div class="equity-block">
+					<div class="block">
+						<span class="block-title">Equity</span>
+						<span class="block-value"><span class="rupees">₹</span>{{clientData.EquityHoldingValue | formatNumberUnit}} ({{convertNanToZero(clientData.EquityHoldingValue / clientData.totalclientHoldingValue)*100}}%)</span>
+					</div>
+					<div class="block">
+						<span class="block-title commodity">Commodity</span>
+						<span class="block-value"><span class="rupees">₹</span>{{clientData.CommodityHoldingValue | formatNumberUnit}} ({{convertNanToZero(clientData.CommodityHoldingValue / clientData.totalclientHoldingValue)*100}}%)</span>
+					</div>
+					<div class="block">
+						<span class="block-title mutual">Mutual Funds</span>
+						<span class="block-value"><span class="rupees">₹</span>{{clientData.MutualFundHoldingvalue | formatNumberUnit}} ({{convertNanToZero(clientData.MutualFundHoldingvalue / clientData.totalclientHoldingValue)*100}}%)</span>
+					</div>
+				</div> -->
+			</div>
+			<!-- <div class="total-value-block">
+				<div class="section">
+					<span class="section-title">Total Value</span>
+					<span class="section-value"><span class="rupees">₹</span> {{clientData.totalclientHoldingValue | formatNumberUnit}}</span>
+				</div>
+				<div class="section">
+					<span class="section-title">Avl. Equity Margin</span>
+					<span class="section-value value-margin"><span class="rupees">₹</span> {{clientData.AvailableEquityMargin | formatNumberUnit}}</span>
+				</div>
+			</div> -->
+			<!-- <div class="fund-transfer-block request_info">
+				<ion-segment [(ngModel)]="fundTransferBlockValue" style="width: 150px">
+					<ion-segment-button value="mandates" (click)="mandate('Mandate')">Mandates</ion-segment-button>
+				</ion-segment>
+				<div class="d-flex pay_info">
+					Payout Request 
+					  <span class="infoTooltip"><img src="./assets/svg/info.svg"> 
+					  <span class="tooltiptext">Payout Request is now in Request in More section</span>
+					  </span>
+				  </div>
+			</div> -->
+			<div class="portfolio-block">
+				<span class="portfolio">{{passClientName}} Portfolio</span>
+				<div class="item-block" (click)="goToEquityCommodity()">
+					<div class="item">
+						<span class="item-title">Equity & Commodity</span>
+						<span class="item-value"><span class="rupees">₹</span>{{(clientData.EquityHoldingValue + clientData.CommodityHoldingValue) | formatNumberUnit }}</span>
+					</div>
+					<img src="assets/svg/right-arrow.svg" alt="">
+				</div>
+				<div class="item-block" (click)="goToMutualFund()">
+					<div class="item">
+						<span class="item-title">Mutual Funds</span>
+						<span class="item-value"><span class="rupees">₹</span>{{clientData.MutualFundHoldingvalue | formatNumberUnit}}</span>
+					</div>
+					<img src="assets/svg/right-arrow.svg" alt="">
+				</div>
+			</div>
+		</div>
+	</div>
+	<app-client-portfolio *ngIf="selectedClientTab == 'portfolio'"></app-client-portfolio>
+</ion-content>

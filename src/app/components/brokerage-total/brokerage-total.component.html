@@ -1,0 +1,178 @@
+<div class="desktop-visibility">
+    <div *ngIf="rptLoad" class="overlay"></div>
+    <div class="download_msg_main" (mouseenter)="excelDownlod = !excelDownlod" (mouseleave)="excelDownlod = !excelDownlod">
+        <div class="option-type" (click)="onExcelDownloadClick()">
+            <img src="assets/svg/download_excel.svg" alt="">
+        </div>
+        <div class="download_msg" *ngIf="excelDownlod">
+            Download Performance Report
+        </div>
+    </div>
+    <div class="web-equity thin-scroll">
+        <div class="header-table">
+            <table style="width: 100%" class="desktop-header-table detailed_tbl">
+                <thead>
+                    <tr>
+                        <th>
+                            Client ID
+                        </th>
+                        <th>
+                            Date
+                        </th>
+                        <th>
+                            Wire Code
+                        </th>
+                        <th class="pointer" [class.active]="order === 'Cash'" (click)="setOrder('Cash')">
+                            Cash 
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                           <span *ngIf="!searchText"> {{cashTotal | number : '1.2-2'}}</span>
+                        </th>
+                        <th class="pointer" [class.active]="order === 'Futures'" (click)="setOrder('Futures')">
+                            Future 
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                            <span *ngIf="!searchText">{{futureTotal | number : '1.2-2'}}</span>
+                        </th>
+                        <th class="pointer" [class.active]="order === 'Options'" (click)="setOrder('Options')">
+                            Options
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                            <span *ngIf="!searchText">{{optionTotal | number : '1.2-2'}}</span>
+                        </th>
+                        <th class="pointer" [class.active]="order === 'Currency'" (click)="setOrder('Currency')">
+                            Currency
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                            <span *ngIf="!searchText">{{currencyTotal | number : '1.2-2'}}</span>
+                        </th>
+                        <th class="pointer" [class.active]="order === 'Commodity'" (click)="setOrder('Commodity')">
+                            Commodity
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                           <span *ngIf="!searchText"> {{commodityTotal | number : '1.2-2'}}</span>
+                        </th>
+                        <th class="pointer" [class.active]="order === 'TotalBrokerage'" (click)="setOrder('TotalBrokerage')">
+                            Total
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                            <span *ngIf="!searchText">{{brokerageTotal | number : '1.2-2'}}</span>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="main-table thin-scroll">
+            <table style="width: 100%" class="mobile-table">
+                <tbody *ngIf="datas.length > 0 && dataLoad">
+
+                    <tr *ngFor="let dataObj of datas | orderBy: order:val">
+                        <td>
+                            {{dataObj['ClientCode']}}
+                        </td>
+                        <td>
+                            {{dataObj['Date']}}
+                        </td>
+                        <td>
+                            {{dataObj['WireCode']}}
+                        </td>
+                        <td>
+                            {{dataObj['Cash']}}
+                        </td>
+                        <td>
+                            {{dataObj['Futures']}}
+                        </td>
+                        <td>
+                            {{dataObj['Options']}}
+                        </td>
+                        <td>
+                            {{dataObj['Currency']}}
+                        </td>
+                        <td>
+                            {{dataObj['Commodity']}}
+                        </td>
+                        <td>
+                            {{dataObj['TotalBrokerage']}}
+                        </td>
+                    </tr>
+                </tbody>
+                <div class="loader" *ngIf="!dataLoad" style="min-height: 173px;">
+					<img src="/assets/imgs/loader.gif" alt="">
+                </div>
+                <div class="loader" *ngIf="(datas).length == 0 && dataLoad"  style="min-height: 173px;">
+					<h4>No records found.</h4>
+				</div>
+            </table>
+        </div>
+    </div>
+    <div class="loader" *ngIf="rptLoad">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+</div>
+
+<ion-content class="inner-content mobile-visibility">
+    <div class="web-equity detail-part-dashboard detail-part-aum-inner mobile-visibility">
+        <div class="header-table">
+            <table style="width: 100%">
+                <thead>
+                    <tr>
+                        <th class="pointer" [class.active]="order === 'ClientCode'" (click)="setOrder('ClientCode')">
+                                <span>Client ID</span> 
+                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                        </th>
+                        <th class="pointer" [class.active]="order === 'Date'" (click)="setOrder('Date')">
+                            <div class="head-block">
+                                <span>Date</span> 
+                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                            </div>
+                        </th>
+                        <th class="pointer" [class.active]="order === 'TotalBrokerage'" (click)="setOrder('TotalBrokerage')">
+                            <div class="head-block">
+                                <span>Total</span> 
+                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="web-equity detail-part-dashboard detail-part-aum-inner mobile-visibility">
+		<div class="main-table">
+			<table style="width: 100%" class="mobile-table">
+				<tbody *ngIf="datas.length">
+
+					<tr *ngFor="let dataObj of datas | orderBy: order:val" (click)="details(dataObj)">
+						<td>
+							{{dataObj['ClientCode']}}
+						</td>
+						<td>
+							{{dataObj['Date']}}
+						</td>
+						<td>
+							{{dataObj['TotalBrokerage']}}
+						</td>
+					</tr>
+				</tbody>
+				<div class="loader" *ngIf="!dataLoad" style="min-height: 170px;">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div>
+				<div class="loader" *ngIf="dataLoad && !datas.length" style="min-height: 170px;">
+					<h4>No records found.</h4>
+				</div>
+			</table>
+		</div>
+	</div>
+</ion-content>

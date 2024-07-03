@@ -1,0 +1,59 @@
+<div class="container">
+  <div class="search-section-reports search-section epi_search">
+    <div class="d-flex">
+      <ion-searchbar search-icon="false" class="custom-searchbar" placeholder="Search Client Code" [debounce]="1000"
+      (ngModelChange)="searchText($event)" [(ngModel)]="searchValue">
+      </ion-searchbar>
+    </div>
+</div>
+
+  <div class="web-epi-table">
+		<table>
+				<thead>
+					<tr>
+						<th>Client ID</th>
+            <th>Demat ID</th>
+            <th>Scrip</th>
+            <th>EPI Qty</th>
+            <th>Status</th>
+            <th [class.active]="order === 'MakerDateTime'" class="pointer" (click)="setOrder('MakerDateTime')">Request Date
+              <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                *ngIf="!ascending">
+            </th>
+            <th>Requested By</th>
+					</tr>
+				</thead>
+			<tbody >
+        <!-- review. orderBy issue -->
+					<!-- <tr *ngFor="let item of epiRequestList | orderBy: order:reverse; let i = index"> -->
+					<tr *ngFor="let item of epiRequestList; let i = index">
+						<td>{{item.ClientCode || '-'}}</td>
+            <td>{{item.DematId || '-'}}</td>
+            <td>{{item.Symbol || '-'}}</td>
+            <td>{{item.Qty || '-'}}</td>
+            <td class="status" [ngClass]="{'positive': item?.Status == 'Approved' }">{{item.Status || '-'}}</td>
+            <td>{{item.MakerDateTime | date : 'dd/MM/yyyy' || '-'}}</td>
+            <td>{{item.MakerID || '-'}}</td>
+          </tr>
+
+					
+				</tbody>
+
+				<tbody *ngIf="epiRequestList.length === 0 && !dataLoad">
+					<tr>
+						<td class="no-data-found text-center" colspan="9">No Records Found</td>
+					</tr>
+				</tbody>
+
+				<tbody *ngIf="dataLoad" >
+					<tr>
+						<td class="no-data-found text-center" colspan="9" style="border: 0px!important; height: 200px;"><img style="width:30px" src="/assets/imgs/loader.gif" alt=""></td>
+					</tr>
+				 </tbody>
+			</table>
+		
+	</div>
+</div>

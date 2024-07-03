@@ -1,0 +1,235 @@
+<ion-header>
+    <ion-toolbar color="tertiary" class="mobile-visibility">
+        <div class="segment-title-block">
+            <div class="title-block title-block-custom">
+                <div class="icon-title">
+                    <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                    <ion-title class="title">Circulars</ion-title>
+                </div>
+            </div>
+        </div>
+      </ion-toolbar>
+    <ion-toolbar class="desktop-visibility">
+        <div class="container">
+            <div class="heading-part circularsheader">
+               <span class="titleName"><ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <span class="heading">Circulars</span></span> 
+              
+            </div>
+        </div>
+    </ion-toolbar>
+    <ion-toolbar>
+      <div class="container ">     
+      <ion-row class="colorback border-bottom">
+          <ion-segment scrollable mode="md" class="destop-segment-middle circularsData-block-segment"
+              [(ngModel)]="circularTabValue" (ionChange)="segmentChange($event)">
+              <div *ngFor="let data of circularsData">
+                  <ion-segment-button value="{{data['value']}}">{{data['name']}}</ion-segment-button>
+              </div>
+          </ion-segment>
+      </ion-row>
+      </div>
+  </ion-toolbar>
+   
+  </ion-header>
+  <ion-content>
+      <div class="container circular_container">
+      <div class="d-flex circular_search">
+              
+          <div class="search-section">
+            <ion-searchbar class="custom-searchbar" [(ngModel)]="searchValue" placeholder="Search by circular number or circular subject">
+            </ion-searchbar>
+          </div>
+          <ng-container *ngIf="circularTabValue === 'archive'">
+            <div class="section date-section shr_sec_box">
+              <div class="section inner-section">
+				
+								<div class="datePopover">
+									<ion-item class="date_Picker" (click)="toggleStartDatePicker()">
+										<div class="label">From Date</div>
+									  <ion-input placeholder="Select Date" [value]="startDate | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+									  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+									</ion-item>
+									<div class="calendarBackdrop" *ngIf="showStartDatePicker" (click)="hideDatePicker('start')"></div>
+									<ion-datetime class="calendarOpen date-position-right" *ngIf="showStartDatePicker" presentation="date"
+									[(ngModel)]="startDate" presentation="date" min="1973-01-01" [max]="currentDate"
+									  (ionChange)="hideDatePicker('start',$event)">
+									</ion-datetime>
+								  </div>
+						
+							</div>
+			
+							<div class="section inner-section">
+								<div class="datePopover">
+									<ion-item class="date_Picker" (click)="toggleEndDatePicker()">
+										<div class="label">To Date</div>
+									  <ion-input placeholder="Select Date" [value]="endDate | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+									  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+									</ion-item>
+									<div class="calendarBackdrop" *ngIf="showEndDatePicker" (click)="hideDatePicker('end')"></div>
+									<ion-datetime class="calendarOpen date-position-right" *ngIf="showEndDatePicker" presentation="date"
+									  [(ngModel)]="endDate" presentation="date" min="1973-01-01" [max]="currentDate"
+									  (ionChange)="hideDatePicker('end',$event)">
+									</ion-datetime>
+								  </div>
+			
+							</div>
+              <!-- <div class="section inner-section" (click)="dp.openCalendar()">
+                  <div class="label">From Date</div>
+                  <input placeholder="YYYY-MM-DD" class="ion-input dateField" angular-mydatepicker name="startDate" readonly
+                      [options]="myOptions" #dp="angular-mydatepicker" (dateChanged)="updatedStartDate($event)" />
+                  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+              </div>
+              <div class="section inner-section" (click)="dp1.openCalendar()">
+                  <div class="label">To Date</div>
+                  <input placeholder="YYYY-MM-DD" class="ion-input dateField" angular-mydatepicker name="endDate" readonly
+                      [options]="myOptions" #dp1="angular-mydatepicker" [disabled]="disableToDte"  (dateChanged)="updatedEndDate($event)">
+                  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+              </div> -->
+            </div>
+          </ng-container>
+       </div>   
+       <div  class="d-flex categoryTab">
+          <ion-segment scrollable class="categoryCircular" [(ngModel)]="categoryFilter" (ionChange)="categoryFilterChange($event)">
+              <ion-segment-button value="all">
+                  All
+                </ion-segment-button>
+                <ng-container *ngIf="circularTabValue === 'latest'">
+                  <ion-segment-button *ngFor="let category of categoriesLast30Days" [value]="category.name">
+                    {{ category.name }}
+                  </ion-segment-button>
+                  </ng-container>
+                  <ng-container *ngIf="circularTabValue === 'archive'">
+                  <ion-segment-button *ngFor="let category of categoriesOlderThan30Days" [value]="category.name">
+                    {{ category.name }}
+                  </ion-segment-button>
+                  </ng-container>
+                  
+          </ion-segment>
+          <ng-container *ngIf="circularTabValue === 'latest'">
+            <span> <img src="/assets/svg/update-icon.svg"> New Updates</span>
+          </ng-container>
+       </div>
+      <div class="parent-block-section">
+          <div class="tab-content " [ngSwitch]="circularTabValue">
+              <div class="tab-content-data" *ngSwitchCase="'latest'">
+                 
+                  <div class="" *ngIf="dataLoad">
+                    <div class="desktop-visibility">
+                       <table class="desktop-header-table width-100 circularTable">
+                      <thead>
+                        <tr>
+                          <th style="width:27%;">Circular Number</th>
+                          <th style="width:12%;">Category</th>
+                          <th>Subject</th>
+                          <th style="width:12%;">Uploaded Date</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody *ngIf="latestCircularsData.length > 0; else noRecords">
+                        <tr *ngFor="let circular of filterCirculars(latestCircularsData)">
+                          <td>
+                            <img src="/assets/svg/update-icon.svg" [class.red-icon]="isLastThreeDays(circular.modifiedTime)" width="14" alt="">
+                          {{ circular.title}}</td>
+                          <td>{{ circular.category.name }}</td>
+                          <td>{{ circular.summary}}</td>
+                          <td>{{ circular.modifiedTime | date: 'dd-MM-yyyy' }}</td>
+                          <td>
+                            <button class="btnPDF" (click)="downloadPdf(circular.id)"><img  src="assets/svg/pdf.svg" width="24" alt=""></button>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <ng-template #noRecords>
+                          <tr>
+                            <td colspan="5" class="text-center">No records found for the last 30 days.</td>
+                          </tr>
+                        </ng-template>
+                    
+                    </table></div>
+                    <div class="mobile-visibility ">
+                    <div class="circularCard" *ngIf="latestCircularsData.length > 0; else noRecords">
+                      <div *ngFor="let circular of filterCirculars(latestCircularsData)">
+                        <div class="d-flex">
+                          <h3><img src="/assets/svg/update-icon.svg" [class.red-icon]="isLastThreeDays(circular.modifiedTime)" width="14" alt="">
+                            {{ circular.summary}}</h3>
+                          <button class="btnPDF" (click)="downloadPdf(circular.id)"><img  src="assets/svg/pdf.svg" width="24" alt=""></button>
+                        </div>
+                        <div  class="d-flex secondaryBox">
+                          <div><label>Circular Number</label>{{ circular.title}}</div>
+                          <div><label>Category</label>{{ circular.category.name }}</div>
+                          <div><label>Uploaded Date</label>{{ circular.modifiedTime | date: 'dd-MM-yyyy' }}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <ng-template #noRecords>
+                      <div class="text-center">No records found for the last 30 days.</div>
+                   
+                    </ng-template>
+                  </div>
+                  </div>
+                  <div class="loader" *ngIf="!dataLoad" >
+                      <img src="/assets/imgs/loader.gif" alt="">
+                  </div>  
+              </div>
+              <div class="tab-content-data" *ngSwitchCase="'archive'">
+                <div class="" *ngIf="dataLoad">
+                  <div class="desktop-visibility">
+                  <table class="desktop-header-table width-100 circularTable">
+                      <thead>
+                        <tr>
+                          <th style="width:27%;">Circular Number</th>
+                          <th style="width:12%;">Category</th>
+                          <th>Subject</th>
+                          <th style="width:12%;">Uploaded Date</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody *ngIf="archiveCircularsData.length > 0; else noRecords">
+                        <tr *ngFor="let circular of filterCirculars(archiveCircularsData)">
+                          <td>{{ circular.title}}</td>
+                          <td>{{ circular.category.name }}</td>
+                          <td>{{ circular.summary}}</td>
+                          <td>{{ circular.modifiedTime | date: 'dd-MM-yyyy' }}</td>
+                          <td>
+                            <button class="btnPDF" (click)="downloadPdf(circular.id)"><img  src="assets/svg/pdf.svg" width="24" alt=""></button>
+                          </td>
+                        </tr>
+                      </tbody>
+                      <ng-template #noRecords>
+                        <tr>
+                          <td colspan="5" class="text-center">No records found.</td>
+                        </tr>
+                        
+                      </ng-template>
+                    
+                    </table>  </div>
+                    <div class="mobile-visibility">
+                    <div class="circularCard" *ngIf="archiveCircularsData.length > 0; else noRecords">
+                      <div *ngFor="let circular of filterCirculars(archiveCircularsData)">
+                        <div class="d-flex">
+                          <h3><img src="/assets/svg/update-icon.svg" [class.red-icon]="isLastThreeDays(circular.modifiedTime)" width="14" alt="">
+                            {{ circular.summary}}</h3>
+                          <button class="btnPDF" (click)="downloadPdf(circular.id)"><img  src="assets/svg/pdf.svg" width="24" alt=""></button>
+                        </div>
+                        <div  class="d-flex secondaryBox">
+                          <div><label>Circular Number</label>{{ circular.title}}</div>
+                          <div><label>Category</label>{{ circular.category.name }}</div>
+                          <div><label>Uploaded Date</label>{{ circular.modifiedTime | date: 'dd-MM-yyyy' }}</div>
+                        </div>
+                      </div>
+                    </div>
+                    <ng-template #noRecords>
+                      <div class="text-center">No records found.</div>
+                     
+                     
+                    </ng-template>
+                  </div>
+                    </div>
+                    <div class="loader" *ngIf="!dataLoad" >
+                      <img src="/assets/imgs/loader.gif" alt="">
+                  </div>    
+              </div>
+          </div>
+      </div>   
+  </div>
+  </ion-content>   

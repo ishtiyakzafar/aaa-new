@@ -1,0 +1,247 @@
+<ion-header>
+  <ion-toolbar color="tertiary" class="mobile-visibility">
+      <div class="title-block title-block-custom">
+          <div class="icon-title">
+              <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+              <ion-title class="title">Previous Queries</ion-title>
+          </div>
+      </div>
+  </ion-toolbar>
+  <ion-toolbar class=" desktop-visibility">
+      <div class="container">
+          <div class="heading-part notificationheader">
+              <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+              <span class="heading">Previous Queries</span>
+          </div>
+      </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+<div class="container">
+    <div class="d-flex pt_grid">
+      <button class="all" [ngClass]="{'active': isAll}" (click)="allQueriesClick()">
+        All <span>{{ totalQueriesCount }}</span>
+      </button>
+      
+      <button class="wip" [ngClass]="{'active': isOpen}" (click)="sendToDeptClick()">
+        Send To Department <span>{{ sendDeptCount }}</span>
+      </button>
+      
+      <button class="closed" [ngClass]="{'active': isClose}" (click)="respondedClick()">
+        Responded <span>{{ respondedCount }}</span>
+      </button>
+      
+      <button class="closed" [ngClass]="{'active': isWip}" (click)="resolvedClick()">
+        Resolved <span>{{ resolvedCount }}</span>
+      </button>
+        </div>
+
+        <div class="d-flex partner_search">
+            
+              <div class="search-section">
+                <ion-searchbar class="custom-searchbar" [(ngModel)]="searchValue" placeholder="Search by Ticket ID, Subject">
+                </ion-searchbar>
+              </div>
+              <div class="amc_non_client custom-date-block brokerage_datepicker datepicker_arrow" (click)="openDatepicker()">
+                <div class="left-section d-flex" style="position:relative; align-items: center;">
+                   <div>      
+                  <div class="title ngx-daterangepicker-action">Select Date</div>
+                   <input  
+                   ngxDaterangepickerMd  
+                   [(ngModel)]="selectedDate"
+                   [maxDate]="maxDate" 
+                   [minDate]="minDate" 
+                   [showDropdowns] = "true"
+                   [showCustomRangeLabel]="true" 
+                   [ranges]="ranges"
+                   [alwaysShowCalendars]="false"
+                   [showRangeLabelOnInput]="true"
+                   startKey="start"
+                   endKey="end"
+                   [showCancel]="cancelBtn"
+                   [locale]="{applyLabel: 'Apply Filters', format: 'DD-MM-YYYY', customRangeLabel: 'Custom Range', firstDay: 1}"
+                   (datesUpdated)="datesUpdated($event)"
+                     readonly
+                  class="date-ranngeCss">
+                </div>
+                  <!-- <ion-icon class=""  (click)="openDatepicker()" style="right: 0px;" src="assets/svg/down-arrow.svg"></ion-icon> -->
+                </div>
+              </div> 
+
+              <!-- <div class="amc_non_client custom-date-block" (click)="openDatepicker()">
+                <div class="left-section d-flex" style="position:relative; align-items: center;">
+                   <div>      
+                  <div class="title ngx-daterangepicker-action">Select Date</div>
+                   <input  
+                   ngxDaterangepickerMd  
+                   [(ngModel)]="selectedDate"
+                   [maxDate]="maxDate" 
+                   [showCustomRangeLabel]="true" 
+                   [ranges]="ranges"
+                   [alwaysShowCalendars]="false"
+                   [showRangeLabelOnInput]="true"
+                   startKey="start"
+                   endKey="end"
+                   [showCancel]="cancelBtn"
+                   [locale]="{applyLabel: 'Apply Filters', format: 'DD-MM-YYYY', customRangeLabel: 'Custom Range', firstDay: 1}"
+                   (datesUpdated)="datesUpdated($event)"
+                     readonly
+                  class="date-ranngeCss">
+                </div>
+                  <ion-icon class="arrow-button" style="right: 0px;" src="assets/svg/down-arrow.svg"></ion-icon>
+                </div>
+              </div>  -->
+            
+            </div>
+
+            
+
+            <div class="d-flex">
+              <div class="raised_section">
+                <span *ngIf="lastFiveEntries">Recent Queries for :</span>
+                <span *ngIf="!lastFiveEntries">Raised for :</span>
+                <ion-segment class="calculator-segment d-flex" name="segmentValue" [(ngModel)]="segmentValue" (ionChange)="mapSegmentChanged($event.detail.value)">
+                  <ion-segment-button class="ion-active" value="Self">Self</ion-segment-button>          
+                  <ion-segment-button value="Client">Clients</ion-segment-button>
+                  <ion-segment-button *ngIf="isRM" value="Partner">Partners</ion-segment-button>  
+                </ion-segment>
+              </div>
+            </div>
+
+        
+
+<div class="raise_main_tbl">
+            <div class="web-equity thin-scroll detail-table desktop-visibility" style="margin-top:25px">
+                <div class="header-table header-sticky">
+                  <table style="width: 100%" class="desktop-header-table ">
+                    <thead>
+                      <tr>
+                        <th> <span class="mobile-visibility">Client</span> <span class="desktop-visibility">Ticket ID</span> </th>
+                        <th *ngIf="segmentValue == 'Client'">Client ID</th>
+                        <th *ngIf="segmentValue == 'Partner'">Partner ID</th>
+                        <!-- <th *ngIf="segmentValue == 'Self'">Partner Code</th> -->
+                        <th> Subject </th>
+                        <th [class.active]="order === 'Created_Date'" class="pointer" (click)="setOrder('Created_Date')">Date
+                          <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                          <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                              *ngIf="ascending">
+                          <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                              *ngIf="!ascending">
+                      </th>
+                        <th> Status </th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+                <div class="main-table">
+                  <div class="table-block">
+                    <table class="desktop-table thin-scroll" >
+                    <tbody> 
+                      <!-- <tr >
+                        <td (click)="openPopup(dataObj)" class="ticket-id"> 4167865 </td>
+                        <td>Rahul Verma <span class="d-block">1123458</span></td>
+                        <td>Account activation issue </td>
+                        <td>May 10, 2022</td>
+                        <td class="desktop-visibility-data positive status" [ngClass]="{'open_st': dataObj?.StatusLabel == 'Open' , 'closed_st': dataObj?.StatusLabel == 'Closed' , 'wip_st': dataObj?.StatusLabel == 'WIP' }" -->
+                        
+                        <!-- {{dataObj?.Status ? getStatus(dataObj.Status) : '-'}} --> 
+                          <!-- Open <span class="d-block">Expected to be resolved in 24 hours</span> </td> -->
+                      <!-- </tr> -->
+
+                      <!-- review. removed filter and orderBy -->
+                      <!-- <tr *ngFor="let dataObj of searchTableData | orderBy: order:reverse | filter: searchValue; let i = index"> -->
+                        <tr *ngFor="let dataObj of searchTableData | filter: searchValue; let i = index">
+                        <td (click)="openPopup(dataObj)" class="ticket-id">
+                            {{dataObj?.TicketID}}
+                        </td>
+
+                        <td *ngIf="segmentValue == 'Client'">
+                          {{dataObj?.ClientCode ? dataObj?.ClientCode : '-'}}
+                        </td>
+                        <td *ngIf="segmentValue == 'Partner'">
+                          {{dataObj?.Partner_Code ? dataObj?.Partner_Code : '-'}}
+                      </td>
+
+                      <!-- <td *ngIf="segmentValue == 'Self'">
+                        {{dataObj?.Partner_Code ? dataObj?.Partner_Code : '-'}}
+                      </td> -->
+                      
+                        <td>
+                            {{dataObj?.Subject}}
+                        </td>
+                        <td>
+                            {{moment(dataObj['Created_Date']).format('MMM DD, YYYY')}}
+                        </td>
+                        <!-- <td class="desktop-visibility-data positive" [ngClass]="{'open_st': dataObj?.StatusLabel == 'Open' , 'closed_st': dataObj?.StatusLabel == 'Closed' , 'wip_st': dataObj?.StatusLabel == 'WIP' }"> -->
+                        <td class="desktop-visibility-data positive">
+                          <!-- {{dataObj?.Status ? getStatus(dataObj.Status) : '-'}} -->
+                            <span [ngClass]="{'orange_status': dataObj?.StatusLabel =='Send To Department', 'red_status': dataObj?.StatusLabel === 'Created' || dataObj?.StatusLabel === 'Fresh Ticket', 'green_status': dataObj?.StatusLabel === 'Resolved' || dataObj?.StatusLabel === 'FTR' || dataObj?.StatusLabel === 'Responded'}">{{dataObj?.StatusLabel ? dataObj?.StatusLabel : '-'}}</span>
+                            <p class="status-color" *ngIf="dataObj?.StatusLabel == 'Send To Department' && dataObj['ExpectedDueDate'] != null"> Will be resolved within {{dateCalculation(dataObj['ExpectedDueDate'] , moment().format())}} </p>
+                            <p class="status-color" *ngIf="dataObj?.StatusLabel == 'Resolved' && dataObj['Closed_Date'] != null">{{dateCalculation(moment().format() , moment(dataObj['Closed_Date']))}} ago</p>
+                        </td>
+                    
+                       </tr>
+                      
+                     
+                      <tr *ngIf="tableLoader">
+                        <td align="center" colspan="5">
+                          <div class="center loader"> 
+                            <img *ngIf="tableLoader" class="" src="/assets/imgs/loader.gif" alt=""> 
+                          </div>
+                        </td> 
+                        </tr>
+
+                      <tr *ngIf="searchTableData.length < 1 && !tableLoader">
+                      <td align="center" colspan="5"><div class="center"> <img class="raise-image" src="assets/svg/not_raised.svg" alt="">
+                            <div class="raise-message">
+                              <span *ngIf="lastFiveEntries">You have not raised any queries in last 30 days</span>
+                              <span *ngIf="!lastFiveEntries">You have not raised any queries yet</span>
+                            </div>
+                           
+                          </div></td>
+                        </tr>
+                      </tbody> 
+                        
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+    <div class="mobile-visibility raise_main_tbl_mobile">
+      <div class="client_mb_grid_box" *ngFor="let dataObj of searchTableData | orderBy: order:reverse | filter: searchValue; let i = index">
+        <div class="cl_gr_in">
+          <div class="d-flex ticket_status">
+            <div (click)="openPopup(dataObj)" class="ticket-id"><span>Ticket ID : </span> {{dataObj?.TicketID}}</div>
+          <div class="positive">
+            <span [ngClass]="{'orange_status': dataObj?.StatusLabel =='Send To Department', 'red_status': dataObj?.StatusLabel === 'Created' || dataObj?.StatusLabel === 'Fresh Ticket', 'green_status': dataObj?.StatusLabel === 'Resolved' || dataObj?.StatusLabel === 'FTR' || dataObj?.StatusLabel === 'Responded'}">{{dataObj?.StatusLabel ? dataObj?.StatusLabel : '-'}}</span>
+          </div>
+          </div>
+          <div *ngIf="segmentValue == 'Client'">
+            <span *ngIf="segmentValue == 'Client'"> Client Code</span>{{dataObj?.ClientCode ? dataObj?.ClientCode : '-'}}</div>
+
+          <div class="subject"> {{dataObj?.Subject}}</div>
+          <div><span>Date :</span>  {{moment(dataObj['Created_Date']).format('MMM DD, YYYY')}}</div>
+
+        </div>
+        <div class="gr_bt_msg">
+          <p class="status-color" *ngIf="dataObj?.StatusLabel == 'Send To Department' && dataObj['ExpectedDueDate'] != null"> Will be resolved within {{dateCalculation(dataObj['ExpectedDueDate'] , moment().format())}} </p>
+          <p class="status-color" *ngIf="dataObj?.StatusLabel == 'Resolved' && dataObj['Closed_Date'] != null">{{dateCalculation(moment().format() , moment(dataObj['Closed_Date']))}} ago</p>
+      
+        </div>
+      </div>
+      <div *ngIf="tableLoader">
+        <div class="center"> <img *ngIf="tableLoader" class="" src="/assets/imgs/loader.gif" alt=""> </div>
+      </div>
+      <div *ngIf="!tableLoader && searchTableData.length < 1">
+      <div class="center"> <img class="raise-image" src="assets/svg/not_raised.svg" alt="">
+            <div class="raise-message">
+              <span *ngIf="lastFiveEntries">You have not raised any queries in last 30 days</span>
+              <span *ngIf="!lastFiveEntries">You have not raised any queries yet</span></div>
+          </div>
+        </div>
+
+      
+      </div>     
+    </div>
+</ion-content>

@@ -1,0 +1,678 @@
+<ion-content class="raise_query" appScrollbarTheme>
+	<ion-header>
+		<ion-toolbar color="tertiary" class="mobile-visibility">
+			<div class="title-block title-block-custom">
+				<div class="icon-title">
+					<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+					<ion-title  class="title">{{ reportType ? reportType : 'Reports'}} </ion-title>
+				
+				</div>
+			</div>
+	
+		</ion-toolbar>
+		
+		<ion-toolbar class="desktop-visibility">
+			<div class="container">
+				<div class="heading-part report-header">
+					<!-- <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon> -->
+					<!-- <span class="heading">Reports</span> -->
+					<span class="heading headingReports">
+						
+						<ng-select  class="reports-ng-select"  [items]="reportTypeData" bindLabel="reportType" bindValue="reportType"
+						[clearable]="false" [searchable]="false" [placeholder]="'Reports'"
+						name="requestType" [(ngModel)]="reportType" (change)="changeReportType($event)">
+						</ng-select>
+					
+					</span>
+				</div>
+				<div class="rquest-tabs">
+					<div  *ngIf="reportType == 'Limit Request Status'">
+					  <button (click)="limitChangeRedirect()">
+						Limit Request
+					  </button>
+					  <button class="active" >
+						Limit Request Status
+					  </button>
+					</div>
+					<div *ngIf="reportType == 'JV Request Status'">
+					  <button (click)="jvRequestRedirect()">
+						JV Request
+					  </button>
+					  <button class="active" >
+						JV Request Status
+					  </button>
+					</div>
+					<div *ngIf="reportType == 'EPI Request Status'">
+						<button (click)="epiRequestRedirect()">
+							EPI Request
+						</button>
+						<button class="active" >
+							EPI Request Status
+						</button>
+					  </div>
+				   <div *ngIf="reportType == 'Brokerage Request Status'">
+					<button (click)="brokerageRequestRedirect()">
+					  Brokerage Request 
+					</button>
+					<button class="active" >
+					  Brokerage Request Status
+					</button>
+				   </div>
+				   
+							</div>
+			</div>
+		</ion-toolbar>
+		
+		
+		<div>
+			<div class="container" >
+				<div class="rquest-tabs mobile-visibility">
+					<div  *ngIf="reportType == 'Limit Request Status'">
+					  <button (click)="limitChangeMobile()">
+						Limit Request
+					  </button>
+					  <button class="active" >
+						Limit Request Status
+					  </button>
+					</div>
+					<div *ngIf="reportType == 'JV Request Status'">
+					  <button (click)="jvRequestMobile()">
+						JV Request
+					  </button>
+					  <button class="active" >
+						JV Request Status
+					  </button>
+					</div>
+					<div *ngIf="reportType == 'Brokerage Request Status'">
+					<button (click)="brokerageRequestMobile()">
+					  Brokerage Request 
+					</button>
+					<button class="active" >
+					  Brokerage Request Status
+					</button>
+				   </div>
+				   
+							</div>
+			<div class="report-block">
+				
+		
+				<!-- <div class="section">
+					<div class="label">Select Report</div>
+					
+				</div> -->
+	
+				<div class="section" *ngIf="reportType == 'Shares Deposit Report' || reportType == 'Deposit Ledger' || reportType == 'FAN Payout Summary' || reportType == 'FAN Brokerage Ledger'">
+					<div class="label">Enter RM/Partner Code</div>
+					<div [ngClass]="showFanCodeDropdown ? 'search-fan-code-box open' : 'search-fan-code-box'">
+						<ion-input (click)="onInputClick()" [(ngModel)]="selectedFanCode" [ngModelOptions]="{standalone: true}" type="text" class="ion-input search-Hierarchy" (input)="searchHierarchyList($event)" [placeholder]= 'placeholderInput'>
+						</ion-input>
+						<img (click)="onInputClick()" *ngIf="fanCodeList.length" src="assets/svg/down-arrow-gray.svg" alt="">
+						<ul *ngIf="showFanCodeDropdown && fanCodeList.length">
+							<li [ngClass]="selectedFanCode === item.EmployeeCode  ? 'active' :''" (click)="handleSelectFanCode(item)" *ngFor="let item of fanCodeList">{{item.EmployeeCode}}</li>
+						</ul>
+						<ul *ngIf="noRecord && setTextSearch.length>3">
+							<li>No record found</li>
+						</ul>
+					</div>
+					<!-- <ng-select [items]="fanCodeList" bindLabel="EmployeeCode" bindValue="EmployeeCode" [loading]="Loadvalue"
+						[inputAttrs]="inputattr" [clearable]="false" [searchable]="true" [placeholder]="'Select'"
+						name="selectPartner" [(ngModel)]="selectPartner">
+					</ng-select> -->
+				</div>
+				<div class="section" *ngIf="reportType == 'GST Invoice'">
+					<div class="label">Enter RM/Partner Code</div>
+					<div [ngClass]="showFanCodeDropdown ? 'search-fan-code-box open' : 'search-fan-code-box'">
+						<ion-input (click)="onInputClick()" [(ngModel)]="selectedFanCode" [ngModelOptions]="{standalone: true}" type="text" class="ion-input search-Hierarchy" (input)="searchHierarchyList($event)" [placeholder]= 'placeholderInput'>
+						</ion-input>
+						<img (click)="onInputClick()" *ngIf="fanCodeList.length" src="assets/svg/down-arrow-gray.svg" alt="">
+						<ul *ngIf="showFanCodeDropdown && fanCodeList.length">
+							<li [ngClass]="selectedFanCode === item.EmployeeCode  ? 'active' :''" (click)="handleSelectFanCode(item)" *ngFor="let item of fanCodeList">{{item.EmployeeCode}}</li>
+						</ul>
+						<ul *ngIf="noRecord && setTextSearch.length>3">
+							<li>No record found</li>
+						</ul>
+					</div>
+					<!-- <ng-select [items]="fanCodeList" bindLabel="EmployeeCode" bindValue="EmployeeCode" [loading]="Loadvalue"
+						[inputAttrs]="inputattr" [clearable]="false" [searchable]="true" [placeholder]="'Select'" name="selectFanCode"
+						[(ngModel)]="selectFanCode">
+					</ng-select> -->
+				</div>
+				<!-- <div [ngClass]="{'report_none1': reportType == 'FAN Payout Summary'}" class="section desktop-visibility visibility-status" style="width:32%;margin-top:10px"
+					*ngIf="reportType === 'FAN Payout Summary'">
+				</div> -->
+				<!-- <div [ngClass]="{'report_none': reportType == 'FAN Payout Summary'}" class="section desktop-visibility visibility-status" style="width:32%;margin-top:10px"
+					*ngIf="reportType === 'FAN Payout Summary'">
+				</div> -->
+				<div class="section fanSummary" *ngIf="reportType == 'FAN Payout Summary'">
+					<div class="label">Select Year</div>
+					
+					<ng-select [items]="yearList" bindLabel="item" bindValue="item"
+						[clearable]="false" [searchable]="false" [placeholder]="'Select'"
+						name="selectYear" [(ngModel)]="selectYear" (change)="selectedYear($event)">
+					</ng-select>
+				</div>
+	
+				<div class="section  fanSummary" *ngIf="reportType == 'FAN Payout Summary'">
+					<div class="label">Select Month</div>
+					
+					<ng-select [items]="monthList" bindLabel="item" bindValue="item"
+						[clearable]="false" [searchable]="false" [readonly]= "monthSelectionField" [placeholder]="'Select'"
+						name="selectMonth" [(ngModel)]="selectMonth">
+					</ng-select>
+				</div>
+	
+	
+				<div class="section " *ngIf="reportType == 'Brokerage Request Status'">
+					<div class="label">All Orders</div>
+
+					<ng-select [items]="brokerageOrderType" bindLabel="status" bindValue="value"
+						[clearable]="false" [searchable]="false" name="selectOrderType"
+						[(ngModel)]="selectOrderType">
+					</ng-select>
+				</div>
+				<div class="section " *ngIf="reportType == 'Commodity Margin Summary'">
+					<div class="label">Exchange Type</div>
+
+					<ng-select [items]="exchangeType" bindLabel="status" bindValue="value"
+						[clearable]="false" [searchable]="false" name="selectOrderType"
+						[(ngModel)]="selectOrderType" (change)="changeExchType($event)">
+					</ng-select>
+				</div>
+
+				<div class="section " *ngIf="reportType == 'JV Request Status'">
+					<div class="label">All Orders</div>
+
+					<ng-select [items]="jvOrderType" bindLabel="status" bindValue="value"
+						[clearable]="false" [searchable]="false" name="selectOrderType"
+						[(ngModel)]="selectOrderType">
+					</ng-select>
+				</div>
+
+				<!-- <div class="section " *ngIf="reportType == 'EPI Request Status'">			previously commented
+					<div class="label">Status</div>
+					<ng-select [items]="epiStatusType" bindLabel="status" bindValue="value"
+						[inputAttrs]="inputattr" [clearable]="false" [searchable]="false" name="selectOrderType"
+						[(ngModel)]="selectOrderType">
+					</ng-select>
+				</div> -->
+				
+				<div class="section " *ngIf="reportType == 'Risk Report'">
+					<div class="label">Report Type</div>
+
+					<ng-select [items]="riskReportTypeList" bindLabel="nfdcReportType" bindValue="value"
+						[clearable]="false" [searchable]="false"
+						name="ndfcReportType" [(ngModel)]="ndfcReportType" *ngIf="reportType == 'Risk Report'" (change)="changeRiskReportType($event)">
+					</ng-select>
+				</div>
+	
+				<div class="section " *ngIf="reportType == 'Risk Report' && this.ndfcReportType == 7">
+					<div class="label">Enter RM/Partner Code</div>
+					<div [ngClass]="showFanCodeDropdown ? 'search-fan-code-box open' : 'search-fan-code-box'">
+						<ion-input (click)="onInputClick()" [(ngModel)]="selectedFanCode" [ngModelOptions]="{standalone: true}" type="text" class="ion-input search-Hierarchy" (input)="searchHierarchyList($event)" [placeholder]= 'placeholderInput'>
+						</ion-input>
+						<img (click)="onInputClick()" *ngIf="fanCodeList.length" src="assets/svg/down-arrow-gray.svg" alt="">
+						<ul *ngIf="showFanCodeDropdown && fanCodeList.length">
+							<li [ngClass]="selectedFanCode === item.EmployeeCode  ? 'active' :''" (click)="handleSelectFanCode(item)" *ngFor="let item of fanCodeList">{{item.EmployeeCode}}</li>
+						</ul>
+						<ul *ngIf="noRecord && setTextSearch.length>3">
+							<li>No record found</li>
+						</ul>
+					</div>
+					<!-- <ng-select [items]="pCodeList" bindLabel="EmployeeCode" bindValue="EmployeeCode" [loading]="Loadvalue"
+						[inputAttrs]="inputattr" [clearable]="false" [searchable]="true" [placeholder]="'Select'" name="selectWireCode"
+						[(ngModel)]="selectFanCode" (change)="changeWireCode($event)">
+					</ng-select> -->
+				</div>
+
+				<div class="section " *ngIf="(reportType == 'Risk Report' && typeChange == 'Client Summary') || reportType == 'Commodity Client Summary'">
+					<div class="label">Enter RM/Partner Code</div>
+					<div [ngClass]="showFanCodeDropdown ? 'search-fan-code-box open' : 'search-fan-code-box'">
+						<ion-input (click)="onInputClick()" [(ngModel)]="selectedFanCode" [ngModelOptions]="{standalone: true}" type="text" class="ion-input search-Hierarchy" (input)="searchHierarchyList($event)" [placeholder]= 'placeholderInput'>
+						</ion-input>
+						<img (click)="onInputClick()" *ngIf="fanCodeList.length" src="assets/svg/down-arrow-gray.svg" alt="">
+						<ul *ngIf="showFanCodeDropdown && fanCodeList.length">
+							<li [ngClass]="selectedFanCode === item.EmployeeCode  ? 'active' :''" (click)="handleSelectFanCode(item)" *ngFor="let item of fanCodeList">{{item.EmployeeCode}}</li>
+						</ul>
+						<ul *ngIf="noRecord && setTextSearch.length>3">
+							<li>No record found</li>
+						</ul>
+					</div>
+					<!-- <ng-select [items]="branchList" bindLabel="Branch" bindValue="Branch"
+						[inputAttrs]="inputattr" [loading]="Loadvalue" [clearable]="false" [searchable]="false"
+						name="ndfcReportType" [(ngModel)]="selectBranch" (change)="changeBranch()">
+					</ng-select> -->
+				</div>
+				<div class="section "  *ngIf="reportType === 'Commodity Client Summary'">
+					<div class="label">Risk </div>
+					<ion-input [ngModelOptions]="{standalone: true}" type="text" class="ion-input" type="number" placeholder="Risk"
+						[(ngModel)]="riskText" (keyup)="typeRiskText()" required></ion-input>
+				</div>
+	
+				<div class="section " *ngIf="reportType == 'Real time Margin Shortfall'">
+					<div class="label">Enter RM/Partner Code</div>
+					<div [ngClass]="showFanCodeDropdown ? 'search-fan-code-box open' : 'search-fan-code-box'">
+						<ion-input (click)="onInputClick()" [(ngModel)]="selectedFanCode" [ngModelOptions]="{standalone: true}" type="text" class="ion-input search-Hierarchy" (input)="searchHierarchyList($event)" [placeholder]= 'placeholderInput'>
+						</ion-input>
+						<img (click)="onInputClick()" *ngIf="fanCodeList.length" src="assets/svg/down-arrow-gray.svg" alt="">
+						<ul *ngIf="showFanCodeDropdown && fanCodeList.length">
+							<li [ngClass]="selectedFanCode === item.EmployeeCode  ? 'active' :''" (click)="handleSelectFanCode(item)" *ngFor="let item of fanCodeList">{{item.EmployeeCode}}</li>
+						</ul>
+						<ul *ngIf="noRecord && setTextSearch.length>3">
+							<li>No record found</li>
+						</ul>
+					</div>
+					<!-- <ng-select [items]="fanCodeList" bindLabel="EmployeeCode" bindValue="EmployeeCode"
+						[loading]="Loadvalue" name="wireId" [(ngModel)]="wireCodeVar" 
+						(change)="wireCodeChange($event)">
+					</ng-select> -->
+				</div>
+	
+				<div class="section " *ngIf="reportType == 'Scrip Master'">
+					<div class="label">Search By :</div>
+					<ng-select [items]="scriptMasterList" bindLabel="scriptName" bindValue="scriptValue"
+						 name="scripId" [(ngModel)]="scriptVar" 
+						(change)="scriptCodeChange($event)">
+					</ng-select>
+				</div>
+	
+				<div class="section " *ngIf="reportType == 'Scrip Master' && scriptVar != 'all'">
+					<ion-input [ngModelOptions]="{standalone: true}" type="text" class="ion-input" [(ngModel)]="scriptMasterData" (keyup)="typeScriptText($event)"></ion-input>
+				</div>
+	
+				<div class="section " *ngIf="reportType == 'Scrip Master'">
+					<ion-button [disabled]="isScriptExcel" (click)="scriptExcel()">
+						Export To Excel
+						<div class="loader" *ngIf="isScriptExcel" style="top:25%;left:50%;">
+							<img src="/assets/imgs/loader.gif" alt="">
+						</div>
+					</ion-button>
+				</div>
+				<div class="section bodSection" *ngIf="reportType == 'BOD Holding'" >
+					<div class="label">Client ID</div>
+					<ion-toolbar>
+						<ion-searchbar (ionBlur)="hideDropDown()" (ngModelChange)="searchClient($event)"
+							search-icon="false" class="bodReprotsInput" [(ngModel)]="clientSearchValue"
+							placeholder="Type client ID">
+						</ion-searchbar>
+					</ion-toolbar>
+
+
+					<ion-toolbar class="drop-down-toolbar" *ngIf="isListVisible">
+						<div class="drop-down thin-scroll" *ngIf="allClients.length && dtLoad">
+							<div class="item" *ngFor="let data of allClients"
+								(click)="displayClientDetails(data)">
+								<span class="name">{{data.ClientCode}}</span>
+							</div>
+						</div>
+						<div class="drop-down thin-scroll" *ngIf="allClients.length==0 && dtLoad">
+							<span>No Data Found</span>
+						</div>
+						<div class="loader" *ngIf="!dtLoad">
+							<img src="/assets/imgs/loader.gif" alt="">
+						</div>
+					</ion-toolbar>
+					
+					
+					<!-- <ng-select [items]="clientCodeList" bindLabel="ClientCode" bindValue="ClientCode"
+						[loading]="Loadvalue" name="clientId" [(ngModel)]="passClientId" 
+						(change)="inputClientId($event)">
+					</ng-select> -->
+				</div>
+
+				<div class="section freeze_select" *ngIf="reportType == 'Freeze Details'">
+					<div class="label">Freeze Reason</div>
+
+					<ng-select [items]="freezeReason" bindLabel="reason" bindValue="value"
+						[clearable]="false" [searchable]="true" [placeholder]="'Select'"
+						name="selectFreezeReason" [(ngModel)]="selectedFreezeReason">
+					</ng-select>
+				</div>
+
+				<div class="section" *ngIf="reportType == 'DP Modification Details'">
+					<div class="label">DP Type</div>
+
+					<ng-select [items]="dpType" bindLabel="value" bindValue="value"
+						[clearable]="false" [searchable]="false" [placeholder]="'Select'"
+						name="selectDpType" [(ngModel)]="selectedDpType">
+					</ng-select>
+				</div>
+
+				<div class="section" *ngIf="reportType == 'DRF Status'">
+					<div class="label">DP Type</div>
+					<ng-select [items]="dematDpType" bindLabel="value" bindValue="value" [clearable]="false"
+						[searchable]="false" [placeholder]="'Select'" name="selectDematDpType" [(ngModel)]="selectedDematDpType">
+					</ng-select>
+				</div>
+		
+				
+				<!-- <div [ngClass]="{'report_none1': reportType == 'JV Request Status' || reportType == 'Brokerage Request Status' || reportType == 'FAN Brokerage Ledger'}" class="section desktop-visibility visibility-status" style="width:32%;margin-top:10px"
+					*ngIf="reportType == 'JV Request Status' || reportType == 'GST Invoice' || reportType == 'Brokerage Request Status' || reportType == 'FAN Brokerage Ledger'">
+				</div>
+				<div [ngClass]="{'report_none':  reportType == 'JV Request Status' || reportType == 'Brokerage Request Status' || reportType == 'FAN Brokerage Ledger'}" class="section desktop-visibility visibility-status" style="width:32%;margin-top:10px"
+					*ngIf=" reportType == 'JV Request Status' || reportType == 'Brokerage Request Status' || reportType == 'FAN Brokerage Ledger'">
+				</div>
+				 -->
+
+				<!-- review. datepicker issue 392-402 -->
+				<!-- <div class="section" (click)="dp.openCalendar()"
+					[ngClass]="{'margin_left': reportType === 'DP Scrip payout' || reportType === 'Limit Request Status' || reportType === 'Consolidated Trade Listing'}"
+					style="margin-top:10px"
+					*ngIf="reportType == 'Brokerage Request Status' || reportType === 'FAN Brokerage Ledger' || reportType === 'JV Request Status' || reportType === 'DP Scrip payout' || reportType === 'Limit Request Status' || reportType == 'GST Invoice' || reportType === 'Consolidated Trade Listing' || reportType == 'DP Modification Details' || reportType == 'EPI Request Status' || reportType == 'Account Closure Status'">
+					<div *ngIf="reportType != 'Consolidated Trade Listing'" class="label">From Date</div>
+					<div *ngIf="reportType == 'Consolidated Trade Listing'" class="label">As on Date</div>
+						<input class="ion-input dateField" angular-mydatepicker name="mydate" [(ngModel)]="fromDate" readonly [options]="myOptions"
+						#dp="angular-mydatepicker" >
+					
+						<img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+				</div> -->
+
+				<div class="section mobile-calendar"
+					[ngClass]="{'': reportType === 'DP Scrip Payout' || reportType === 'Limit Request Status' || reportType === 'Consolidated Trade Listing','date-poition-center': datePositionCenter}"
+					style="margin-top:10px"
+					*ngIf="reportType == 'Brokerage Request Status' || reportType === 'FAN Brokerage Ledger' || reportType === 'JV Request Status' || reportType === 'DP Scrip Payout' || reportType === 'Limit Request Status' || reportType == 'GST Invoice' || reportType === 'Consolidated Trade Listing' || reportType == 'DP Modification Details' || reportType == 'EPI Request Status' || reportType == 'Account Closure Status'">
+					<div *ngIf="reportType != 'Consolidated Trade Listing'" class="label">From Date</div>
+					<div *ngIf="reportType == 'Consolidated Trade Listing'" class="label">As on Date</div>
+
+					<div class="datePopover">
+						<ion-item class="date_Picker form_date_picker" (click)="toggleStartDatePicker()">
+						  <!-- <ion-label class="ion-lable-end">Start Date</ion-label> -->
+						  <ion-input placeholder="Select Date" [value]="ionFromDate | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+						  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+						</ion-item>
+						<div class="calendarBackdrop" *ngIf="showStartDatePicker" (click)="hideDatePicker('start')"></div>
+						<ion-datetime class="calendarOpen desktopDate" *ngIf="showStartDatePicker" presentation="date"
+						  [(ngModel)]="ionFromDate" presentation="date" min="1973-01-01" [max]="currentDate"
+						  (ionChange)="hideDatePicker('start',$event)">
+						</ion-datetime>
+					  </div>
+			
+				</div>
+
+	
+				<!-- review. datepicker issue 412-420 -->
+				<!-- <div class="section"  (click)="dp1.openCalendar()"
+					*ngIf="reportType == 'Brokerage Request Status' || reportType === 'FAN Brokerage Ledger' || reportType === 'JV Request Status' || reportType === 'DP Scrip payout' || reportType === 'Limit Request Status' || reportType == 'GST Invoice'  || reportType == 'DP Modification Details' || reportType == 'EPI Request Status' || reportType == 'Account Closure Status'">
+					<div class="label">To Date</div>
+					<input class="ion-input dateField" angular-mydatepicker name="mydate" [(ngModel)]="toDate" readonly [options]="myOptions"
+							 #dp1="angular-mydatepicker" >
+						<img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+				</div>
+				 -->
+
+				 <div class="section mobile-calendar"
+					[ngClass]="{'date-poition-center': datePositionCenter }"
+					*ngIf="reportType == 'Brokerage Request Status' || reportType === 'FAN Brokerage Ledger' || reportType === 'JV Request Status' || reportType === 'DP Scrip Payout' || reportType === 'Limit Request Status' || reportType == 'GST Invoice'  || reportType == 'DP Modification Details' || reportType == 'EPI Request Status' || reportType == 'Account Closure Status'">
+					<div class="label">To Date</div>
+
+					<div class="datePopover ">
+						<ion-item class="date_Picker form_date_picker" (click)="toggleEndDatePicker()">
+						  <!-- <ion-label class="ion-lable-end">End Date</ion-label> -->
+						  <ion-input placeholder="Select Date" [value]="ionToDate | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+						  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+						</ion-item>
+						<div class="calendarBackdrop" *ngIf="showEndDatePicker" (click)="hideDatePicker('end')"></div>
+						<ion-datetime class="calendarOpen desktopDate" *ngIf="showEndDatePicker" presentation="date"
+						  [(ngModel)]="ionToDate" presentation="date" min="1973-01-01" [max]="currentDate"
+						  (ionChange)="hideDatePicker('end',$event)">
+						</ion-datetime>
+					  </div>
+					
+				</div>
+
+
+				<div class="section" *ngIf="reportType == 'Outstanding Position'">
+					<div class="label">Exchange</div>
+
+					<ng-select [items]="outstandingExchange" bindLabel="status" bindValue="value"
+						[clearable]="false" [searchable]="false" name="selectOrderType"
+						[(ngModel)]="selectOrderType" (change)="changeOutstandingExch($event)" >
+					</ng-select>
+				</div>
+				<div class="section" *ngIf="reportType == 'Outstanding Position'">
+					<div class="label">Exchange Type</div>
+
+					<ng-select [items]="outstandingExchangeType" bindLabel="status" bindValue="value"
+						[clearable]="false" [searchable]="false" name="selectOrderType1"
+						[(ngModel)]="selectOrderType1" (change)="changeOutstandingExchType($event)">
+					</ng-select>
+				</div>
+				
+				<div class="section margin_top_10" *ngIf="reportType == 'Outstanding Position'">
+					<div class="label">Enter RM/Partner Code</div>
+					<div [ngClass]="showFanCodeDropdown ? 'search-fan-code-box open' : 'search-fan-code-box'">
+						<ion-input (click)="onInputClick()" [(ngModel)]="selectedFanCode" [ngModelOptions]="{standalone: true}" type="text" class="ion-input search-Hierarchy" (input)="searchHierarchyList($event)" [placeholder]= 'placeholderInput'>
+						</ion-input>
+						<img (click)="onInputClick()" *ngIf="fanCodeList.length" src="assets/svg/down-arrow-gray.svg" alt="">
+						<ul *ngIf="showFanCodeDropdown && fanCodeList.length">
+							<li [ngClass]="selectedFanCode === item.EmployeeCode  ? 'active' :''" (click)="handleSelectFanCode(item)" *ngFor="let item of fanCodeList">{{item.EmployeeCode}}</li>
+						</ul>
+						<ul *ngIf="noRecord && setTextSearch.length>3">
+							<li>No record found</li>
+						</ul>
+					</div>
+					<!-- <ng-select [items]="hierarchyListArr" bindLabel="EmployeeCode" bindValue="EmployeeCode" placeholder="Select Branch"
+						[inputAttrs]="inputattr" [clearable]="false" [searchable]="false" name="selectOrderType"
+						[(ngModel)]="hierarchyListVar" (change)="changeOutstandingBranch($event)">
+					</ng-select> -->
+				</div>
+				<div class="section download_file" *ngIf="reportType == 'Outstanding Position'">
+					<div class="option-type" (click)="onPdfExcelDownload('pdf')">
+						<img src="assets/svg/pdf.svg" alt="">
+						<span class="tooltiptext">
+							<span>Download Report</span>
+						</span>
+					</div>
+					<div class="option-type" (click)="onPdfExcelDownload('excel')">
+						<img src="assets/svg/download_excel.svg" alt="">
+						<span class="tooltiptext">
+							<span>Download Report</span>
+						</span>
+					</div>
+				</div>
+				<div class="section " *ngIf="reportType == 'Consolidated Trade Listing'">
+					<div class="label">Report Type</div>
+					<ng-select [items]="tradeListData" bindLabel="status" bindValue="value"
+						name="tradeList" [(ngModel)]="tradelist" 
+						(change)="inputTradeList($event)">
+					</ng-select>
+				</div>
+	
+				<!-- <div class="section"  (click)="dp1.openCalendar()"
+					*ngIf="reportType == 'Brokerage Request Status' || reportType === 'FAN Brokerage Ledger' || reportType === 'JV Request Status' || reportType === 'DP Scrip payout' || reportType === 'Limit Request Status' || reportType == 'GST Invoice' || reportType == 'DP Modification Details'">
+					<div class="label">To Date</div>
+					<input class="ion-input dateField" angular-mydatepicker name="mydate" [(ngModel)]="toDate" readonly [options]="myOptions"
+							 #dp1="angular-mydatepicker" >
+						<img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+				</div>  -->
+	
+				<div class="section desktop-visibility button-section">
+					<ion-button *ngIf="reportType != 'DRF Status' && reportType != 'GST Invoice' && reportType != 'Scrip Master' && reportType != 'Scrip Summary Report' && reportType != 'Commodity Client Scrip Summary' && reportType != 'Outstanding Position' && reportType != 'VAS Detailed Report'"  (click)="viewReport(reportType)"
+						[disabled]="reportType == undefined || passClientIdValidation == false || !raaReportTypeSelect">View
+						Report
+					</ion-button>
+					<ion-button *ngIf="reportType == 'DRF Status'" (click)="viewReport(reportType)">View Status</ion-button>
+					
+				
+					<ion-button  [disabled]="!selectFanCode" *ngIf="reportType == 'GST Invoice'"
+						(click)="onDownloadPdfClick()">Download
+						PDF 
+					</ion-button>
+				</div>
+				<!-- <div *ngIf="dataLoad" style="position: absolute;left:50%">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div> -->
+			</div>
+			<div *ngIf="reportType == 'GST Invoice'">
+				<div class="loader" *ngIf="dataLoad" style="min-height: 80px">
+					<img src="/assets/imgs/loader.gif" alt=""></div>
+				</div>
+				<div class="desktop-visibility" *ngIf="reportType == 'Outstanding Position'">
+					<div class="loader" *ngIf="dataLoad" style="min-height: 80px">
+						<img src="/assets/imgs/loader.gif" alt=""></div>
+				</div>
+			</div>
+		</div>
+	
+	
+		<ion-toolbar class="desktop-visibility hr-toolbar">
+			<div class="container" *ngIf="displayonSubmit">
+				<hr class="hrline">
+			</div>
+	
+		</ion-toolbar>
+	
+	</ion-header>
+	<style>
+		::-webkit-scrollbar {
+		  width: 4px;
+		  height: 4px;
+		  background-color: #F5F5F5;
+		}
+		::-webkit-scrollbar-track {
+		  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+		  background-color: #F5F5F5;
+		}
+		::-webkit-scrollbar-thumb {
+		  background-color: #2D197F;
+		}
+		::-webkit-scrollbar-thumb:hover {
+		}
+	  </style>
+	
+	<section class="desktop-visibility cont">
+		<div class="container">
+		<app-jv-request [jvReqStatusObj]="jvReqObj"
+			*ngIf="reportType == 'JV Request Status' && isReportObj['JV Request Status'] && jvReqObj != undefined"></app-jv-request>
+
+		<app-epi-shares-status [epiReqStatusObj]="epiReqObj" 
+			*ngIf="reportType == 'EPI Request Status' && isReportObj['EPI Request Status'] && epiReqObj != undefined">
+		</app-epi-shares-status>
+
+		<app-consolidated-trade-listing [segment]="tradelist" [asOnDate]="fromDateReq" *ngIf="reportType == 'Consolidated Trade Listing' && isTradeListing">
+		</app-consolidated-trade-listing>
+
+		<app-limit-request-status [limitReqStatusObj]="limitReqObj"
+			*ngIf="reportType == 'Limit Request Status' && isReportObj['Limit Request Status'] && limitReqObj != undefined">
+		</app-limit-request-status>
+	
+		<app-share-deposit-report *ngIf="reportType == 'Shares Deposit Report' && isReportObj['Shares Deposit Report']" [partnerID]="partnerID">
+		</app-share-deposit-report>
+	
+		<app-commo-summary
+			*ngIf="reportType == 'Commodity Client Summary' && isReportObj['Commodity Client Summary'] && viewClick"
+			[riskText]="riskText" [bId]="selectBranch">
+		</app-commo-summary>
+		<app-payout-summary-report 
+			*ngIf="reportType == 'FAN Payout Summary' && isReportObj['FAN Payout Summary']" [fanPayoutObj]="fanPayoutObj">
+		</app-payout-summary-report>
+	
+		<app-brokerage-requests-status [brokerageReqObj]="brokerageReqObj"
+			*ngIf="reportType == 'Brokerage Request Status' && isReportObj['Brokerage Request Status'] && brokerageReqObj != undefined">
+		</app-brokerage-requests-status>
+	
+		<app-equity-deposit-details
+			*ngIf="reportType == 'Deposit Ledger' && isReportObj['Deposit Ledger']" [partnerID]="partnerID">
+		</app-equity-deposit-details>
+	
+		<app-brokerage-ledger-report [fanBrokerageLedgerObj]="fanBrokerageLedger" [callFromDesktop]="true" 
+			*ngIf="reportType == 'FAN Brokerage Ledger' && isReportObj['FAN Brokerage Ledger']">
+		</app-brokerage-ledger-report>
+	
+		<app-nfdc-risk-report [ndfcReportType]="passNfdcReport" [wireCodeId]="selectFanCode" [isViewClick]="isViewClick"
+		*ngIf="reportType == 'Risk Report' && isReportObj['Risk Report'] && typeChange != 'Client Summary' && this.passNfdcReport!=7 && typeChange != 'Hold Physical FNO Report'">
+		</app-nfdc-risk-report>
+		<app-hold-physical-fno-report *ngIf="typeChange == 'Hold Physical FNO Report' && passNfdcReport==7 && reportType == 'Risk Report' && showFno" [physicalngfc]="passNfdcReport" [wireCodeId]="selectFanCode">
+	
+		</app-hold-physical-fno-report>
+	
+		<!-- <app-raa-debit [raaDepositReportType]="passRaaDepositReport" *ngIf="reportType == this.reportTypeData[1].reportType && this.reportTypeData[1].display"></app-raa-debit> -->
+	
+		<app-bod-holding [passClientIdValue]="passClientCode" [wireCode]="wireCode"
+			*ngIf="reportType == 'BOD Holding' && isReportObj['BOD Holding']"></app-bod-holding>
+	
+	
+		<app-client-summary [branchId]="branchOption" *ngIf="typeChange == 'Client Summary' && reportType == 'Risk Report' && showClientSummary">
+		</app-client-summary>
+	
+		<app-dp-scrip-payout [dpScriptObj]="dpScriptObj" *ngIf="reportType == 'DP Scrip Payout' && isDpScriptDisplay">
+		</app-dp-scrip-payout>
+	
+		<app-real-time-margin-shortfall [partnerID]="partnerID" *ngIf="reportType == 'Real time Margin Shortfall' && isReportObj['Real time Margin Shortfall']">
+		</app-real-time-margin-shortfall>
+	
+		<app-scriptwise-summary *ngIf="reportType == 'Scrip Summary Report'">
+		</app-scriptwise-summary>
+
+		<app-commodity-client-scrip-summary *ngIf="reportType == 'Commodity Client Scrip Summary'">
+		</app-commodity-client-scrip-summary>
+
+		
+		<app-freeze-details [freezeReason]="passFreezeReason" [callFromDesktop]="true" *ngIf="reportType == 'Freeze Details'">
+		</app-freeze-details>
+
+		<app-dp-modification-details [dpType]="passDpType" [fromDate]="fromDateReq" [toDate]="toDateReq" *ngIf="reportType == 'DP Modification Details' && (passDpType !== null && passDpType !== undefined)">
+		</app-dp-modification-details>
+
+		<app-account-closure-status [fromDate]="fromDateReq" [toDate]="toDateReq" *ngIf="reportType == 'Account Closure Status' && isAccountClosureReport">
+		</app-account-closure-status>
+
+		<app-demat-request-status [dpType]="passDematDpType" *ngIf="reportType == 'DRF Status' && isDematRequestStatus">
+		</app-demat-request-status>
+
+	</div>
+
+	</section>
+	
+	<div class="mobile-visibility" >
+		<div class="d-flex justify-content-between mb-3 btn_grp">
+			<ion-toolbar class="footer-button"
+			*ngIf="reportType == undefined || reportType == 'JV Request Status' || reportType == 'DP Scrip Payout' || reportType == 'Limit Request Status' || reportType == 'Shares Deposit Report' || reportType == 'Brokerage Request Status' || reportType == 'Deposit Ledger' || reportType == 'FAN Brokerage Ledger' || reportType == 'Risk Report' || reportType == 'FAN Payout Summary' || reportType == 'BOD Holding' || reportType == 'Real time Margin Shortfall'
+				|| reportType == 'Consolidated Trade Listing'|| reportType == 'Commodity Client Summary' || reportType == 'DP Modification Details' || reportType == 'Freeze Details'">
+			<ion-button (click)="viewReportMobile(reportType)" [disabled]="reportType == undefined  || passClientIdValidation == false || !raaReportTypeSelect">View Report</ion-button>
+		</ion-toolbar>
+		
+		<ion-toolbar class="footer-button"
+			*ngIf="reportType == undefined || reportType == 'DRF Status'">
+			<ion-button (click)="viewReportMobile(reportType)">View Status</ion-button>
+		</ion-toolbar>
+		</div>
+
+		<div *ngIf="(dataLoad) && (reportType == 'Outstanding Position')">
+			<div style="position:absolute;top:48%; left:48%" *ngIf="dataLoad">
+			  <img style="width:30px" src="/assets/imgs/loader.gif" alt="">
+			</div>
+		</div>
+	
+	</div>
+	
+	
+	</ion-content>
+	
+	
+	
+	
+	 
+	
+	
+	  
+	   
+	   
+	
+	<!-- <ion-footer class="mobile-visibility ion-no-border" style="z-index: 1;">
+		<ion-toolbar class="footer-button"
+			*ngIf="reportType == undefined || reportType == 'JV Request Status' || reportType == 'Limit Request Status' || reportType == 'Shares Deposit Report' || reportType == 'Brokerage Request Status' || reportType == 'Deposit Ledger' || reportType == 'FAN Brokerage Ledger' || reportType == 'Risk Report' || reportType == 'FAN Payout Summary' ">
+			<ion-button (click)="viewReportMobile(reportType)" [disabled]="reportType == undefined  || passClientIdValidation == false || !raaReportTypeSelect">View Report</ion-button>
+		</ion-toolbar>
+	
+		<ion-toolbar class="footer-button"
+			*ngIf="typeChange == 'Client Summary' || reportType == 'BOD Holding' || reportType == 'BOD Holding'">
+			<ion-button (click)="comingSoon($event)">Download Report</ion-button>
+		</ion-toolbar>
+	
+	</ion-footer> -->
+	
+	<ion-footer class="mobile-visibility ion-no-border" style="z-index: 1;">
+		<ion-toolbar class="footer-button" *ngIf="reportType == 'GST Invoice'">
+			<ion-button (click)="onDownloadPdfClick()" [disabled]="!selectFanCode">Download PDF</ion-button>
+		</ion-toolbar>
+	</ion-footer>

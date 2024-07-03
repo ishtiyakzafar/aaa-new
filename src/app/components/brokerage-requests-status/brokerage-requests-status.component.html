@@ -1,0 +1,198 @@
+<ion-header>
+    <ion-toolbar color="tertiary" class="mobile-visibility">
+        <div class="title-block title-block-custom">
+            <div class="icon-title">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <ion-title class="title">Brokerage Request Status</ion-title>
+            </div>
+        </div>
+    </ion-toolbar>
+    <!-- <ion-toolbar class=" desktop-visibility">
+        <div class="container">
+            <div class="heading-part notificationheader">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <span class="heading">Limit Request Status</span>
+            </div>
+        </div>
+    </ion-toolbar> -->
+
+</ion-header>
+<section>
+    <div class="container smaller-container" *ngIf="!brokerageAllow && dataLoad">
+        <div class="search-section brokerage_search" style="margin-top: 10px;">
+            <ion-searchbar class="custom-searchbar search-section-changed-revamped" name="searchCode" [(ngModel)]="searchCode"  placeholder="Search for client name or client code"></ion-searchbar>
+             <!-- <div class="downloads-section" (click)="comingOption($event)">
+                <img src="assets/svg/download_excel.svg" alt="" class="downloadIcon">
+                <span>Download Report</span>
+            </div> -->
+        </div>
+        <div class="block-request-section ">
+            <div *ngIf="(brokergeReqList | filterSearch: searchCode : 'ClientCode').length > 0">
+                <div class="request-section" *ngFor="let request of brokergeReqList | filterSearch: searchCode : 'ClientCode'; let i = index">
+                    <div class="upper-section">
+                        <div class="client">
+                            <span class="serial">Sr. No. {{request.Srno}}</span>
+                            <span class="id">{{request.ClientCode}}</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                        <div class="buttons-block desktop-visibility" *ngIf="request['Status'] == 'Pending with IRA' && displayAppRejBtn">
+                            <ion-button class="reject" (click)="brokApprovalRejRequest('R',request )">Reject</ion-button>
+                            <ion-button class="approve" (click)="brokApprovalRejRequest('A', request)">Approve</ion-button>
+                            </div>
+                           
+                            <div class="status-block" *ngIf="request['Status'] == 'Pending with IRA'">
+                                <span>Pending with IRA</span>
+                                <img class="status-icon" src="assets/svg/process.svg" alt="">
+                            </div>
+                        </div>
+                            <div class="status-block" *ngIf="request['Status'] == 'Approved by Back Office' || request['Status'] == 'Approved By Back Office'">
+                                <span>Approved by Back Office</span>
+                                <img  class="status-icon" src="assets/svg/approved.svg" alt="">
+                            </div>
+                        
+                            <div class="status-block raise_rq_main" *ngIf="request['Status'] == 'Rejected by IRA'">
+                                <div>
+                                 <span>Rejected by IRA</span>
+                                 <img  class="status-icon" src="assets/svg/rejected.svg" alt="">
+                             </div>
+                             <div class="buttons-block mt-0" *ngIf="request['Status'] == 'Rejected by IRA' && raiseRequestBtn">
+                                 <a href="javascript:void(0)" (click)="raiseaRequest()" class="raise_new_request">Raise a new request</a>
+                                 </div>
+                            </div>
+
+                            <div class="status-block" *ngIf="request['Status'] == 'Approved By IRA'">
+                                <span>Approved By IRA</span>
+                                <img  class="status-icon" src="assets/svg/approved.svg" alt="">
+                            </div>
+
+                            <div class="status-block" *ngIf="request['Status'] == 'Rejected By Back Office'">
+                                <span>Rejected By Back Office</span>
+                                <img  class="status-icon" src="assets/svg/rejected.svg" alt="">
+                            </div>
+
+                            <div class="status-block" *ngIf="request['Status'] == 'Pending with Back Office'">
+                                <span>Pending with Back Office</span>
+                                <img class="status-icon" src="assets/svg/process.svg" alt="">
+                            </div>
+                    </div>
+                    <div class="detail-section" (click)="dropClick(request.Srno, brokergeReqList)">
+                        <div class="section"> 
+                            <span class="section-title">Cash Intraday 1st</span>
+                            <span class="section-value">{{request['CashIntradayFirstSidePerc']}}</span>
+                        </div>
+                        <div class="section">
+                            <span class="section-title">Cash Intraday 2nd</span>
+                            <span class="section-value">{{request['CashIntradaySecondSidePerc']}}</span>
+                        </div>
+                        <div class="section">
+                            <span class="section-title">Cash Intraday MPS</span>
+                            <span class="section-value">{{request['CashIntradayMinimumPerShare']}}</span>
+                        </div>
+                        <div class="section">
+                            <span class="section-title">Cash Delivery 1st</span>
+                            <span class="section-value">{{request['CashDeliveryFirstSidePerc']}}</span>
+                        </div>
+                        <div class="section desktop-visibility">
+                            <span class="section-title">Cash Delivery MPS</span>
+                            <span class="section-value">{{request['CashDeliveryMinimumPerShare']}}</span>
+                        </div>
+                        <ion-icon *ngIf="!request['isVisible']" src="./assets/svg/down-arrow.svg" class="arrow-button" (click)="dropClick(i, requestData)"></ion-icon>
+                        <ion-icon *ngIf="request['isVisible']" src="./assets/svg/down-arrow.svg" class="rotate arrow-button down-arrow-button" (click)="dropClick(i, requestData)"></ion-icon>
+                    </div>
+                   
+                    <div class="detail-section more-details" *ngIf="request['isVisible']">
+                        <div class="section mobile-visibility">
+                            <span class="section-title">Cash Delivery MPS</span>
+                            <span class="section-value">{{request['CashDeliveryMinimumPerShare']}}</span>
+                        </div>
+                        <div class="section mobile-visibility">
+                            <span class="section-title">Future Intraday 1st</span>
+                            <span class="section-value">{{request['FuturesIntradayFirstSidePerc']}}</span>
+                        </div>
+                        <!-- <div class="section">
+                            <span class="section-title">Future Intraday 1st</span>
+                            <span class="section-value">{{request['FuturesIntradayFirstSidePerc']}}</span>
+                        </div> -->
+                        <div class="section">
+                            <span class="section-title">Future Intraday 2nd</span>
+                            <span class="section-value">{{request['FuturesIntradaySecondSidePerc']}}</span>
+                        </div>
+                        <div class="section">
+                            <span class="section-title">Future Intraday MPS</span>
+                            <span class="section-value">{{request['FuturesIntradayMinimumPerShare']}}</span>
+                        </div>
+                        <div class="section">
+                            <span class="section-title">Future Delivery 1st</span>
+                            <span class="section-value">{{request['FuturesDeliveryFirstSidePerc']}}</span>
+                        </div>
+                        <div class="section">
+                            <span class="section-title">Future Delivery MPS</span>
+                            <span class="section-value">{{request['FuturesDeliveryMinimumPerShare']}}</span>
+                        </div>
+                        <div class="section">
+                            <span class="section-title">Sec Side Brok.</span>
+                            <span class="section-value">{{request['NoBrokerageForSecondSide']}}</span>
+                        </div>
+                        <div class="section">
+                            <span class="section-title">Opt Brok. Per Lot</span>
+                            <span class="section-value">{{request['OptionsPerLot']}}</span>
+                        </div>
+                        <div class="section">
+                            <span class="section-title">Index Opt</span>
+                            <span class="section-value">{{request['OptionsIndexPerc']}}</span>
+                        </div>
+                        <div class="section">
+                            <span class="section-title">Requested by</span>
+                            <span class="section-value">{{request['MkrID']}}</span>
+                        </div>
+                        <div class="section">
+                            <span class="section-title">Request Date</span>
+                            <span class="section-value">{{request['Mkrdt'] | date : 'dd/MM/yyyy'}}</span>
+                        </div>
+                        <div class="section">
+                            <span class="section-title">{{ request['Status'] == 'Rejected by IRA' ? 'Rejected by' : 'Approved by' }}</span>
+                            <span class="section-value">{{request['AppID']}}</span>
+                        </div>
+                        <div class="section">
+                            <span class="section-title">{{ request['Status'] == 'Rejected by IRA'  ? 'Rejected Date' : 'Approved Date' }}</span>
+                            <span class="section-value">{{request['Appdt'] | date : 'dd/MM/yyyy'}}</span>
+                        </div>
+                        <div class="remark_main" *ngIf="request['Status'] == 'Rejected by IRA' && raiseRequestBtn">
+                            
+                            <span class="reject_remark">
+                                <label>Rejection Remark : </label>
+                                {{request['RemarkRej']}}
+                            </span>
+                            </div>
+                    </div>
+                    <div class="buttons-block mobile-visibility" *ngIf="request['Status'] == 'Pending with IRA' && displayAppRejBtn">
+                        <ion-button class="reject" (click)="brokApprovalRejRequest('R',request )">Reject</ion-button>
+                        <ion-button class="approve" (click)="brokApprovalRejRequest('A',request )">Approve</ion-button>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div *ngIf="(brokergeReqList | filterSearch: searchCode : 'ClientCode').length == 0" style="height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;">
+                <span>No Data Found</span>
+            </div>
+            
+        </div>
+    </div>
+   
+
+    <div style="position:absolute;top:50%; left:50%" *ngIf="!dataLoad">
+		<img style="width:40px" src="/assets/imgs/loader.gif" alt="">
+    </div>
+    
+    <div class="container smaller-container" *ngIf="brokerageAllow">
+        <div class="raise-limit-request">
+            <img class="raise-image" src="assets/svg/raise_request.svg" alt="">
+            <div class="raise-message">You have not raised any <br>Brokerage request yet</div>
+            <ion-button (click)="goToCreateRequest()">Raise Brokerage Request</ion-button>
+        </div>
+    </div>
+</section>

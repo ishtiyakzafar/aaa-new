@@ -1,0 +1,65 @@
+.title-block-custom {
+    padding: 16px 16px 3px;
+    background: none;
+    .icon-title {
+        .title {
+            font-family: nunitoLight;
+        }
+    }
+}
+
+.Equity {
+    display: flex;
+    justify-content: center;
+    font-family: nunitoBold;
+    margin-bottom: 4px;
+}
+
+.refresh {
+    margin-right: 16px;
+}
+
+.search-icon {
+    font-size: 20px;
+}
+
+.holding-badge {
+    display: flex;
+}
+
+.badge {
+    background: #fff;
+    color: #3C359F;
+    border-radius: 50%;
+    margin-left: 8px;
+    font-size: 12px;
+    min-width: 24px;
+    padding: 4px;
+}
+
+.header-segment-top {
+    ion-segment-button {
+        &::part(native) {
+            color: #fff;
+        }
+    }
+}
+
+.pledge {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px;
+    color: #F37921;
+    font-size: 12px;
+    align-items: center;
+    .right-arrow {
+        color: #F37921;
+        width: 16px;
+        left: 1px;
+        top: 0;
+    }
+}
+
+// .select-search-block {
+//     background-size: 127%;
+// }

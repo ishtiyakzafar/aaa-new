@@ -1,0 +1,167 @@
+<div class="wrapper m-t-6">
+  <div class="name-block">
+    <span class="name" *ngIf="clientName != '' ">{{clientName}}</span>
+    <span class="name" *ngIf="clientName == '' "> ClientName </span>
+    <span class="code">Client ID {{ clientIdValue }}</span>
+</div>
+  <div class="total-value-dognut-block" *ngFor="let clientData of clientDetails">
+       <div class="client-risk-evaluation {{riskProfileClass}}">
+        <img src="{{riskProfileImg}}" alt="" class="">
+         
+         <span *ngIf="clientRiskProfile">You're <b>{{riskProfileMsg}}</b> Risk Taker</span>
+         <span *ngIf="!clientRiskProfile || clientCap == null">Make better decisions by knowing the investing behaviour</span>
+         <span *ngIf="clientRiskProfile" class="risklink" (click)="goToReEvaluate()">Re-evaluate</span>
+         <span *ngIf="!clientRiskProfile || clientCap == null" class="risklink" (click)="goToRiskEvaluation()">Risk Evaluation</span>
+      </div>
+    <!--<div class="code-block">
+     
+div class="total-value-block">
+        <div class="section">
+          <span class="section-title">Total Value</span>
+          <span class="section-value"><span class="rupees">₹</span>{{clientData.totalclientHoldingValue | formatNumberUnit}} </span>
+        </div>
+        <div class="section">
+          <span class="section-title">Avl. Equity Margin</span>
+          <span class="section-value value-margin"><span class="rupees">₹</span>{{clientData.AvailableEquityMargin | formatNumberUnit}}</span>
+        </div>
+      </div> 
+    
+    <div class="fund-transfer-block request_info">
+        <ion-segment [(ngModel)]="fundTransferBlockValue" style="width: 200px !important;">
+          <ion-segment-button value="mandates" (click)="mandate('Mandate')">Mandates</ion-segment-button>
+        </ion-segment>
+        <div class="d-flex">
+          Payout Request 
+            <span class="infoTooltip"><img src="./assets/svg/info.svg"> 
+            <span class="tooltiptext">Payout Request is now in Request in More section</span>
+            </span>
+        </div>
+      </div> 
+    </div>-->
+    <!-- <div class="dognut-block">
+      <div class="chart-section">
+        <canvas #dognutChart width="156px" height="156px"></canvas>
+      </div>
+      <div class="equity-block">
+        <div class="block">
+          <span class="block-title">Equity</span>
+          <span class="block-value"><span class="rupees">₹</span>{{clientData.EquityHoldingValue | formatNumberUnit}} ({{convertNanToZero(clientData.EquityHoldingValue / clientData.totalclientHoldingValue)*100 | formatNumerDecimal}}%)</span>
+        </div>
+        <div class="line"></div>
+        <div class="block">
+          <span class="block-title commodity">Commodity</span>
+          <span class="block-value"><span class="rupees">₹</span>{{clientData.CommodityHoldingValue | formatNumberUnit}} ({{convertNanToZero(clientData.CommodityHoldingValue / clientData.totalclientHoldingValue)*100 | formatNumerDecimal}}%)</span>
+        </div>
+        <div class="line"></div>
+        <div class="block">
+          <span class="block-title mutual">Mutual Funds</span>
+          <span class="block-value"><span class="rupees">₹</span>{{clientData.MutualFundHoldingvalue | formatNumberUnit}} ({{convertNanToZero(clientData.MutualFundHoldingvalue / clientData.totalclientHoldingValue)*100 | formatNumerDecimal}}%)</span>
+        </div>
+      </div>
+    </div> -->
+  </div>
+</div>
+
+<div class="client_name_block_main">
+  <div class="icon-block pointer" (click)="clientDetailsPopup()">
+    <img src="assets/svg/client_details_person.svg" alt="" class="width-14">
+    <span>Clients Details</span>
+  </div>
+  <div class="icon-block pointer" (click)="goToShareReport()">
+    <img src="assets/svg/client_details_share.svg" alt="">
+    <span>Share Report</span>
+  </div>
+  <div class="icon-block pointer"  (click)="goToBrokeragePlan()">
+    <img src="assets/imgs/search_detail.png" alt="">
+    <span>Brokerage & DP Charges</span>
+  </div>
+<div *ngIf="isOnlyRM == 'RM'" class="icon-block pointer"  (click)="goToClientInteractions()">
+    <img src="assets/imgs/client_interactions.svg" alt="">
+    <span>Client Interactions</span>
+  </div>
+
+  <div class="icon-block pointer" (click)="displyPopupClientProfile()">
+    <img src="assets/imgs/client_profile_icon.svg" alt="">
+    <span>Client Profile</span>
+  </div>
+</div>
+
+<div class="equity-block-segment m-t-6">
+  <ion-segment scrollable class="header-segment-bottom" [(ngModel)]="equityBlockTabValue">
+    <ion-segment-button (click)="trade_btn_click('equity')" value="equity">
+      Equity + Commodity
+    </ion-segment-button>
+    <ion-segment-button (click)="trade_btn_click('mutual')" value="mutual">
+      Mutual Funds
+    </ion-segment-button>
+  </ion-segment>
+</div>
+
+<div class="tab-content" [ngSwitch]="equityBlockTabValue">
+  <div class="equity-section" *ngSwitchCase="'equity'">
+    <div class="holdings-block-tab m-b-2">
+      <ion-segment scrollable class="header-segment-top" [(ngModel)]="holdingsBlockTabValue" >
+        <ion-segment-button value="holdings" class="m-l-0">
+          <div class="holding-badge">
+            <span>Holdings</span>
+            <span class="badge">{{holdingsData.length}}</span>
+          </div>
+        </ion-segment-button>
+        <ion-segment-button value="livePL">
+          Live P&L
+        </ion-segment-button>
+        <ion-segment-button value="netPosition">
+          Net Position
+        </ion-segment-button>
+        <ion-segment-button value="margin">
+          Margin
+        </ion-segment-button>
+        <ion-segment-button value="orderbook">
+          Orderbook
+        </ion-segment-button>
+        <ion-segment-button value="tradebook">
+          Tradebook
+        </ion-segment-button>
+        <ion-segment-button value="ledger" class="m-r-0">
+          Ledger
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+    <div class="pledge"   >
+      <div (click)="pledge()" *ngIf="isRMFAN">
+        <ion-label>Pledge Securities </ion-label>
+        <ion-icon class="right-arrow" src="/assets/svg/down-arrow.svg"></ion-icon>
+      </div>
+      <!-- <img src="assets/svg/right-arrow.svg" alt=""> -->
+    </div>
+    <div class="holding-block-tab-content" [ngSwitch]="holdingsBlockTabValue">
+      <div *ngSwitchCase="'holdings'">
+         <app-client-holdings [holdingData] = "holdingsData"></app-client-holdings>
+      </div>
+      <div *ngSwitchCase="'livePL'">
+     <app-client-live-pl [netPosition] = "netPosition" [livePlData] = "HoldingPLData" [clientID]="ladgerId"></app-client-live-pl>
+   </div>
+   <div *ngSwitchCase="'netPosition'">
+     <app-client-net-position [netPosition] = "netPosition"></app-client-net-position>
+   </div>
+   <div *ngSwitchCase="'margin'">
+     <app-client-margin [margin] = "marginTabClient"></app-client-margin>
+   </div>
+   <div *ngSwitchCase="'orderbook'">
+     <app-client-orderbook [orderBookData] = "orderBook"></app-client-orderbook>
+   </div>
+   <div *ngSwitchCase="'tradebook'">
+     <app-client-tradebook [tradeBookData] = "tradeBook"></app-client-tradebook>
+   </div>
+   <div *ngSwitchCase="'ledger'">
+     <app-client-ledger  [ledgerData] = "clientLedger" [ladgerId]="ladgerId" [isResponseReadyWeb]="isLedgerResReady" [newLedgerData]="newLedgerData">
+
+     </app-client-ledger>
+   </div>
+   </div>
+  </div>
+  <div class="mutual-funds p-t-6" *ngSwitchCase="'mutual'">
+    <!-- Mutual Funds coming soon -->
+    <app-mutual-fund></app-mutual-fund>
+  </div>
+</div>

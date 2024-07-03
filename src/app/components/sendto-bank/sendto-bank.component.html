@@ -1,0 +1,114 @@
+<div class="container ft_scroll">
+	<div class="move-fund-title-section sentToBank par_gr_top">
+		<div class="section-1">
+			<span class="upper-row">
+        		Withdrawable Balance
+			</span>
+			<span class="lower-row" style="color: #000;">
+				<span class="rupees">₹</span> {{equityPayoutAmount ? equityPayoutAmount : "0"}}
+			</span>
+		</div>
+		<div class="section-1 desktop-visibility text-right">
+			<span class="payouthistory" (click)="viewPayoutHistory()" style="cursor: pointer;">
+				<img src="./assets/svg/history-orange.svg"> View Payout History
+			</span>
+			<span class="lower-row">
+				
+			</span>
+		</div>
+	</div>
+
+	<div [ngClass]="bodyClass">
+
+		<div class="section mobile-visibility" style="position: relative;">
+			<div class="label">Client ID</div>
+			<div class="client-code-input">
+				<ion-toolbar>
+				  <ion-searchbar (ionClear)="onCancel()" (ionBlur)="hideDropDown()" (ngModelChange)="searchClient($event)"
+					search-icon="false" class="bodReprotsInput" name="clientId" bindLabel="ClientCode" bindValue="ClientCode" [(ngModel)]="passClientCode"
+					placeholder="Type client ID">
+				  </ion-searchbar>
+				</ion-toolbar>
+			  </div>
+			 
+			  <ion-toolbar class="drop-down-toolbar" *ngIf="isListVisible">
+				<div class="drop-down thin-scroll" *ngIf="allClients.length && dtLoad">
+				  <div class="item" *ngFor="let data of allClients"
+					(click)="displayClientDetails(data)">
+					<span class="name">{{data.ClientCode}}</span>
+				  </div>
+				</div>
+				<div class="drop-down thin-scroll" *ngIf="allClients.length==0 && dtLoad">
+				  <span>No Data Found</span>
+				</div>
+				<div class="loader" *ngIf="!dtLoad">
+				  <img src="/assets/imgs/loader.gif" alt="">
+				</div>
+			  </ion-toolbar>
+			<!-- <ng-select [items]="clientCodeList" bindLabel="ClientCode" bindValue="ClientCode" name="clientId" [clearable]="false" (change)="changeClientId($event)">
+			</ng-select>  -->
+			<div class="invalid-feedback error-message">
+				<span>{{clientIdLimitErrMsg}}</span>
+			</div>
+			
+		</div>
+		<div class="pay_grid" >
+			<div class="section sec_margin">
+
+				<div class="label">Select Bank</div>
+
+		
+				<ng-select [items]="bankList" bindLabel="BankName" class="selectionTwoLabels" bindValue="BankName" [clearable]="false" [searchable] ="false" name="selectBank" [(ngModel)]="selectBankNameDetail"> 
+
+				<ng-template ng-label-tmp let-item="item">
+					<div class="boldfontweight">{{splitIfscBankName(item.BankName,0)}}</div>
+					<div class="lightfontlight">{{splitIfscBankName(item.BankName,1)}}</div>
+				</ng-template>
+				<ng-template ng-option-tmp let-item="item">
+					<div>{{splitIfscBankName(item.BankName,0)}}</div>
+					<div>{{splitIfscBankName(item.BankName,1)}}</div>
+					<!-- <span >{{  + ' ' +  }}</span> -->
+				</ng-template>
+			
+			</ng-select>
+
+			</div>
+
+			<div class="section sec_margin">
+				<div class="label">Enter Amount <span class="rupees">(₹)</span></div>
+				<ion-input class="borderclass" style="color: #000;" type="number" [(ngModel)]="enterAmount" class="inputClass" (ngModelChange)="changeAmountValue($event)"></ion-input>
+				<div class="error_msg">
+					<!-- <span *ngIf="enterAmount == null">Amount is required</span> -->
+					<!-- <span *ngIf="enterAmount != null && enterAmount < 0">Amount cannot be less than zero</span> -->
+					<span *ngIf="enterAmount != null && enterAmount > equityPayoutSendToBank">Amount cannot be more than the available balance</span>
+					<span *ngIf="isAmountInvalid"> Amount is invalid</span>
+				</div>
+			</div>
+		</div>
+		<div class="section sec_margin width_in">
+			<div class="label">Remarks</div>
+			<ion-textarea style="color: #000;" type="text" rows="3" class="borderclass" [(ngModel)]="enterRemark" (ngModelChange)="changeRemark($event)"></ion-textarea>
+			<div class="error_msg">
+				<span *ngIf="remarkLength == 0">Remark is required</span>
+				<span *ngIf="remarkLength != 0 && remarkLength > 200">Remark characters cannot be more than 200</span>
+			</div>
+		</div>
+
+
+		<div class="section sec_margin buttonWidthsendtobnk div_wrap">
+						<ion-button color="success" [disabled]=" !transferBtnEnable || !transferBtnEnable1" (click)="confirmWithdra()">Confirm Withdrawal</ion-button>
+			<p style="font-size:13px;font-style:normal;margin:5px 0 20px 0; color: #000;"><strong>Note:</strong> If a withdrawal request is raised before 4:00 P.M. on  a working day, the funds will be deposited into client chosen bank account by same day EOD(Excluding Algo/Greek & XTS traded customer).<br><br>
+				For Algo/Greek/XTS clients request placed before 8.30am will be processed on same day, any request placed thereafter till 4.00 pm would be processed only for not traded customer on same day, rest will be processed on next working day.<br><br>
+				However withdrawal request received after 4:00 P.M on a working day will be deposited into client chosen bank account on next working days.</p>
+				
+			<!-- <ion-button color="success" (click)="confirmWithdra()">Confirm Withdrawal </ion-button> -->
+			<!-- <div class="error_msg">*Confirm withdrawal to be available soon</div> -->
+			
+		</div>
+
+	</div>
+
+	<div style="position:absolute;top:30%; left:50%" *ngIf="!dataLoad">
+		<img style="width:30px" src="/assets/imgs/loader.gif" alt="">
+	</div>
+</div>

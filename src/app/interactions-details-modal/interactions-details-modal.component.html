@@ -1,0 +1,28 @@
+<div class="card_details_pop" >
+  <div class="modal_title">
+  <span>Query Details</span>
+  <div class="pop_close" (click)="dismisss()"><img src="assets/svg/close_black.svg" width="18" alt="close"></div>
+  </div>
+   <div class="card_details_inner">
+    <table class="query_dt_table">
+      <tr>
+        <td>Meeting Title:</td>
+        <td>{{clientData['Title'] ? clientData['Title'] : '-'}}</td>
+      </tr>
+      <tr>
+        <td>Date of Meeting:</td>
+        <td>{{clientData['Date'] ? clientData['Date'].slice(0,10) : '-'}}</td>
+      </tr>
+      <tr>
+        <td>Description by client:</td>
+        <td>{{clientData['Description'] ? clientData['Description'] : '-'}}</td>
+      </tr>
+      <tr>
+        <td>Mode:</td>
+        <td>{{clientData['Type_of_Engagement'] ? clientData['Type_of_Engagement'] : '-'}}</td>
+      </tr>
+       </table>
+   </div> 
+  </div>
+  
+  

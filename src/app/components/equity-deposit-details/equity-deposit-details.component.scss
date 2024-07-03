@@ -1,0 +1,177 @@
+.equity-deposit-container {
+    // width: 750px;
+    // margin: 0 auto;
+    .jv-header {
+        .heading {
+            font-family: "nunitoBold";
+            font-size: 20px;
+            padding-left: 5px !important;
+            color: #212121;
+        }
+    }
+    .equity-deposit-head-content {
+       
+        .box-container {
+            display: none !important;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+            padding: 30px 30px;
+            background-color: #f4f3f9;
+            text-align: center;
+            .items {
+                display: flex;
+                flex-direction: column;
+                .itemtitle {
+                    color: #716a90;
+                    font-size: 15px;
+                    margin: 5px;
+                    font-family: "nunitoRegular";
+                }
+                .itemvalue {
+                    color: #212121;
+                    font-size: 16px;
+                    font-family: "nunitoSemiBold";
+                }
+            }
+        }
+        .download-report {
+            // padding:0 0 15px 0px;
+            padding: 16px 0 16px 0px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            // cursor: pointer;
+            span.download {
+                font-size: 14px;
+                font-family: "nunitoSemiBold";
+                color: #f37921;
+                margin-right: 10px;
+                cursor: pointer;
+            }
+            .name {
+                color: #000000;
+                font-size: 20px;
+                font-family: "nunitoSemiBold";
+            }
+        }
+    }
+
+}
+.card-container{
+    border: 1px solid #cbcbcb;
+    border-radius: 10px;
+
+    &.thin-scroll{
+        // max-height: 350px;
+        max-height: 468px;
+        margin-bottom: 24px;
+        overflow: auto;
+    }
+}
+.card{
+    padding: 15px;
+    border-bottom: 1px solid #cbcbcb;
+    .upper-section, .bottom-section{
+        display: flex;
+        justify-content: space-between;
+        .ruppee{
+            font-size: 10px;
+        }
+    }
+    .upper-section{
+        .card-date{
+            font-family: 'nunitoBold';
+        }
+        .card-amount{
+            font-family: 'nunitoBold';
+        }
+        .positive{
+            color: #17C257;
+        }
+        .negative{
+            color: #EB2B2B;
+        }
+    }
+    .bottom-section{
+        padding-top: 10px;
+        color: #6E6E6E;
+        font-family: 'nunitoRegular';
+        font-size: 14px;
+        .card-description{
+            width: 80%;
+        }
+    }
+}
+
+.loader{
+    height: calc(100vh - 55vh);
+}
+
+@media screen and (max-width: 500px) {
+    .equity-deposit-container {
+        .equity-deposit-head-content {
+            width: 100%;
+
+            .box-container {
+                display: flex !important;
+                justify-content: space-around;
+                margin: 15px 10px;
+                padding: 15px 15px;
+                background-color: #f4f3f9;
+                .items {
+                    display: flex;
+                    flex-direction: column;
+                    
+                    .itemtitle {
+                        font-size: 12px;
+                    }
+                    .itemvalue {
+                        font-size: 14px;
+                    }
+                }    
+            }
+            .download-report {
+                padding:15px 0 15px 0px;
+                border-bottom: 1px solid #9C9C9C;
+                justify-content: flex-start;
+                align-items: flex-start;
+                display: none;
+                span.download {
+                    color: #f37921;
+                    font-size: 12px;
+                    margin-left:15px;
+                }
+                .name {
+                    color: #000000;
+                    font-size: 16px;
+                    padding: 0 15px;
+                    font-family: "nunitoSemiBold";
+                }
+            }
+        }
+    }
+    .card-container{
+        max-height: none !important;
+        border: none;
+    }
+    .card{
+        .bottom-section{
+            .card-description{
+                width: 60%;
+            }
+        }
+    }
+    .loader{
+        height: calc(100vh - 30vh);
+    }
+}
+
+.download_file{display: flex;justify-content: flex-end; gap: 10px; margin-top: 10px;}
+.download_file > div{cursor: pointer;}
+.download_file img{width: 16px;}
+
+@media screen and (max-width: 768px) {
+    .download_file{margin-right: 10px;}
+    }

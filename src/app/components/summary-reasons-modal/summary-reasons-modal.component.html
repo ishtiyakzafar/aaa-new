@@ -1,0 +1,15 @@
+<div class="card_details_pop text-center select_Reason"  >
+	<div class="pop_close" (click)="dismiss()"><img src="assets/svg/close_delete.svg" width="15" alt="close"></div>
+
+	<h2>Select a Reason</h2>
+
+	<div class="pop_content">
+	 <ul class="reson_list">
+    <li *ngFor="let dataObj of remarkList; let i = index">
+		<input id="Reson-{{i}}" type="radio" name="radio-group" value="{{dataObj.BranchRemarkID}}">
+		<label for="Reson-{{i}}" (click)="listClick(dataObj.remarkCode,dataObj.BranchRemarkID)">{{dataObj.remarkCode}}</label>
+    </li>
+	</ul>
+  </div>
+  
+   </div>

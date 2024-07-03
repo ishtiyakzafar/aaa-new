@@ -1,0 +1,58 @@
+.calculator {
+    .form-block-section {
+        .right-section {
+            .image-section {
+                width: 100%;
+                margin-top: 10px;
+                img {
+                    max-width: 360px;
+                }
+            }
+        }
+    }
+}
+
+// @media screen and (max-width: 500px) {
+//     .form-block {
+//         width: 100%;
+//         padding:0 16px;
+//     }
+//     .login-btn {
+//         margin: 44px auto 16px !important;
+//     }
+//     .container {
+//         width: 100%;
+//     }
+//     .form-block-section {
+//         flex-direction: column;
+//         .right-section {
+//             display: flex;
+//             flex-direction: column;
+//             align-items: flex-end;
+//             margin-top: 8px;
+//             padding: 0 16px;
+//             .call-section {
+//                 width: 100%;
+//             }
+//         }
+//     }
+//     .field-block .field ion-input {
+//         border: 1px solid #00083959;
+//         border-radius: 4px;
+//         font-size: 15px;
+//     }
+//     .login-btn ion-button {
+//         width: 68%;
+//     }
+//     .focus-input{
+//         border: 1px solid #F37921 !important;
+//     }
+// }
+
+// @media screen and (min-width: 768px) {
+//     .container {
+//         width: 720px;
+//         margin: 0 auto;
+//         position: relative;
+//     }
+// }

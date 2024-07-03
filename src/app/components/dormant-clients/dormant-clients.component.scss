@@ -1,0 +1,179 @@
+.web-equity {
+    .header-table {
+        th {
+            width: 18% !important;
+        }
+        th:nth-child(2) {
+            width: 20% !important;
+        }
+        th:nth-child(5) {
+            // padding-left: 24px !important;
+            padding: 10px 24px;
+            // padding-right: 8px;
+            width: 19% !important;
+            text-align: center;
+        }
+        th:nth-child(2) {
+            text-align: left;
+        }
+    }
+    .main-table {
+        max-height: 385px;
+        overflow: auto;
+        max-height: 468px;
+        td {
+            width: 18% !important;
+        }
+        td:nth-child(2) {
+            width: 20% !important;
+        }
+        td:nth-child(5) {
+            padding-left: 24px !important;
+            width: 19% !important;
+            padding: 10px 24px;
+        }
+        td:nth-child(2) {
+            text-align: left;
+            // font-family: 'nunitoBold';
+        }
+        .option-type {
+            position: relative;
+            display: inline-block;
+          }
+          
+          .option-type .tooltiptext {
+            visibility: hidden;
+            width: auto;
+            top: 100%;
+            left: 30%;
+            margin-left: -60px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+          
+            /* Position the tooltip */
+           position: absolute;
+            z-index: 999;
+          }
+          
+          .option-type:hover .tooltiptext {
+            visibility: visible;
+          }
+    }
+    // td:nth-child(3), th:nth-child(3) {
+    //     text-align: center !important;
+    // }
+}
+
+@media screen and (max-width: 500px) {
+    .contact-option {
+        position: absolute;
+        background: #F9F9F9;
+        border-radius: 10px;
+        justify-content: center;
+        padding: 12px 0;
+        height: 40px;
+        bottom: 23px;
+        z-index:99;
+        width: calc(100vw - 46px);
+        .option {
+            padding: 0 18px;
+        }
+    }
+    .code-block {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        padding-bottom: 72px;
+    }
+    .web-equity {
+        .main-table {
+            border: none;
+            td {
+                width: 33% !important;
+                vertical-align: baseline;
+                position: relative;
+                .hyperlinkstyle {
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 34vw;
+                }
+            }
+            td:nth-child(1) {
+                width: 45% !important;
+                text-align: right;
+            }
+            td:nth-child(2) {
+                width: 20% !important;
+                text-align: right;
+            }
+            td:last-child {
+                padding-right: 4px;
+            }
+        }
+        .header-table {
+            th {
+                width: 33% !important;
+            }
+            th:nth-child(2) {
+                width: 30% !important;
+                text-align: right;
+            }
+        }
+        th:first-child, td:first-child {
+            padding-left: 8px !important;
+            width: 33% !important;
+            max-width: 260px;
+        }
+    }
+    .desktop-header-table {
+        th:first-child {
+            border-radius: 10px 0 0 10px !important;
+        }
+        th:last-child {
+            border-radius: 0 10px 10px 0 !important;
+        }
+    }
+}
+.download_file {
+    display: flex;
+    justify-content: flex-end;
+    gap: 25px;
+    margin: 20px 0;
+}
+.download_file>div {
+    cursor: pointer;
+}
+.download_file img {
+    width: 25px;
+}
+.option-type-dp-modification {
+    position: relative;
+    display: inline-block;
+}
+.option-type-dp-modification .tooltiptext {
+    visibility: hidden;
+    width: 150px;
+    top: 100%;
+    left: 55%;
+    margin-left: -60px;
+    background-color: black;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px;
+    position: absolute;
+    z-index: 999;
+}
+.option-type-dp-modification:hover .tooltiptext {
+    visibility: visible;
+}
+.option-type-dp-modification:hover .tooltiptext span {
+    color: #fff;
+}
+
+
+
+

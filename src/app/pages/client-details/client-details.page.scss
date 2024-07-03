@@ -1,0 +1,257 @@
+.upper-block {
+    background: #F2F4F4;
+    padding-bottom: 16px;
+   
+    .first-section {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-direction: column;
+        .more-option-block {
+            display: flex;
+            width: 284px;
+            justify-content: space-between;
+            margin-top: 8px;
+        }
+    }
+    .name-block {
+        display: flex;
+        flex-direction: column;
+        .name {
+            font-family: nunitoBold;
+            font-size: 16px;
+        }
+        .code {
+            font-size: 12px;
+            color: #A3A5A5;
+        }
+    }
+    .icon-block {
+        display: flex;
+        align-items: center;
+        margin-top: 3px;
+        img {
+            width: 9px;
+        }
+        span {
+            font-size: 11px;
+            color: #F37921;
+            margin-left: 6px;
+        }
+    }
+}
+
+.chart-section {
+    height: 200px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 16px 0;
+}
+
+.equity-block {
+    display: flex;
+    justify-content: space-between;
+    .block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .block-title {
+            font-size: 12px;
+            color: #145FF4;
+        }
+        .block-value {
+            color: #212121;
+            font-size: 14px;
+            font-family: nunitoSemiBold;
+            text-align: center;
+        }
+        .commodity {
+            color: #25CC84;
+        }
+        .mutual {
+            color: #E8CE0F;
+        }
+        .rupees {
+            font-size: 10px !important;
+        }
+    }
+}
+
+.total-value-block {
+    position: relative;
+    background: #fff;
+    width: 84%;
+    margin: auto;
+    top: -22px;
+    box-shadow: 0px 3px 6px #7D7D7D29;
+    border-radius: 6px;
+    padding: 12px 48px;
+    display: flex;
+    justify-content: space-between;
+    .section {
+        display: flex;
+        flex-direction: column;
+        .section-title {
+            color: #6E6E6E;
+            font-size: 12px;
+        }
+        .section-value {
+            font-size: 16px;
+            font-family: nunitoBold;
+        }
+        
+        .value-margin {
+            font-family: nunitoRegular;
+        }
+    }
+}
+
+.fund-transfer-block {
+    ion-segment {
+        width: 84%;
+        margin: auto;
+        justify-content: space-between;
+        --background: transparent;
+        ion-segment-button {
+            border-radius: 6px;
+            border: 1px solid #17C257;
+            // max-width: 165px;
+            max-width: 40vw;
+            font-family: nunitoExtraBold;
+            font-size: 14px;
+            text-transform: capitalize;
+        }
+        .segment-button-checked {
+            --indicator-height: 0;
+            background: #17C257;
+            color: #fff;
+        }
+    }
+}
+
+.portfolio-block {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+    .portfolio {
+        color: #3A15A6;
+        font-size: 15px;
+        padding: 8px 16px;
+        border-bottom: 1px solid #f4f4f4;
+    }
+    .item-block {
+        display: flex;
+        padding: 8px 16px;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #f2f4f4;
+        .item {
+            display: flex;
+            flex-direction: column;
+            .item-title {
+                font-size: 12px;
+                color: #6E6E6E;
+            }
+            .item-value {
+                color: #000000;
+                font-size: 16px;
+                font-family: nunitoBold;
+            }
+        }
+        img {
+            width: 9px;
+        }
+    }
+}
+
+.rupees {
+    font-size: 14px;
+}
+
+@media screen and (max-width: 370px) {
+    .fund-transfer-block {
+        ion-segment {
+            ion-segment-button {
+                max-width: 140px;
+            }
+        }
+    }    
+}
+.chartjs-render-monitor{height: 156px !important;}
+.request_info{display: -webkit-box;}
+.request_info .d-flex{ gap: 5px; align-items: center; width: 200px;}
+.client_name_block_main{padding: 20px;border: 1px solid #E4E7EB; margin: 15px 0;display: flex; gap: 30px; border-radius: 2px;}
+.client-risk-evaluation{
+    border-radius: 31px;
+    border: 1px solid #F8F6FE;
+    background: #F9F6FF;
+    font-size:13px;
+    font-weight:500;
+    display: inline-flex;
+    align-items: center;
+    margin: 15PX 0;
+    padding: 0 12px 0 50px;
+    position: relative;
+    height: 40px;
+    visibility: hidden;
+    img{
+        position: absolute;
+        left: -4px;
+        top: -4 px;
+     
+    }
+    span.risklink{
+        color:#593CC7;
+        padding-left:16px;
+        padding-right:2px;
+        cursor: pointer;
+        font-weight: 600;
+        &::after{
+            content: '';
+            border: solid #593CC7;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 3px;
+        transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+            margin-left: 3px;
+        }
+    }
+}
+.client-visible{
+    visibility: visible;
+}
+.client-Very-Conservative{
+border-color:#D6F3B1;
+background: #EEFFDA;
+}
+.client-Conservative{
+border-color: #E8F46E;
+background: #FBFFCD;
+}
+.client-Moderate{
+border-color:  #FFF1C8;
+background: #FFFBEF;
+}
+.client-Aggressive{
+border-color: #FDE2CB;
+background: #FFF2E7;
+}
+.client-Very-Aggressive{
+    border-color: #FFDAD9;
+background: #FFE8E8
+}
+@media screen and (max-width: 768px) {
+    .pay_info .infoTooltip .tooltiptext{width: 125px !important;}
+    .upper-block .first-section .more-option-block{justify-content: flex-start !important; flex-wrap: wrap; gap: 10px; width: inherit;}
+    .client-risk-evaluation{ min-height: 45px; font-size: 10px;justify-content: space-between;}
+    .client-risk-evaluation span.risklink{max-width: 97px; width: 100%; text-align: right;}
+
+}
+
+@media screen and (max-width: 500px) {
+    .client-risk-evaluation{width: 100%;}
+}

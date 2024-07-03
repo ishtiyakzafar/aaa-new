@@ -1,0 +1,175 @@
+.web-equity {
+    .header-table {
+        th {
+            width: 23%;
+        }
+        // th:nth-child(1) {
+            // width: 18% !important;
+        // }
+    }
+    .main-table {
+        // max-height: 387px;
+        max-height: calc(100vh - 366px);
+        overflow-y: auto;
+        // min-height: 250px;
+        td {
+            width: 23%;
+            cursor: pointer;
+        }
+        td:nth-child(1) {
+            text-align: left;
+            font-family: 'nunitoBold';
+            // width: 18% !important;
+        }
+        td:nth-child(3) {
+            color: #2680EB;
+            // font-family: 'nunitoBold';
+            cursor: pointer;
+        }
+    }
+    .no-data-found {
+        text-align: center !important;
+        height: 100px;
+    }
+}
+
+.name-block {
+    display: flex;
+    flex-direction: column;
+    .name {
+        font-size: 12px;
+        color: #9C9C9C;
+    }
+}
+
+.id-block {
+    display: flex;
+    flex-direction: column;
+    // .name {
+    //     color: #9C9C9C;
+    //     font-size: 12px;
+    // }
+}
+
+
+.upper-part {
+    min-height: 52px;
+    position: relative;
+    .arrow-button {
+        right: 11px !important;
+        position: absolute;
+        top: 23px;
+    }
+}
+
+.detail-table {
+    .main-table {
+        td {
+            .detail-part-fix {
+                justify-content: space-between;
+                padding: 0 20px;
+                top: 56px;
+                .detail-part {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}
+
+.m-b-86 {
+    margin-bottom: 86px;
+}
+
+.nodataFoundClass{
+    text-align: center;
+    font-size:16px;
+    font-weight: bolder;
+}
+
+@media screen and (max-width: 500px) {
+    .web-equity {
+        .header-table {
+            th {
+                font-size: 12px;
+                font-family: 'nunitoLight';
+                color: #757382;
+                width: 30% !important;
+            }
+            th:nth-child(1) {
+                width: 40% !important;
+            }
+        }
+        .main-table {
+            border-radius: 0;
+            max-height: unset;
+            margin-bottom: 0;
+            text-align: right;
+            td {
+                width: 30% !important;
+            }
+            td:nth-child(1) {
+                width: 40% !important;
+                max-width: 260px;
+            }
+            td:nth-child(3) {
+                // color: #2680EB;
+                // cursor: pointer;
+                text-align: right;
+                color: unset;
+                padding-right: 20px;
+            }
+        }
+    }
+    .detail-part-aum-inner {
+        .code-block {
+            .name {
+                max-width: 31vw;
+                white-space: break-spaces;
+            }
+        }
+    }
+    .desktop-header-table {
+        th:first-child {
+            border-radius: 0 !important;
+        }
+        th:last-child {
+            border-radius: 0 !important;
+        }
+    }
+    .title-time-block {
+        display: flex;
+        align-items: center;
+        .insurance-title {
+            font-size: 21px !important;
+        }
+        .time-section {
+            font-size: 13px !important;
+            font-family: "nunitoLight";
+            margin-left: 3px;
+        }
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .title-time-block {
+        display: flex;
+        align-items: center;
+        top: 4px;
+        position: relative;
+        .insurance-title {
+            font-size: 17px !important;
+        }
+        .time-section {
+            font-size: 11px !important;
+            font-family: "nunitoLight";
+            margin-left: 3px;
+        }
+    }
+}
+.download_file{display: flex;justify-content: flex-end; gap: 10px; margin: 15px 0;}
+.download_file > div{cursor: pointer;}
+.download_file img{width: 16px;}
+@media screen and (max-width: 768px) {
+.download_file{padding-right: 10px;}
+}

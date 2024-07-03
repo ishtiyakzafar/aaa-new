@@ -1,0 +1,1124 @@
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<!-- <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon> -->
+				<ion-title class="title">Dashboard</ion-title>
+			</div>
+			<div class="search-block">
+				<ion-buttons class="header-icon-block">
+					<ion-icon class="iconsize first-icon m-r-15" (click)="onHelpClick()"
+						src="./assets/svg/help-btn-icon-white.svg"></ion-icon>
+					<ion-icon class="iconsize first-icon m-r-15" (click)="goToNotification()"
+						src="./assets/svg/notification.svg"></ion-icon>
+					<ion-icon class="iconsize m-r-15" src="./assets/svg/search.svg" (click)="goToSearch()"></ion-icon>
+					<div class="profile-circle">
+						<ion-icon name="person" (click)="goToProfile()"></ion-icon>
+					</div>
+				</ion-buttons>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content appScrollbarTheme class="dashboard-bg">
+<!-- <div class="header">
+		<div class="header-bg"></div>
+		<div class="container">
+			<div class="m-t-30">
+				<app-common-header-revamp [displayHeaderDetails]="displayHeader"></app-common-header-revamp>
+			</div>
+		
+			
+		</div>
+	</div> -->
+	<div class="dashboard-bg">
+		<div class="market-update mobile-visibility">
+			<div class="market-updates-grid d-flex">
+				<div class="d-flex gp">
+				<span class="market-type-value d-flex"><strong>{{displayHeader[0]?.Symbol}}</strong>{{displayHeader[0]?.LastRate | number: '1.2-2'}}</span>
+				<span *ngIf="displayHeader[0]?.Change > 0" [ngClass]="{'positive': displayHeader[0]?.Change > 0}" class="market-position d-flex ion-align-items-center"><img src="assets/svg/positive-arrow.svg" alt="positive-arrow">{{displayHeader[0]?.Change | number: '1.2-2'}} ({{displayHeader[0]?.PerChange | number: '1.2-2'}}%)</span>
+				<span *ngIf="displayHeader[0]?.Change < 0" [ngClass]="{'negative': displayHeader[0]?.Change < 0}" class="market-position d-flex ion-align-items-center"><img src="assets/svg/negative-arrow.svg" alt="negative-arrow">{{displayHeader[0]?.Change | number: '1.2-2'}} ({{displayHeader[0]?.PerChange | number: '1.2-2'}}%)</span>
+				</div>
+				<div class="d-flex gp">
+					<span class="market-type-value d-flex"><strong>{{displayHeader[1]?.Symbol}}</strong>{{displayHeader[1]?.LastRate | number: '1.2-2'}}</span>
+					<span *ngIf="displayHeader[1]?.Change > 0" [ngClass]="{'positive': displayHeader[1]?.Change > 0}" class="market-position d-flex ion-align-items-center"><img src="assets/svg/positive-arrow.svg" alt="positive-arrow">{{displayHeader[1]?.Change | number: '1.2-2'}} ({{displayHeader[1]?.PerChange | number: '1.2-2'}}%)</span>
+					<span *ngIf="displayHeader[1]?.Change < 0" [ngClass]="{'negative': displayHeader[1]?.Change < 0}" class="market-position d-flex ion-align-items-center"><img src="assets/svg/negative-arrow.svg" alt="negative-arrow">{{displayHeader[1]?.Change | number: '1.2-2'}} ({{displayHeader[1]?.PerChange | number: '1.2-2'}}%)</span>
+				</div>
+	
+				<div class="d-flex gp">
+					<span class="market-type-value d-flex"><strong>{{displayHeader[2]?.Symbol}}</strong>{{displayHeader[2]?.LastRate | number: '1.2-2'}}</span>
+					<span *ngIf="displayHeader[2]?.Change > 0" [ngClass]="{'positive': displayHeader[2]?.Change > 0}" class="market-position d-flex ion-align-items-center"><img src="assets/svg/positive-arrow.svg" alt="positive-arrow">{{displayHeader[2]?.Change | number: '1.2-2'}} ({{displayHeader[2]?.PerChange | number: '1.2-2'}}%)</span>
+					<span *ngIf="displayHeader[2]?.Change < 0" [ngClass]="{'negative': displayHeader[2]?.Change < 0}" class="market-position d-flex ion-align-items-center"><img src="assets/svg/negative-arrow.svg" alt="negative-arrow">{{displayHeader[2]?.Change | number: '1.2-2'}} ({{displayHeader[2]?.PerChange | number: '1.2-2'}}%)</span>
+				</div>
+	
+				</div>
+		</div>
+	<div class="container">
+		<!-- <app-common-header-revamp [displayHeaderDetails]="displayHeader"></app-common-header-revamp> -->
+
+	<div class="new-common-header parent-section">
+			<div class="left-section">
+				<div class="d-flex new-common-header-left">
+					<div class="user-search-box d-flex" (click)="select()">
+						<div>Hello, <span class="name-feild">{{isApplyClick ? ClientName : loginUserName}}</span></div>
+						<img *ngIf="toggleParam == 'Hierarchy'" src="assets/svg/user-search.svg" alt="user-search">
+					</div>
+					
+
+					<div *ngIf="isHierarchyshow" class="popupHierarchyList">
+						<div class="backDrop" (click)="closeBtn()"></div>
+						<div class="popupHierarchyContent">
+							<img (click)="closeBtn()" src="assets/svg/close_delete.svg" class="close" width="15" alt="close">
+					<h3 class="text-center">Find RM/FAN under you</h3>
+					<small class="text-center hierarchy-note">Note: Please enter at least 4 characters to search the RM/Fan under you.</small>
+					<div class="hierarchy-wrapper thin-scroll"
+						[ngClass]="{'add-hierarchy-height': isDropDownVisible, 'specificHeight': selectOptionArrCopy.length === 1 && isDropDownVisible}">
+						<ng-container *ngTemplateOutlet="recursiveList; context: { $implicit: selectOptionArrCopy }">
+						</ng-container>
+						<!-- <div *ngIf="selectOptionArrCopy.length" class="apply-btn">
+							<ion-button (click)="applyFilter(true)" class="orange-button" shape="round" expand="full">Apply
+							</ion-button>
+						</div> -->
+					</div>
+
+
+
+					<ng-template #recursiveList let-selectOptionArrCopy>
+						<div class="input-name-list">
+							<img class="search-btn" src="assets/svg/serach-icon-hr.svg" width="16" >
+							<ion-input [ngModelOptions]="{standalone: true}" type="text" class="ion-input search-Hierarchy" [(ngModel)]="searchHierarchyList" (keyup)="typeHierarchyText($event)" [placeholder]= 'placeholderInput'>
+							</ion-input>
+							<img *ngIf="isShowCross" class="cross-btn" (click)="dismiss()" src="assets/svg/close_delete.svg" width="16" alt="close" >
+							</div>
+						<div class="select-drop-down thin-scroll" *ngIf="isShowDrop">
+							<div *ngIf="noRecord && searchHierarchyList.length>3" class="hierarchyloader">
+								<p>No data found</p>
+							</div>
+							<div class="thin-scroll select-drop"
+								[ngClass]="{'parent-check-block': hightestLabel === item['EmployeeLevel']}"
+								*ngFor="let item of selectOptionArrCopy; let ind = index;">
+								<div *ngIf="item['isVisible']">
+									<div *ngIf="!isHierarchyLoad"  class="top-check-block">
+										<!-- <ion-checkbox [(ngModel)]="item.isChecked"
+											(click)="applyFilter(false,item)">
+										</ion-checkbox> -->
+										<div class="name-section" (click)="openHide(ind, item['innerDetail'], item)">
+											<div class="name">{{item['EmployeeName'] ? item['EmployeeName'] :
+												item['EmployeeCode']}}</div>
+											<div *ngIf="item['EmployeeName'] != ''" class="type">{{item['EmployeeCode']}}</div>
+										</div>
+										<img class="drop-down-icon pointer" src="assets/svg/down-arrow.svg" alt=""
+											(click)="openHide(ind, item['innerDetail'], item)"
+											*ngIf="item['innerDetail'] && item['innerDetail'].length > 0">
+									</div>
+								</div>
+								<div class="inner-check-block-child"
+									*ngIf="(item && item['innerDetail'] && item['innerDetail'].length > 0 && item['isVisible'])">
+									<ng-container class="name-section" (click)="openHide(ind, item['innerDetail'], item)"
+										*ngTemplateOutlet="recursiveList; context: { $implicit: item['innerDetail'] }">
+									</ng-container>
+								</div>
+							</div>
+						</div>
+					</ng-template></div>
+				</div>
+
+					<div class="dash-filter d-flex">
+						<span [ngClass]="{'active': toggleParam == 'Hierarchy'}" (click)="toggleSwitch('Hierarchy')">
+							<img *ngIf="toggleParam == 'Hierarchy'" src="assets/svg/team-icon.svg" alt="team"> 
+							<img *ngIf="toggleParam != 'Hierarchy'" src="assets/svg/team-black.svg" alt="team"> 
+							<label>Team</label></span>
+						<span [ngClass]="{'active': toggleParam == 'Self'}" (click)="toggleSwitch('Self')"> 
+							<img *ngIf="toggleParam != 'Self'" src="assets/svg/self-icon.svg" alt="self"> 
+							<img *ngIf="toggleParam == 'Self'" src="assets/svg/self-white.svg" alt="self"> 
+							<label>Self</label></span>
+					 </div>
+					</div>
+
+				<div class="tabs-main">
+				<div class="dashboard-tabs d-flex ion-justify-content-between ion-align-items-center">
+						<ion-segment class="d-flex" [(ngModel)]="equityBlockTabValue" (ionChange)="equityBlockSegmentChanged(equityBlockTabValue)">
+							<div *ngFor="let data of equityBlockButton; let i = index">
+								<ion-segment-button class="d-flex " value={{data.Value}}>
+									<span>{{data.Name}} <span class="set-default">
+										 <img *ngIf="showIcon == data.Value" src="assets/svg/set-default.svg" alt="set-default" width="13px"> 
+									</span></span> 
+								</ion-segment-button>
+							</div>
+							<!-- <img *ngIf="showIcon == equityBlockTabValue" src="assets/svg/set-default.svg" alt="set-default" width="13px"> -->
+						</ion-segment>
+						<div (click)="defaultClick(equityBlockTabValue)" class="d-flex set-default-right ion-align-items-center desktop-visibility">
+							<img src="assets/svg/set-default.svg" alt="set-default" width="13px">
+							<span class="default-btn" *ngIf="showIcon == equityBlockTabValue">Default</span>
+							<span class="default-btn" *ngIf="showIcon != equityBlockTabValue">Set Default</span>
+						</div>
+					</div>
+
+					<ion-row>
+						<div class="dash-tab-inner" [ngSwitch]="equityBlockTabValue">
+							<h2 class="overview-main-title">Business Overview
+								<span class="eye-show" (click)="maskDashValueicon()">
+									<div class="show-numer-blink" *ngIf="showMyValue">
+										<img src="assets/svg/show-my-numbers.svg" alt="Number">
+									</div>
+								<img src="assets/svg/show-eye.svg" width="20px" *ngIf="buttonName == 'Show'">
+								<img src="assets/svg/hide-eye.svg" width="20px" *ngIf="buttonName == 'Hide'">
+							</span>
+						</h2>
+									
+							<div *ngSwitchCase="'Overall'">
+								<app-dashboard-overall-tab [dashSwitch]="dashSwitch" [toggleChange]="toggleParam" [showBrokerage]="showBrokerage" [showHideDashboardValue]="showHidedashValue"></app-dashboard-overall-tab>
+							</div>
+							<div *ngSwitchCase="'Mutual Funds'">
+								<app-dashboard-mf-tab [dashSwitch]="dashSwitch" [toggleChange]="toggleParam" [showBrokerage]="showBrokerage" [showHideDashboardValue]="showHidedashValue"></app-dashboard-mf-tab>
+							</div>
+							<div *ngSwitchCase="'Equity'">
+								<app-dashboard-equity-tab [dashSwitch]="dashSwitch" [toggleChange]="toggleParam" [showBrokerage]="showBrokerage" [showHideDashboardValue]="showHidedashValue"></app-dashboard-equity-tab>
+							</div>
+							<div *ngSwitchCase="'Cross-Sell'">
+								<app-dashboard-cross-sell-tab [dashSwitch]="dashSwitch" [toggleChange]="toggleParam" [showBrokerage]="showBrokerage" [showHideDashboardValue]="showHidedashValue"></app-dashboard-cross-sell-tab>
+							</div>
+						</div>
+					</ion-row>
+
+					
+				</div>
+
+		
+				<!-- <div class="mobile-visibility mobile-right-section">
+                    <ion-slides pager="true" class="top-slides" #autoSlider [options]="autoOptions">
+                        <ion-slide *ngFor="let dataObj of topCarousel">
+                            <div class="carousel-section">
+                                <div class="content-section">
+                                    <span class="title">{{dataObj['title']}}</span>
+                                    <span class="heading">{{dataObj['heading']}}</span>
+                                    <span class="description">{{dataObj['des']}}</span>
+                                </div>
+                                <div class="img-button-block">
+                                    <div class="img-section">
+                                        <img src="assets/imgs/carousel_img.png" alt="">
+                                    </div>
+                                    <ion-button>Participate Now</ion-button>
+                                </div>
+                            </div>
+                        </ion-slide>
+                    </ion-slides>
+                </div> -->
+				
+				<div class="mobile-visibility" style="margin-top: 15px;">
+					<app-add-quick-link [showQuickLink]="showQuickLink"></app-add-quick-link>
+				</div>
+				<div class="mobile-visibility mobile-right-section">
+					<div *ngIf="userType === 'RM'||userType === 'FAN'||userType === 'SUB BROKER'">
+					<!-- fly high contest -->
+					<div *ngIf="showFlyHighSection" class="contest_grid_box" >
+						<div class="contest_headding">
+							<div class="contest-title">
+								<span>#1</span>
+								<h2>FLY HIGH
+								<label>1st May’24 to 31st July ’24</label>
+								</h2>
+							</div>
+							<a href="avascript:void(0)">View Details <img src="assets/svg/view_iglc_arrow.svg" alt=""></a>
+						</div>
+	
+						<img src="assets/svg/fly-high-seprator.svg" height="2px" alt="">
+
+						<div class="fan_subbroker_main" *ngIf="!flyHighRmSection">
+							<div class="fly_high_main_box">
+								<div class='progress-bar'>
+									<span class="bar_titile">Incremental Gross Brokerage</span>
+									<div [style.width] ="barIncrementa+ '%'" style="width: 30% !important;">
+									<span *ngIf="barIncrementa != 100" class="Digit"> {{ flyHighData && flyHighData[0]?.IncrementalGrossBrokerage| formatNumberUnit }}</span>
+									</div>
+									<label *ngIf="barIncrementa == 100" class="achieved"><img src="assets/svg/earn_complete.svg" width="14px" alt=""> Achieved</label>
+								 </div>
+								<div class="score_btn" [ngClass]="{'score_achieved': barIncrementa == 100}">
+									<img *ngIf="barIncrementa != 100" class="before_tr" src="assets/svg/trophy.svg" width="14px" alt="">
+									<img *ngIf="barIncrementa == 100" class="after_tr" src="assets/svg/white_trophy.svg" width="14px" alt="">
+									<span>{{ flyHighData && flyHighData[0]?.IncrementalGrossBrokerageTarget| formatNumberUnit }}</span>	
+								</div>
+							</div>
+	
+							<div class="fly_high_main_box">
+								<div class='progress-bar'>
+									<span class="bar_titile">Net Equity AUM</span>
+									<div [style.width] ="barNBAUM+ '%'" style="width: 50% !important;">
+									<span *ngIf="barNBAUM != 100" class="Digit" [ngClass]="{'negativeVal': isNegativebarNBAUM }">{{ flyHighData && flyHighData[0]?.EquityAUM| formatNumberUnit }}</span>
+									</div>
+									<label *ngIf="barNBAUM == 100" class="achieved"><img src="assets/svg/earn_complete.svg" width="14px" alt=""> Achieved</label>
+								 </div>
+								<div class="score_btn" [ngClass]="{'score_achieved': barNBAUM == 100}">
+									<img *ngIf="barNBAUM != 100" class="before_tr" src="assets/svg/trophy.svg" width="14px" alt="">
+									<img *ngIf="barNBAUM == 100" class="after_tr" src="assets/svg/white_trophy.svg" width="14px" alt="">
+									<span>{{ flyHighData && flyHighData[0]?.EquityAUMTarget| formatNumberUnit }}</span>	
+								</div>
+							</div>
+	
+							<div class="fly_high_main_box">
+								<div class='progress-bar'>
+									<span class="bar_titile">Booster 1(X Sell AUM)</span>
+									<div [style.width] ="barKyc+ '%'" style="width: 100% !important;">
+									<span *ngIf="barKyc != 100" class="Digit">{{ flyHighData && flyHighData[0]?.Booster1Score | formatNumberUnit }}</span>
+									</div>
+									<label *ngIf="barKyc == 100" class="achieved"><img src="assets/svg/earn_complete.svg" width="14px" alt=""> Achieved</label>
+								 </div>
+								<div class="score_btn" [ngClass]="{'score_achieved': barKyc == 100}">
+									<img *ngIf="barKyc != 100" class="before_tr" src="assets/svg/trophy.svg" width="14px" alt="">
+									<img *ngIf="barKyc == 100" class="after_tr" src="assets/svg/white_trophy.svg" width="14px" alt="">
+									<span>{{ flyHighData && flyHighData[0]?.Booster1Target | formatNumberUnit }}</span>	
+								</div>
+							</div>
+							<div class="fly_high_main_box">
+								<div class='progress-bar'>
+									<span class="bar_titile">Booster 2(Wellness Insurance)</span>
+									<div [style.width] ="barBooster2+ '%'" style="width: 100% !important;">
+									<span *ngIf="barBooster2 != 100" class="Digit">{{ flyHighData && flyHighData[0]?.Booster2Score | formatNumberUnit }}</span>
+									</div>
+									<label *ngIf="barBooster2 == 100"class="achieved"><img src="assets/svg/earn_complete.svg" width="14px" alt=""> Achieved</label>
+								 </div>
+								<div class="score_btn " [ngClass]="{'score_achieved': barBooster2 == 100}">
+									<img *ngIf="barBooster2 != 100" class="before_tr" src="assets/svg/trophy.svg" width="14px" alt="">
+									<img *ngIf="barBooster2 == 100" class="after_tr" src="assets/svg/white_trophy.svg" width="14px" alt="">
+									<span>{{ flyHighData && flyHighData[0]?.Booster2Target | formatNumberUnit }}</span>	
+								</div>
+							</div>
+							
+					   </div>
+						<div class="partner_performance" *ngIf="flyHighRmSection" >
+							<p>See how your patners are performing</p>
+							<a href="javascript:void(0)" (click)="downloadFlyHighReport()">Download Report</a>
+						</div>
+						</div>
+				<!-- fly high contest -->
+					<div class="iglc_contest_grid_box">
+						<div class="iglc_headding">
+							<div class="contest-title">
+								<span>#2</span>
+								<h2>K2W FY’23
+								</h2>
+							</div>
+							<!-- <a href="https://mailer.iiflsecurities.com/2024/k2w-mailers/k2w-terms-condition.html" target="_blank">View Details <img src="assets/svg/view_iglc_arrow.svg" alt=""></a> -->
+						</div>
+						<img src="assets/svg/fly-high-seprator.svg" height="2px" alt="">
+				<div class="fan_subbroker_main" *ngIf="!iglcRmSection">
+						<div class="earning_point_value">
+							<img src="assets/svg/earn_icon.svg" width="20px" alt="">
+							<span id="earnPoint">{{displayIGLCScore}}</span>
+							<label>earned</label>
+						</div>
+						<div class="earn_main">
+						<ul class="earning_lock_grid">
+							<li (mouseenter)="isHidden = !isHidden" (mouseleave)="isHidden = !isHidden"><img [src]="imgPreview_1"  alt="" >
+							<div class="earn_msg_main" *ngIf="isHidden">
+									<div class="earn_point_msg_box">
+										<div class="earning_point_value">
+											<img src="assets/svg/earn_icon.svg" width="16px" alt="">
+											<span>3000 Points</span>
+										</div>
+										<!-- <p>Training & Knowledge Session at HYDERABAD</p> -->
+										<div class="achieve" *ngIf="isComplete_1">
+											<img src="assets/svg/earn_complete.svg" width="18px" alt="">
+											<span>Achieved</span>
+										</div>
+										<span class="more_point" *ngIf="isPoint_1">{{(3000) - (displayIGLCScore)}} more points to qualify</span>
+									</div>
+								</div>
+							</li>
+							<!-- <li (mouseenter)="earnlock2 = !earnlock2" (mouseleave)="earnlock2 = !earnlock2">
+								<img [src]="imgPreview_2"  alt="" >
+								<div class="earn_msg_main" *ngIf="earnlock2">
+									<div class="earn_point_msg_box"   >
+										<div class="earning_point_value">
+											<img src="assets/svg/earn_icon.svg" width="16px" alt="">
+											<span>6000 Points</span>
+										</div>
+										<p>Multiple Ticket</p>
+										<div class="achieve" *ngIf="isComplete_2">
+											<img src="assets/svg/earn_complete.svg" width="18px" alt="">
+											<span>Achieved</span>
+										</div>
+										<span class="more_point" *ngIf="isPoint_2">{{(6000) - (displayIGLCScore)}} more points to qualify</span>
+									</div>
+								</div>
+							</li> -->
+	
+							<li (mouseenter)="earnlock3 = !earnlock3" (mouseleave)="earnlock3 = !earnlock3">
+								<img [src]="imgPreview_3" alt="">
+								<div class="earn_msg_main" *ngIf="earnlock3">
+								<div class="earn_point_msg_box">
+									<div class="earning_point_value">
+										<img src="assets/svg/earn_icon.svg" width="16px" alt="">
+										<span>8000 Points</span>
+									</div>
+									<!-- <p>Training & Knowledge Session at SINGAPORE</p> -->
+									<div class="achieve" *ngIf="isComplete_3">
+										<img src="assets/svg/earn_complete.svg" width="18px" alt="">
+										<span>Achieved</span>
+									</div>
+									<span class="more_point" *ngIf="isPoint_3">{{(8000) - (displayIGLCScore)}} more points to qualify</span>
+								</div>
+							</div>
+							
+							</li>
+	
+							<li (mouseenter)="earnlock4 = !earnlock4" (mouseleave)="earnlock4 = !earnlock4">
+								<img [src]="imgPreview"  alt="">
+								<div class="earn_msg_main" *ngIf="earnlock4">
+								<div class="earn_point_msg_box">
+									<div class="earning_point_value">
+										<img src="assets/svg/earn_icon.svg" width="16px" alt="">
+										<span>15000 Points</span>
+									</div>
+									<!-- <p>Training & Knowledge Session at SOUTH AFRICA</p> -->
+									<div class="achieve" *ngIf="isComplete_4">
+										<img src="assets/svg/earn_complete.svg" width="18px" alt="">
+										<span>Achieved</span>
+									</div>
+									<span class="more_point" *ngIf="isPoint_4">{{(15000) - (displayIGLCScore)}} more points to qualify</span>
+								</div>
+							</div>
+								 
+							</li>
+							
+						</ul>
+						
+						<ion-progress-bar class="main_progress_bar"  value="{{iglcScoreProgress}}"></ion-progress-bar>
+					</div>
+	
+	
+						<!-- <div class="point_unlock_msg" *ngIf="isUnlock_1">
+							<img src="assets/svg/earn_icon.svg" width="16px" alt="">
+							<p >{{(3000) - (displayIGLCScore)}} more points away to unlock Training & Knowledge Session at HYDERABAD</p>
+						</div> -->
+						<!-- <div class="point_unlock_msg" *ngIf="isUnlock_2">
+							<img src="assets/svg/earn_icon.svg" width="16px" alt="">
+							<p >{{(6000) - (displayIGLCScore)}} more points away to unlock Multiple Ticket</p>
+							</div> -->
+						<!-- <div class="point_unlock_msg" *ngIf="isUnlock_3">
+							<img src="assets/svg/earn_icon.svg" width="16px" alt="">
+							<p >{{(8000) - (displayIGLCScore)}} more points away to unlock Training & Knowledge Session at SINGAPORE</p>
+							</div> -->
+						<!-- <div class="point_unlock_msg" *ngIf="isUnlock_4">
+							<img src="assets/svg/earn_icon.svg" width="16px" alt="">
+							<p >{{(15000) - (displayIGLCScore)}} more points away to unlock Training & Knowledge Session at SOUTH AFRICA</p>
+						</div> -->
+						<div class="point_unlock_msg" *ngIf="isUnlock_5">
+							<img src="assets/svg/earn_icon.svg" width="16px" alt="">
+							<p>All your Achievemnts are unlocked</p>
+						</div>
+					</div>
+						<div class="partner_performance" *ngIf="iglcRmSection">
+							<p>See how your patners are performing</p>
+							<a href="javascript:void(0)" (click)="downloadIGLCReport()">Download Report</a>
+						</div>
+						</div>
+					</div>
+					<!-- <div class="people-like-you-title title" (click)="togglePeopleLike()">
+						<span>People like you</span>
+						<ion-icon *ngIf="!isPeopleLikeVisible" class="arrow-button arrow-button-down"
+							src="assets/svg/down-arrow.svg"></ion-icon>
+						<ion-icon *ngIf="isPeopleLikeVisible" class="arrow-button arrow-button-up rotate"
+							src="assets/svg/down-arrow.svg"></ion-icon>
+					</div>
+					<div class="people-like-you" *ngIf="isPeopleLikeVisible">
+						<div class="title hide">People like you</div>
+						<table class="width-100">
+							<thead>
+								<tr>
+									<th></th>
+									<th>Your Performance</th>
+									<th>Top Performance</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let dataObj of performance">
+									<td>{{dataObj['type']}}</td>
+									<td><span *ngIf="dataObj.type != 'New Acquisition'">
+											₹
+										</span>{{dataObj['value1'] | formatNumberUnit}}</td>
+									<td><span *ngIf="dataObj.type != 'New Acquisition'">
+											₹
+										</span>{{dataObj['value2'] | formatNumberUnit}}</td>
+								</tr>
+								 <tr *ngFor="let dataObj of performance">
+                                    <td>{{dataObj['type']}}</td>
+                                    <td>{{dataObj['value1']}}</td>
+                                    <td>{{dataObj['value2']}}</td>
+                                </tr>
+							</tbody>
+						</table>
+					</div> -->
+				</div>
+				<div class="circulars-section" *ngIf="showCircularsSection">
+					<div class="circulars-box"><div class="circulars-row">
+						<div>
+							<h4>Circulars and Updates</h4>
+							<p><img src="assets/svg/circulars-star.svg" alt=""> {{ recentCircularsCount }}  Added Recently</p>
+						</div>
+						<div>
+							<div class="d-flex">
+								<h4>{{ latestCircularsData[0]?.title }}
+									<span class="date">{{ latestCircularsData[0]?.modifiedTime | date: 'dd-MM-yyyy'  }}</span>
+								</h4>
+								<ion-button class="view-btn" (click)="onViewClick()">
+									View <img src="assets/svg/circulars-arrow.svg" alt="">
+								</ion-button> 
+							</div>	
+						</div>
+						
+					</div></div>
+
+					<ion-button class="close-btn" (click)="onCircularsClose()">
+						<img src="assets/svg/circulars-close.svg" alt="">
+					</ion-button> 
+				</div>
+				<div class="div_Exclusive" *ngIf="topLeadData && topLeadData.length>0 && !shouldHideDiv()">
+					<h3>IIFL Exclusive</h3>
+					<div class="div_ExclusiveDetails" *ngFor="let top of topLeadData">
+						<div class="row_Exclusive" *ngIf="top.name === 'IIFL SAMASTA FINANCE LTD NCD DEC 2023'"> 
+							<div class="info_Exclusive" >
+								<span class="tag_Exclusive">{{ top.productType }}</span>
+								<span class="time_Exclusive"><img src="assets/svg/timer-flash-line.svg" alt=""> {{ top.timerText }}</span>
+								<div class="info_Details">
+									<div class="first">
+										<div class="name_Exclusive">
+											<label>
+												<img src="{{top.logo ? top.logo : 'assets/imgs/dummy-top-lead.jpg'}}" alt="IIFL Exclusive">
+											<svg width="37" height="15" viewBox="0 0 37 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+												<rect x="0.5" y="0.5" width="36" height="14" rx="7" fill="#FFEEE3"/>
+												<rect x="0.5" y="0.5" width="36" height="14" rx="7" stroke="url(#paint0_linear_10732_512)"/>
+												<path d="M7.31 11.07C7.15667 11.07 7.03667 11.0267 6.95 10.94C6.86333 10.8533 6.82 10.73 6.82 10.57V4.4C6.82 4.23333 6.86 4.10667 6.94 4.02C7.02667 3.92667 7.14 3.88 7.28 3.88C7.4 3.88 7.49 3.90333 7.55 3.95C7.61667 3.99 7.69333 4.06667 7.78 4.18L11.9 9.61H11.65V4.37C11.65 4.21667 11.69 4.09667 11.77 4.01C11.8567 3.92333 11.9767 3.88 12.13 3.88C12.29 3.88 12.41 3.92333 12.49 4.01C12.57 4.09667 12.61 4.21667 12.61 4.37V10.58C12.61 10.7333 12.57 10.8533 12.49 10.94C12.4167 11.0267 12.3167 11.07 12.19 11.07C12.07 11.07 11.97 11.0467 11.89 11C11.8167 10.9533 11.7367 10.8733 11.65 10.76L7.55 5.34H7.78V10.57C7.78 10.73 7.74 10.8533 7.66 10.94C7.58 11.0267 7.46333 11.07 7.31 11.07ZM14.8116 11C14.6316 11 14.4916 10.9533 14.3916 10.86C14.2983 10.76 14.2516 10.62 14.2516 10.44V4.51C14.2516 4.33 14.2983 4.19333 14.3916 4.1C14.4916 4 14.6316 3.95 14.8116 3.95H18.4616C18.6016 3.95 18.7083 3.98667 18.7816 4.06C18.855 4.12667 18.8916 4.22667 18.8916 4.36C18.8916 4.5 18.855 4.60667 18.7816 4.68C18.7083 4.75333 18.6016 4.79 18.4616 4.79H15.2516V7H18.2416C18.3883 7 18.495 7.03667 18.5616 7.11C18.635 7.18333 18.6716 7.28667 18.6716 7.42C18.6716 7.56 18.635 7.66667 18.5616 7.74C18.495 7.80667 18.3883 7.84 18.2416 7.84H15.2516V10.16H18.4616C18.6016 10.16 18.7083 10.1967 18.7816 10.27C18.855 10.3433 18.8916 10.4467 18.8916 10.58C18.8916 10.72 18.855 10.8267 18.7816 10.9C18.7083 10.9667 18.6016 11 18.4616 11H14.8116ZM22.4615 11.07C22.3148 11.07 22.1948 11.0333 22.1015 10.96C22.0148 10.8867 21.9415 10.7733 21.8815 10.62L19.7315 4.49C19.6715 4.31667 19.6815 4.17333 19.7615 4.06C19.8482 3.94 19.9882 3.88 20.1815 3.88C20.3282 3.88 20.4415 3.91333 20.5215 3.98C20.6082 4.04667 20.6748 4.15333 20.7215 4.3L22.6715 10.04H22.3015L24.3015 4.32C24.3615 4.17333 24.4315 4.06333 24.5115 3.99C24.5915 3.91667 24.6982 3.88 24.8315 3.88C24.9648 3.88 25.0682 3.91667 25.1415 3.99C25.2215 4.06333 25.2915 4.17667 25.3515 4.33L27.3115 10.04H26.9815L28.9515 4.3C28.9982 4.16 29.0615 4.05667 29.1415 3.99C29.2282 3.91667 29.3415 3.88 29.4815 3.88C29.6548 3.88 29.7815 3.94 29.8615 4.06C29.9482 4.17333 29.9582 4.31667 29.8915 4.49L27.7315 10.63C27.6715 10.7767 27.5982 10.8867 27.5115 10.96C27.4248 11.0333 27.3082 11.07 27.1615 11.07C27.0082 11.07 26.8882 11.0333 26.8015 10.96C26.7148 10.8867 26.6448 10.7733 26.5915 10.62L24.7015 5.21H24.9215L23.0115 10.63C22.9582 10.7767 22.8882 10.8867 22.8015 10.96C22.7215 11.0333 22.6082 11.07 22.4615 11.07Z" fill="#F37021"/>
+												<defs>
+												<linearGradient id="paint0_linear_10732_512" x1="3.5" y1="1.5" x2="33.5" y2="14.5" gradientUnits="userSpaceOnUse">
+													<stop stop-color="#F37021"/>
+													<stop offset="1" stop-color="#FFCD1B"/>
+												</linearGradient>
+												</defs>
+											</svg>
+											</label>
+											
+											<span>{{ top.name }}
+												<img class="fire" src="assets/svg/fire_icon.svg" alt="">
+											</span>
+											
+										</div>
+										<p><img src="assets/svg/star_vector.svg" style="width:13px;" alt="">  {{ top.agency.split(' ')[0] }} {{ top.rating }} Rating</p>
+										<p class="dates_Exclusive">Dates:
+											<b>{{ top.bidsOpen}}</b> -
+											<b>{{ top.bidsClose}}</b></p>
+									</div>
+									<div class="second">
+										<p>
+											<label>
+											Face Value
+										</label>
+										<span class="rupees">₹</span> {{ top.highPrice | number : '1.0-0'}}
+										</p>
+										<p>
+											<label>
+												Issue Size
+										</label>
+										<span class="rupees">₹</span> {{ top.issueSize }}
+										</p>
+										<p>
+											<label>
+												Returns
+										</label>
+										upto {{ top.maxYield }} %
+										</p>
+										<!-- <p>
+											<label>
+												Bid Lot & Size
+										</label>
+										10 NCDs & in multiples of 1 NCD thereafter
+										</p> -->
+									</div>
+								</div>
+							</div>
+							<div class="leads_Exclusive">
+								<div class="leads_list" *ngIf="!(top.clientCount?.client_interested_Count === 0 && NCDorDebtHoldingsValue === 0)">
+									<div class="topLeads" *ngIf="top.clientCount?.client_interested_Count !== 0">
+										<div class="details">
+											<p class="head">TOP LEADS</p>
+										<h4>{{top.clientCount?.client_interested_Count}} <small>Clients</small></h4>
+										<p>are interested in this</p>
+										<p class="trending" *ngIf="top.clientCount?.client_added_today !== 0"><img src="assets/svg/arrow-trending.svg" alt=""> {{top.clientCount?.client_added_today}} added today</p>
+										</div>
+										<div class="link_Exclusive" style="cursor: pointer" (click)="leadClick(top)" >View leads <img src="assets/svg/line-arrow.svg"/></div>
+									</div>
+									<div class="opportunity" *ngIf="NCDorDebtHoldingsValue !==0">
+										<div class="details">
+											<p class="head">OPPORTUNITY</p>
+										<h4 *ngIf="NCDorDebtHoldingsValue">{{ NCDorDebtHoldingsValue}} <small>Clients</small></h4>
+										<p> have NCD/ Debt Holding</p>
+										</div>
+										<div class="link_Exclusive" style="cursor: pointer" (click)="opportunitiesDetails('NCDorDebtHoldings', 4)">Click here <img src="assets/svg/line-arrow.svg"/></div>
+									</div>
+								</div>
+								<div class="noLeads" *ngIf="(top.clientCount?.client_interested_Count === 0 && NCDorDebtHoldingsValue === 0)">
+									<p>No Leads or Potential Clients are generated till now</p>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+
+				<div *ngIf="topLeadData && topLeadData.length>0" class="top_leads_main desktop-visibility">
+					<div class="top_leads_box">
+						<div class="top_lead_head">
+							<h2 class="leads_title">Investment Opportunities</h2>
+							<!-- <h2 class="leads_title">Top Leads <img src="assets/svg/fire_icon.svg" alt="fire"></h2>
+							<p>Potential clients who show interest in following Investment products</p> -->
+						</div>
+						<!-- top lead slider -->
+						<div class="lead_cards">
+							<swiper-container #leadSlides [options]="slideLeadWeb" (swiperactiveindexchange)="leadslideChanged($event)"
+							pager="true" [pagination]="{ clickable: true}" autoplay="false" loop="false" [breakpoints] = "leadSlidesBreakpoints">
+								<!-- SHR -->
+								<swiper-slide *ngFor="let top of topLeadData">
+									<div class="card_bg">
+										<div (click)="leadClick(top)" class="card_grid_box" id="{{ top?.productType === 'IPO' ? '': top?.productType }}"> <span
+												class="lead_type">{{top?.productType}}</span> <span
+												[ngClass]="top?.isDay ? 'lead_time' : 'lead_time early'"><img *ngIf="!top?.isDay"
+													src="assets/svg/cil_clock.svg" alt="clock">{{ top.timerText }}</span>
+											<div class="ipo_box"> <img src="{{top.logo ? top.logo : 'assets/imgs/dummy-top-lead.jpg'}}" alt="ipo"> <span>{{top.name}}</span> </div>
+											<ng-container
+												*ngIf="top && top.clientCount?.client_interested_Count && top.clientCount?.client_interested_Count != 0">
+												<div class="clients_box">
+													<div class="cl_grid">
+														<div>
+															<label>Interested clients</label>
+															<span>{{top.clientCount?.client_interested_Count}}</span>
+														</div>
+														<div>
+														<label>New clients added today</label>
+														<span>{{top.clientCount?.client_added_today}}</span>
+													</div>	
+												</div>												 
+												</div>
+											</ng-container>
+											<ng-template #noClient>
+												<div class="clients_box noclient_main">
+													<label class="no_client">No clients have shown interest</label>
+												</div>
+											</ng-template>
+										</div>
+									</div>
+									<!-- SHR -->
+								</swiper-slide>
+							</swiper-container>
+							<div class="slide_btn" style="display:none;">
+								<div class="swiper-button-prev1" (click)="prevBtn()">
+									<img src="assets/svg/arrow_prev.svg">
+								</div>
+								<div class="swiper-button-next1" (click)="nextBtn()">
+									<img src="assets/svg/arrow_next.svg">
+								</div>
+							</div>
+						</div>
+						<!-- top lead slider -->
+					</div>
+				</div>
+				<div class="business-opportunities order-5">
+					<div class="heading business_opportunity_md_lg">
+						<span>Business Opportunities</span>
+						<a class="view-all mobile-visibility md_lg" *ngIf="displayViewAll" (click)="businessListRedirect()">View All</a>
+					</div>
+					<!-- <div class="opportunities-block">
+                        <div class="opportunitiy"  [ngClass]="{'active-fo': dataObj['option'] === 'activeFo', 'logged-in': dataObj['option'] === 'loggedIn',
+                            'not-invested-mutual': dataObj['option'] === 'notInvestedMutual', 'not-invested-sip': dataObj['option'] === 'notInvestedSIP',
+                            'nfo-maturing': dataObj['option'] === 'nfoMaturing', 'high-networth': dataObj['option'] === 'highNetworth'
+                            }" *ngFor="let dataObj of opportunities let i = index" (click)="opportunitiesDetails(dataObj['option'], i)">
+                            <div class="value-section">
+                                <div class="value">{{dataObj['value']}}</div>
+                                <div class="type">{{dataObj['type']}}</div>
+                            </div>
+                            <div class="description">{{dataObj['des']}}</div>
+                            <div class="icon-section">
+                                <ion-icon src="assets/svg/{{dataObj['icon']}}"></ion-icon>
+                            </div>
+                        </div>
+                    </div> -->
+					<div class="opportunities-block" [ngStyle]="{'justify-content': businessOppCard.length === 0 ? 'center' : 'space-between'}">
+						<div class="opportunitiy" [ngStyle]="{'cursor': dataObj['value'] > 0 ? 'pointer' : 'auto'}"
+							[ngClass]="{'client-fo': dataObj['key'] === 'FAOActiveNotTraded' || dataObj['key'] === 'EquityMFLeadsCount' || dataObj['key'] === 'otherclients', 'not-invested-mutual': dataObj['key'] === 'NotInvestedInMF' || dataObj['key'] === 'Last30bday',
+                        'not-invested-sip': dataObj['key'] === 'NotInvestedInSIP' || dataObj['key'] === 'PMSAIFLeadsCount' || dataObj['key'] === 'P1P2Clients', 'high-networth': dataObj['key'] === 'EquityHoldingsAbove25L',
+                        'nfo-maturing': dataObj['key'] === 'MaturingFDCount','fixed-income':dataObj['key'] === 'FixedIncomeLeadsCount'
+                        }" *ngFor="let dataObj of businessOppsCard let i = index"
+							(click)="opportunitiesDetails(dataObj.key, i)">
+							<div class="value-section">
+								<div class="value">{{dataObj.value}}</div>
+								<div class="type">Clients</div>
+							</div>
+							<div class="description">{{titleBusinessOpps(dataObj.key, 'displayName')}}</div>
+							<div class="icon-section">
+								<ion-icon src="{{titleBusinessOpps(dataObj.key,'icon')}}"></ion-icon>
+							</div>
+						</div>
+						<div class="no-records" *ngIf="businessOppCard.length === 0 && !loader">
+							<img src="assets/svg/no_business_opportunity.svg" alt="">
+						</div>
+					</div>
+				</div>
+
+
+				<div class="mobile-visibility business-opportunities invest-opportunities">
+					<div class="heading-arrow-section">
+						<div class="heading">Investment Opportunities</div>
+						<!-- <div *ngIf="IpoCards.length > 0"> -->
+							<ion-button *ngIf="IpoCards.length > 0 && !loader" class="arrow-btn m-l-16 desktop-visibility" (click)="prev()">
+								<div class="arrow-icon left-arrow" [ngClass]="{'disalbe-btn': sliderIndex === 0}">
+									<ion-icon src="assets/svg/arrow-next.svg"></ion-icon>
+								</div>
+								<!-- <img class="left-arrow" src="assets/svg/slider_arrow.svg" alt=""> -->
+							</ion-button>
+							<ion-button *ngIf="IpoCards.length > 0 && !loader" class="arrow-btn desktop-visibility" (click)="next()">
+								<div class="arrow-icon next-arrow"
+									[ngClass]="{'disalbe-btn':  isLastIndex || IpoCards.length < 4}">
+									<ion-icon src="assets/svg/arrow-next.svg"></ion-icon>
+								</div>
+								<!-- <img class="right-arrow" src="assets/svg/slider_arrow.svg" alt=""> -->
+							</ion-button>
+							<!-- <a class="view-all mobile-visibility">View All</a> -->
+						<!-- </div> -->
+					</div>
+					<div *ngIf="IpoCards.length === 0 && !loader">
+						<div class="no-records">
+							<label for="">Currently there are no open investment opportunities available.</label>
+						</div>
+					</div>
+					<swiper-container *ngIf="IpoCards.length > 0" #investSlides [options]="slideOptsWeb" class="desktop-visibility"
+						(swiperactiveindexchange)="slideChanged($event)">
+						<swiper-slide *ngFor="let dataObj of IpoCards">
+							<div class="carousel-card-parent">
+								<div class="carousel-card" (click)="onClickIPO(dataObj)">
+									<div class="ipo">{{dataObj.category == 'BOND' ? 'NCD' : dataObj.category}}</div>
+									<div class="live-option">Live</div>
+									<div class="logo-section">
+										<img src="assets/svg/iifl.svg" alt="">
+									</div>
+									<div class="heading-section">{{dataObj.schname}}</div>
+									<div class="apply-section" *ngIf="dataObj.category != 'BOND'">Apply within {{dataObj.h}} : {{dataObj.m}} :
+										{{dataObj.s}}</div>
+									<div class="apply-section" *ngIf="dataObj.category == 'BOND'">Apply between {{dataObj.opndt}} - {{dataObj.clsdt}}</div>
+									<div class="invest-section" *ngIf="dataObj.category != 'BOND'">Invest Minimum</div>
+									<div class="rupee-section" *ngIf="dataObj.category != 'BOND'">
+										<span class="rupees">₹</span>
+										<span class="value">{{dataObj.lowprice * dataObj.lotsize}}/</span>
+										<span class="share">{{dataObj.lotsize}} shares</span>
+									</div>
+								<div class="min_invest">
+									<div>
+									<div class="invest-section" *ngIf="dataObj.category == 'BOND'">Min. Investment</div>
+									<div class="rupee-section" *ngIf="dataObj.category == 'BOND'">
+										<span class="rupees">₹</span>
+										<span class="value">{{dataObj.minInvest}}</span>
+									</div>
+								</div>
+								<div>
+									<div class="invest-section" *ngIf="dataObj.category == 'BOND'">Returns Upto</div>
+									<div class="rupee-section" *ngIf="dataObj.category == 'BOND'">
+										<span class="value">{{dataObj.maxYield}}%</span>
+									</div>
+								</div>
+							</div>
+
+
+
+
+								</div>
+							</div>
+						</swiper-slide>
+					</swiper-container>
+
+
+					<swiper-container *ngIf="IpoCards.length > 0" #investSlides [options]="slideOptsMob" class="mobile-visibility"
+						(swiperactiveindexchange)="slideChanged($event)">
+						<swiper-slide *ngFor="let dataObj of IpoCards">
+							<div class="carousel-card-parent">
+								<div class="carousel-card" (click)="onClickIPO(dataObj)">
+									<div class="ipo">{{dataObj.category == 'BOND' ? 'NCD' : dataObj.category}}</div>
+									<div class="live-option">Live</div>
+									<div class="logo-section">
+										<img src="assets/svg/iifl.svg" alt="">
+									</div>
+									<div class="heading-section">{{dataObj.schname}}</div>
+									<div *ngIf="dataObj.category != 'BOND'" class="apply-section">Apply within {{dataObj.h}} : {{dataObj.m}} :
+										{{dataObj.s}}</div>
+										<div class="apply-section" *ngIf="dataObj.category == 'BOND'">Apply between {{dataObj.opndt}} - {{dataObj.clsdt}}</div>
+										<div class="invest-section" *ngIf="dataObj.category != 'BOND'">Invest Minimum</div>
+										<div class="rupee-section" *ngIf="dataObj.category != 'BOND'">
+										<span class="rupees">₹</span>
+										<span class="value">{{dataObj.lowprice * dataObj.lotsize}}/</span>
+										<span class="share">{{dataObj.lotsize}} shares</span>
+									</div>
+									<div class="min_invest">
+										<div>
+										<div class="invest-section" *ngIf="dataObj.category == 'BOND'">Min. Investment</div>
+										<div class="rupee-section" *ngIf="dataObj.category == 'BOND'">
+											<span class="rupees">₹</span>
+											<span class="value">{{dataObj.minInvest}}</span>
+										</div>
+									</div>
+	<div>
+										<div class="invest-section" *ngIf="dataObj.category == 'BOND'">Returns Upto</div>
+										<div class="rupee-section" *ngIf="dataObj.category == 'BOND'">
+											<span class="value">{{dataObj.maxYield}}%</span>
+										</div>
+									</div>
+								</div>
+								</div>
+							</div>
+						</swiper-slide>
+					</swiper-container>
+				</div>
+
+			</div>
+
+			<div class="right-section desktop-visibility">
+				<app-common-header-revamp [displayHeaderDetails]="displayHeader"></app-common-header-revamp>
+			<!-- Add quick link section -->
+			<app-add-quick-link [showQuickLink]="showQuickLink"></app-add-quick-link>
+			<!-- Add quick link section -->
+				<div class="BannerSlide">
+					<swiper-container *ngIf="filteredData" #bannerSlides [options]="slidebannerWeb" (swiperactiveindexchange)="bannerChanged($event)"
+								pager="true" [pagination]="{ clickable: true}" autoplay="true">
+						<swiper-slide  *ngFor="let slide of filteredData">
+							<a href="{{slide.imgHref}}" target="_blank">
+								<img src="{{slide.imgUrl}}" alt="banner">
+							</a>
+						</swiper-slide>
+					</swiper-container>			
+				</div>
+				
+				<!-- <ion-slides pager="true" class="top-slides" #autoSlider [options]="autoOptions">
+                    <ion-slide *ngFor="let dataObj of topCarousel">
+                        <div class="carousel-section">
+                            <div class="content-section">
+                                <span class="title">{{dataObj['title']}}</span>
+                                <span class="heading">{{dataObj['heading']}}</span>
+                                <span class="description">{{dataObj['des']}}</span>
+                            </div>
+                            <div class="img-button-block">
+                                <div class="img-section">
+                                    <img src="assets/imgs/carousel_img.png" alt="">
+                                </div>
+                                <ion-button>Participate Now</ion-button>
+                            </div>
+                        </div>
+                    </ion-slide>
+                </ion-slides> -->
+				<div *ngIf="userType === 'RM'||userType === 'FAN'||userType === 'SUB BROKER'">
+				<!-- fly high contest -->
+				<div *ngIf="showFlyHighSection" class="contest_grid_box">
+					<div class="contest_headding">
+						<div class="contest-title">
+							<span>#1</span>
+							<h2>FLY HIGH
+							<label>1st May’24 to 31st July ’24</label>
+							</h2>
+						</div>
+						<a href="avascript:void(0)">View Details <img src="assets/svg/view_iglc_arrow.svg" alt=""></a>
+					</div>
+
+					<img src="assets/svg/fly-high-seprator.svg" height="2px" alt="">
+					<div class="fan_subbroker_main" *ngIf="!flyHighRmSection">
+						<div class="fly_high_main_box">
+							<div class='progress-bar'>
+								<span class="bar_titile">Incremental Gross Brokerage</span>
+								<div [style.width] ="barIncrementa+ '%'" style="width: 30% !important;">
+								<span *ngIf="barIncrementa != 100" class="Digit">{{ flyHighData && flyHighData[0]?.IncrementalGrossBrokerage| formatNumberUnit }}</span>
+								</div>
+								<label *ngIf="barIncrementa == 100" class="achieved"><img src="assets/svg/earn_complete.svg" width="14px" alt=""> Achieved</label>
+							 </div>
+							<div class="score_btn" [ngClass]="{'score_achieved': barIncrementa == 100}">
+								<img *ngIf="barIncrementa != 100" class="before_tr" src="assets/svg/trophy.svg" width="14px" alt="">
+								<img *ngIf="barIncrementa == 100" class="after_tr" src="assets/svg/white_trophy.svg" width="14px" alt="">
+								<span>{{ flyHighData && flyHighData[0]?.IncrementalGrossBrokerageTarget| formatNumberUnit }}</span>	
+							</div>
+						</div>
+
+						<div class="fly_high_main_box">
+							<div class='progress-bar'>
+								<span class="bar_titile">Net Equity AUM</span>
+								<div [style.width] ="barNBAUM+ '%'" style="width: 50% !important;">
+								<span *ngIf="barNBAUM != 100"  class="Digit" [ngClass]="{'negativeVal': isNegativebarNBAUM }">{{ flyHighData && flyHighData[0]?.EquityAUM| formatNumberUnit }}</span>
+								</div>
+								<label *ngIf="barNBAUM == 100" class="achieved"><img src="assets/svg/earn_complete.svg" width="14px" alt=""> Achieved</label>
+							 </div>
+							<div class="score_btn" [ngClass]="{'score_achieved': barNBAUM == 100}">
+								<img *ngIf="barNBAUM != 100" class="before_tr" src="assets/svg/trophy.svg" width="14px" alt="">
+								<img *ngIf="barNBAUM == 100" class="after_tr" src="assets/svg/white_trophy.svg" width="14px" alt="">
+								<span>{{ flyHighData && flyHighData[0]?.EquityAUMTarget| formatNumberUnit }}</span>	
+ 							</div>
+						</div>
+
+						<div class="fly_high_main_box">
+							<div class='progress-bar'>
+								<span class="bar_titile">Booster 1(X Sell AUM)</span>
+								<div [style.width] ="barKyc+ '%'" style="width: 100% !important;">
+								<span *ngIf="barKyc != 100" class="Digit">{{ flyHighData && flyHighData[0]?.Booster1Score | formatNumberUnit }}</span>
+								</div>
+								<label *ngIf="barKyc == 100"class="achieved"><img src="assets/svg/earn_complete.svg" width="14px" alt=""> Achieved</label>
+							 </div>
+							<div class="score_btn " [ngClass]="{'score_achieved': barKyc == 100}">
+								<img *ngIf="barKyc != 100" class="before_tr" src="assets/svg/trophy.svg" width="14px" alt="">
+								<img *ngIf="barKyc == 100" class="after_tr" src="assets/svg/white_trophy.svg" width="14px" alt="">
+								<span>{{ flyHighData && flyHighData[0]?.Booster1Target | formatNumberUnit }}</span>	
+							</div>
+						</div>
+
+						<div class="fly_high_main_box">
+							<div class='progress-bar'>
+								<span class="bar_titile">Booster 2(Wellness Insurance)</span>
+								<div [style.width] ="barBooster2+ '%'" style="width: 100% !important;">
+								<span *ngIf="barBooster2 != 100" class="Digit">{{ flyHighData && flyHighData[0]?.Booster2Score | formatNumberUnit }}</span>
+								</div>
+								<label *ngIf="barBooster2 == 100"class="achieved"><img src="assets/svg/earn_complete.svg" width="14px" alt=""> Achieved</label>
+							 </div>
+							<div class="score_btn " [ngClass]="{'score_achieved': barBooster2 == 100}">
+								<img *ngIf="barBooster2 != 100" class="before_tr" src="assets/svg/trophy.svg" width="14px" alt="">
+								<img *ngIf="barBooster2 == 100" class="after_tr" src="assets/svg/white_trophy.svg" width="14px" alt="">
+								<span>{{ flyHighData && flyHighData[0]?.Booster2Target | formatNumberUnit }}</span>	
+							</div>
+						</div>
+						
+				   </div>
+					<div class="partner_performance" *ngIf="flyHighRmSection" >
+						<p>See how your patners are performing</p>
+						<a href="javascript:void(0)" (click)="downloadFlyHighReport()">Download Report</a>
+					</div>
+					</div>
+				<!-- fly high contest -->
+				 <div class="iglc_contest_grid_box">
+					<div class="iglc_headding">
+						<div class="contest-title">
+							<span>#2</span>
+							<h2>K2W FY’23
+							</h2>
+						</div>
+						<!-- <a href="https://mailer.iiflsecurities.com/2024/k2w-mailers/k2w-terms-condition.html" target="_blank">View Details <img src="assets/svg/view_iglc_arrow.svg" alt=""></a> -->
+					</div>
+					<img src="assets/svg/fly-high-seprator.svg" height="2px" alt="">
+			<div class="fan_subbroker_main" *ngIf="!iglcRmSection">
+					<div class="earning_point_value">
+						<img src="assets/svg/earn_icon.svg" width="20px" alt="">
+						<span id="earnPoint">{{displayIGLCScore}}</span>
+						<label>earned</label>
+					</div>
+					<div class="earn_main">
+					<ul class="earning_lock_grid">
+						<li (mouseenter)="isHidden = !isHidden" (mouseleave)="isHidden = !isHidden"><img [src]="imgPreview_1"  alt="" >
+						<div class="earn_msg_main" *ngIf="isHidden">
+								<div class="earn_point_msg_box">
+									<div class="earning_point_value">
+										<img src="assets/svg/earn_icon.svg" width="16px" alt="">
+										<span>3000 Points</span>
+									</div>
+									<!-- <p>Training & Knowledge Session at HYDERABAD</p> -->
+									<div class="achieve" *ngIf="isComplete_1">
+										<img src="assets/svg/earn_complete.svg" width="18px" alt="">
+										<span>Achieved</span>
+									</div>
+									<span class="more_point" *ngIf="isPoint_1">{{(3000) - (displayIGLCScore)}} more points to qualify</span>
+								</div>
+							</div>
+						</li>
+						<!-- <li (mouseenter)="earnlock2 = !earnlock2" (mouseleave)="earnlock2 = !earnlock2">
+							<img [src]="imgPreview_2"  alt="" >
+							<div class="earn_msg_main" *ngIf="earnlock2">
+								<div class="earn_point_msg_box"   >
+									<div class="earning_point_value">
+										<img src="assets/svg/earn_icon.svg" width="16px" alt="">
+										<span>5000 Points</span>
+									</div>
+									<p>Knowledge session at Kashmir</p>
+									<div class="achieve" *ngIf="isComplete_2">
+										<img src="assets/svg/earn_complete.svg" width="18px" alt="">
+										<span>Achieved</span>
+									</div>
+									<span class="more_point" *ngIf="isPoint_2">{{(5000) - (displayIGLCScore)}} more points to qualify</span>
+								</div>
+							</div>
+						</li> -->
+
+						<li (mouseenter)="earnlock3 = !earnlock3" (mouseleave)="earnlock3 = !earnlock3">
+							<img [src]="imgPreview_3" alt="">
+							<div class="earn_msg_main" *ngIf="earnlock3">
+							<div class="earn_point_msg_box">
+								<div class="earning_point_value">
+									<img src="assets/svg/earn_icon.svg" width="16px" alt="">
+									<span>8000 Points</span>
+								</div>
+								<!-- <p>Training & Knowledge Session at SINGAPORE</p> -->
+								<div class="achieve" *ngIf="isComplete_3">
+									<img src="assets/svg/earn_complete.svg" width="18px" alt="">
+									<span>Achieved</span>
+								</div>
+								<span class="more_point" *ngIf="isPoint_3">{{(8000) - (displayIGLCScore)}} more points to qualify</span>
+							</div>
+						</div>
+						
+						</li>
+
+						<li (mouseenter)="earnlock4 = !earnlock4" (mouseleave)="earnlock4 = !earnlock4">
+							<img [src]="imgPreview"  alt="">
+							<div class="earn_msg_main" *ngIf="earnlock4">
+							<div class="earn_point_msg_box">
+								<div class="earning_point_value">
+									<img src="assets/svg/earn_icon.svg" width="16px" alt="">
+									<span>15000 Points</span>
+								</div>
+								<!-- <p>Training & Knowledge Session at SOUTH AFRICA</p> -->
+								<div class="achieve" *ngIf="isComplete_4">
+									<img src="assets/svg/earn_complete.svg" width="18px" alt="">
+									<span>Achieved</span>
+								</div>
+								<span class="more_point" *ngIf="isPoint_4">{{(15000) - (displayIGLCScore)}} more points to qualify</span>
+							</div>
+						</div>
+							 
+						</li>
+						
+					</ul>
+					
+					<ion-progress-bar class="main_progress_bar"  value="{{iglcScoreProgress}}"></ion-progress-bar>
+				</div>
+
+
+					<!-- <div class="point_unlock_msg" *ngIf="isUnlock_1">
+						<img src="assets/svg/earn_icon.svg" width="16px" alt="">
+						<p >{{(3000) - (displayIGLCScore)}} more points away to unlock Training & Knowledge Session at HYDERABAD</p>
+					</div> -->
+					<!-- <div class="point_unlock_msg" *ngIf="isUnlock_2">
+						<img src="assets/svg/earn_icon.svg" width="16px" alt="">
+						<p >{{(5000) - (displayIGLCScore)}} more points away to unlock Knowledge session at Kashmir</p>
+						</div> -->
+					<!-- <div class="point_unlock_msg" *ngIf="isUnlock_3">
+						<img src="assets/svg/earn_icon.svg" width="16px" alt="">
+						<p >{{(8000) - (displayIGLCScore)}} more points away to unlock Training & Knowledge Session at SINGAPORE</p>
+						</div> -->
+					<!-- <div class="point_unlock_msg" *ngIf="isUnlock_4">
+						<img src="assets/svg/earn_icon.svg" width="16px" alt="">
+						<p >{{(15000) - (displayIGLCScore)}} more points away to unlock Training & Knowledge Session at SOUTH AFRICA</p>
+					</div> -->
+					<div class="point_unlock_msg" *ngIf="isUnlock_5">
+						<img src="assets/svg/earn_icon.svg" width="16px" alt="">
+						<p>All your Achievemnts are unlocked</p>
+					</div>
+				</div>
+					<div class="partner_performance" *ngIf="iglcRmSection">
+						<p>See how your patners are performing</p>
+						<a href="javascript:void(0)" (click)="downloadIGLCReport()">Download Report</a>
+					</div>
+					</div>
+					</div>
+				
+				<div *ngIf="userType === 'RM'">
+					<div *ngIf="kpiDashboardObj && kpiDashboardObj.length!=0">
+					<div class="dvYourKPI" *ngIf="userChannel === 'Premia' || userChannel === 'Franchisee'">
+						<h3 class="title box-title">Your KPI</h3>
+						<div class="orangeBox your-KPI" (click)="displyPopupYourKPI()">
+							<div>
+								<ion-icon class="iconsize iconKPI icon-score"
+								src="./assets/svg/score.svg"></ion-icon>
+								<label>Overall Score <span class="infoTooltip"><img src="./assets/svg/info-tooltip.svg"> 
+									<span class="tooltiptext" *ngIf="userChannel === 'Premia'">Overall Score = Income Revenue + Net AUM + Clients Acquisition</span>
+									<span class="tooltiptext" *ngIf="userChannel === 'Franchisee'">Overall Score is the achieved weightage of your Key Performance Indicators</span>
+								
+								</span></label> 
+								<p *ngIf="userChannel === 'Premia'">{{kpiDashboardObj?.totalscore == " " ? 0 : kpiDashboardObj?.totalscore | formatNumberUnit}}</p>
+								<p *ngIf="userChannel === 'Franchisee'">{{kpiDashboardObj?.OverallScore == " " ? 0 : kpiDashboardObj?.OverallScore | formatNumberUnit}}</p>
+							</div>
+							<div>
+								<ion-icon class="iconsize iconKPI icon-rank"
+								src="./assets/svg/rank_star.svg"></ion-icon>
+								<label>Rank</label> 
+								<p *ngIf="userChannel === 'Premia'">{{kpiDashboardObj?.rank == " " ? 0 : kpiDashboardObj?.rank | formatNumberUnit}}</p>
+								<p *ngIf="userChannel === 'Franchisee'">{{kpiDashboardObj?.Rank == " " ? 0 : kpiDashboardObj?.Rank | formatNumberUnit}}</p>
+								<!-- <p>{{kpiDashboardObj?.rank == " " ? 0 : kpiDashboardObj?.rank | formatNumberUnit}}</p> -->
+							</div>
+
+						</div>
+					</div>
+				</div>
+					<div class="dvMeetingsStats" *ngIf="userChannel === 'Premia'">
+						<h3 class="title box-title">Meetings Stats</h3>
+						<span>This Quarter</span>
+						<div class="shadowBox Meetings-Stats"> 
+							<div>
+								<label>Conducted</label> 
+								<p>{{kpiDashboardObj?.newmeetachv == " " ? 0 : kpiDashboardObj?.newmeetachv | formatNumberUnit}} <span>{{kpiDashboardObj?.newmeettarget - kpiDashboardObj?.newmeetachv | formatNumberUnit}} left</span></p>
+							</div>
+							<div>
+								<label>Target</label> 
+								<p>{{kpiDashboardObj?.newmeettarget == " " ? 0 : kpiDashboardObj?.newmeettarget | formatNumberUnit}}</p>
+							</div>
+							
+							<div class='progress-bar-meeting-stats'>
+								<div [style.width] ="widthProgressBar+ '%'">
+								</div>
+							</div>		
+							
+						</div>
+					</div>
+				</div>
+
+				<div class="action_panel">
+					<h3 class="title box-title">Action Panel</h3>
+					<div class="shadowBox">
+						<ul class="action_panel_list">
+							<li (click)="onFeedClick()">Feedback</li>
+							<li *ngIf="brokerageRmSection">
+								<div [debounceTime]="700" class="desktop-visibility" style="background: transparent;" appDebounceClick
+								(debounceClick)="displyPopupLeadsStats()">
+								<span class=""> Leads Stats </span>
+							</div>
+								<!-- Leads Stats -->
+							</li>
+							<li *ngIf="isAccessMaker" (click)="displyPopupBrokerageControl()" >Brokerage View Rights</li>
+							<li *ngIf="userType == 'RM'" (click)="onMappingClick()">Custom Mapping Management</li>
+						</ul>
+					</div>
+				</div>
+
+<!-- <div *ngIf="userChannel !== 'Premia'">
+	<div class="people-like-you-title title">People like you</div>
+				<div class="people-like-you">
+					<div class="title hide">People like you</div>
+					<table>
+						<thead>
+							<tr>
+								<th></th>
+								<th>Your Performance</th>
+								<th>Top Performance</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let dataObj of performance">
+								<td>{{dataObj['type']}}</td>
+								<td><span *ngIf="dataObj.type != 'New Acquisition'">
+										₹
+									</span>{{dataObj['value1'] | formatNumberUnit}}</td>
+								<td><span *ngIf="dataObj.type != 'New Acquisition'">
+										₹
+									</span>{{dataObj['value2'] | formatNumberUnit}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div> -->
+			</div>
+		</div>
+	</div>
+</div>
+	<div class="loader" *ngIf="loader">
+		<img src="/assets/imgs/loader.gif" alt="">
+	</div>
+	<!-- ONLY FOR DROPDOWN -->
+	<div *ngIf="isDropDownVisible" class="overlay-div" (click)="overlayClicked($event)"></div>
+</ion-content>

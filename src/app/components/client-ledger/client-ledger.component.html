@@ -1,0 +1,256 @@
+<ion-header class="mobile-visibility">
+  <div>
+    <div class="total-value-block">
+      <div class="block segment-block">
+        <ion-segment class="last-block-segment" [(ngModel)]="monthWeekTabValue" (ionChange)="durationChange()">
+          <ion-segment-button value="month" (click)="segmentTab('month')">Last 1M</ion-segment-button>
+          <ion-segment-button value="week" (click)="segmentTab('week')">Last 1Wk</ion-segment-button>
+        </ion-segment>
+
+        <div class="calender date-picker-block calendar-date-block-section" style="position: relative;">
+          <div class="calender-heading">
+              <span>Select Date Range</span>
+          </div>
+
+            <div class="datePopover">
+              <ion-item class="date_Picker" (click)="toggleStartDatePicker()">
+                <ion-label class="ion-lable-end">Start Date</ion-label>
+                <ion-input placeholder="Select Date" [value]="startDate | date: 'dd/MM/yyyy'" readonly class="ion-text-end"></ion-input>
+                <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+              </ion-item>
+              <div class="calendarBackdrop" *ngIf="showStartDatePicker" (click)="hideDatePicker('start')"></div>
+              <ion-datetime class="calendarOpen" *ngIf="showStartDatePicker" presentation="date"
+                [(ngModel)]="startDate" presentation="date" min="1973-01-01" [max]="currentDate"
+                (ionChange)="hideDatePicker('start',$event)">
+              </ion-datetime>
+              </div>
+
+              <div class="datePopover">
+              <ion-item class="date_Picker" (click)="toggleEndDatePicker()">
+                <ion-label class="ion-lable-end">End Date</ion-label>
+                <ion-input placeholder="Select Date" [value]="endDate | date: 'dd/MM/yyyy'" readonly class="ion-text-end"></ion-input>
+                <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+              </ion-item>
+              <div class="calendarBackdrop" *ngIf="showEndDatePicker" (click)="hideDatePicker('end')"></div>
+              <ion-datetime class="calendarOpen" *ngIf="showEndDatePicker" presentation="date"
+                [(ngModel)]="endDate" presentation="date" min="1973-01-01" [max]="currentDate"
+                (ionChange)="hideDatePicker('end',$event)">
+              </ion-datetime>
+              </div>
+
+        </div>
+      </div>
+      <div class="header-tab-content" [ngSwitch]="monthWeekTabValue">
+        <div *ngSwitchCase="'month'">
+          <div class="block opening-block">
+            <div class="item">
+              <span class="upper">Opening Bal</span>
+              <span class="lower" ><span  class="rupees">₹</span>{{openingBalance | formatNumberUnit}}</span>
+            </div>
+            <div class="item">
+              <span class="upper">Cleared</span>
+              <span class="lower"><span class="rupees">₹</span>{{clearedBalance | formatNumberUnit}}</span>
+            </div>
+            <div class="item">
+              <span class="upper">Uncleared</span>
+              <span class="lower"><span class="rupees">₹</span>{{unClearedBalance | formatNumberUnit}}</span>
+            </div>
+            <div class="item">
+              <span class="upper">Total</span>
+              <span class="lower"><span class="rupees">₹</span>{{totalBalance | formatNumberUnit}}</span>
+            </div>
+          </div>
+        </div>
+        <div *ngSwitchCase="'week'">
+          <div class="block opening-block">
+            <div class="item">
+              <span class="upper">Opening Bal</span>
+              <span class="lower"><span class="rupees">₹</span>{{openingBalance | formatNumberUnit}}</span>
+            </div>
+            <div class="item">
+              <span class="upper">Cleared</span>
+              <span class="lower"><span class="rupees">₹</span>{{clearedBalance | formatNumberUnit}}</span>
+            </div>
+            <div class="item">
+              <span class="upper">Uncleared</span>
+              <span class="lower"><span class="rupees">₹</span>{{unClearedBalance | formatNumberUnit}}</span>
+            </div>
+            <div class="item">
+              <span class="upper">Total</span>
+              <span class="lower"><span class="rupees">₹</span>{{totalBalance | formatNumberUnit}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-header>
+<ion-content class="mobile-visibility">
+  <div *ngIf="dataLoad" class="tab-content" [ngSwitch]="monthWeekTabValue">
+    <div *ngSwitchCase="'month'">
+      <div class="block" *ngFor="let dataObj of ledgerDetailsRecords">
+        <div class="item item2">
+          <span class="upper interest">{{dataObj.Transaction_date | formatDate}}</span>
+          <span class="lower interest2">{{dataObj.Particular}}</span>
+        </div>
+        <div class="item item2" > 
+          <span class="upper" >Debit / Credit</span>
+          <span class="lower" ><span class="rupees" >₹</span>{{dataObj.Amount ? splitAmountValue(dataObj.Amount) : 0}}</span>
+        </div>
+        <div class="item item2">
+          <span class="upper">Balance</span>
+          <span class="lower"><span class="rupees">₹</span>{{dataObj.RunningBalance ? splitBalance(dataObj.RunningBalance) : 0}}</span>
+        </div>
+      </div>
+    </div>
+    <div *ngSwitchCase="'week'">
+      <div class="block" *ngFor="let dataObj of ledgerDetailsRecords">
+        <div class="item item2">
+          <span class="upper interest">{{dataObj.Transaction_date | formatDate}}</span>
+          <span class="lower interest2">{{dataObj.Particular}}</span>
+        </div>
+        <div class="item item2">
+          <span class="upper">Debit / Credit</span>
+          <span class="lower"><span class="rupees">₹</span>{{dataObj.Amount ? splitAmountValue(dataObj.Amount) : 0}}</span>
+        </div>
+        <div class="item item2">
+          <span class="upper">Balance</span>
+          <span class="lower"><span class="rupees">₹</span>{{dataObj.RunningBalance ? splitBalance(dataObj.RunningBalance) : 0}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="no-data-found" *ngIf="ledgerDetailsRecords.length == 0 && dataLoad">
+    No Records Found
+  </div>
+  <div class="loader loader-height-355" *ngIf="!dataLoad">
+    <img src="/assets/imgs/loader.gif" alt="">
+  </div>
+</ion-content>
+<div class="desktop-visibility">
+  <div class="web-equity thin-scroll leger_web_eq">
+    <div class="header-part">
+      <div class="section-1">
+        <div class="opening-block">
+          <span class="text">Opening Balance</span>
+          <span class="block-value"><span class="rupees">₹</span>{{openingBalance | formatNumberUnit}}</span>
+        </div>
+        <div class="opening-block">
+          <span class="text">Cleared</span>
+          <span class="block-value"><span class="rupees">₹</span>{{clearedBalance | formatNumberUnit}}</span>
+        </div>
+        <div class="opening-block">
+          <span class="text">Uncleared</span>
+          <span class="block-value"><span class="rupees">₹</span>{{unClearedBalance | formatNumberUnit}}</span>
+        </div>
+        <div class="opening-block">
+          <span class="text">Total</span>
+          <span class="block-value"><span class="rupees">₹</span>{{totalBalance | formatNumberUnit}}</span>
+        </div>
+      </div>
+      <div class="section-2">
+        <div class="block segment-block">
+            <ion-segment class="last-block-segment" [(ngModel)]="monthWeekTabValue" (ionChange)="durationChange()">
+                <ion-segment-button value="month" (click)="segmentTab('month')">Last 1M</ion-segment-button>
+                <ion-segment-button value="week" (click)="segmentTab('week')">Last 1Wk</ion-segment-button>
+            </ion-segment>
+            <div class="calender date-picker-block calendar-date-block-section" style="position: relative;">
+                <div class="calender-heading">
+                    <span>Select Date Range</span>
+                </div>
+                
+                <!-- review. datepicker issue 174-185 -->
+                <!-- <div class="filed-head" (click)="dp2.openCalendar()">
+                  <ion-label>Start Date</ion-label>
+                    <input class="dateField ion-input" angular-mydatepicker name="startDate" readonly [(ngModel)]="startDate" placeholder="Select Date" [options]="myOptions" autocomplete="off"
+                      #dp2="angular-mydatepicker" (dateChanged)="onStartDateChanged($event, 'start')"/>
+                </div>
+      
+                <div class="filed-head" (click)="dp3.openCalendar()">
+                  <ion-label>End Date</ion-label>
+                    <input class="dateField ion-input" angular-mydatepicker name="endDate" [(ngModel)]="endDate" placeholder="Select Date" [options]="myOptions" autocomplete="off"
+                      #dp3="angular-mydatepicker" readonly [disabled]="disableToDte"  (dateChanged)="onEndDateChanged1($event, 'end')"/>
+                </div> -->
+
+                <div class="datePopover">
+                  <ion-item class="date_Picker" (click)="toggleStartDatePicker()">
+                    <ion-label class="ion-lable-end">Start Date</ion-label>
+                    <ion-input placeholder="Select Date" [value]="startDate | date: 'dd/MM/yyyy'" readonly class="ion-text-end"></ion-input>
+                    <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+                  </ion-item>
+                  <div class="calendarBackdrop" *ngIf="showStartDatePicker" (click)="hideDatePicker('start')"></div>
+                  <ion-datetime class="calendarOpen date-position-right" *ngIf="showStartDatePicker" presentation="date"
+                    [(ngModel)]="startDate" presentation="date" min="1973-01-01" [max]="currentDate"
+                    (ionChange)="hideDatePicker('start',$event)">
+                  </ion-datetime>
+                  </div>
+    
+                  <div class="datePopover">
+                  <ion-item class="date_Picker" (click)="toggleEndDatePicker()">
+                    <ion-label class="ion-lable-end">End Date</ion-label>
+                    <ion-input placeholder="Select Date" [value]="endDate | date: 'dd/MM/yyyy'" readonly class="ion-text-end"></ion-input>
+                    <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+                  </ion-item>
+                  <div class="calendarBackdrop" *ngIf="showEndDatePicker" (click)="hideDatePicker('end')"></div>
+                  <ion-datetime class="calendarOpen date-position-right" *ngIf="showEndDatePicker" presentation="date"
+                    [(ngModel)]="endDate" presentation="date" min="1973-01-01" [max]="currentDate"
+                    (ionChange)="hideDatePicker('end',$event)">
+                  </ion-datetime>
+                </div>
+
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="header-table">
+      <table class="desktop-header-table width-100">
+        <thead>
+          <tr>
+            <th>
+              Date
+            </th>
+            <th class="text-center">
+              Particulars
+            </th>
+            <th>
+              Credit / Debit
+            </th>
+            <th>
+              Balance
+            </th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="main-table thin-scroll" *ngIf="dataLoad">
+      <!-- <table style="width: 100%" class="mobile-table"> -->
+      <table class="width-100">
+        <tbody *ngIf="ledgerDetailsRecords.length > 0">
+          <tr *ngFor="let dataObj of ledgerDetailsRecords">
+            <td>
+              {{dataObj.Transaction_date | formatDate}}
+            </td>
+            <td>
+              {{dataObj.Particular}}
+            </td>
+            <td [ngClass]="{'positive': dataObj.Amount.includes('Cr'), 'negative': dataObj.Amount.includes('Dr')}">
+              <span class="rupees">₹</span>{{dataObj.Amount ? splitAmountValue(dataObj.Amount) : 0}}
+            </td>
+            <td>
+              <span class="rupees">₹</span>{{dataObj.RunningBalance ? splitBalance(dataObj.RunningBalance) : 0}}
+            </td>
+          </tr>
+        </tbody>
+        <tbody *ngIf="ledgerDetailsRecords.length == 0">
+          <tr>
+            <td class="no-data-found">No Records Found</td>
+          </tr>
+          <!-- <span>No Records Found</span> -->
+        </tbody>
+      </table>
+    </div>
+    <div class="loader loader-height-150" *ngIf="!dataLoad">
+        <img src="/assets/imgs/loader.gif" alt="">
+      </div>
+  </div>
+</div>

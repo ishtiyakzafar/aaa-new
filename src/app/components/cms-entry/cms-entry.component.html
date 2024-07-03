@@ -1,0 +1,310 @@
+<ion-header class="mobile-visibility">
+    <ion-toolbar color="tertiary">
+        <div class="title-block title-block-custom">
+            <div class="icon-title">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <ion-title class="title">CMS Entry</ion-title>
+            </div>
+        </div>
+	</ion-toolbar>
+</ion-header>
+
+<div>
+    
+</div>
+
+<form name="form" #cmsForm="ngForm" class="limit-change-block desktop-visibility">
+    <div class="heading">CMS Entry</div>
+    <div class="field-block">
+        <div class="section">
+            <div class="label">Deposit Bank & Account Number</div>
+            <ng-select [items]="depositAcc" bindLabel="BankName" bindValue="BankName" [clearable]="false" name="depositList" [(ngModel)]="cmsEntry.depositList"  #depositList="ngModel" required>
+            </ng-select> 
+            <div *ngIf="(formSubmit && depositList.invalid)" class="invalid-feedback">
+                <span *ngIf="depositList.errors?.['required']">Please Select the Acc</span>
+            </div>
+        </div>
+        <div class="section">
+            <div class="label">Client Bank</div>
+            <ng-select [items]="bankDetail" bindLabel="BankName" bindValue="BankName" [clearable]="false" name="clientBank" placeholder="Select Client Bank" [(ngModel)]="clientBankName"  #clientBank="ngModel" (change)="changeClientBank($event)" required>
+            </ng-select> 
+            <div *ngIf="(formSubmit && clientBank.invalid)" class="invalid-feedback">
+                <span *ngIf="clientBank.errors?.['required']">Please Select the Acc No</span>
+            </div>
+        </div>
+        <div class="section">
+            <div class="label">Cheque No./DD No.</div>
+            <ion-input type="text" class="ion-input" name="chequeDd" maxlength="20" [(ngModel)]="cmsEntry.chequeDd" #chequeDd="ngModel"
+            class="ion-input" required customValidate>
+            </ion-input>
+            <div *ngIf="(cmsForm.submitted && chequeDd.invalid) || ( chequeDd.invalid && chequeDd.dirty || chequeDd.touched)" class="invalid-feedback">
+                <span *ngIf="chequeDd.errors?.['required']">Cheque No./DD No is required</span>
+                <span *ngIf="chequeDd.errors?.['customValidate']">Invalid Charaters</span>
+            </div>
+        </div>
+        <div class="section">
+            <div class="label">Deposit Type</div>
+            <ng-select [items]="depositTypes" bindLabel="name" bindValue="name" [clearable]="false" name="depositType" [(ngModel)]="cmsEntry.depositType"  #depositType="ngModel" required (change)="changeDepositType($event)">
+            </ng-select> 
+            <div *ngIf="(formSubmit && depositType.invalid)" class="invalid-feedback">
+                <span *ngIf="depositType.errors?.['required']">Please Select the Deposit Type</span>
+            </div>
+        </div>
+        <div class="section">
+            <div class="label">Clearing</div>
+            <ng-select [items]="clearingTypes" bindLabel="name" bindValue="name" [clearable]="false" name="clearingType" [(ngModel)]="cmsEntry.clearingType"  #clearingType="ngModel" required>
+            </ng-select> 
+            <div *ngIf="(formSubmit && clearingType.invalid)" class="invalid-feedback">
+                <span *ngIf="clearingType.errors?.['required']">Please Select the Clearing Type</span>
+            </div>
+        </div>
+        <div class="section">
+            <div class="label">Amount</div>
+            <ion-input type="text" class="ion-input" name="amount" [(ngModel)]="cmsEntry.amount" #amount="ngModel"
+            class="ion-input" required customValidate>
+            </ion-input>
+            <div *ngIf="(cmsForm.submitted && amount.invalid) || ( amount.invalid && amount.dirty || amount.touched)" class="invalid-feedback">
+                <span *ngIf="amount.errors?.['required']">Amount is required</span>
+                <span *ngIf="amount.errors?.['customValidate']">Invalid Charaters</span>
+            </div>
+        </div>
+        <div class="section">
+            <div class="label">Account No.</div>
+            <ng-select [items]="accNoList" bindLabel="accName" bindValue="accName" [clearable]="false" name="accNo" [(ngModel)]="accName"  #accNo="ngModel" (change)="changeAccNo($event)" required>
+            </ng-select> 
+            <div *ngIf="(formSubmit && accNo.invalid)" class="invalid-feedback">
+                <span *ngIf="accNo.errors?.['required']">Please Select the Account No.</span>
+            </div>
+        </div>
+        <div class="section file-upload1">
+            <div class="label">Cheque/DD Image</div>
+            <label class="position-relative">
+                 <!-- <span style="width:50%;overflow: scroll;"> {{checkDDNameDisplay}}</span>  -->
+                <input type="file" size="60" id="file" class="fileUplodNewInput"
+                (change)="handleFileInput($event)">
+                <span>{{checkDDNameDisplay}}</span>
+                <img class="svg float-right" src="assets/svg/upload.svg" alt="">
+                </label> 
+          
+            <!-- <label for="file-2">
+                <span class="file-2-span">{{checkDDNameDisplay}}</span>
+                <img class="svg float-right"oad.svg" alt="">
+            </label> -->
+            <div class="format-message">
+                File format only .jpeg or .jpg
+            </div>
+            <span class="invalid-feedback">{{pdfImageError}}</span> 
+        </div>
+        <div class="section file-upload1">
+            <div class="label">Deposit Slip</div>
+            <label class="posiiton-relative"> 
+                <input type="file" size="60" id="file" class="fileUplodNewInput"
+                (change)="handleFileInput1($event)" >
+                <span>{{slipNameDisplay}}</span>
+                <img class="svg float-right" src="assets/svg/upload.svg" alt="">    
+            </label> 
+                
+            <!-- <label for="file-2">
+                <span class="file-2-span">{{slipNameDisplay}}</span>
+                
+            </label>-->
+            <div class="format-message">
+                File format only .jpeg or .jpg
+            </div> 
+            <span class="invalid-feedback">{{despositFieldErr}}</span> 
+        </div>
+    </div>
+    <div class="section section-button">
+        <ion-button type="submit" (click)="submitForm(cmsForm.form.valid)">Submit Request</ion-button>
+    </div>
+    <div class="set-loader" *ngIf="dataLoad">
+        <img class="width-40" src="/assets/imgs/loader.gif" alt="">
+    </div>
+</form>
+<div class="segment-search-block search-section search-section-changed search-section-changed-revamped">
+    <ion-segment [(ngModel)]="clientBlockSegmentValue" mode="md" (ionChange)="segmentChange($event.detail.value)">
+        <ion-segment-button *ngFor="let entry of segmentButtonOption" value="{{entry['value']}}">{{entry['name']}}
+        </ion-segment-button>
+    </ion-segment>
+    <ion-searchbar search-icon="false" class="custom-searchbar" name="searchCode" [(ngModel)]="searchCode" placeholder="Search by Client code"></ion-searchbar>
+</div>
+
+<div class="desktop-visibility">
+    
+	<div class="web-equity thin-scroll">
+		<div class="header-table">
+			<table class="desktop-header-table width-100">
+				<thead>
+					<tr>
+						<th>
+							Date & Time
+						</th>
+						<th>
+							Client Name & ID
+                        </th>
+						<th>
+							Deposit Bank
+                        </th>
+					
+                        <th>
+                            Status
+                        </th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<div class="main-table thin-scroll">
+			<table class="mobile-table width-100" *ngIf="!dataLoad1">
+				<tbody *ngIf="(equityCmsData | filterSearch: searchCode : 'UserID').length > 0">
+					<tr *ngFor="let dataObj of equityCmsData | filterSearch: searchCode : 'UserID'; let i = index">
+						<td>
+							<div class="block">
+                                <span>{{dataObj['ScanDate']}}</span>
+                                <!-- <span>{{dataObj['time']}}</span> -->
+                            </div>
+						</td>
+						<td>
+                            <div class="block">
+                                <span>{{dataObj['ClientName']}}</span>
+                                <span class="font-small">{{dataObj['UserID']}}</span>
+                            </div>
+						</td>
+						<td>
+							<div class="block">
+                                <span>{{dataObj['DepositBank']}}</span>
+                                <!-- <span class="font-small">-</span> -->
+                            </div>
+						</td>
+					
+                        <td>
+                            <div class="parent-block">
+                                <div class="block">
+                                    <span>{{dataObj['BranchStatus']}}</span>
+                                    <span class="font-small">{{dataObj['AcctRemark']}}</span>
+                                </div>
+                                <!-- <ion-icon *ngIf="dataObj['status'] === 'Rejected' " class="edit-icon" src="./assets/svg/updated_pencil.svg"></ion-icon> -->
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <div class="no-data-found" *ngIf="(equityCmsData | filterSearch: searchCode : 'UserID').length == 0">
+                    <span *ngIf="passClientId != null">No Data Found </span>
+                    <span *ngIf="passClientId == null">Please Select the Client ID</span>
+                </div>
+            </table>
+
+            <div class="loader loader-height" *ngIf="dataLoad1">
+                <img  src="/assets/imgs/loader.gif" alt="">
+            </div>
+            
+		</div>
+	</div>
+</div>
+
+<ion-content class="mobile-visibility">
+    <form name="form" #cmsForm1="ngForm" class="limit-change-block">
+        <div class="field-block">
+            <div class="section">
+                <div class="label">Client ID</div>
+                <ng-select [items]="clientCodeList" bindLabel="ClientCode" bindValue="ClientCode" name="clientId"  (change)="changeClientId($event)">
+                </ng-select> 
+                
+            </div>
+            <div class="section">
+                <div class="label">Deposit Bank & Account Number</div>
+                <ng-select [items]="depositAcc" bindLabel="BankName" bindValue="BankName" name="depositList" [(ngModel)]="cmsEntry.depositList" #depositList="ngModel" required>
+                </ng-select> 
+                <div *ngIf="(cmsForm1.submitted && depositList.invalid)" class="invalid-feedback">
+                    <span *ngIf="depositList.errors?.['required']">Please Select the Acc No</span>
+                </div>
+            </div>
+            <div class="section">
+                <div class="label">Client Bank</div>
+                <ng-select [items]="bankDetail" bindLabel="BankName" bindValue="BankName" [clearable]="false" name="clientBank" [(ngModel)]="clientBankName" #clientBank="ngModel" (change)="changeClientBank($event)" required>
+                </ng-select>
+                <div *ngIf="(cmsForm1.submitted && clientBank.invalid)" class="invalid-feedback">
+                    <span *ngIf="clientBank.errors?.['required']">Please Select the Client Bank</span>
+                </div>
+            </div>
+            <div class="section">
+                <div class="label">Clearing</div>
+                <ng-select [items]="clearingTypes" bindLabel="name" bindValue="name" [clearable]="false" name="clearingType" [(ngModel)]="cmsEntry.clearingType"  #clearingType="ngModel" required>
+                </ng-select> 
+                <div *ngIf="(formSubmit && clearingType.invalid)" class="invalid-feedback">
+                    <span *ngIf="clearingType.errors?.['required']">Please Select the Clearing Type</span>
+                </div>
+            </div>
+            <div class="section">
+                <div class="label">Amount</div>
+                <ion-input type="text" class="ion-input" name="amount" [(ngModel)]="cmsEntry.amount" #amount="ngModel"
+                class="ion-input" required customValidate>
+                </ion-input>
+                <div *ngIf="(cmsForm.submitted && amount.invalid) || ( amount.invalid && amount.dirty || amount.touched)" class="invalid-feedback">
+                    <span *ngIf="amount.errors?.['required']">Amount is required</span>
+                    <span *ngIf="amount.errors?.['customValidate']">Invalid Charaters</span>
+                </div>
+            </div>
+            <div class="section">
+                <div class="label">Account No.</div>
+                <ng-select [items]="accNoList" bindLabel="accName" bindValue="accName" [clearable]="false" name="accNo" [(ngModel)]="accName"  #accNo="ngModel" (change)="changeAccNo($event)" required>
+                </ng-select>
+                <div *ngIf="(formSubmit && accNo.invalid)" class="invalid-feedback">
+                    <span *ngIf="accNo.errors?.['required']">Please Select the Account No.</span>
+                </div>
+            </div>
+            <div class="section">
+                <div class="label">Cheque No./DD No.</div>
+                <ion-input type="text" class="ion-input" name="chequeDd" maxlength="20" [(ngModel)]="cmsEntry.chequeDd" #chequeDd="ngModel"
+                class="ion-input" required customValidate>
+                </ion-input>
+                <div *ngIf="(cmsForm1.submitted && chequeDd.invalid) || ( chequeDd.invalid && chequeDd.dirty || chequeDd.touched)" class="invalid-feedback">
+                    <span *ngIf="chequeDd.errors?.['required']">Cheque No./DD No is required</span>
+                    <span *ngIf="chequeDd.errors?.['customValidate']">Invalid Charaters</span>
+                </div>
+            </div>
+            <div class="section">
+                <div class="label">Deposit Type</div>
+                <ng-select [items]="depositTypes" bindLabel="name" bindValue="name" [clearable]="false" name="depositType" [(ngModel)]="cmsEntry.depositType"  #depositType="ngModel" required (change)="changeDepositType($event)">
+                </ng-select> 
+                <div *ngIf="(cmsForm1.submitted && depositType.invalid)" class="invalid-feedback">
+                    <span *ngIf="depositType.errors?.['required']">Please Select the Deposit Type</span>
+                </div>
+            </div>
+            <div class="section file-upload1">
+                <div class="label">Cheque/DD Image</div>
+                <label class="posiiton-relative">
+                     <!-- <span style="width:50%;overflow: scroll;"> {{checkDDNameDisplay}}</span>  -->
+                    <input type="file" size="60" id="file" class="fileUplodNewInput"
+                    (change)="handleFileInput($event)">
+                    <span>{{checkDDNameDisplay}}</span>
+                    <img class="svg float-right" src="assets/svg/upload.svg" alt="">
+                    </label> 
+                <div class="format-message">
+                    File format only .jpeg or .jpg
+                </div>
+                <span class="invalid-feedback">{{pdfImageError}}</span> 
+            </div>
+            <div class="section file-upload1">
+                <div class="label">Deposit Slip</div>
+                <label class="posiiton-relative"> 
+                    <input type="file" size="60" id="file" class="fileUplodNewInput"
+                    (change)="handleFileInput1($event)" >
+                    <span>{{slipNameDisplay}}</span>
+                    <img class="svg float-right" src="assets/svg/upload.svg" alt="">    
+                </label> 
+                <div class="format-message">
+                    File format only .jpeg or .jpg
+                </div> 
+                <span class="invalid-feedback">{{despositFieldErr}}</span> 
+            </div>
+            <!-- <div class="section section-button" (click)="detail()"> -->
+            <div class="section section-button">
+                <ion-button type="submit" (click)="submitForm(cmsForm1.form.valid)">Submit Request</ion-button>
+            </div>
+        </div>
+    </form>
+    <div class="set-loader" *ngIf="dataLoad">
+        <img class="width-40" src="/assets/imgs/loader.gif" alt="">
+    </div>
+</ion-content>

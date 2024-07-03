@@ -1,0 +1,19 @@
+<ion-list lines="none" *ngIf="!itemsHistory">
+    <ion-item mode="md" button *ngFor="let item of items" color="clear" (click)="onItemClick(item)">
+        <div class="profile-details" *ngIf="!item['title']">
+            <div class="profile-name">{{item['profileName']}}</div>
+            <div class="clients-details">
+                <span>{{item['clientCode']}}</span>
+                <!-- <span class="dot"></span> -->
+                <span class="client-type">{{item['clientType']}}</span>
+            </div>
+        </div>
+        <ion-label *ngIf="item['title']" text-wrap>{{item.title}}</ion-label>
+    </ion-item>
+</ion-list>
+
+<ion-list lines="none" *ngIf="itemsHistory">
+    <ion-item mode="md" button *ngFor="let item of itemsHistory" color="clear" (click)="onItemClick(item)">
+        <ion-label text-wrap>{{item.FullName}}</ion-label>
+    </ion-item>
+</ion-list>

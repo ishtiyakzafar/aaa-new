@@ -1,0 +1,605 @@
+<ion-header>
+  <ion-toolbar color="tertiary" class="mobile-visibility">
+    <div class="title-block title-block-custom">
+      <div class="icon-title">
+        <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+        <ion-title class="title"> Raise a Query</ion-title>
+      </div>
+    </div>
+  </ion-toolbar>
+  <ion-toolbar class=" desktop-visibility">
+    <div class="container">
+      <div class="heading-part notificationheader raise-query-heading">
+        <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+        <span class="heading">Raise a Query</span>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<style>
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+    background-color: #F5F5F5;
+  }
+
+  ::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #2D197F;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {}
+</style>
+<!-- raise a query after question search -->
+<ion-content class="raise_query" appScrollbarTheme *ngIf="!isHelpSearch">
+  <div class="container">
+    <div class="request-block">
+      <div class="section search-section-changed-revamped">
+        <div class="main_drop d-flex">
+          <span class="sub_title">Enter Details </span>
+        </div>
+        <div [ngClass]="isClicked ? 'hide_accordion' : 'en_details_main'">
+          <div class="d-flex raise_main">
+            <div class="raise_query_left">
+              <div class="d-flex">
+                <div class="subject">
+                  <div class="subject-fan">
+                    <div class="d-flex ion-justify-content-between ion-align-items-center">
+                    <ion-radio-group [value]="typeValue" (ionChange)="typeChange($event.detail.value)">
+                      <ion-item lines="none">
+                        <ion-label> Self </ion-label>
+                        <ion-radio slot="start" value="selfType"></ion-radio>
+                      </ion-item>
+                      <ion-item lines="none">
+                        <ion-label>Clients </ion-label>
+                        <ion-radio slot="start" value="clientsType"></ion-radio>
+                      </ion-item>
+                      <ion-item *ngIf="isRM" lines="none">
+                        <ion-label>Partners </ion-label>
+                        <ion-radio slot="start" value="partnersType"></ion-radio>
+                      </ion-item>
+                    </ion-radio-group>
+                    <div class="d-flex tat-btn ion-justify-content-end">
+                      <ion-button class="outer_btn" (click)="viewExcel()">View Departments TAT</ion-button>
+                      <ion-button class="outer_btn download-tat" (click)="downloadExcel()"><img src="assets/svg/download_orange.svg"
+                        alt="" width="14px"></ion-button>
+                    </div>
+                    </div>
+                    <div class="iframe-main">
+                    <div *ngIf="previewShow" class="pop_close" (click)="closePreview()">
+                     X
+                    </div>
+                    <iframe *ngIf="previewShow" src="../../../assets/TATDoc.html" width="100%" height="500" style="margin-bottom: 10px;"></iframe>
+</div>
+                    <!-- <div class="categories_selected">
+                      <p>Categories Selected</p>
+                      <div class="category-wrap">
+                        <div class="categories">
+                          <div *ngFor="let item of selectedCategories;index as i" class="category_box">
+                            <div class="category">{{item == 'Technology'?'Application':item}}</div>
+                            <img *ngIf="selectedCategories.length-1 !== i" src="/assets/svg/arrow-right.svg" alt="icon">
+                          </div>
+                        </div>
+                        <div (click)="gobacktoHelp()" class="edit_icon">
+                          <img src="/assets/svg/edit_icon.svg" alt="icon">
+                        </div>
+                      </div>
+                    </div> -->
+
+                   
+                  </div>
+                  <div class="tat-handle">
+                   <div class="mb-20">
+                    <div class="label">Subject<span class="required">(required)</span></div>
+                    <!-- <input type="text" class="subjectTitle" [(ngModel)]="subjectData"> -->
+                    <p class="subjectTitle">{{subjectListClient}}</p>
+                    <div class="error-message" *ngIf="noSubject">
+                      <span>Subject cannot be blank</span>
+                    </div>
+                   </div>
+
+                    <div *ngIf="typeValue === 'clientsType'" class="client">
+                      <div class="label">Client Name/ID <span class="required">(Enter the Client Code if you are
+                          raising a ticket on
+                          behalf of your client)</span></div>
+                      <!-- <input type="text" class="subjectTitle" [(ngModel)]="clientData"> -->
+                      <div class="raiseClientSearch" style="position: relative;">
+                        <ion-toolbar>
+                          <ion-searchbar (ionBlur)="hideDropDown()" (ngModelChange)="searchText($event)"
+                            class="serachReprotsInput" [debounce]="1000" [(ngModel)]="clientSearchValue"
+                            placeholder="Search Client Code">
+                          </ion-searchbar>
+                        </ion-toolbar>
+
+                        <ion-toolbar class="drop-down-toolbar" *ngIf="isDropDownVisible">
+                          <div class="drop-down thin-scroll" *ngIf="allClients.length && dtLoad">
+                            <div class="item" *ngFor="let data of allClients" (click)="displayClientDetails(data)">
+                              <span class="name">{{data.ClientCode}}</span>
+                            </div>
+                          </div>
+                          <div class="drop-down thin-scroll" *ngIf="allClients.length==0 && dtLoad">
+                            <span>No Data Found</span>
+                          </div>
+                          <div class="loader" *ngIf="!dtLoad">
+                            <img src="/assets/imgs/loader.gif" alt="">
+                          </div>
+                        </ion-toolbar>
+                      </div>
+                    </div>
+                    <div *ngIf="typeValue === 'partnersType'" class="client">
+                      <div class="label">Partner Name/ID <span class="required">(Enter the Partner Code)</span></div>
+                      <!-- <input type="text" class="subjectTitle" [(ngModel)]="clientData"> -->
+                      <div class="raiseClientSearch" style="position: relative;">
+                        <ion-toolbar>
+                          <ion-searchbar (ionBlur)="hideDropDown1()" (ngModelChange)="typeHierarchyText($event)"
+                            class="serachReprotsInput" [debounce]="1000" [(ngModel)]="clientSearchValue"
+                            placeholder="Search Partner Code">
+                          </ion-searchbar>
+                        </ion-toolbar>
+
+                        <ion-toolbar class="drop-down-toolbar" *ngIf="isNewDropDownVisible">
+                          <div class="drop-down thin-scroll" *ngIf="selectOptionArrCopy.length && dtLoad">
+                            <div class="item" *ngFor="let data of selectOptionArrCopy"
+                              (click)="displayPartnerDetails(data)">
+                              <span class="name">{{data['EmployeeName'] ? data['EmployeeName'] :
+                                data['EmployeeCode']}}</span>
+                            </div>
+                            <div class="loader" *ngIf="!dtLoad">
+                              <img src="/assets/imgs/loader.gif" alt="">
+                            </div>
+                          </div>
+                        </ion-toolbar>
+                      </div>
+                    </div>
+
+                    <div class="label">Description <span class="required">(required)</span></div>
+                    <ion-textarea class="ion-textarea vr_scroll" name="Desc" [(ngModel)]="descriptionDetails" #Desc="ngModel"
+                      class="ion-input" customValidate required maxlength="1000">
+                    </ion-textarea>
+                    <div class="error-message" *ngIf="Desc.errors?.['customValidate']">
+                      <span>Invalid Charaters</span>
+                    </div>
+                    <div class="error-message"
+                      *ngIf="(noDesc && (this.descriptionDetails == '' || this.descriptionDetails == undefined))">
+                      <span>Description cannot be blank</span>
+                    </div>
+
+                    <div class="fileUpload">
+                      <div class='file file--upload'>
+                        <label for='input-file'>
+                          <span *ngIf="!myFiles.length" class="upload_icon"><img src="assets/svg/upload_new.svg" alt="">
+                            Upload</span>
+                          <span *ngIf="myFiles.length && myFiles.length <5" class="add_doc"><img src="assets/svg/plus_new.svg"
+                              alt=""></span>
+                        </label>
+                        <div *ngFor="let value of myFiles;index as i;" class="d-flex after_upload">
+                          <div *ngIf="value" class="af_left">
+                            <div class="d-flex after_upload_inner">
+                              <span class="fileName">{{ value && value.name.length > 25 ? filename : value?.name }}</span>
+                              <span (click)="removeFile(i)" class="remove_doc"><img src="assets/svg/close_delete.svg"
+                                  alt=""></span>
+                            </div>
+                          </div>
+                        </div>
+                        <input multiple id='input-file' type='file' (change)="handleFileInput($event)" />
+                      </div>
+                      <span class="error">{{ imgError }}</span>
+                      <div class="error-message" *ngIf="signedUpload">
+                        <span>File upload is mandatory</span>
+                      </div>
+                      <li>
+                        jpeg / png / pdf / xlsx / csv / mp3 / mp4
+                      </li>
+                      <li>
+                        Maximum 5 files.
+                      </li>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="section section-button desktop-visibility">
+                <ion-segment-button [disabled]=" Desc.errors?.['customValidate']" class="submit_query"
+                  type="button" id="startWatch" (click)="submitOption($event)">
+                  <span *ngIf="!showLoader"> Submit </span>
+                  <img *ngIf="showLoader" class="" src="/assets/imgs/loader.gif" alt="" width="30px">
+                </ion-segment-button>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex">
+            <div class="raise_query_right">
+              <div class="section section-button mobile-visibility">
+                <ion-segment-button [disabled]="Desc.errors?.['customValidate']" class="submit_query"
+                  type="button" id="startWatch" (click)="submitOption($event)">
+                  <span *ngIf="!showLoader"> Submit </span>
+                  <img *ngIf="showLoader" class="" src="/assets/imgs/loader.gif" alt="" width="30px">
+                </ion-segment-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<!-- raise a query after 3rd level -->
+<ion-content class="raise_query" appScrollbarTheme *ngIf="isHelpSearch">
+  <div class="container">
+    <div class="request-block">
+      <div class="section search-section-changed-revamped">
+        <div class="main_drop d-flex">
+          <span class="sub_title">Enter Details </span>
+        </div>
+        <div [ngClass]="isClicked ? 'hide_accordion' : 'en_details_main'">
+          <div class="d-flex raise_main">
+            <div class="raise_query_left">
+              <div class="d-flex">
+                <div class="subject">
+                  <div class="subject-fan">
+                    <div class="d-flex ion-justify-content-between ion-align-items-center">
+                    <ion-radio-group [value]="typeValue" (ionChange)="typeChange($event.detail.value)">
+                      <ion-item *ngIf="isRadioVisible" lines="none">
+                        <ion-label> Self </ion-label>
+                        <ion-radio slot="start" value="selfType"></ion-radio>
+                      </ion-item>
+                      <ion-item lines="none">
+                        <ion-label>Clients </ion-label>
+                        <ion-radio slot="start" value="clientsType"></ion-radio>
+                      </ion-item>
+                      <ion-item *ngIf="isRadioVisible" lines="none">
+                        <div *ngIf="isRM" class="flexRadio"><ion-label>Partners </ion-label>
+                        <ion-radio slot="start" value="partnersType"></ion-radio></div>
+                      </ion-item>
+                    </ion-radio-group>
+                    <div class="d-flex tat-btn ion-justify-content-end">
+                      <ion-button class="outer_btn" (click)="viewExcel()">View Departments TAT</ion-button>
+                      <ion-button class="outer_btn download-tat" (click)="downloadExcel()"><img src="assets/svg/download_orange.svg"
+                        alt="" width="14px"></ion-button>
+                    </div>
+                    </div>
+                    <div class="iframe-main">
+                    <div *ngIf="previewShow" class="pop_close" (click)="closePreview()">
+                      X
+                    </div>
+                    <iframe *ngIf="previewShow" src="../../../assets/TATDoc.html" width="100%" height="500" style="margin-bottom: 10px;"></iframe>
+                  </div>
+                    <div class="categories_selected">
+                      <p>Categories Selected</p>
+                      <div class="category-wrap">
+                        <div class="categories">
+                          <div *ngFor="let item of selectedCategories;index as i" class="category_box">
+                            <div class="category">{{item == 'Technology'?'Application':item}}</div>
+                            <img *ngIf="selectedCategories.length-1 !== i" src="/assets/svg/arrow-right.svg" alt="icon">
+                          </div>
+                        </div>
+                        <div (click)="gobacktoHelp()" class="edit_icon">
+                          <img src="/assets/svg/edit_icon.svg" alt="icon">
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <div class="tat-handle">
+                    <div class="label">Subject <span class="required">(required)</span></div>
+                    <input type="text" class="subjectTitle" [(ngModel)]="subjectData">
+                    <!-- <p class="subjectTitle">{{subjectListClient}}</p> -->
+                    <div class="error-message" *ngIf="noSubject">
+                      <span>Subject cannot be blank</span>
+                    </div>
+                    
+                    <div *ngIf="typeValue === 'clientsType'" class="client">
+                      <ng-container *ngIf="isGroupChange; else noGroupChg">
+                        <ion-radio-group [value]="radioBoxValue" (ionChange)="radioGroupChange($event.detail.value)">
+                          <ion-item lines="none">
+                            <ion-label>Mapped Client </ion-label>
+                            <ion-radio slot="start" value="mappedCl"></ion-radio>
+                          </ion-item>
+                          <ion-item lines="none">
+                            <ion-label> Unmapped Client </ion-label>
+                            <ion-radio slot="start" value="unmappedCl"></ion-radio>
+                          </ion-item>
+                        </ion-radio-group>
+                        <ng-container *ngIf="radioBoxValue === 'mappedCl'; else notMapped">
+                          <div class="client">
+                            <div class="label">Client Name/ID <span class="required">(Enter the Client Code if you are
+                                raising a ticket on
+                                behalf of your client)</span></div>
+                            <!-- <input type="text" class="subjectTitle" [(ngModel)]="clientData"> -->
+                            <div class="raiseClientSearch" style="position: relative;">
+                              <ion-toolbar>
+                                <ion-searchbar (ionBlur)="hideDropDown()" (ngModelChange)="searchText($event)"
+                                  class="serachReprotsInput" [debounce]="1000" [(ngModel)]="clientSearchValue"
+                                  placeholder="Search Client Code">
+                                </ion-searchbar>
+                              </ion-toolbar>
+                              <ion-toolbar class="drop-down-toolbar" *ngIf="isDropDownVisible">
+                                <div class="drop-down thin-scroll" *ngIf="allClients.length && dtLoad">
+                                  <div class="item" *ngFor="let data of allClients"
+                                    (click)="displayClientDetails(data)">
+                                    <span class="name">{{data.ClientCode}}</span>
+                                  </div>
+                                </div>
+                                <div class="drop-down thin-scroll" *ngIf="allClients.length==0 && dtLoad">
+                                  <span>No Data Found</span>
+                                </div>
+                                <div class="loader" *ngIf="!dtLoad">
+                                  <img src="/assets/imgs/loader.gif" alt="">
+                                </div>
+                              </ion-toolbar>
+                            </div>
+                          </div>
+                        </ng-container>
+                        <ng-template #notMapped>
+                          <div class="label">Client Name/ID <span class="required">(required)</span></div>
+                          <input type="text" class="inputclientCode" [(ngModel)]="mappedClientCode"
+                            placeholder="Type Client Code">
+                          <div class="error-message" *ngIf="!validateClient(mappedClientCode)">
+                            <span>Enter valid client code</span>
+                          </div>
+                          <div class="error-message" *ngIf="noClcode">
+                            <span>Client Code cannot be blank</span>
+                          </div>
+                        </ng-template>
+                      </ng-container>
+                      <ng-template #noGroupChg>
+                        <div class="label">Client Name/ID <span class="required">(Enter the Client Code if you are
+                            raising a ticket on
+                            behalf of your client)</span></div>
+                        <!-- <input type="text" class="subjectTitle" [(ngModel)]="clientData"> -->
+                        <div class="raiseClientSearch" style="position: relative;">
+                          <ion-toolbar>
+                            <ion-searchbar (ionBlur)="hideDropDown()" (ngModelChange)="searchText($event)"
+                              class="serachReprotsInput" [debounce]="1000" [(ngModel)]="clientSearchValue"
+                              placeholder="Search Client Code">
+                            </ion-searchbar>
+                          </ion-toolbar>
+
+                          <ion-toolbar class="drop-down-toolbar" *ngIf="isDropDownVisible">
+                            <div class="drop-down thin-scroll" *ngIf="allClients.length && dtLoad">
+                              <div class="item" *ngFor="let data of allClients" (click)="displayClientDetails(data)">
+                                <span class="name">{{data.ClientCode}}</span>
+                              </div>
+                            </div>
+                            <div class="drop-down thin-scroll" *ngIf="allClients.length==0 && dtLoad">
+                              <span>No Data Found</span>
+                            </div>
+                            <div class="loader" *ngIf="!dtLoad">
+                              <img src="/assets/imgs/loader.gif" alt="">
+                            </div>
+                          </ion-toolbar>
+                        </div>
+                        <div class="error-message" *ngIf="noClcode">
+                          <span>Client Code cannot be blank</span>
+                        </div>
+                      </ng-template>
+                    </div>
+                    <div *ngIf="typeValue === 'partnersType'" class="client">
+                      <ng-container *ngIf="isGroupChange; else noGroupChg">
+                        <ion-radio-group [value]="radioBoxValue" (ionChange)="radioGroupChange($event.detail.value)">
+                          <ion-item lines="none">
+                            <ion-label>Mapped Partner </ion-label>
+                            <ion-radio slot="start" value="mappedCl"></ion-radio>
+                          </ion-item>
+                          <ion-item lines="none">
+                            <ion-label> Unmapped Partner </ion-label>
+                            <ion-radio slot="start" value="unmappedCl"></ion-radio>
+                          </ion-item>
+                        </ion-radio-group>
+                        <ng-container *ngIf="radioBoxValue === 'mappedCl'; else notMapped">
+                          <div class="label">Partner Name/ID <span class="required">(Enter the Partner Code)</span>
+                          </div>
+                          <div class="client">
+                            <!-- <input type="text" class="subjectTitle" [(ngModel)]="clientData"> -->
+                            <div class="raiseClientSearch" style="position: relative;">
+                              <ion-toolbar>
+                                <ion-searchbar (ionBlur)="hideDropDown1()" (ngModelChange)="typeHierarchyText($event)"
+                                  class="serachReprotsInput" [debounce]="1000" [(ngModel)]="clientSearchValue"
+                                  placeholder="Search Partner Code">
+                                </ion-searchbar>
+                              </ion-toolbar>
+
+                              <ion-toolbar class="drop-down-toolbar" *ngIf="isNewDropDownVisible">
+                                <div class="drop-down thin-scroll" *ngIf="selectOptionArrCopy.length && dtLoad">
+                                  <div class="item" *ngFor="let data of selectOptionArrCopy"
+                                    (click)="displayPartnerDetails(data)">
+                                    <span class="name">{{data['EmployeeName'] ? data['EmployeeName'] :
+                                      data['EmployeeCode']}}</span>
+                                  </div>
+                                  <div class="loader" *ngIf="!dtLoad">
+                                    <img src="/assets/imgs/loader.gif" alt="">
+                                  </div>
+                                </div>
+                              </ion-toolbar>
+                            </div>
+                          </div>
+                        </ng-container>
+                        <ng-template #notMapped>
+                          <div class="label">Partner Name/ID <span class="required">(required)</span></div>
+                          <input type="text" class="inputclientCode" [(ngModel)]="mappedClientCode"
+                            placeholder="Type Partner Code">
+                          <div class="error-message" *ngIf="!validateClient(mappedClientCode)">
+                            <span>Enter valid partner code</span>
+                          </div>
+                          <div class="error-message" *ngIf="noClcode">
+                            <span>Partner Code cannot be blank</span>
+                          </div>
+                        </ng-template>
+                      </ng-container>
+                      <ng-template #noGroupChg>
+                        <div class="label">Partner Name/ID <span class="required">(Enter the Partner Code)</span></div>
+                        <!-- <input type="text" class="subjectTitle" [(ngModel)]="clientData"> -->
+                        <div class="raiseClientSearch" style="position: relative;">
+                          <ion-toolbar>
+                            <ion-searchbar (ionBlur)="hideDropDown1()" (ngModelChange)="typeHierarchyText($event)"
+                              class="serachReprotsInput" [debounce]="1000" [(ngModel)]="clientSearchValue"
+                              placeholder="Search Partner Code">
+                            </ion-searchbar>
+                          </ion-toolbar>
+
+                          <ion-toolbar class="drop-down-toolbar" *ngIf="isNewDropDownVisible">
+                            <div class="drop-down thin-scroll" *ngIf="selectOptionArrCopy.length && dtLoad">
+                              <div class="item" *ngFor="let data of selectOptionArrCopy"
+                                (click)="displayPartnerDetails(data)">
+                                <span class="name">{{data['EmployeeName'] ? data['EmployeeName'] :
+                                  data['EmployeeCode']}}</span>
+                              </div>
+                              <div class="loader" *ngIf="!dtLoad">
+                                <img src="/assets/imgs/loader.gif" alt="">
+                              </div>
+                            </div>
+                          </ion-toolbar>
+                        </div>
+                      </ng-template>
+                    </div>
+                  
+              
+						  <!-- review. datepicker issue -->
+              <div class="section-date" *ngIf="isSelectTradeShow">
+                
+                <div class="datePopover">
+                  <ion-item class="date_Picker" (click)="toggleStartDatePicker()">
+                    <div class="label">Select trade Date <span class="required">(required)</span></div>
+                    <ion-input placeholder="Trade Date" [value]="startDate | date: 'dd/MM/yyyy'" readonly class="ion-text-end"></ion-input>
+                    <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+                    <div class="error-message" *ngIf="noDate">
+                      <span>Date cannot be blank</span>
+                    </div>
+                  </ion-item>
+                  <div class="calendarBackdrop" *ngIf="showStartDatePicker" (click)="hideDatePicker('start')"></div>
+                  <ion-datetime class="calendarOpen" *ngIf="showStartDatePicker" presentation="date"
+                  [(ngModel)]="startDate" presentation="date" min="1973-01-01" [max]="currentDate"
+                    (ionChange)="hideDatePicker('start',$event)">
+                  </ion-datetime>
+                </div>
+            
+                <!-- <div class="label">Select trade Date <span class="required">(required)</span></div>
+                <div class="dateIcon">
+                  <input placeholder="DD/MM/YYYY" class="subjectTitle dateField" angular-mydatepicker name="startDate" readonly
+                    [options]="myOptions" #dp="angular-mydatepicker" (dateChanged)="updatedStartDate($event)"  [(ngModel)]="dateSubject"/>
+                  <img class="calendar" src="assets/svg/calendar_report.svg" alt=""></div>
+                  <div class="error-message" *ngIf="noDate">
+                    <span>Date cannot be blank</span>
+                  </div> -->
+              </div>
+
+              <div class="label">Description <span class="required" >(required)</span></div>
+              <ion-textarea class="ion-textarea vr_scroll" name="Desc" [(ngModel)]="descriptionDetails" #Desc="ngModel"
+                class="ion-input" customValidate required maxlength="1000">
+              </ion-textarea>
+              <div class="error-message" *ngIf="Desc.errors?.['customValidate']">
+                <span>Invalid Charaters</span>
+              </div>
+              <div class="error-message"
+                *ngIf="(noDesc && (this.descriptionDetails == '' || this.descriptionDetails == undefined))">
+                <span>Description cannot be blank</span>
+              </div>
+              <div class="section section-button">
+              </div>
+              <div class="fileUpload">
+                <div class='file file--upload'>
+                  <label for='input-file'>
+                    <span *ngIf="!myFiles.length" class="upload_icon"><img src="assets/svg/upload_new.svg" alt="">
+                      Upload</span>
+                    <span *ngIf="myFiles.length && myFiles.length <5" class="add_doc"><img src="assets/svg/plus_new.svg"
+                        alt=""></span>
+                  </label>
+                  <div *ngFor="let value of myFiles;index as i;" class="d-flex after_upload">
+                    <div *ngIf="value" class="af_left">
+                      <div class="d-flex after_upload_inner">
+                        <span class="fileName">{{ value && value.name.length > 25 ? filename : value?.name }}</span>
+                        <span (click)="removeFile(i)" class="remove_doc"><img src="assets/svg/close_delete.svg"
+                            alt=""></span>
+                      </div>
+                    </div>
+                  </div>
+                  <input multiple id='input-file' type='file' (change)="handleFileInput($event)" />
+                </div>
+                <span class="error">{{ imgError }}</span>
+                <div class="error-message" *ngIf="signedUpload">
+                  <span>File upload is mandatory</span>
+                </div>
+                <li>
+                  jpeg / png / pdf / xlsx / csv / mp3 / mp4
+                </li>
+                <li>
+                  Maximum 5 files.
+                </li>
+              </div>
+              </div>
+                    
+            </div>
+          </div>
+              <div class="section section-button desktop-visibility">
+                <ion-segment-button *ngIf="isRadioVisible" [disabled]="Desc.errors?.['customValidate']" class="submit_query"
+                  type="button" id="startWatch" (click)="submitOption($event)">
+                  <span *ngIf="!showLoader"> Continue </span>
+                  <img *ngIf="showLoader" class="" src="/assets/imgs/loader.gif" alt="" width="30px">
+                </ion-segment-button>
+                
+                <ion-segment-button  *ngIf="!isRadioVisible" [disabled]="isDisabled" class="submit_query"
+                  type="button"  (click)="submitOption($event)">
+                  <span *ngIf="!showLoader"> Create Signed Document</span>
+                  <img *ngIf="showLoader" class="" src="/assets/imgs/loader.gif" alt="" width="30px">
+                </ion-segment-button>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex">
+            <div class="raise_query_right">
+              <div class="section section-button mobile-visibility">
+                <ion-segment-button *ngIf="isRadioVisible" [disabled]=" Desc.errors?.['customValidate']" class="submit_query"
+                  type="button" id="startWatch" (click)="submitOption($event)">
+                  <span *ngIf="!showLoader"> Continue </span>
+                  <img *ngIf="showLoader" class="" src="/assets/imgs/loader.gif" alt="" width="30px">
+                </ion-segment-button>
+                <ion-segment-button  *ngIf="!isRadioVisible" [disabled]="isDisabled" class="submit_query"
+                  type="button"  (click)="submitOption($event)">
+                  <span *ngIf="!showLoader"> Create Signed Document</span>
+                  <img *ngIf="showLoader" class="" src="/assets/imgs/loader.gif" alt="" width="30px">
+                </ion-segment-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<div [ngClass]="showTicketModal ? 'ticket_modal_overlay show' : 'ticket_modal_overlay'"></div>
+<div [ngClass]="showTicketModal ? 'ticket_modal show' : 'ticket_modal'">
+  <img (click)="closeRaiseTicketModal()" class="close_icon" src="/assets/svg/close_icon.svg" alt="icon"> 
+
+  <div *ngIf="!isThankYou">
+    <img class="ticket_success_img" src="/assets/svg/ticket_success.svg" alt="icon">
+    <h1>You are raising a ticket for the following categories</h1>
+    <div class="modal_categories">
+      <div class="categories">
+        <div *ngFor="let item of selectedCategories;index as i" class="category_box">
+          <div class="category">{{item == 'Technology'?'Application':item}}</div>
+          <img *ngIf="selectedCategories.length-1 !== i" src="/assets/svg/arrow-right.svg" alt="icon">
+        </div>
+      </div>
+    </div>
+    <div class="modal_note">
+     Make sure this category matches your query to get a speedy resolution. 
+    </div>
+  <button [disabled]="isSubmitDisabled" type="button" (click)="handleRaiseTicket()">
+      <span *ngIf="!showSubmitLoader"> Submit</span>
+      <img *ngIf="showSubmitLoader" class="" src="/assets/imgs/loader.gif" alt="" width="30px">
+    </button>
+  </div>
+  <div  *ngIf="isThankYou" class="thank_msg">
+    <img class="thank_icon" src="/assets/svg/thank_icon.svg" alt="icon">
+    <h1>Thank You</h1>
+    <p>Your query with Ticket ID {{ticketId}} has been submitted.
+      Team will revert back shortly.</p>
+  <button (click)="gotoprevQuery()">Previous Queries</button>
+  </div>
+  <div (click)="gobacktoHelp()" class="gotohome">Go to Home</div>
+</div>

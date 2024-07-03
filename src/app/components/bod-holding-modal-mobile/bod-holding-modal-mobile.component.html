@@ -1,0 +1,43 @@
+<div class="card_details_pop text-center bod_hold_modal" >
+  <div class="pop_close" (click)="dismiss()"><img src="assets/svg/close_delete.svg" width="18" alt="close"></div>
+  
+  <ul class="bod_hold_list">
+	<li>
+	<span>CDSL</span>
+	<span>{{dataObj['CDSL'] ? dataObj['CDSL'] : ''}}</span>
+</li>
+<li>
+	<span>NSDL</span>
+	<span>{{dataObj['NSDL'] ? dataObj['NSDL'] : ''}}</span>
+</li>
+<li>
+	<span>Pool</span>
+	<span>{{dataObj['Pool'] ? dataObj['Pool'] : ''}}</span>
+</li>
+<li>
+	<span>MF</span>
+	<span>{{dataObj['MF'] ? dataObj['MF'] : ''}}</span>
+</li>
+<li>
+	<span>Exp.</span>
+	<span>{{dataObj['Exp'] ? dataObj['Exp'] : ''}}</span>
+</li>
+<li>
+	<span>Coll</span>
+	<span>{{dataObj['Coll'] ? dataObj['Coll'] : ''}}</span>
+</li>
+<li>
+	<span>BSE</span>
+	<span>{{dataObj['BSE'] ? dataObj['BSE'] : ''}}</span>
+</li>
+<li class="lastrow">
+<span></span>
+<span></span>
+</li>    
+<li>
+<label>Total Qty</label>
+<span>{{dataObj['TotalSum'] ? dataObj['TotalSum'] : ''}}</span>
+</li>
+</ul>
+
+ </div>

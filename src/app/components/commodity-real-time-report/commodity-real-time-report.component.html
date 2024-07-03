@@ -1,0 +1,368 @@
+<ion-header class="main-header">
+  <ion-toolbar color="tertiary" class="mobile-visibility">
+      <div class="title-block title-block-custom">
+          <div class="icon-title">
+              <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+              <ion-title class="title">Commodity Realtime</ion-title>
+          </div>
+      </div>
+  </ion-toolbar>
+</ion-header>
+
+ <div class="container">
+  <div class="desktop-visibility">
+  <div class="web-equity thin-scroll detail-table desktop-visibility" style="margin-top:25px">
+      <div class="header-table">
+        <table style="width: 100%" class="desktop-header-table ">
+          <thead>
+            <tr>
+              <th>Exch</th>
+              <th>Symbol</th>
+              <th>ExpDt</th>
+              <th>BOD</th>
+              <th>ClosePrice</th>
+              <th>TradeQty</th>
+              <th>RTHQty</th>
+              <th>MTOMPI</th>
+              <th>Curr.Price</th>
+              <th>PrevSpan</th>
+              <th>TodaySpan</th>
+              <th>ActualSpan</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="main-table thin-scroll crtr_main_tbl">
+        <div class="table-block">
+          <table class="desktop-table thin-scroll">
+            <tr *ngFor="let dataObj of commodityRealtimeData.CommodityrealtimereportResponseMapp">
+              <td>{{dataObj['Exchange'] ? dataObj['Exchange'] : '-'}}</td>
+              <td>{{dataObj['Symbol'] ? dataObj['Symbol'] : '-'}}</td>
+              <td>{{dataObj['Expiry_Date'] ? dataObj['Expiry_Date'] : '-'}}</td>
+              <td>{{dataObj['DOB'] ? dataObj['DOB'] : '-'}}</td>
+              <td>{{dataObj['ClosePrice'] ? dataObj['ClosePrice'] : '-'}}</td>
+              <td>{{dataObj['TradeQty'] ? dataObj['TradeQty'] : '-'}}</td>
+              <td>{{dataObj['RthQty'] ? dataObj['RthQty'] : '-'}}</td>
+              <td>{{dataObj['Mtompl'] ? dataObj['Mtompl'] : '-'}}</td>
+              <td>{{dataObj['Currprice'] ? dataObj['Currprice'] : '-'}}</td>
+              <td>{{dataObj['Prev_Span'] ? dataObj['Prev_Span'] : '-'}}</td>
+              <td>{{dataObj['Today_Span'] ? dataObj['Today_Span'] : '-'}}</td>
+             <td>{{dataObj['Actual_Span'] ? dataObj['Actual_Span'] : '-'}}</td>
+            </tr>
+            <tr *ngIf="commodityRealtimeData?.TotalData && !tableLoader">
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td class="total_value">Total</td>
+              <td class="total_value">{{commodityRealtimeData?.TotalData && commodityRealtimeData?.TotalData[0]?.MTOMPI ? commodityRealtimeData.TotalData[0].MTOMPI : '-'}}</td>
+              <td class="total_value">&nbsp;</td>
+              <td class="total_value">{{commodityRealtimeData?.TotalData && commodityRealtimeData?.TotalData[0]?.PrevSpan ? commodityRealtimeData.TotalData[0].PrevSpan : '-'}}</td>
+              <td class="total_value">{{commodityRealtimeData?.TotalData && commodityRealtimeData?.TotalData[0]?.Todayspan ? commodityRealtimeData.TotalData[0].Todayspan : '-'}}</td>
+             <td class="total_value">{{commodityRealtimeData?.TotalData && commodityRealtimeData?.TotalData[0]?.ActualSpan ? commodityRealtimeData.TotalData[0].ActualSpan : '-'}}</td>
+            </tr>
+            <!-- </tbody> -->
+            <tbody *ngIf="tableLoader">
+              <tr>
+                <td colspan="12">
+                  <div class="center"> <img *ngIf="tableLoader" class="tableLoader" src="/assets/imgs/loader.gif" alt="">
+                  </div>
+                </td>
+              </tr>
+            
+            </tbody>
+
+            <tbody *ngIf="!commodityRealtimeData || !commodityRealtimeData.CommodityrealtimereportResponseMapp || (commodityRealtimeData && commodityRealtimeData.CommodityrealtimereportResponseMapp.length == 0)">
+              <td align="center" colspan="12">
+                <div class="center tableLoader"> <img class="raise-image" src="assets/svg/not_raised.svg" alt="">
+                  <div class="raise-message">No Data</div>
+                </div>
+              </td>
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="details_deta" style="display:none;">
+      <div class="previous_networth">
+        <h2>Previous Networth</h2>
+        <div class="web-equity thin-scroll detail-table" style="margin-top:15px">
+          <div class="main-table thin-scroll">
+            <div class="table-block">
+              <table class="desktop-table thin-scroll">
+                <tr>
+                  <td>ALB</td>
+                  <td>{{commodityRealtimeData?.CommodityPreviousNetworthResponseMapp && commodityRealtimeData?.CommodityPreviousNetworthResponseMapp[0]?.ALB ? commodityRealtimeData.CommodityPreviousNetworthResponseMapp[0].ALB : '-'}}</td>
+                 </tr>
+                 <tr>
+                  <td>Total Span
+                    <img src="assets/svg/info.svg" width="18px" alt="info" class="info_img" (click)="toggleFlag()">
+                    <div class="info_details" *ngIf="isShow">
+                      <span>Commodity Span : </span>
+                      <span>{{commodityRealtimeData?.CommodityPreviousNetworthResponseMapp && commodityRealtimeData?.CommodityPreviousNetworthResponseMapp[0]?.Span ? commodityRealtimeData.CommodityPreviousNetworthResponseMapp[0].Span : '-'}}</span>
+                    </div>
+                  </td>
+                  <td>{{commodityRealtimeData?.CommodityPreviousNetworthResponseMapp && commodityRealtimeData?.CommodityPreviousNetworthResponseMapp[0]?.Total_Span ? commodityRealtimeData.CommodityPreviousNetworthResponseMapp[0].Total_Span : '-'}}</td>
+                 </tr>
+                 <tr>
+                  <td>Trader Margin</td>
+                  <td>{{commodityRealtimeData?.CommodityPreviousNetworthResponseMapp && commodityRealtimeData?.CommodityPreviousNetworthResponseMapp[0]?.Tender_Margin ? commodityRealtimeData.CommodityPreviousNetworthResponseMapp[0].Tender_Margin : '-'}}</td>
+                 </tr>
+                 <tr>
+                  <td>Networth</td>
+                  <td>{{commodityRealtimeData?.CommodityPreviousNetworthResponseMapp && commodityRealtimeData?.CommodityPreviousNetworthResponseMapp[0]?.Networth ? commodityRealtimeData.CommodityPreviousNetworthResponseMapp[0].Networth : '-'}}</td>
+                 </tr>
+                 <tr>
+                  <td>Unclear Chq</td>
+                  <td>{{commodityRealtimeData?.CommodityPreviousNetworthResponseMapp && commodityRealtimeData?.CommodityPreviousNetworthResponseMapp[0]?.Unclear_Chq ? commodityRealtimeData.CommodityPreviousNetworthResponseMapp[0].Unclear_Chq : '-'}}</td>
+                 </tr>
+                 <tr>
+                  <td>Risk %</td>
+                  <td>{{commodityRealtimeData?.CommodityPreviousNetworthResponseMapp && commodityRealtimeData?.CommodityPreviousNetworthResponseMapp[0]?.RiskPer ? commodityRealtimeData.CommodityPreviousNetworthResponseMapp[0].RiskPer : '-'}}</td>
+                 </tr>
+                
+    
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="today_networth">
+        <h2>Today Networth</h2>
+        <div class="web-equity thin-scroll detail-table" style="margin-top:15px">
+          <div class="main-table thin-scroll">
+            <div class="table-block">
+              <table class="desktop-table thin-scroll">
+                <tr>
+                  <td>ALB</td>
+                  <td>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.ALB ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].ALB : '-'}}</td>
+                 </tr>
+                 <tr>
+                  <td>Total Span
+                    <img src="assets/svg/info.svg" width="18px" alt="info" class="info_img" (click)="toggleFlagToday()">
+                    <div class="info_details" *ngIf="isShowToday">
+                      <span>Commodity Span : </span>
+                      <span>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.Span ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].Span : '-'}}</span>
+                    </div>
+                  </td>
+                  <td>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.Total_Span ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].Total_Span : '-'}}</td>
+                 </tr>
+                 <tr>
+                  <td>Trader Margin</td>
+                  <td>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.Tender_Margin ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].Tender_Margin : '-'}}</td>
+                 </tr>
+                 <tr>
+                  <td>Networth</td>
+                  <td>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.Networth ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].Networth : '-'}}</td>
+                 </tr>
+                 <tr>
+                  <td>R.Unclear Chq</td>
+                  <td>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.RUnCl_Chq ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].RUnCl_Chq : '-'}}</td>
+                 </tr>
+                 <tr>
+                  <td>Risk %</td>
+                  <td>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.RiskPer ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].RiskPer : '-'}}</td>
+                 </tr>
+                 <tr>
+                  <td>Payout</td>
+                  <td>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.Payout ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].Payout : '-'}}</td>
+                 </tr>
+                 <tr>
+                  <td>Clear Amount</td>
+                  <td>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.Clear_Amount ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].Clear_Amount : '-'}}</td>
+                 </tr>
+                 <tr>
+                  <td>Fund Transfer</td>
+                  <td>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.Fund_Transfer ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].Fund_Transfer : '-'}}</td>
+                 </tr>
+    
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+<ion-content>
+  <div class="container">
+  <div class="mobile-visibility">
+    <div *ngIf="commodityRealtimeData?.TotalData && !tableLoader && !dataLoader">
+      <ul class="mbl_total">
+      <li> <div>MTOMPI Total</div> <span>{{commodityRealtimeData?.TotalData && commodityRealtimeData?.TotalData[0]?.MTOMPI ? commodityRealtimeData.TotalData[0].MTOMPI : '-'}}</span></li>
+        <li><div>PrevSpan Total</div><span>{{commodityRealtimeData?.TotalData && commodityRealtimeData?.TotalData[0]?.PrevSpan ? commodityRealtimeData.TotalData[0].PrevSpan : '-'}}</span></li>
+      <li> <div>TodaySpan Total</div><span>{{commodityRealtimeData?.TotalData && commodityRealtimeData?.TotalData[0]?.Todayspan ? commodityRealtimeData.TotalData[0].Todayspan : '-'}}</span></li>
+        <li><div>ActualSpan Total</div><span>{{commodityRealtimeData?.TotalData && commodityRealtimeData?.TotalData[0]?.ActualSpan ? commodityRealtimeData.TotalData[0].ActualSpan : '-'}}</span></li>
+      </ul>
+
+      <div class="client_mb_grid_box" *ngFor="let dataObj of commodityRealtimeData.CommodityrealtimereportResponseMapp">
+        <div class="cl_mb_list">
+          <label>Exch</label>
+          <span>{{dataObj['Exchange'] ? dataObj['Exchange'] : '-'}}</span>
+        </div>
+        <div class="cl_mb_list">
+          <label>Symbol</label>
+          <span>{{dataObj['Symbol'] ? dataObj['Symbol'] : '-'}}</span>
+        </div>
+        <div class="cl_mb_list">
+          <label>ExpDt</label>
+          <span>{{dataObj['Expiry_Date'] ? dataObj['Expiry_Date'] : '-'}}</span>
+        </div>
+        <div class="cl_mb_list">
+          <label>BOD</label>
+          <span>{{dataObj['DOB'] ? dataObj['DOB'] : '-'}}</span>
+        </div>
+        <div class="cl_mb_list">
+          <label>ClosePrice</label>
+          <span>{{dataObj['ClosePrice'] ? dataObj['ClosePrice'] : '-'}}</span>
+        </div>
+        <div class="cl_mb_list">
+          <label>TradeQty</label>
+          <span>{{dataObj['TradeQty'] ? dataObj['TradeQty'] : '-'}}</span>
+        </div>
+        <div class="cl_mb_list">
+          <label>RTHQty</label>
+          <span>{{dataObj['RthQty'] ? dataObj['RthQty'] : '-'}}</span>
+        </div>
+        <div class="cl_mb_list">
+          <label>MTOMPI</label>
+          <span>{{dataObj['Mtompl'] ? dataObj['Mtompl'] : '-'}}</span>
+        </div>
+        <div class="cl_mb_list">
+          <label>Curr.Price</label>
+          <span>{{dataObj['Currprice'] ? dataObj['Currprice'] : '-'}}</span>
+        </div>
+        <div class="cl_mb_list">
+          <label>PrevSpan</label>
+          <span>{{dataObj['Prev_Span'] ? dataObj['Prev_Span'] : '-'}}</span>
+        </div>
+        <div class="cl_mb_list">
+          <label>TodaySpan</label>
+          <span>{{dataObj['Today_Span'] ? dataObj['Today_Span'] : '-'}}</span>
+        </div>
+        <div class="cl_mb_list">
+          <label>ActualSpan</label>
+          <span>{{dataObj['Actual_Span'] ? dataObj['Actual_Span'] : '-'}}</span>
+        </div>
+        
+      </div>
+
+      </div>
+      <div class="center" style="text-align: center; margin: 25% 0;" *ngIf="(!commodityRealtimeData || !commodityRealtimeData.CommodityrealtimereportResponseMapp || (commodityRealtimeData && commodityRealtimeData.CommodityrealtimereportResponseMapp.length == 0)) && !dataLoader">
+        <img class="raise-image" src="assets/svg/not_raised.svg" alt="">
+        <div class="raise-message">No Data</div>
+      </div>
+
+      <div class="details_deta" *ngIf="!dataLoader" style="display:none;">
+        <div class="previous_networth">
+          <h2>Previous Networth</h2>
+          <div class="web-equity thin-scroll detail-table" style="margin-top:15px">
+            <div class="main-table thin-scroll">
+              <div class="table-block">
+                <table class="desktop-table thin-scroll">
+                  <tr>
+                    <td>ALB</td>
+                    <td>{{commodityRealtimeData?.CommodityPreviousNetworthResponseMapp && commodityRealtimeData?.CommodityPreviousNetworthResponseMapp[0]?.ALB ? commodityRealtimeData.CommodityPreviousNetworthResponseMapp[0].ALB : '-'}}</td>
+                  </tr>
+                  <tr>
+                    <td>Total Span
+                      <img src="assets/svg/info.svg" width="18px" alt="info" class="info_img" (click)="toggleFlag()">
+                      <div class="info_details" *ngIf="isShow">
+                        <span>Commodity Span : </span>
+                        <span>{{commodityRealtimeData?.CommodityPreviousNetworthResponseMapp && commodityRealtimeData?.CommodityPreviousNetworthResponseMapp[0]?.Span ? commodityRealtimeData.CommodityPreviousNetworthResponseMapp[0].Span : '-'}}</span>
+                      </div>
+                    </td>
+                    <td>{{commodityRealtimeData?.CommodityPreviousNetworthResponseMapp && commodityRealtimeData?.CommodityPreviousNetworthResponseMapp[0]?.Total_Span ? commodityRealtimeData.CommodityPreviousNetworthResponseMapp[0].Total_Span : '-'}}</td>
+                  </tr>
+                  <tr>
+                    <td>Trader Margin</td>
+                    <td>{{commodityRealtimeData?.CommodityPreviousNetworthResponseMapp && commodityRealtimeData?.CommodityPreviousNetworthResponseMapp[0]?.Tender_Margin ? commodityRealtimeData.CommodityPreviousNetworthResponseMapp[0].Tender_Margin : '-'}}</td>
+                  </tr>
+                  <tr>
+                    <td>Networth</td>
+                    <td>{{commodityRealtimeData?.CommodityPreviousNetworthResponseMapp && commodityRealtimeData?.CommodityPreviousNetworthResponseMapp[0]?.Networth ? commodityRealtimeData.CommodityPreviousNetworthResponseMapp[0].Networth : '-'}}</td>
+                  </tr>
+                  <tr>
+                    <td>Unclear Chq</td>
+                    <td>{{commodityRealtimeData?.CommodityPreviousNetworthResponseMapp && commodityRealtimeData?.CommodityPreviousNetworthResponseMapp[0]?.Unclear_Chq ? commodityRealtimeData.CommodityPreviousNetworthResponseMapp[0].Unclear_Chq : '-'}}</td>
+                  </tr>
+                  <tr>
+                    <td>Risk %</td>
+                    <td>{{commodityRealtimeData?.CommodityPreviousNetworthResponseMapp && commodityRealtimeData?.CommodityPreviousNetworthResponseMapp[0]?.RiskPer ? commodityRealtimeData.CommodityPreviousNetworthResponseMapp[0].RiskPer : '-'}}</td>
+                  </tr>
+                  
+      
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="today_networth">
+          <h2>Today Networth</h2>
+          <div class="web-equity thin-scroll detail-table" style="margin-top:15px">
+            <div class="main-table thin-scroll">
+              <div class="table-block">
+                <table class="desktop-table thin-scroll">
+                  <tr>
+                    <td>ALB</td>
+                    <td>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.ALB ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].ALB : '-'}}</td>
+                  </tr>
+                  <tr>
+                    <td>Total Span
+                      <img src="assets/svg/info.svg" width="18px" alt="info" class="info_img" (click)="toggleFlagToday()">
+                      <div class="info_details" *ngIf="isShowToday">
+                        <span>Commodity Span : </span>
+                        <span>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.Span ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].Span : '-'}}</span>
+                      </div>
+                    </td>
+                    <td>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.Total_Span ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].Total_Span : '-'}}</td>
+                  </tr>
+                  <tr>
+                    <td>Trader Margin</td>
+                    <td>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.Tender_Margin ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].Tender_Margin : '-'}}</td>
+                  </tr>
+                  <tr>
+                    <td>Networth</td>
+                    <td>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.Networth ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].Networth : '-'}}</td>
+                  </tr>
+                  <tr>
+                    <td>R.Unclear Chq</td>
+                    <td>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.RUnCl_Chq ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].RUnCl_Chq : '-'}}</td>
+                  </tr>
+                  <tr>
+                    <td>Risk %</td>
+                    <td>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.RiskPer ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].RiskPer : '-'}}</td>
+                  </tr>
+                  <tr>
+                    <td>Payout</td>
+                    <td>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.Payout ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].Payout : '-'}}</td>
+                  </tr>
+                  <tr>
+                    <td>Clear Amount</td>
+                    <td>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.Clear_Amount ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].Clear_Amount : '-'}}</td>
+                  </tr>
+                  <tr>
+                    <td>Fund Transfer</td>
+                    <td>{{commodityRealtimeData?.CommodityTodayNetworthResponseMapp && commodityRealtimeData?.CommodityTodayNetworthResponseMapp[0]?.Fund_Transfer ? commodityRealtimeData.CommodityTodayNetworthResponseMapp[0].Fund_Transfer : '-'}}</td>
+                  </tr>
+      
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="loader" *ngIf="dataLoader">
+        <img src="/assets/imgs/loader.gif" alt="">
+      </div>
+</div>
+</ion-content>

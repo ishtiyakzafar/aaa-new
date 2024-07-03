@@ -1,0 +1,211 @@
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="select-search-block select-search-block-no-graph">
+			<div class="title-block title-block-custom">
+				<div class="icon-title">
+					<ion-icon name="arrow-back-outline" class="back-button" (click)="back()"></ion-icon>
+					<ion-title class="title">Clients</ion-title>
+				</div>
+				<div class="icons">
+                    <ion-icon class="first-icon" src="assets/svg/white-home-icon.svg" (click)="goToDashboard()"></ion-icon>
+					<ion-icon class="first-icon" src="assets/svg/notification.svg" (click)="goToNotification()"></ion-icon>
+					<ion-icon name="search" class="search-icon" (click)="goToAddScript()"></ion-icon>
+				</div>
+			</div>
+			<div class="Equity value mob-flex">
+            
+                </div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content appScrollbarTheme class="total_main">
+    <div (click)="contentHide()"  [ngClass]="removescroll ? 'total_main_xyz' : 'total_main_hide'"></div>
+    <div class="header common-header-all">
+        <div class="header-bg"></div>
+        <div class="container">
+ 
+            <div class="back-drop-down-section">
+                <div class="back-section hide-in-mobile">
+                    <div class="d-flex back-sc">
+                        <span class="back-icon" (click)="back()">
+                            <ion-icon src="assets/svg/revamp_back.svg"></ion-icon>
+                        </span>
+                        <div class="type-section">
+                            <span class="type">Clients</span>
+                            <!-- <span class="value">{{partnerClientValue}}</span> -->
+                        </div>
+                    </div>
+
+                    <div class="dash-filter d-flex">
+						<span [ngClass]="{'active': toggleVal == 'Hierarchy'}" (click)="toggleSwitch('Hierarchy')">
+							<img *ngIf="toggleVal == 'Hierarchy'" src="assets/svg/team-icon.svg" alt="team"> 
+							<img *ngIf="toggleVal != 'Hierarchy'" src="assets/svg/team-black.svg" alt="team"> 
+							<label>Team</label></span>
+						<span [ngClass]="{'active': toggleVal == 'Self'}" (click)="toggleSwitch('Self')"> 
+							<img *ngIf="toggleVal != 'Self'" src="assets/svg/self-icon.svg" alt="self"> 
+							<img *ngIf="toggleVal == 'Self'" src="assets/svg/self-white.svg" alt="self"> 
+							<label>Self</label></span>
+					 </div>
+
+            </div>
+                <div class="revamp-drop-down">
+                    <div class="business-monitor-block">
+                        <div class="business">
+                            <ion-icon name="person"></ion-icon>
+                        </div>
+                        <div class="select-parent">
+                            <div class="cursor-default">
+                                <ion-label class="updated-data">Data last updated on : {{dataAsOn}}</ion-label>
+                            </div>
+                            <div class="select-block pointer" (click)="select()">
+                                <div class="value-section">
+                                    <span class="name">{{clientName ? clientName : clientCode}}</span>
+                                    <span class="account-type">Individual</span>
+                                </div>
+                                <div class="select-icon">
+                                    <img class="drop-down-icon" src="assets/svg/down-arrow.svg" alt="">
+                                </div>
+                            </div>
+                            
+        
+                            <div class="hierarchy-wrapper thin-scroll" [ngClass]="{'add-hierarchy-height': isDropDownVisible, 'specificHeight': selectOptionArrCopy.length === 1 && isDropDownVisible}">
+                                <ng-container *ngTemplateOutlet="recursiveList; context: { $implicit: selectOptionArrCopy }">
+                                </ng-container>
+                
+                            </div>
+                            
+        
+        
+                            <ng-template #recursiveList let-selectOptionArrCopy>
+                                <div class="input-name-list">
+                                    <ion-input [ngModelOptions]="{standalone: true}" type="text" class="ion-input search-Hierarchy" [(ngModel)]="searchHierarchyList" (keyup)="typeHierarchyText($event)" [placeholder]= 'placeholderInputHierarchy'>
+                                    </ion-input>
+                                    <img *ngIf="isShowCross" class="cross-btn" (click)="dismiss()" src="assets/svg/close_delete.svg" width="16" alt="close" >
+                                    </div>
+                                <div class="select-drop-down thin-scroll">
+                                    <div *ngIf="noRecord && searchHierarchyList.length>3" class="noRecord">
+                                        <p>No data found</p>
+                                    </div>
+                                    <div class="thin-scroll" [ngClass]="{'parent-check-block': hightestLabel === item['EmployeeLevel']}" *ngFor="let item of selectOptionArrCopy; let ind = index;">
+                                        <div *ngIf="item['isVisible']">
+                                            <div class="top-check-block">
+                              
+                                                <div class="name-section" (click)="openHide(ind, item['innerDetail'], item)">
+                                                    <div class="name">{{item['EmployeeName'] ? item['EmployeeName'] : item['EmployeeCode']}}</div>
+                                                    <div class="type">{{item['EmployeeCode']}}</div>
+                                                </div>
+                                                <img class="drop-down-icon pointer"
+                                                    src="assets/svg/down-arrow.svg" alt=""
+                                                    (click)="openHide(ind, item['innerDetail'], item)"
+                                                    *ngIf="item['innerDetail'] && item['innerDetail'].length > 0">
+                                            </div>
+                                        </div>
+                                        <div class="inner-check-block-child" *ngIf="(item && item['innerDetail'] && item['innerDetail'].length > 0 && item['isVisible'])">
+                                            <ng-container class="name-section" (click)="openHide(ind, item['innerDetail'], item)" *ngTemplateOutlet="recursiveList; context: { $implicit: item['innerDetail'] }">
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <div class="mobile-visibility dash-filter-mobile">
+                        <div class="dash-filter d-flex">
+                            <span [ngClass]="{'active': toggleVal == 'Hierarchy'}" (click)="toggleSwitch('Hierarchy')">
+                                <img *ngIf="toggleVal == 'Hierarchy'" src="assets/svg/team-icon.svg" alt="team"> 
+                                <img *ngIf="toggleVal != 'Hierarchy'" src="assets/svg/team-black.svg" alt="team"> 
+                                <label>Team</label></span>
+                            <span [ngClass]="{'active': toggleVal == 'Self'}" (click)="toggleSwitch('Self')"> 
+                                <img *ngIf="toggleVal != 'Self'" src="assets/svg/self-icon.svg" alt="self"> 
+                                <img *ngIf="toggleVal == 'Self'" src="assets/svg/self-white.svg" alt="self"> 
+                                <label>Self</label></span>
+                         </div>
+                         </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container dashbaord-container">
+        <article class="common-content-section">
+            <ion-segment [(ngModel)]="equityBlockTabValue" scrollable="true" class="card-type-segment" (ionChange)="segmentTabChanged()">
+                <ion-segment-button value="{{data['segmentValue']}}" *ngFor="let data of cardSegments">
+                    <ion-card class="card">
+                        <span class="title">{{data['name']}}</span>
+                        <span *ngIf="!prodata" class="value">{{data['clients']}}
+                        </span>
+                        <div *ngIf="prodata" class="lineLoader"></div>
+                        <img class="indicator" src="assets/imgs/card_down_icon.png">
+                    </ion-card>
+                </ion-segment-button>
+            </ion-segment>
+            
+        </article>
+        <div>
+
+        <div class="search-section search-section-changed search-section-changed-revamped hide-in-mobile">
+            <ion-label>Search by</ion-label>
+            <ion-segment [(ngModel)]="clientBlockSegmentValue" mode="md" (ionChange)="segmentChange()">
+                <ion-segment-button *ngFor="let entry of segmentButtonOption" value="{{entry['value']}}">{{entry['name']}}</ion-segment-button>
+            </ion-segment>
+            <ion-searchbar search-icon="false" class="custom-searchbar serach-box" [(ngModel)]="searchTerm" customValidate [placeholder]='placeholderInput' (ngModelChange)="changeSearchText()"></ion-searchbar>
+            <ion-button *ngIf="equityBlockTabValue !== 'allClients'" class="search-button" (click)="searchText()">
+                <img class="changeColor" src="assets/svg/updated_search.svg" alt="">
+            </ion-button>
+            <ion-button *ngIf="equityBlockTabValue == 'allClients'" class="search-button">
+                <img class="changeColor" src="assets/svg/updated_search.svg" alt="">
+            </ion-button>
+
+        </div>
+
+        <div class="mobile-visibility header-segment-with-border-parent">
+            <div class="search-filter-parent-mobile m-v-12 aum_mb_search_btn">
+                <ion-searchbar  class="custom-searchbar plr-mb-5" [(ngModel)]="searchTerm" [placeholder]='placeholderInput' (ngModelChange)="changeSearchText()"></ion-searchbar>
+                <ion-button class="search-button" (click)="searchText()">
+                    <img src="assets/svg/updated_search.svg" alt="">
+                </ion-button>
+                <img class="white-filter" src="assets/svg/white_filter.svg" (click)="filterOption($event)">
+            </div>
+        </div>
+       
+    </div>
+        
+        <div class="tab-content m-t-20" *ngIf="!isMFCSshow" [ngSwitch]="equityBlockTabValue">
+            <div class="content" *ngSwitchCase="'allClients'">
+                <app-unique-clients [toggleState]="toggleVal" [allClientData]="allClientData" [incorrectDate]="incorrectDate" [loader]="loader" [startDate]="startDate" [endDate]="endDate" [searchType]="clientBlockSegmentValue" [searchText]="searchTerm" [sendDataOnSearch]="sendDataToChild" [equityBlockTabValue]="equityBlockTabValue" [isMFCSshow]="isMFCSshow"></app-unique-clients>
+            </div>
+       
+            <div class="content" *ngSwitchCase="'clientsNotTraded'">
+                <app-clients-not-traded [toggleState]="toggleVal" [searchType]="clientBlockSegmentValue" [searchText]="searchTerm" [sendDataOnSearch]="sendDataToChild" [isMFCSshow]="isMFCSshow"></app-clients-not-traded>
+            </div>
+            <div class="content" *ngSwitchCase="'dormatClients'">
+                <app-dormant-clients [toggleState]="toggleVal" [searchType]="clientBlockSegmentValue" [searchText]="searchTerm" [sendDataOnSearch]="sendDataToChild" [isMFCSshow]="isMFCSshow"></app-dormant-clients>
+            </div>
+            <div class="content" *ngSwitchCase="'NewClient'">
+                <app-unique-clients [toggleState]="toggleVal" [allClientData]="allClientData" [incorrectDate]="incorrectDate" [loader]="loader" [startDate]="startDate" [endDate]="endDate" [searchType]="clientBlockSegmentValue" [searchText]="searchTerm" [sendDataOnSearch]="sendDataToChild" [equityBlockTabValue]="equityBlockTabValue" [isMFCSshow]="isMFCSshow"></app-unique-clients>
+            </div>
+        </div>
+
+        <div class="tab-content m-t-20" *ngIf="isMFCSshow" [ngSwitch]="equityBlockTabValue">
+            <div class="content" *ngSwitchCase="'allClients'">
+                <app-unique-clients [toggleState]="toggleVal" [allClientData]="allClientData" [incorrectDate]="incorrectDate" [loader]="loader" [startDate]="startDate" [endDate]="endDate" [searchType]="clientBlockSegmentValue" [searchText]="searchTerm" [sendDataOnSearch]="sendDataToChild" [equityBlockTabValue]="equityBlockTabValue" [isMFCSshow]="isMFCSshow"></app-unique-clients>
+            </div>
+       
+            <div class="content" *ngSwitchCase="'clientsNotTraded'">
+                <app-clients-not-traded [toggleState]="toggleVal" [searchType]="clientBlockSegmentValue" [searchText]="searchTerm" [sendDataOnSearch]="sendDataToChild" [isMFCSshow]="isMFCSshow"></app-clients-not-traded>
+            </div>
+            <div class="content" *ngSwitchCase="'dormatClients'">
+                <app-dormant-clients [toggleState]="toggleVal" [searchType]="clientBlockSegmentValue" [searchText]="searchTerm" [sendDataOnSearch]="sendDataToChild" [isMFCSshow]="isMFCSshow"></app-dormant-clients>
+            </div>
+        </div>
+        <div class="loader" *ngIf="dataLoad">
+            <img src="/assets/imgs/loader.gif" alt="">
+        </div>
+    </div>
+    <!-- <div class="loader" *ngIf="loading">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div> -->
+    <!-- ONLY FOR DROPDOWN -->
+	<div *ngIf="isDropDownVisible" class="overlay-div" (click)="overlayClicked($event)"></div>
+</ion-content>
+<!-- end -->

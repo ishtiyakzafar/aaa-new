@@ -1,0 +1,123 @@
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom aum-title">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">
+					<span>Mutual Fund</span>
+					<div class="total-clients-block">
+						<div class="item-block">
+							<div class="top">Total Clients</div>
+							<div class="lower">{{totalClients}}</div>
+						</div>
+						<div class="item-block">
+							<div class="top">Total AUM</div>
+							<div class="lower">{{totalAUM}}</div>
+						</div>
+					</div>
+				</ion-title>
+				<!-- <ion-icon class="search-icon" name="search"></ion-icon> -->
+			</div>
+		</div>
+	</ion-toolbar>
+	<ion-toolbar mode="md" class="header-table-parent-toolbar">
+		<!-- <div class="search-section aum-search">
+			<ion-searchbar class="custom-searchbar"></ion-searchbar>
+		</div> -->
+        <div class="search-section search-section-changed">
+            <div class="upper-part">
+                <ion-label>Search by</ion-label>
+                <ion-segment [(ngModel)]="clientBlockSegmentValue"  mode="md" (ionChange)="segmentChange()">
+                    <ion-segment-button *ngFor="let entry of segmentButtonOption" value="{{entry['value']}}">{{entry['name']}}</ion-segment-button>
+                </ion-segment>
+            </div>
+            <div class="lower-part">
+                <ion-searchbar search-icon="false" class="custom-searchbar" [(ngModel)]="searchValue"  placeholder={{placeholderInput}}></ion-searchbar>
+                <ion-button class="search-button" mode="md" (click)="searchFilter()">
+                    <img src="assets/svg/search.svg" alt="">
+                </ion-button>
+            </div>
+        </div>
+		<div class="web-equity detail-part-dashboard detail-part-aum-inner mobile-visibility">
+			<div class="header-table">
+                <!-- <table style="width: 100%" class="desktop-header-table"> -->
+                <table style="width: 100%">
+					<thead>
+						<tr>
+							<th class="pointer" [class.active]="order === 'clientName'" (click)="setOrder('clientName')">
+								<!-- <div class="head-block"> -->
+									<span>Client Name</span> 
+									<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+								<!-- </div> -->
+							</th>
+							<th class="pointer" [class.active]="order === 'equityaum'" (click)="setOrder('equityaum')">
+								<div class="head-block">
+									<span>Equity MF AUM(₹)</span> 
+									<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+								</div>
+							</th>
+							<th class="pointer" [class.active]="order === 'debtaum'" (click)="setOrder('debtaum')">
+								<div class="head-block">
+									<span>Debt MF AUM</span> 
+									<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+								</div>
+							</th>
+							<th class="pointer" [class.active]="order === 'aum'" (click)="setOrder('aum')">
+								<div class="head-block">
+									<span>Total AUM</span> 
+									<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+								</div>
+							</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="web-equity detail-part-dashboard detail-part-aum-inner mobile-visibility">
+		<div class="main-table">
+			<table style="width: 100%" class="mobile-table">
+				<tbody *ngIf="dataLoad">
+					<tr *ngFor="let dataObj of datas">
+						<td>
+							<div class="code-block">
+								<span class="code">{{dataObj['clientId']}}</span>
+								<span class="name hyperlinkstyle" (click)="goToClientDetails(dataObj)">{{dataObj['clientName']}}</span>
+							</div>
+						</td>
+						<td>
+							{{dataObj['equityMf']}}
+						</td>
+						<td>
+							{{dataObj['deptMf']}}
+						</td>
+						<td>
+							{{dataObj['total']}}
+						</td>
+					</tr>
+				</tbody>
+				<div class="loader" *ngIf="!dataLoad" style="min-height: 170px;">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div>
+				<div class="loader" *ngIf="dataLoad && !datas.length" style="min-height: 170px;">
+					<h4>No records found.</h4>
+				</div>
+			</table>
+		</div>
+	</div>
+	<ion-infinite-scroll *ngIf="enableNext" threshold="100px" (ionInfinite)="loadData($event)">
+		<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+</ion-content>

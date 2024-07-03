@@ -1,0 +1,28 @@
+<div class="container">
+	<section class="panel-wrapper" style="position:relative">
+		<ion-segment class="header-segment-top client-tabs" scrollable="true" [(ngModel)]="clientTabValue"
+			(ionChange)="changeClientTab($event)">
+			<ion-segment-button value="portfolio">
+				Family Portfolio
+			</ion-segment-button>
+			<!-- <ion-segment-button value="pnL">
+				PnL
+			</ion-segment-button>
+			<ion-segment-button value="analytics">
+				Analytics
+			</ion-segment-button>
+			<ion-segment-button value="TaxHarvesting">
+				Tax Harvesting
+			</ion-segment-button> -->
+			<ion-segment-button value="rmView">
+				RM View
+			</ion-segment-button>
+			<!-- <ion-segment-button value="accDetail">
+				
+			</ion-segment-button> -->
+		</ion-segment>
+	
+	</section>
+
+
+</div>

@@ -1,0 +1,273 @@
+<ion-header class="mobile-visibility">
+    <ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Volume Toppers</ion-title>
+			</div>
+			<div class="search-block">
+                <ion-buttons class="header-icon-block">
+                  <ion-icon class="iconsize first-icon noti-icon" src="./assets/svg/white-home-icon.svg" (click)="goToDashboard()"></ion-icon>
+                    <ion-icon class="iconsize first-icon noti-icon" src="./assets/svg/notification.svg" (click)="goToNotification()"></ion-icon>
+                    <ion-icon class="iconsize" src="./assets/svg/search.svg" (click)="goToAddScript()"></ion-icon>
+                </ion-buttons>
+            </div>
+		</div>
+	</ion-toolbar>
+   <ion-toolbar class="-min-height-auto">
+      <div>
+         <div class="toppers_container">
+            <div class="topper_title">
+               <span class="titleheader-desktop">Volume Toppers</span>
+               <label class="switch">
+                  <input type="checkbox" id="togBtn" [(ngModel)]="voltopper"
+                  (ngModelChange)="changeVolValue($event)">
+                  <div class="slider round">
+                     <span class="on">BSE</span><span class="off">NSE</span>
+                  </div>
+               </label>
+             </div>
+            
+            <div class="toppers_list">
+               <table class="commontablewidth">
+                  <thead class="snapshot-mobile-header-single-table">
+                     <tr>
+                        <th class="leftalignwithpadding commonth">Scrip</th>
+                        <th class="commonth text-right">LTP</th>
+                        <th class="commonth text-right">Volume (K)</th>
+                        <th class="commonth rightalignwithpadding">
+                           <p class="m-pt0">30 Days</p>
+                           <p class="m-pt0">Avg Vol (K)</p>
+                        </th>
+                     </tr>
+                  </thead>
+               </table>
+            </div>
+         </div>
+      </div>
+   </ion-toolbar>
+</ion-header>
+
+<ion-content class="custom-content mobile-visibility">
+   <div class="toppers_container displayoffmobile">
+      <div class="toppers_list mobile-table">
+         <table class="commontablewidth no-wrap-table">
+            <tbody *ngIf="volToppersList.length > 0 && dataLoad">
+               <tr *ngFor="let data of volToppersList" (click)="goToCompanydetail(data)" class="b-t-0">
+                  <td class="leftalignwithpadding fontboldblack">{{data.Symbol}}</td>
+                  <td class="fontgreen text-right">
+                     <p class="m-pt0">{{data.LastTradedPrice | number: '1.2-2'}}</p>
+                     <p class="m-pt0">
+                        {{(((data['LastTradedPrice'] - data['PClose'])*100)/data.PClose) | number: '1.2-2'}}%
+                     </p>
+                  </td>
+                  <td class="text-right">{{changeVolNumberFormat(data.QtyOrValue)}}</td>
+                  <td class="rightalignwithpadding">{{changeVolNumberFormat(data.AvgVolume)}}</td>
+               </tr>
+            </tbody>
+            <tbody class="text-center" *ngIf="volToppersList.length == 0 && dataLoad">
+               <tr class="cursor-auto b-b-cb">
+                  <td class="no-data-found">No Data Found</td>
+               </tr> 
+           </tbody>
+         </table>
+      </div>
+      <div class="loader min-height-275" *ngIf="!dataLoad">
+         <img src="/assets/imgs/loader.gif" alt="">
+        </div>
+    </div>
+</ion-content>
+
+
+
+<div class="toppers_container displayoffweb m-t-12 width-100">
+  <div class="topper_title">
+    <span class="titleheader-desktop">Volume Toppers</span>
+   <label class="switch">
+      <input type="checkbox" id="togBtn" [(ngModel)]="voltopper"
+      (ngModelChange)="changeVolValue($event)">
+      <div class="slider round">
+         <span class="on">BSE</span><span class="off">NSE</span>
+      </div>
+   </label>
+   <span class="titleheader-desktop visibility-hidden">Volume Toppers</span>
+  </div>
+  <div class="toppers_list desktop-table-snapshot-topper">
+     <table class="commontablewidth no-wrap-table">
+        <thead>
+           <tr>
+            <th class="leftalignwithpadding commonth font-13">Scrip</th>
+            <th class="commonth font-13">LTP</th>
+            <!-- <th class="commonth">% Change</th> -->
+            <th class="commonth font-13">Volume (K)</th>
+            <th class="commonth rightalignwithpadding">
+                30 Day Avg. Vol. (K)
+            </th>
+           </tr>
+      </thead> 
+        <tbody *ngIf="volToppersList.length > 0 && dataLoad">
+           <tr *ngFor="let data of volToppersList | slice:0:3" (click)="goToCompanydetail(data)">
+              <td class="leftalignwithpadding fontboldblack">{{data.Symbol}}</td>
+              <td class="fontgreen">
+                 <div class="ltp-value-block">
+                    <p class="m-pt0">{{data.LastTradedPrice | number: '1.2-2'}}</p>
+                    <p class="m-pt0 font-12">
+                       {{(((data['LastTradedPrice'] - data['PClose'])*100)/data.PClose) | number: '1.2-2'}}%
+                     </p>
+                 </div>
+              </td>
+              <!-- <td>
+                <p class="m-pt0">
+                  {{(((data['LastTradedPrice'] - data['PClose'])*100)/data.PClose) | number: '1.2-2'}}%
+                </p>
+              </td> -->
+              <td>{{changeVolNumberFormat(data.QtyOrValue)}}</td>
+              <td class="rightalignwithpadding">{{changeVolNumberFormat(data.AvgVolume)}}</td>
+           </tr>
+        </tbody>
+
+        <tbody class="text-center height-150" *ngIf="volToppersList.length == 0 && dataLoad">
+         <tr>
+            <td class="cursor-auto text-center" colspan="5">
+               No Data Found
+            </td>
+         </tr>
+          
+      </tbody>
+     </table>
+  </div>
+  <div class="viewall m-b-30" *ngIf="dataLoad">
+   <span (click)="openModal('custom-modal-5', volToppersList)" [ngClass]="{'disabled': volToppersList.length == 0}">View All</span> 
+
+ </div>
+ <div class="loader min-height-275" *ngIf="!dataLoad">
+   <img src="/assets/imgs/loader.gif" alt="">
+  </div>
+</div>
+<!-- <div class="gainer-container gainer-container-second displayoffweb">
+    <div class="displaytabletitle">
+       <span class="titleheader"> Gainers </span>
+          <label class="switch">
+             <input type="checkbox" id="togBtn" name="gainersLosers">
+             <div class="slider round">
+                <span class="on">BSE</span><span class="off">NSE</span>
+             </div>
+          </label>
+       <span class="titleheader" style="color: #B92121"> Losers </span>
+    </div>
+    <div class="gainerstable desktop-table-snapshot">
+       <div class="gainertableleft">
+          <table class="no-wrap-table">
+             <thead>
+                <tr>
+                   <th>Scrip</th>
+                   <th>LTP</th>
+                </tr>
+             </thead>
+             <tbody *ngIf="volToppersList.length > 0 && dataLoad">
+                <tr *ngFor="let data of volToppersList.slice(0, 3);" (click)="goToCompanydetail(data)">
+                   <td class="fontboldblack">{{data.Symbol}}</td>
+                   <td class="fontgreen">
+                      <p class="m-pt0 ltp">{{data.LTP | number: '1.2-2'}}</p>
+                      <p class="m-pt0 percentage-change">{{data.PerChange | number: '1.2-2'}}%</p>
+                   </td>
+                </tr>
+             </tbody>
+          </table>
+       </div>
+       <div class="gainertableright">
+          <table class="no-wrap-table">
+             <thead style="background: #FCCCCC">
+                <tr>
+                   <th>Scrip</th>
+                   <th>LTP</th>
+                </tr>
+             </thead>
+             <tbody *ngIf="volToppersList.length > 0 && dataLoad">
+                <tr *ngFor="let data of volToppersList.slice(0, 3);" (click)="goToCompanydetail(data)">
+                   <td class="fontboldblack">{{data.Symbol}}</td>
+                   <td class="loser-colors">
+                      <p class="m-pt0 ltp">{{data.LTP | number: '1.2-2'}}</p>
+                      <p class="m-pt0 percentage-change">{{data.PerChange | number: '1.2-2'}}%</p>
+                   </td>
+                </tr>
+             </tbody>
+             <tbody *ngIf="volToppersList.length == 0 && dataLoad">
+                <tr class="cursor-auto">
+                   <td class="no-data-found" colspan="2">No Data Found</td>
+                </tr>
+             </tbody>
+          </table>
+       </div>
+    </div>
+    <div class="viewall" *ngIf="dataLoad">
+      <span (click)="openModal('custom-modal-5', volToppersList)" [ngClass]="{'disabled': (volToppersList.length == 0 && volToppersList.length == 0)}">View All</span> 
+    </div>
+    <div class="loader" *ngIf="!dataLoad" style="min-height: 275px;">
+       <img src="/assets/imgs/loader.gif" alt="">
+     </div>
+    
+ </div> -->
+<jw-modal id="custom-modal-5">
+   
+     <div class="header">
+         <span class="fal fa-times modal-dismiss jw-modal-close" (click)="closeModal('custom-modal-5');">X</span>
+     </div>
+     <div class="topper_title topper_container">
+         <span class="titleheader-desktop">Volume Toppers</span>
+         <label class="switch volume-toppers">
+            <input type="checkbox" id="togBtn" id="togBtn" [(ngModel)]="voltopper"
+            (ngModelChange)="changeVolValue($event)">
+            <div class="slider round">
+               <span class="on">BSE</span><span class="off">NSE</span>
+            </div>
+         </label>
+         
+      </div>
+    <div class="parent-table thin-scroll">
+      <div class="toppers_list toppercontainer_list desktop-table-snapshot-topper modal-topper-parent">
+         <table class="commontablewidth no-wrap-table">
+            <thead>
+              <tr>
+                 <th class="leftalignwithpadding commonth">Scrip</th>
+                 <th class="commonth m-l-20">LTP</th>
+                 <th class="commonth">% Change</th>
+                 <th class="commonth">Volume (K)</th>
+                 <th class="commonth rightalignwithpadding">
+                   <p class="m-pt0">30 Days</p>
+                   <p class="m-pt0">Avg Vol (K)</p>
+                 </th>
+              </tr>
+           </thead>
+           <tbody class="tbodywithdata" *ngIf="volToppersList.length > 0">
+               <tr *ngFor="let data of volToppersList" (click)="fromModelToCompanydetail(data,'custom-modal-5' )">
+                  <td class="leftalignwithpadding fontboldblack">{{data.Symbol}}</td>
+                  <td class="fontgreen text-center">
+                     <p class="m-pt0">{{data.LastTradedPrice | number: '1.2-2'}}</p>
+                  </td>
+                  <td class="text-center">
+                    <p class="m-pt0">
+                       {{(((data['LastTradedPrice'] - data['PClose'])*100)/data.PClose) | number: '1.2-2'}}%
+                    </p>
+                  </td>
+                  <td class="text-center">{{changeVolNumberFormat(data.QtyOrValue)}}</td>
+                  <td class="rightalignwithpadding">{{changeVolNumberFormat(data.AvgVolume)}}</td>
+               </tr>
+            </tbody>
+            <tbody  *ngIf="volToppersList.length == 0">
+                <tr class="cursor-auto">
+                    <td class="no-data-found text-center">No Data Found</td>
+                </tr>
+            </tbody>
+         </table>
+      </div>
+    </div>
+
+    <div class="height-50">
+
+    </div>
+
+ 
+ 
+   
+</jw-modal>

@@ -1,0 +1,49 @@
+.dp_script_payout_mobile_view{margin:10px; padding-bottom: 40px;}
+.main_card{padding: 15px; border: 1px solid rgba(0, 0, 0, 0.04); box-shadow: 0px 3px 18px rgba(150, 150, 150, 0.24); border-radius: 10px; margin-bottom: 1rem;}
+.card_top{display: flex; justify-content: space-between; }
+.card_top div{color: #6E6E6E; font-size: 12px; font-weight: 400;}
+.card_top div span{color: #434343;}
+.repo_list{list-style: none; display: grid; grid-template-columns: 1fr 1fr 1fr; margin: 0; padding: 0;}
+.repo_list li{padding-top: 20px; padding-right: 10px;}
+.repo_list li label{color: #6E6E6E; font-size: 12px; font-weight: 400; padding-bottom: 4px; display: block;}
+.repo_list li span{color: #010101; font-size: 12px; font-weight: 500; padding-bottom: 4px; display: block;}
+.three{display: flex; justify-content: space-between;}
+.details_grid{background:rgba(33, 28, 97, 0.1);border-radius: 4px; padding: 12px; display: grid; grid-template-columns: 1fr 1fr 1fr; margin-top: 15px;}
+.details_grid div:last-child{grid-column: 1 / -1;}
+.details_grid div:nth-child(3){padding-left: 10px;}
+.pl-l{padding-left: 0px;}
+.details_grid label{color: #6E6E6E; font-size: 12px; font-weight: 400; padding-bottom: 4px; display: block;}
+.details_grid  span{color: #010101; font-size: 12px; font-weight: 500; padding-bottom: 4px; display: block;}
+.card_top .arrow-button{right: 0px;}
+.date_filter{display: grid; width: 100%; grid-template-columns: 1fr 1fr; border-bottom: 1px solid #CBCBCB; margin-bottom: 20px; padding-bottom: 20px; }
+.date_filter .dt:first-child{margin-right: 8px;}
+.date_filter .dt:first-child{margin-right: 8px;}
+.date_filter .dt .label{color: #808080; font-size: 13px; font-weight: 400; padding-bottom: 4px;}
+.download_file{display: flex;justify-content: flex-end; gap: 10px; margin: 10px;}
+.download_file > div{cursor: pointer;}
+.download_file img{width: 16px;}
+.section {
+    // width:32%;
+    position: relative;
+    
+    .calendar {
+        position: absolute;
+        right: 10px;
+        bottom: 9px;
+    }
+    .ion-input {
+        border: 1px solid #cbcbcb;
+        border-radius: 5px;
+        height: 36px;
+        width: 100%;
+        font-size: 15px;
+        --padding-top: 7px;
+        --padding-end: 7px;
+        --padding-bottom: 7px;
+        --padding-start: 7px;
+        // width: 281px;
+        &:focus-visible{
+            outline:none;
+        }
+    }
+}

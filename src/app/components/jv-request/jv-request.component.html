@@ -1,0 +1,170 @@
+<ion-header class="jv-request-container">
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">JV Request Status</ion-title>
+			</div>
+		</div>
+	</ion-toolbar>
+
+	<ion-toolbar class="mobile-visibility">
+		<div class="search-section-reports">
+			<ion-searchbar type="text" name="searchClientCodeName" class="custom-searchbar mt00"
+			placeholder="Search by client code" [(ngModel)]="searchClientCode"></ion-searchbar>
+			<span class="desktop-visibility"><img src="assets/svg/download_excel.svg" class="downloadIcon" alt=""> Download
+				Report</span>
+		</div>
+	</ion-toolbar>
+
+
+</ion-header>
+
+
+<div class="container smaller-container desktop-visibility">
+
+	<div class="search-section-reports search-section" *ngIf="!applyjvReqPage">
+		<ion-searchbar type="text" name="searchClientCodeName" class="custom-searchbar mt00"
+		placeholder="Search by client code" [(ngModel)]="searchClientCode" customValidate></ion-searchbar>
+		<span class="desktop-visibility  download-report" (click)="comingOption($event)"><img src="assets/svg/download_excel.svg" class="downloadIcon" alt=""> Download
+			Report</span>
+	</div>
+	<!-- <div class="title-name" *ngIf="!applyjvReqPage">
+		<span class="name">Prashanjeet 12345 (Prashanjeet Chawdhary)</span>
+	</div> -->
+	<div class="card-container thin-scroll" *ngIf="(jvRequestList | filterSearch: searchClientCode : 'ClientCode').length > 0 && dataLoad">
+		<div class="card" *ngFor="let data of jvRequestList | filterSearch: searchClientCode : 'ClientCode'">
+			<div class="card-row">
+				<div class="card-first-row">
+					<span class="block-code first"><span style="font-size: 12px;">₹ </span>{{data.Amount | formatNumerDecimal}}</span>
+					<span class="status-view">
+						<span class="cancel-request" (click)="cancelRequestPopup()" style="padding-right: 5px;"
+							*ngIf="data.Status == 'Pending'">Cancel Request | </span>
+						<span class="status-name" *ngIf="(data['Status'] == 'Approved' || data['Status'] == 'Rejected') || (data['Status'] === 'Pending' && !displayStatusBtn)">{{data.Status}}</span>
+						
+						<div class="buttons-block" *ngIf="data['Status'] === 'Pending' && displayStatusBtn">
+                            <ion-button class="reject" (click)="jvApprovalRejRequest('Rejected',data )">Reject</ion-button>
+                            <ion-button class="approve" (click)="jvApprovalRejRequest('Approved',data )">Approve</ion-button>
+                        </div>
+						
+						<img  class="status-icon" *ngIf="data['Status'] === 'Approved' " src="assets/svg/approved.svg" alt="">
+                        <img  class="status-icon" *ngIf="data['Status'] === 'Rejected' " src="assets/svg/rejected.svg" alt="">
+                        <img  class="status-icon" *ngIf="data['Status'] === 'Pending' && !displayStatusBtn" src="assets/svg/process.svg" alt="">
+						<!-- <span><img class="status-icon" src="assets/svg/process.svg" alt=""></span> -->
+					</span>
+				</div>
+
+				<div class="card-description">
+					<span class="block-code" style="color:#9C9C9C">{{moment(data.EntryDate).format("DD-MM-YYYY")}} | Sr.No
+						{{data.SerialNumber}}</span>
+					<span class="block-code mt10 client_Code">Client Code: {{data.ClientCode}}</span>
+					<span class="block-code mt10">Reason: {{data.Reason}}</span>
+					<span class="block-code mt10">Remark: {{data.Remark}}</span>
+				</div>
+			</div>
+
+			<div class="card-footer">
+				<div>
+					<span class="footer-content"
+						style="font-family:'nunitoBold';color:#2D197F">{{data.ApprovedDate == "" ? '-' : data.ApprovedDate}}</span>
+					<span class="footer-content">|</span>
+					<span class="footer-content">Approval by: {{data.ApprovedBy == "" ? '-' : data.ApprovedBy}}</span>
+				</div>
+				<div class="footer-content mt10" style="color: #716A90;">
+					{{data.ApprovedRemark}}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div style="position:absolute;top:50%; left:50%" *ngIf="!dataLoad">
+		<img style="width:40px" src="/assets/imgs/loader.gif" alt="">
+	</div>
+
+	<div class="no-data-found-class" *ngIf="(jvRequestList | filterSearch: searchClientCode : 'ClientCode').length == 0 && dataLoad && !applyjvReqPage">
+		<span>No Data Found</span>
+	</div>
+
+	<div class="empty-card-container" *ngIf="applyjvReqPage">
+		<div class="raise-limit-request">
+			<img class="raise-image" src="assets/svg/raise_request.svg" alt="">
+			<div class="raise-message">You have not raised any <br>JV Request yet</div>
+			<ion-button (click)="goToCreateRequest()">Raise JV Request</ion-button>
+		</div>
+
+	</div>
+
+</div>
+
+
+<ion-content class="container mobile-visibility">
+	<!-- <div class="title-name">
+		<span class="name">Prashanjeet 12345 (Prashanjeet Chawdhary)</span>
+	</div> -->
+	<div class="card-container" *ngIf="(jvRequestList | filterSearch: searchClientCode : 'ClientCode').length > 0 && dataLoad">
+		<div class="card" *ngFor="let data of jvRequestList | filterSearch: searchClientCode : 'ClientCode'">
+			<div class="card-row">
+				<div class="card-first-row">
+					<span class="block-code first"><span style="font-size: 12px;">₹ </span>{{data.Amount | formatNumerDecimal}}</span>
+					<span class="status-view">
+						<span class="cancel-request" (click)="cancelRequestPopup()" style="padding-right: 5px;"
+							*ngIf="data.Status == 'Pending'">Cancel Request
+							<span *ngIf="data['Status'] === 'Pending' && !displayStatusBtn">|</span>  
+							</span>
+						<span class="status-name" *ngIf="(data['Status'] == 'Approved' || data['Status'] == 'Rejected') || (data['Status'] === 'Pending' && !displayStatusBtn)">{{data.Status}}</span>
+						
+					
+                        <img  class="status-icon" *ngIf="data['Status'] === 'Approved' " src="assets/svg/approved.svg" alt="">
+                        <img  class="status-icon" *ngIf="data['Status'] === 'Rejected' " src="assets/svg/rejected.svg" alt="">
+                        <img  class="status-icon" *ngIf="data['Status'] === 'Pending' && !displayStatusBtn" src="assets/svg/process.svg" alt="">
+						<!-- <span><img class="status-icon" src="assets/svg/process.svg" alt=""></span> -->
+					</span>
+				</div>
+
+				<div class="card-description">
+					<span class="block-code" style="color:#9C9C9C">{{moment(data.EntryDate).format("DD-MM-YYYY")}} | Sr.No
+						{{data.SerialNumber}}</span>
+					<span class="block-code mt10 client_Code">Client Code: {{data.ClientCode}}</span>
+					<span class="block-code mt10">Reason: {{data.Reason}}</span>
+					<span class="block-code mt10">Remark: {{data.Remark}}</span>
+				</div>
+			</div>
+
+			<div class="card-footer">
+				<div>
+					<span class="footer-content"
+						style="font-family:'nunitoBold';color:#2D197F">{{data.ApprovedDate == "" ? '-' : data.ApprovedDate}} </span>
+					<span class="footer-content">|</span>
+					<span class="footer-content">Approval by: {{data.ApprovedBy == "" ? '-' : data.ApprovedBy}}</span>
+				</div>
+				<div class="footer-content mt10" style="color: #716A90;">
+					{{data.ApprovedRemark}}
+				</div>
+				
+			</div>
+
+			<div class="buttons-block" *ngIf="data['Status'] === 'Pending' && displayStatusBtn" style="text-align: center;">
+				<ion-button class="reject" (click)="jvApprovalRejRequest('Rejected',data )">Reject</ion-button>
+				<ion-button class="approve" (click)="jvApprovalRejRequest('Approved',data )">Approve</ion-button>
+			</div>
+		</div>
+	</div>
+
+	<div style="position:absolute;top:50%; left:50%" *ngIf="!dataLoad">
+		<img style="width:40px" src="/assets/imgs/loader.gif" alt="">
+	</div>
+
+	<div class="no-data-found-class" *ngIf="(jvRequestList | filterSearch: searchClientCode : 'ClientCode').length == 0 && dataLoad && !applyjvReqPage">
+		<span>No Data Found</span>
+	</div>
+
+	<div class="empty-card-container" *ngIf="applyjvReqPage">
+		<div class="raise-limit-request">
+			<img class="raise-image" src="assets/svg/raise_request.svg" alt="">
+			<div class="raise-message">You have not raised any <br>JV Request yet</div>
+			<ion-button (click)="goToCreateRequest()">Raise JV Request</ion-button>
+		</div>
+
+	</div>
+
+</ion-content>

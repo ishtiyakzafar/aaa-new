@@ -1,0 +1,493 @@
+<ion-header class="mobile-visibility">
+    <div class="title-block title-block-custom">
+        <div class="icon-title">
+            <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+            <ion-title class="title">52 Week High & Low</ion-title>
+        </div>
+        <div class="search-block">
+            <ion-buttons class="header-icon-block">
+               <ion-icon class="iconsize first-icon noti-icon" src="./assets/svg/white-home-icon.svg" (click)="goToDashboard()"></ion-icon>
+                <ion-icon class="iconsize first-icon noti-icon" src="./assets/svg/notification.svg" (click)="goToNotification()"></ion-icon>
+                <ion-icon class="iconsize" src="./assets/svg/search.svg" (click)="goToAddScript()"></ion-icon>
+            </ion-buttons>
+        </div>
+    </div>
+</ion-header>
+
+<ion-content class="displayoffmobile">
+    <div class="weekhighlow_container displayoffmobile">
+    
+        <div class="weekhigh_title">
+           <span class="titleheader">
+           52 Week High
+           </span>
+         <label class="switch">
+            <input type="checkbox" id="togBtn" [(ngModel)]="nscBschigh"
+            (ngModelChange)="changehighBtn($event)">
+            <div class="slider round">
+               <span class="on">BSE</span><span class="off">NSE</span>
+            </div>
+         </label>
+        </div>
+        <div class="weekhighlist">
+           <!-- <table class="commontablewidth">
+              <thead class="commonlowhightable">
+                 <th class="leftalignwithpadding">Scrip</th>
+                 <th style="text-align: right;">52 Wk High</th>
+                 <th class="rightalignwithpadding">LTP</th>
+              </thead>
+              <tbody>
+                 <tr *ngFor="let data of weekHighLowList">
+                    <td class="leftalignwithpadding fontboldblack">{{data.scrip}}</td>
+                    <td style="text-align:right;font-size: 14px;">{{data.high}}</td>
+                    <td class="rightalignwithpadding fontgreen">
+                       <p class="m-pt0">{{data.ltp}}</p>
+                       <p class="m-pt0" style="font-size:13px">{{data.perct}}</p>
+                    </td>
+                 </tr>
+              </tbody>
+              </table> -->
+           <table class="no-wrap-table snapshot-mobile-common-table">
+              <thead class="snapshot-mobile-header-single-table week-high-head">
+                 <tr>
+                    <th class="leftalignwithpadding">Scrip</th>
+                    <th class="text-center">52 Wk High</th>
+                    <th class="rightalignwithpadding">LTP</th>
+                 </tr>
+              </thead>
+              <tbody *ngIf="weekListHigh.length > 0 && dataLoad">
+                 <tr *ngFor="let data of weekListHigh" (click)="goToCompanydetail(data)">
+                    <td class="leftalignwithpadding fontboldblack">{{data.Symbol}}</td>
+                    <td class="text-right">{{data.HighLowPrice | number: '1.2-2'}}</td>
+                    <td class="rightalignwithpadding fontgreen" [ngStyle]="{'color':(data.PerChange == 0) ? '#656565' : (data.PerChange > 0 ? '#17C257' : '#F55858')}">
+                       <p class="m-pt0">{{data.LTP | number: '1.2-2'}}</p>
+                       <p class="m-pt0">
+                        {{data.PerChange | number: '1.2-2' }}%
+                     </p>
+                    </td>
+                 </tr>
+              </tbody>
+              <tbody *ngIf="weekListHigh.length == 0 && dataLoad">
+                  <tr class="cursor-auto">
+                     <td class="no-data-found" colspan="3">No Data Found</td>
+                  </tr>
+              </tbody>
+              
+           </table>
+           <p class="text-center eb-color m-b-0" [ngClass]="{'hide': (weekListHigh.length == 0)}" *ngIf="dataLoad" (click)="openModal('custom-modal-mobile-1', weekListHigh)">View All</p>
+        </div>
+        <div class="loader min-height-275" *ngIf="!dataLoad">
+         <img src="/assets/imgs/loader.gif" alt="">
+        </div>
+      </div>
+      <div class="weekhighlow_container displayoffmobile">
+        <div class="weekhigh_title">
+           <span class="titleheader title-header-looser">
+           52 Week Low
+           </span>
+            <label class="switch">
+               <input type="checkbox" id="togBtn" [(ngModel)]="nscBscLow"
+               (ngModelChange)="changeLowBtn($event)">
+               <div class="slider round">
+                  <span class="on">BSE</span><span class="off">NSE</span>
+               </div>
+            </label>
+        </div>
+        <div class="weekhighlist">
+           <table class="commontablewidth no-wrap-table">
+              <thead class="commonlowhightable snapshot-mobile-header-single-table">
+                 <tr>
+                 <th class="leftalignwithpadding commonth">Scrip</th>
+                 <th class="commonth text-right">52 Wk Low</th>
+                 <th class="rightalignwithpadding commonth">LTP</th>
+               </tr>
+              </thead>
+              <tbody *ngIf="weekLowList.length > 0 && dataLoad">
+                 <tr *ngFor="let data of weekLowList" (click)="goToCompanydetail(data)">
+                    <td class="leftalignwithpadding fontboldblack">{{data.Symbol}}</td>
+                    <td class="text-right">{{data.HighLowPrice | number: '1.2-2'}}</td>
+                    <td class="rightalignwithpadding fontgreen" [ngStyle]="{'color':(data.PerChange == 0) ? '#656565' : (data.PerChange > 0 ? '#17C257' : '#F55858')}">
+                     <p class="m-pt0">{{data.LTP | number: '1.2-2'}}</p>
+                     <p class="m-pt0">
+                      {{data.PerChange | number: '1.2-2' }}%
+                      </p>
+                    </td>
+                 </tr>
+              </tbody>
+              <tbody *ngIf="weekLowList.length == 0 && dataLoad">
+                  <tr class="cursor-auto">
+                     <td class="no-data-found" colspan="3">No Data Found</td>
+                  </tr>
+              </tbody>
+              
+           </table>
+           <!-- <p (click)="viewDetails()">View All test</p> -->
+           <p class="text-center eb-color m-b-0" [ngClass]="{'hide': (weekLowList.length == 0)}" *ngIf="dataLoad" (click)="openModal('custom-modal-mobile-2', weekLowList.length)">View All</p>
+        </div>
+        <div class="loader min-height-275" *ngIf="!dataLoad">
+         <img src="/assets/imgs/loader.gif" alt="">
+        </div>
+      </div>
+</ion-content>
+
+
+
+<!-- <div class="weekhighlow_container weekhighlow_container_second displayoffweb">
+  <div class="weekhigh_title">
+     <span class="titleheader-desktop">
+         52 Week High / Low
+     </span>
+      <label class="switch">
+         <input type="checkbox" id="togBtn" name="nscBscWeb" [(ngModel)]="nscBscWeb" (ngModelChange)="nscBscToogleWeb($event)">
+         <div class="slider round">
+            <span class="on">BSE</span><span class="off">NSE</span>
+         </div>
+      </label>
+  </div>
+  <div class="d-flex">
+   <div class="weekhighlist weekhighlistfirst">
+      <div class="first-table-block">
+         <table class="commontablewidth no-wrap-table">
+            <thead class="commonlowhightable">
+               <tr>
+                  <th class="leftopenModalalignwithpadding commonth" style="text-align: left;padding-left: 15px;">Scrip</th>
+                  <th class="commonth" style="text-align: right;">52 Wk High</th>
+                  <th class="rightalignwithpadding commonth">LTP</th>
+               </tr>
+            </thead>
+            <tbody *ngIf="webHighList.length > 0 && dataLoad">
+               <tr *ngFor="let data of webHighList | slice:0:4" (click)="goToCompanydetail(data)">
+                  <td class="leftalignwithpadding fontboldblack">{{data.Symbol}}</td>
+                  <td style="text-align:right;font-size: 14px;">{{data.HighLowPrice | number: '1.2-2'}}</td>
+                  <td class="rightalignwithpadding " [ngStyle]="{'color':(data.PerChange == 0) ? '#656565' : (data.PerChange > 0 ? '#17C257' : '#F55858')}">
+                     <p class="m-pt0">{{data.LTP | number: '1.2-2'}}</p>
+                     <p class="m-pt0" style="font-size:13px">
+                      {{data.PerChange | number: '1.2-2' }}%
+                      </p>
+                  </td>
+               </tr>
+            </tbody>
+            <tbody *ngIf="webHighList.length == 0 && dataLoad">
+               <tr class="cursor-auto">
+                  <td class="no-data-found" colspan="3">No Data Found</td>
+               </tr>
+            </tbody>
+           
+         </table>
+      </div>
+      <div class="viewall">
+       <span (click)="openModal('custom-modal-2', webHighList)" [ngClass]="{'disabled': (webHighList.length == 0)}" *ngIf="dataLoad">View All</span> 
+      </div>
+   </div>
+   <div class="weekhighlist weekhighlistsecond">
+      <div class="second-table-block">
+         <table class="commontablewidth no-wrap-table" style="border-left: 0;">
+            <thead class="commonlowhightable">
+               <tr>
+                  <th class="leftalignwithpadding commonth">Scrip</th>
+                  <th class="commonth" style="text-align: right;">52 Wk Low</th>
+                  <th class="rightalignwithpadding commonth">LTP</th>
+               </tr>
+            </thead>
+               <tbody *ngIf="webLowList.length > 0 && dataLoad">
+                  <tr *ngFor="let data of webLowList | slice:0:4" (click)="goToCompanydetail(data)">
+                     <td class="leftalignwithpadding fontboldblack">{{data.Symbol}}</td>
+                     <td style="text-align:right;font-size: 14px;">{{data.HighLowPrice | number: '1.2-2'}}</td>
+                     <td class="rightalignwithpadding fontgreen" [ngStyle]="{'color':(data.PerChange == 0) ? '#656565' : (data.PerChange > 0 ? '#17C257' : '#F55858')}">
+                        <p class="m-pt0">{{data.LTP | number: '1.2-2'}}</p>
+                        <p class="m-pt0" style="font-size:13px">
+                        {{data.PerChange | number: '1.2-2' }}%
+                        </p>
+                     </td>
+                  </tr>
+               </tbody>
+               <tbody *ngIf="webLowList.length == 0 && dataLoad">
+                  <tr class="cursor-auto">
+                     <td class="no-data-found" colspan="3">No Data Found</td>
+                  </tr>
+               </tbody>
+            <tbody>
+
+            </tbody>
+         </table>
+      </div>
+      <div class="viewall">
+       <span (click)="openModal('custom-modal-2', webLowList)" *ngIf="dataLoad" [ngClass]="{'disabled': (webLowList.length == 0)}">View All</span> 
+      </div>
+   </div>
+  </div>
+  <div class="loader" *ngIf="!dataLoad" style="min-height: 275px;">
+   <img src="/assets/imgs/loader.gif" alt="">
+  </div>
+</div> -->
+<div class="gainer-container gainer-container-second displayoffweb">
+    <div class="displaytabletitle">
+       <span class="titleheader"> 52 Week High / Low </span>
+       <!-- <span> -->
+          <label class="switch">
+             <input type="checkbox" id="togBtn" name="gainersLosers">
+             <div class="slider round">
+                <span class="on">BSE</span><span class="off">NSE</span>
+             </div>
+          </label>
+       <!-- </span> -->
+       <span class="titleheader title-header-looser visibility-hidden"> 52 Week High / Low </span>
+    </div>
+    <div class="gainerstable desktop-table-snapshot">
+       <div class="gainertableleft">
+          <table class="no-wrap-table">
+             <thead>
+                <tr>
+                   <th>Scrip (52 Wk High)</th>
+                   <th>LTP</th>
+                </tr>
+             </thead>
+             <tbody *ngIf="webHighList.length > 0 && dataLoad">
+                <tr *ngFor="let data of webHighList.slice(0, 3);" (click)="goToCompanydetail(data)">
+                   <td class="fontboldblack">{{data.Symbol}}</td>
+                   <td class="fontgreen">
+                      <p class="m-pt0 ltp">{{data.LTP | number: '1.2-2'}}</p>
+                      <p class="m-pt0 percentage-change">{{data.PerChange | number: '1.2-2'}}%</p>
+                   </td>
+                </tr>
+             </tbody>
+             <!-- <tbody *ngIf="webHighList.length == 0 && dataLoad">
+                <tr class="cursor-auto">
+                   <td class="no-data-found" colspan="2">No Data Found</td>
+                </tr>
+             </tbody> -->
+          </table>
+       </div>
+       <div class="gainertableright">
+          <table class="no-wrap-table">
+             <thead class="fcc-bg">
+                <tr>
+                   <th>Scrip (52 Wk Low)</th>
+                   <th>LTP</th>
+                </tr>
+             </thead>
+             <tbody *ngIf="webLowList.length > 0 && dataLoad">
+                <tr *ngFor="let data of webLowList.slice(0, 3);" (click)="goToCompanydetail(data)">
+                   <td class="fontboldblack">{{data.Symbol}}</td>
+                   <td class="loser-colors">
+                      <p class="m-pt0 ltp">{{data.LTP | number: '1.2-2'}}</p>
+                      <p class="m-pt0 percentage-change">{{data.PerChange | number: '1.2-2'}}%</p>
+                   </td>
+                </tr>
+             </tbody>
+             <!-- <tbody *ngIf="loserDataForWEB.length == 0" style="text-align: center;">
+                <span>No Data Found</span>
+             </tbody> -->
+             <tbody *ngIf="webLowList.length == 0 && dataLoad">
+                <tr class="cursor-auto">
+                   <td class="no-data-found" colspan="2">No Data Found</td>
+                </tr>
+             </tbody>
+          </table>
+       </div>
+    </div>
+    <div class="viewall" *ngIf="dataLoad">
+      <span (click)="openModal('custom-modal-2', webHighList)" [ngClass]="{'disabled': (webHighList.length == 0 && webLowList.length == 0)}">View All</span> 
+    </div>
+    <div class="loader min-height-275" *ngIf="!dataLoad">
+       <img src="/assets/imgs/loader.gif" alt="">
+     </div>
+    
+ </div>
+
+<jw-modal id="custom-modal-2">
+   <div class="gainers-losers">
+     <div class="header">
+         <span class="fal fa-times modal-dismiss jw-modal-close" (click)="closeModal('custom-modal-2');">X</span>
+     </div>
+
+     <div class= "container-head gainer-container">
+         <div class="displaytabletitle">
+            <span class="titleheader"> 52 Week High </span>
+            <!-- <span> -->
+               <label class="switch">
+                  <input type="checkbox" id="togBtn" name="nscBscWeb" [(ngModel)]="nscBscWeb" (ngModelChange)="nscBscToogleWeb($event)">
+                  <div class="slider round">
+                     <span class="on">BSE</span><span class="off">NSE</span>
+                  </div>
+               </label>
+            <!-- </span> -->
+            <span class="titleheader title-header-looser"> 52 Week Low</span>
+         </div>
+     </div>
+ 
+     <div class="gainers-losers_contains gainer-container week-modal snapshot-modal-parent">
+      
+         <div class="gainerstable">
+            <div class="gainertableleft">
+               <!-- <table class="no-wrap-table"> -->
+                  <table>
+                  <thead class="d5e-bg">
+                     <tr>
+                        <th>Scrip</th>
+                        <th>52 Wk High</th>
+                        <th>LTP</th>
+                     </tr>
+                  </thead>
+                  <tbody class="overflow-auto" *ngIf="webHighList.length > 0">
+                     <tr *ngFor="let data of webHighList" (click)="fromModelToCompanydetail(data,'custom-modal-2')">
+                        <td class="black-color font-bold">{{data['Symbol']}}</td>
+                        <td>{{data.HighLowPrice | number: '1.2-2'}}</td>
+                        <td class="font-green" [ngStyle]="{'color':(data.PerChange == 0) ? '#656565' : (data.PerChange > 0 ? '#17C257' : '#F55858')}">
+                           <p class="m-pt0">{{data.LTP | number: '1.2-2'}}</p>
+                           <p class="m-pt0">
+                            {{data.PerChange | number: '1.2-2'}}%
+                            </p>
+                        </td>
+                     </tr>
+                  </tbody>
+                  <tbody *ngIf="webHighList.length == 0" class="no-data-found-parnert">
+                     <tr class="cursor-auto">
+                        <td class="no-data-found" colspan="3">No Data Found</td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+            <div class="gainertableright">
+               <!-- <table class="no-wrap-table"> -->
+               <table>
+                  <thead class="fcc-bg">
+                     <tr>
+                        <th>Scrip</th>
+                        <th>52 Wk Low</th>
+                        <th>LTP</th>
+                     </tr>
+                  </thead>
+                  <tbody *ngIf="webLowList.length > 0">
+                     <tr *ngFor="let data of webLowList" (click)="fromModelToCompanydetail(data,'custom-modal-2')">
+                        <td class="fontboldblack">{{data.Symbol}}</td>
+                        <td>{{data.HighLowPrice | number: '1.2-2'}}</td>
+                        <td class="loser-colors" [ngStyle]="{'color':(data.PerChange == 0) ? '#656565' : (data.PerChange > 0 ? '#17C257' : '#F55858')}">
+                           <p class="m-pt0">{{data.LTP | number: '1.2-2'}}</p>
+                           <p class="m-pt0">
+                           {{data.PerChange | number: '1.2-2' }}%
+                           </p>
+                        </td>
+                     </tr>
+                  </tbody>
+                  <tbody *ngIf="webLowList.length == 0" class="no-data-found-parent">
+                     <tr class="cursor-auto">
+                        <td class="no-data-found" colspan="3">No Data Found</td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+     </div>
+   </div>
+</jw-modal>
+
+
+<jw-modal id="custom-modal-mobile-1">
+   
+   <div class="header">
+      <span class="fal fa-times modal-dismiss cross" (click)="closeModal('custom-modal-mobile-1');">X</span>
+  </div>
+  <div class="weekhigh_title head_weekhighlow pb-5">
+      <span class="pr-15">
+         52 Week High
+      </span>
+      <label class="switch">
+         <input type="checkbox" id="togBtn" [(ngModel)]="nscBschigh"
+         (ngModelChange)="changehighBtn($event)">
+         <div class="slider round">
+            <span class="on">BSE</span><span class="off">NSE</span>
+         </div>
+      </label>
+   </div>
+
+   <div class="week_hl_contains weekhighlow_container modal-container m-t-0">
+    
+      <div class="weekhighlist table-parent">
+         <table class="commontablewidth no-wrap-table">
+            <thead class="commonlowhightable snapshot-mobile-header-single-table">
+               <tr>
+                  <th class="leftalignwithpadding commonth">Scrip</th>
+                  <th class="commonth text-right">52 Wk Low</th>
+                  <th class="rightalignwithpadding commonth">LTP</th>
+               </tr>
+            </thead>
+            <tbody *ngIf="weekListHigh.length > 0" class="tbodydone tbodyscroll">
+               <tr *ngFor="let data of weekListHigh" (click)="fromModelToCompanydetail(data,'custom-modal-mobile-1')">
+                  <td class="leftalignwithpadding fontboldblack">{{data.Symbol}}</td>
+                  <td class="text-right">{{data.HighLowPrice | number: '1.2-2'}}</td>
+                  <td class="rightalignwithpadding fontgreen" [ngStyle]="{'color':(data.PerChange == 0) ? '#656565' : (data.PerChange > 0 ? '#17C257' : '#F55858')}">
+                     <p class="m-pt0">{{data.LTP | number: '1.2-2'}}</p>
+                     <p class="m-pt0">
+                      {{data.PerChange | number: '1.2-2' }}%
+                      </p>
+                  </td>
+               </tr>
+            </tbody>
+            <tbody *ngIf="weekListHigh.length == 0" class="no-data-found-parent">
+               <tr class="cursor-auto">
+                  <td class="no-data-found" colspan="3">No Data Found</td>
+               </tr>
+            </tbody>
+         </table>
+      
+      </div>
+   </div>
+
+
+</jw-modal>
+
+
+<jw-modal id="custom-modal-mobile-2">
+   
+      <div class="header">
+         <span class="fal fa-times modal-dismiss cross" (click)="closeModal('custom-modal-mobile-2');">X</span>
+     </div>
+     <div class="weekhigh_title head_weekhighlow pb-5">
+         <span class="pr-15">
+            52 Week Low
+         </span>
+         <label class="switch">
+            <input type="checkbox" id="togBtn" [(ngModel)]="nscBscLow"
+            (ngModelChange)="changeLowBtn($event)">
+            <div class="slider round">
+               <span class="on">BSE</span><span class="off">NSE</span>
+            </div>
+         </label>
+      </div>
+
+      <div class="week_hl_contains weekhighlow_container modal-container m-t-0">
+       
+         <div class="weekhighlist table-parent">
+            <table class="commontablewidth no-wrap-table">
+               <thead class="commonlowhightable snapshot-mobile-header-single-table">
+                  <tr>
+                     <th class="leftalignwithpadding commonth">Scrip</th>
+                     <th class="commonth text-right">52 Wk Low</th>
+                     <th class="rightalignwithpadding commonth">LTP</th>
+                  </tr>
+                  </thead>
+               <tbody *ngIf="weekLowList.length > 0" class="tbodyscroll">
+                  <tr *ngFor="let data of weekLowList" (click)="fromModelToCompanydetail(data,'custom-modal-mobile-1')">
+                     <td class="leftalignwithpadding fontboldblack">{{data.Symbol}}</td>
+                     <td class="text-right">{{data.HighLowPrice | number: '1.2-2'}}</td>
+                     <td class="rightalignwithpadding loser-colors" [ngStyle]="{'color':(data.PerChange == 0) ? '#656565' : (data.PerChange > 0 ? '#17C257' : '#F55858')}">
+                        <p class="m-pt0">{{data.LTP | number: '1.2-2'}}</p>
+                        <p class="m-pt0">
+                         {{data.PerChange | number: '1.2-2' }}%
+                         </p>
+                     </td>
+                  </tr>
+               </tbody>
+               <tbody *ngIf="weekLowList.length == 0" class="no-data-found-parent">
+                  <tr class="cursor-auto">
+                     <td class="no-data-found" colspan="3">No Data Found</td>
+                  </tr>
+               </tbody>
+            </table>
+         
+         </div>
+      </div>
+ 
+   
+</jw-modal>

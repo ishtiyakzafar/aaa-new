@@ -1,0 +1,178 @@
+<ion-header class="desktop-visibility">
+	<div class="close" (click)="dismiss()">x</div>
+</ion-header>
+
+<ion-content class="desktop-visibility">
+
+	<div class="exposure-detail-header">
+		<span class="heading">Category {{expoCatagory}}</span>
+		<span class="sub-heading">Intraday {{intraStatus}} | Delivery {{delStatus}}</span>
+	</div>
+
+	<div class="table-block-parent" *ngIf="dataLoad">
+		<div class="table-width" [ngClass]="{'fullWidth': scripInfoTable2.length === 0}">
+			<div class="web-equity">
+				<div class="header-table">
+					<table class="desktop-header-table width-100">
+						<thead>
+							<tr>
+								<th>
+									Category
+								</th>
+								<th>
+									Type
+								</th>
+								<th>
+									LTP
+								</th>
+
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+			<div class="table-wrapper thin-scroll" style="max-height: calc(100vh - 300px);">
+				<table class="body-table">
+					<tbody *ngIf="scripInfoTable1.length">
+						<tr *ngFor="let dataObj of scripInfoTable1; let i = index" style="cursor:pointer" (click)="goToCompanyDetails(dataObj)">
+							<td>
+								<div class="scrip value-block">
+									<div class="upper">{{dataObj['Symbol']}}</div>
+									<div class="lower">
+										{{dataObj['ScripName']}}
+									</div>
+								</div>
+							</td>
+							<td> 
+								{{dataObj['Exch']}}<span>SE</span>
+							</td>
+							<td>
+								<div class="value-block">
+									{{dataObj['LTP'] | formatNumerDecimal}}
+								</div>
+							</td>
+						</tr>
+					</tbody>
+                    <tbody *ngIf="scripInfoTable1.length === 0">
+                        <tr>
+                            <td class="no-data-found">
+                                No Data found
+                            </td>
+                        </tr>
+                    </tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="table-width" style="margin-left:2%" *ngIf="scripInfoTable2.length">
+			<div class="web-equity">
+				<div class="header-table">
+					<table style="width: 100%" class="desktop-header-table">
+						<thead>
+							<tr>
+								<th>
+									Catagory
+								</th>
+								<th>
+									Type
+								</th>
+								<th>
+									LTP
+								</th>
+
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+			<div class="table-wrapper thin-scroll" style="max-height: calc(100vh - 300px);">
+				<table class="body-table">
+					<tbody *ngIf="scripInfoTable2.length > 0">
+						<tr *ngFor="let dataObj of scripInfoTable2; let i = index" style="cursor:pointer" (click)="goToCompanyDetails(dataObj)">
+							<td>
+								<div class="scrip value-block">
+									<div class="upper">{{dataObj['Symbol']}}</div>
+									<div class="lower">
+										{{dataObj['ScripName']}}
+									</div>
+								</div>
+							</td>
+							<td> 
+								{{dataObj['Exch']}}<span>SE</span>
+							</td>
+							<td>
+								<div class="value-block">
+									{{dataObj['LTP'] | formatNumerDecimal}}
+								</div>
+							</td>
+						</tr>
+					</tbody>
+					<!-- <tbody *ngIf="scripInfoTable2.length == 0">
+						<tr>
+							<td>No Data Found</td>
+						</tr>
+					</tbody> -->
+
+				</table>
+			</div>
+		</div>
+
+	</div>
+    <div class="loader" *ngIf="!dataLoad" style="min-height: calc(100vh - 286px);">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+
+</ion-content>
+
+<ion-header class="mobile-visibility">
+	<ion-toolbar color="tertiary">
+		<div class="title-block title-block-custom aum-title">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBackPage()"></ion-icon>
+				<ion-title class="title">
+					<span>Category {{catagoryID}}</span>
+					<div class="total-clients-block">
+						<div class="item-block">
+							<div class="top">Intraday</div>
+							<div class="lower">{{intraStatus}}</div>
+						</div>
+						<div class="item-block">
+							<div class="top">Delivery</div>
+							<div class="lower">{{delStatus}}</div>
+						</div>
+					</div>
+				</ion-title>
+				<ion-icon class="search-icon" name="search" (click)="goToSearch()"></ion-icon>
+			</div>
+		</div>
+	</ion-toolbar>
+
+</ion-header>
+
+
+<ion-content class="mobile-visibility">
+	<div class="table-block-parent" *ngIf="dataLoad">
+		<table style="width: 100%" class="desktop-header-table">
+			<tbody>
+				<tr *ngFor="let dataObj of scripInfo; let i = index" (click)="goToCompanyDetails(dataObj)">
+					<td>
+						<div class="type-light-text">{{dataObj['Exch']}}<span>SE</span></div>
+						<div class="type-bold-text">{{dataObj['Symbol']}}</div>
+						<div class="type-light-text">{{dataObj['ScripName']}}</div>
+					</td>
+
+					<td>
+						<div class="type-light-text">LTP</div>
+						<div class="type-bold-text">{{dataObj['LTP'] | formatNumerDecimal}}</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>	
+
+	</div>
+
+	<div class="loader" *ngIf="!dataLoad" style="min-height: calc(100vh - 286px);">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+	
+</ion-content>

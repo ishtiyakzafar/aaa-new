@@ -1,0 +1,130 @@
+<!-- <div class="chart-section">
+	<div class="chart">
+		<canvas #dognutChart width="156px" height="156px"></canvas>
+	</div>
+</div> -->
+<div class="tab-block desktop-visibility sip-book">
+	<ion-segment [(ngModel)]="fdsBlockTabValue" (ionChange)="onSegmentChanged($event)">
+		<ion-segment-button *ngFor="let dataObj  of fdsBlock" [value]="dataObj['value']">
+			<div class="items">
+				<div class="upper-section">
+					<div class="type">{{dataObj['name']}}</div>
+					<div class="change-value date">{{dataObj['perform']}}</div>
+				</div>
+				<div class="lower-section">
+					<div class="part">
+						<span class="title">No.of FDs</span>
+						<span class="data">{{dataObj['fds']}}</span>
+					</div>
+					<div class="part">
+						<span class="title">Value(₹)</span>
+						<span class="data">{{dataObj['dataValue']}}</span>
+					</div>
+				</div>
+			</div>
+		</ion-segment-button>
+	</ion-segment>
+</div>
+<div class="desktop-visibility">
+    <div class="search-section">
+        <div class="section-1">
+            <div class="search-section-changed">
+                <ion-label>Search by</ion-label>
+                <ion-segment [(ngModel)]="clientBlockSegmentValue" mode="md" (ionChange)="segmentChange()">
+                    <ion-segment-button *ngFor="let entry of segmentButtonOption" value="{{entry['value']}}">{{entry['name']}}</ion-segment-button>
+                </ion-segment>
+                <ion-searchbar search-icon="false" class="custom-searchbar" [(ngModel)]="searchTerm" customValidate [placeholder]='placeholderInput'></ion-searchbar>
+                <ion-button class="search-button" (click)="searchText()">
+                    <img src="assets/svg/search.svg" alt="">
+                </ion-button>
+            </div>
+        </div>
+        <div class="section-2">
+            <div class="block segment-block">
+              <ion-segment class="last-duration-segment" [(ngModel)]="monthWeekTabValue" (ionChange)="filterData($event)" [ngClass]="{'changeBtnBg': (endDate != null || endDate != undefined)}">
+                <ion-segment-button class="last-duration-inner-segment" value={{buttonObj.value}} *ngFor="let buttonObj of durationData" (click)="segmentButtonChange(monthWeekTabValue)">{{buttonObj['name']}}</ion-segment-button>
+              </ion-segment>
+              <!-- <div class="calender custom-calender">
+                <img class="calender-img" src="assets/svg/calender.svg" alt="">
+                <span>Select Date Range</span>
+              </div> -->
+                    <!-- <div class="calender date-picker-block">
+                        <div class="calender-heading">
+                            <span>Select Date Range</span>
+                        </div>
+                        <ion-item lines="none" class="datetime-block m-b-4">
+                            <ion-label>Start Date</ion-label>
+                            <ion-datetime displayFormat="DD MM YYYY" placeholder="Select Date" (ionChange)="loadResult()" [(ngModel)]="startDate" [max]="currentDay"></ion-datetime>
+                        </ion-item>
+                        <ion-item lines="none" class="datetime-block">
+                            <ion-label>End Date</ion-label>
+                            <ion-datetime [disabled]="startDate === null" displayFormat="DD MM YYYY" placeholder="Select Date" (ionChange)="loadResult()" [(ngModel)]="endDate" [min]="startDate" [max]="currentDay"></ion-datetime>
+                        </ion-item>
+                    </div> -->
+
+                    <div class="calender date-picker-block calendar-date-block-section">
+                        <div class="calender-heading">
+                            <span>Select Date Range</span>
+                        </div>
+                   
+                        <div class="datePopover">
+                            <ion-label class="ion-lable-end">Start Date</ion-label>
+                            <ion-item class="date_Picker" (click)="toggleStartDatePicker()">
+                              <ion-input placeholder="Select Date" [value]="startDate | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+                              <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+                            </ion-item>
+                            <div class="calendarBackdrop" *ngIf="showStartDatePicker" (click)="hideDatePicker('start')"></div>
+                            <ion-datetime class="calendarOpen datePositionRight" *ngIf="showStartDatePicker" presentation="date"
+                              [(ngModel)]="startDate" presentation="date" min="1973-01-01" [max]="currentDateSet"
+                              (ionChange)="hideDatePicker('start',$event)">
+                            </ion-datetime>
+                          </div>
+                          
+                          <div class="datePopover">
+                            <ion-label class="ion-lable-end">End Date</ion-label>
+                            <ion-item class="date_Picker" (click)="toggleEndDatePicker()">
+                              <ion-input placeholder="Select Date" [value]="endDate | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+                              <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+                            </ion-item>
+                            <div class="calendarBackdrop" *ngIf="showEndDatePicker" (click)="hideDatePicker('end')"></div>
+                            <ion-datetime class="calendarOpen datePositionRight" *ngIf="showEndDatePicker" presentation="date"
+                              [(ngModel)]="endDate" presentation="date" min="1973-01-01" [max]="currentDateSet"
+                              (ionChange)="hideDatePicker('end',$event)" [disabled]="disableToDte">
+                            </ion-datetime>
+                          </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tab-content desktop-visibility" [ngSwitch]="fdsBlockTabValue">
+	<div class="content" *ngSwitchCase="'booked'">
+		<app-fds-booked [monthWeekObj]="monthWeekObj"></app-fds-booked>
+	</div>
+	<div class="content" *ngSwitchCase="'matured'">
+		<app-fds-matured [monthWeekObj]="monthWeekObj"></app-fds-matured>
+	</div>
+</div>
+<div class="detail-part-dashboard detail-part-mobile mobile-visibility">
+	<table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>No.of FDs</th>
+                <th>Value (₹)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let dataObj of fdsBlock" (click)="goToPage(dataObj['page'])">
+                <td>
+                    <div class="block">
+                        <span class="type">{{dataObj['name']}}</span>
+                        <span class="time">{{dataObj['perform']}}</span>
+                    </div>
+                </td>
+                <td>{{dataObj['fds']}}</td>
+                <td>{{dataObj['dataValue']}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,218 @@
+<div class="desktop-visibility">
+	<div class="web-equity unique-client thin-scroll">
+		<div class="section download_file " *ngIf="downloadShow">
+			<div class="option-type-dp-modification" (click)="downloadExcel()">
+				<img src="assets/svg/download_excel.svg" alt="">
+				<span class="tooltiptext">
+					<span>Download Report</span>
+				</span>
+			</div>
+		</div>
+		<div class="header-table">
+			<table style="width: 100%" class="desktop-header-table">
+				<thead>
+					<tr>
+						<th>
+							Client ID/ PAN
+						</th>
+						<th class="pointer" >
+							Client Name 
+                            	</th>
+						<th *ngIf="toggleVal == 'Hierarchy'" align="left">
+							Group Code
+						</th>
+                        <th class="pointer" *ngIf="tablehide">
+							Onboarded on 
+						</th>
+						<th class="pointer" [class.active]="order === 'aum'" (click)="setOrder('aum')">
+							AUM (₹)
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+						</th> 
+							<!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+						</th>
+						<th class="pointer" [class.active]="order === 'aum'" (click)="setOrder('aum')">
+							AUM (₹)
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+						</th> 
+						 <th class="pointer" [class.active]="order === 'afyp'" (click)="setOrder('afyp')">
+							AFYP (₹) 
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                        </th> -->
+                        <th></th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<div class="main-table thin-scroll" [ngClass]="{'overflow-auto': datas.length > 11}" (scroll)="divScroll($event)">
+			<table style="width: 100%" class="mobile-table">
+				<tbody *ngIf="(datas).length > 0 && dataLoad && !loader">
+					<tr *ngFor="let dataObj of datas">
+						<td>
+							{{dataObj['clientId']}}
+						</td>
+						<td>
+							<span style="cursor:pointer" class="hyperlinkstyle" (click)="goToClientDetails(dataObj)">{{dataObj['clientName']}}</span>
+						</td>
+						<td *ngIf="toggleVal == 'Hierarchy'">
+							{{dataObj['CM_GroupCD']}}
+						</td>
+                        <td *ngIf="tablehide">
+							{{dataObj['OnboardingDate']}}
+						</td>
+						<td>
+							{{dataObj['aum']}}
+						</td>
+						<!-- <td>
+							{{dataObj['afyp']}}
+                        </td> -->
+                        <td>
+							<div class="contact-option" *ngIf="newClientCheck == 'NewClient' && equityBlockTabValue == 'NewClient'">
+                                <div class="option">
+                                    <div class="option-type"> <img class="option-img" src="/assets/svg/client_phone.svg" alt="">
+										<span class="tooltiptext">
+											<span>{{dataObj['Mobile']}}</span>
+										</span>
+									</div>
+                                </div>
+                            </div>
+
+							<div class="contact-option" *ngIf="!(newClientCheck == 'NewClient' && equityBlockTabValue == 'NewClient')">
+                                <div class="option">
+                                   
+                                    <div class="option-type"> <img class="option-img" src="/assets/svg/client_phone.svg" alt="">
+										<span class="tooltiptext">
+											<span>{{dataObj['Mobile']}}</span>
+										</span>
+									</div>
+                                </div>
+                                <div class="option">
+									<div class="option-type"><img class="option-img" src="/assets/svg/client_mail.svg" alt="">
+										<span class="tooltiptext">
+											<span>{{dataObj['Mail']}}</span>
+										</span>
+									</div>
+                                </div>
+                                <div class="option" (click)="profilePopup(dataObj['clientId'])">
+                                   
+									<div class="option-type"> <img class="option-img" src="/assets/svg/client_icon.svg" alt="">
+										<!-- <span class="tooltiptext">
+											<span>Coming Soon</span>
+										</span> -->
+									</div>
+                                </div>
+                            </div>
+                        </td>
+					</tr>
+				</tbody>
+				<div class="loader" *ngIf="loader">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div>
+				<div class="loader" *ngIf="!dataLoad && !loader">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div>
+				<div class="loader" *ngIf="(datas).length == 0 && dataLoad && !loader">
+					<h4>No records found.</h4>
+				</div>
+			</table>
+		</div>
+	</div>
+	<!-- <div class="loader_wrap" *ngIf="(!dataLoad && !loader) || isExcelDownloaded">
+		<img width="30px" src="/assets/imgs/loader.gif" alt="loader">
+	</div> -->
+</div>
+
+<div class="mobile-visibility">
+	<div class="web-equity unique-client detail-part-dashboard detail-part-aum-inner mobile-visibility">
+        <div class="header-table">
+            <table style="width: 100%" class="desktop-header-table">
+                <thead>
+                    <tr>
+                        <th class="pointer">
+                            <!-- <div class="head-block"> -->
+                                <span>Client Name</span> 
+                               <!-- </div> -->
+                        </th>
+						<!-- <th *ngIf="toggleVal == 'Hierarchy'" class="pointer">
+                            <span>Group Code</span> 
+                        </th> -->
+                        <th class="pointer" >
+                            <div class="head-block" *ngIf="tablehide">
+                                <span>Onboarded on</span> 
+                                <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending"> -->
+                            </div>
+                        </th>
+                        <th class="pointer" [class.active]="order === 'aum'" (click)="setOrder('aum')">
+                            <div class="head-block">
+                                <span>AUM (₹)</span> 
+                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ion-content class="inner-content mobile-visibility">
+    <div class="web-equity unique-client detail-part-dashboard detail-part-aum-inner mobile-visibility">
+		<div class="main-table">
+			<table style="width: 100%" class="mobile-table">
+                        <tbody *ngIf="datas.length > 0">
+					
+                            <tr *ngFor="let dataObj of datas">
+							<td>
+							<div class="code-block">
+								<span class="code">{{dataObj['clientId']}}</span>
+								<span class="name hyperlinkstyle" (click)="goToClientDetails(dataObj)">{{dataObj['clientName']}}</span>
+							</div>
+							<div *ngIf="toggleVal == 'Hierarchy'" class="lower-section right-part group-code">
+								<span>Group Code - </span>{{dataObj['CM_GroupCD']}}</div>
+                            <div class="contact-option">
+                                <div class="option" (click)="getCallMailData(dataObj['clientId'], 'call')">
+                                    <img class="option-img" src="/assets/svg/client_phone.svg" alt="">
+                                </div>
+                                <div class="option" (click)="getCallMailData(dataObj['clientId'], 'mail')">
+                                    <img class="option-img" src="/assets/svg/client_mail.svg" alt="">
+                                </div>
+                                <div class="option" (click)="goForProfile(dataObj['clientId'])">
+                                    <img class="option-img" src="/assets/svg/client_icon.svg" alt="">
+                                </div>
+                            </div>
+						</td>
+							<div *ngIf="tablehide">{{dataObj['OnboardingDate']}}</div>
+						<td>
+							{{dataObj['aum']}}
+						</td>
+						
+					</tr>
+				</tbody>
+				<div class="loader" *ngIf="dataLoad && !datas.length" style="min-height: 175px;">
+					<h4>No records found.</h4>
+				</div>
+				<div class="loader" *ngIf="!dataLoad" style="min-height: 170px;">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div>
+				<!-- <div class="loader" *ngIf="dataLoad" style="min-height: 170px;">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div> -->
+			</table>
+		</div>
+	</div>
+	<ion-infinite-scroll *ngIf="enableNext" threshold="100px" (ionInfinite)="loadData($event)">
+		<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+</ion-content>

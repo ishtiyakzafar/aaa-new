@@ -1,0 +1,121 @@
+.total-value-block {
+    padding: 16px;
+    display: flex;
+    background: #F2F4F4;
+    justify-content: space-between;
+    .block {
+        display: flex;
+        flex-direction: column;
+        .block-title {
+            color: #6E6E6E;
+            font-size: 11px;
+        }
+        .block-value {
+            font-size: 13px;
+            color: #000000;
+            font-family: nunitoBold;
+        }
+    }
+}
+
+.h-p-16 {
+    padding: 0 16px;
+}
+
+.rupees {
+    font-size: 10px;
+}
+
+// ion-content {
+//     height: calc(100vh - 219px);
+// }
+.data-block-parent{padding-bottom: 58px;}
+.data-block {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid #f2f4f4;
+    .data {
+        display: flex;
+        align-items: center;
+        .data-title {
+            font-size: 14px;
+            color: #9C9C9C;
+        }
+        .data-value {
+            font-size: 16px;
+            color: #212121;
+            margin-left: 6px;
+            max-width: 40vw;
+        }
+    }
+    .right-section {
+        .data {
+            justify-content: flex-end;
+        }
+    }
+}
+
+.scrip-name {
+    color:#2D197F;
+    font-family: nunitoBold;
+    font-size: 18px;
+    max-width: 40vw;;
+}
+
+.scrip-date {
+    flex-direction: column;
+    align-items: flex-start !important;
+    .scrip-date {
+        font-size: 14px;
+        color: #9C9C9C;
+    }
+}
+
+.profit {
+    color: #17C257 !important;
+    
+    .rupees {
+        font-size: 9px !important;
+    }
+}
+
+.font-14 {
+    font-size: 14px !important;
+}
+
+.main-table {
+    // max-height: 184.2px;
+    max-height: 468px;
+    min-height: 184.2px;
+    overflow-y: auto;
+    .rupees {
+        font-size: 9px;
+        padding-right: 2px;
+    }
+}
+
+
+.web-equity {
+    .no-data-found {
+        text-align: center !important;
+        height: 183.2px;
+    }
+    .first-span{
+        color:#2D197F;
+        cursor: pointer;
+    }
+    
+}
+
+@media screen and (max-width: 767px) {
+    ion-content {
+        height: calc(100vh - 315px);
+        .no-data-found {
+            height: calc(100vh - 272px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}

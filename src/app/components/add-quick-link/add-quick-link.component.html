@@ -1,0 +1,14 @@
+<div class="quick-link-grid-main right-gr-mb">
+    <div class="quick-title-grid d-flex ion-align-items-center ion-justify-content-between">
+        <h2>Quick Links</h2>
+        <span (click)="displyPopupManageQuickLink()">Manage Links</span>
+    </div>
+    <span class="add-link-note">You can add only 6 Quick Links at a time</span>
+    <div class="quick-link-grid">
+        <div class="qk-link-grid" *ngFor="let item of qckList" (click)="navigateLinks(item.Link,item.LinkName)">
+        <div class="link-name">{{item.LinkName}}</div>
+        <div class="lnk-img"><img src="assets/svg/quick-link-icon.svg" alt="link" width="11px"></div>
+        </div>
+        <div *ngIf="qckList.length<6" class="add-link-btn">Add Quick Link</div>
+    </div>
+</div>

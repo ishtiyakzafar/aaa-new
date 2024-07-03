@@ -1,0 +1,73 @@
+{
+  "snapshots": [
+        {"Name":"Gainers & Losers","Value":"gainers", "default":"D", "active": 1},
+        {"Name":"52 Week High Low","Value":"52week", "active": 0},
+        {"Name":"Vol Toppers","Value":"toppers", "active": 0},
+        {"Name":"Bulk & Block Deals","Value":"deals", "active": 0}
+    ],
+
+    "gainersdata": [
+        {"scrip":"GUJGASLTD","ltp":"51.18", "perct":"2.99%"},
+        {"scrip":"SAWERTSE","ltp":"53.44", "perct":"3.99%"},
+        {"scrip":"CDEASWAS","ltp":"54.22", "perct":"4.99%"},
+        {"scrip":"CVDSERWE","ltp":"55.44", "perct":"2.99%"},
+        {"scrip":"VFDSAEWE","ltp":"57.22", "perct":"5.99%"},
+        {"scrip":"GUJGASLTD","ltp":"51.18", "perct":"2.99%"},
+        {"scrip":"SAWERTSE","ltp":"53.44", "perct":"3.99%"},
+        {"scrip":"CDEASWAS","ltp":"54.22", "perct":"4.99%"},
+        {"scrip":"CVDSERWE","ltp":"55.44", "perct":"2.99%"},
+        {"scrip":"VFDSAEWE","ltp":"57.22", "perct":"5.99%"}
+    ],
+
+    "lowhighdataN":{"response":{"type":"success","status":"0","data":{"CompanyList":{"High":[{"Symbol": "TCS", "PClose": 2269.9, "LastTradedPrice": 2342.4, "weekhigh": 1067.5},
+        {"Symbol": "SBIN", "PClose": 188.6, "LastTradedPrice": 195, "weekhigh": 1071.2},{"Symbol": "TCS", "PClose": 2269.9, "LastTradedPrice": 2342.4, "weekhigh": 1068.7},
+        {"Symbol": "SBIN", "PClose": 188.6, "LastTradedPrice": 195, "weekhigh": 1074.4}],"Low":[{"Symbol": "TCS", "PClose": 2269.9, "LastTradedPrice": 2342.4, "weekhigh": 1069.5},
+            {"Symbol": "SBIN", "PClose": 188.6, "LastTradedPrice": 195, "weekhigh": 1075.8}]}}}},
+    "lowhighdataB":{"response":{"type":"success","status":"0","data":{"CompanyList":{"High":[{"Symbol": "BANKBEES", "PClose": 2269.9, "LastTradedPrice": 2342.4, "weekhigh": 1022.4}],"Low":[
+        {"Symbol": "ACC", "PClose": 2269.9, "LastTradedPrice": 2342.4, "weekhigh": 1024.5}
+    ]}}}},
+
+    "volume":[
+        {"scrip":"IDEA","ltp":"2391.10", "volume":"83455", "perct": "4.61%", "avgvolume":"1285"},
+        {"scrip":"ITC","ltp":"2392.10", "volume":"83456", "perct": "5.64%", "avgvolume":"1286"},
+        {"scrip":"ASERTY","ltp":"2393.10", "volume":"83457", "perct": "5.65%", "avgvolume":"1287"},
+        {"scrip":"UBSDE","ltp":"2394.10", "volume":"83458", "perct": "5.67%", "avgvolume":"1288"},
+        {"scrip":"IDEA","ltp":"2395.10", "volume":"83459", "perct": "5.68%", "avgvolume":"1289"},
+        {"scrip":"IDEA","ltp":"2396.10", "volume":"83451", "perct": "7.62%", "avgvolume":"1284"},
+        {"scrip":"IDEA","ltp":"2397.10", "volume":"83454", "perct": "8.65%", "avgvolume":"1287"},
+        {"scrip":"IDEA","ltp":"2398.10", "volume":"83455", "perct": "5.64%", "avgvolume":"1287"}
+    ],
+
+    "deals": [
+        {"scrip":"GUJGASLTD","ltp":"51.18", "qty":"93"},
+        {"scrip":"SAWERTSE","ltp":"53.44", "qty":"136"},
+        {"scrip":"CDEASWAS","ltp":"54.22", "qty":"185"},
+        {"scrip":"CVDSERWE","ltp":"55.44", "qty":"175"},
+        {"scrip":"VFDSAEWE","ltp":"57.22", "qty":"185"},
+        {"scrip":"GUJGASLTD","ltp":"51.18", "qty":"93"},
+        {"scrip":"SAWERTSE","ltp":"53.44", "qty":"136"},
+        {"scrip":"CDEASWAS","ltp":"54.22", "qty":"185"},
+        {"scrip":"CVDSERWE","ltp":"55.44", "qty":"175"},
+        {"scrip":"VFDSAEWE","ltp":"57.22", "qty":"185"}
+     
+    ],
+
+    "commoditydata":{"response":{"type":"success","status":"0","data":{"FutOptIndvidualStockList":{"recordcount":"1","FutOptIndvidualStock":[{"Symbol":"TCS","ScripCode":"58824","OpenPrice":"2332.70","PrevClose":"2335.65","LTP":"2375.70","Change":"40.05","PercChange":"1.71","Spot":"2372.45","High":"2386.70","Low":"2332.55","Volume":"32832","VolumeumePerChange":"30.24","OI":"10385700","OIPercChange":"3.19","Basis":"3.25","Sector":"Computer-SW-Larg","LotSize":"300","DelVolume":"886479","DelVolumePerc":"-37.11","RollOver":"2.64","RollCost":"-0.11"}]}}}},
+
+    "newsData":{"Status":0,"Message":"","data":{"newsArticle":[{"id":"120091400365","title":"SBI revises fixed deposits interest rate - Here's what you will earn on your savings","unixTimeStamp":"1600085040","time":"14 Sep 2020 05:34 PM","newsUrl":"https:\/\/www.indiainfoline.com\/article\/news-sector-banking-financials\/sbi-revises-fixed-deposits-interest-rate-here-s-what-you-will-earn-on-your-savings-120091400365_1.html","comment":[]},{"id":"120091100772","title":"Nifty Bank index slumps 1% as SC extends loan moratorium till Sept 28; IndusInd, Axis, HDFC Bank laggards","unixTimeStamp":"1599816180","time":"11 Sep 2020 02:53 PM","newsUrl":"https:\/\/www.indiainfoline.com\/article\/news-sector-banking-financials\/nifty-bank-index-slumps-1-as-sc-extends-loan-moratorium-till-sept-28-indusind-axis-hdfc-bank-laggards-120091100772_1.html","comment":[]},{"id":"120091000873","title":"FM releases EASE 2.0 Index results; BOB, SBI, OBC are top-performing banks","unixTimeStamp":"1599739380","time":"10 Sep 2020 05:33 PM","newsUrl":"https:\/\/www.indiainfoline.com\/article\/news-sector-banking-financials\/fm-releases-ease-2-0-index-results-bob-sbi-obc-are-top-performing-banks-120091000873_1.html","comment":[]},{"id":"120091000656","title":"SBI raises Rs. 4,000 cr via AT1 bonds at a coupon of 7.74%","unixTimeStamp":"1599724680","time":"10 Sep 2020 01:28 PM","newsUrl":"https:\/\/www.indiainfoline.com\/article\/capital-market-corporate-news\/sbi-raises-rs-4-000-cr-via-at1-bonds-at-a-coupon-of-7-74-120091000656_1.html","comment":[]},{"id":"120091000575","title":"SBI raises Rs4,000cr via AT1 bonds, lowest pricing ever offered on such debt; stock advances 3%","unixTimeStamp":"1599722460","time":"10 Sep 2020 12:51 PM","newsUrl":"https:\/\/www.indiainfoline.com\/article\/news-sector-banking-financials\/sbi-raises-rs4-000cr-via-at1-bonds-lowest-pricing-ever-offered-on-such-debt-stock-advances-3-120091000575_1.html","comment":[]},{"id":"120091000579","title":"SBI gains after raising Rs 4,000 cr via AT-1 bonds","unixTimeStamp":"1599721080","time":"10 Sep 2020 12:28 PM","newsUrl":"https:\/\/www.indiainfoline.com\/article\/capital-market-hot-pursuit\/sbi-gains-after-raising-rs-4-000-cr-via-at-1-bonds-120091000579_1.html","comment":[]},{"id":"120091000479","title":"Nifty Bank soars 1% ahead of SC hearing on interest waiver on loan moratorium; RBL, IndusInd, SBI among lead gainers","unixTimeStamp":"1599715560","time":"10 Sep 2020 10:56 AM","newsUrl":"https:\/\/www.indiainfoline.com\/article\/news-sector-banking-financials\/nifty-bank-soars-1-ahead-of-sc-hearing-on-interest-waiver-on-loan-moratorium-rbl-indusind-sbi-among-lead-gainers-120091000479_1.html","comment":[]},{"id":"120090900775","title":"SBI raises Rs4,000cr via AT1 bonds at a coupon of 7.74%","unixTimeStamp":"1599647700","time":"09 Sep 2020 04:05 PM","newsUrl":"https:\/\/www.indiainfoline.com\/article\/news-sector-banking-financials\/sbi-raises-rs4-000cr-via-at1-bonds-at-a-coupon-of-7-74-120090900775_1.html","comment":[]},{"id":"120090900482","title":"Bloodbath in Nifty Bank ahead of SC hearing on loan moratorium; SBI, Federal, IDFC First Bank top losers","unixTimeStamp":"1599628500","time":"09 Sep 2020 10:45 AM","newsUrl":"https:\/\/www.indiainfoline.com\/article\/news-sector-banking-financials\/bloodbath-in-nifty-bank-ahead-of-sc-hearing-on-loan-moratorium-sbi-federal-idfc-first-bank-top-losers-120090900482_1.html","comment":[]},{"id":"120090700194","title":"SBI gains 1% as the lender rolls out VRS scheme to save costs; Over 30,000 employees eligible","unixTimeStamp":"1599467880","time":"07 Sep 2020 02:08 PM","newsUrl":"https:\/\/www.indiainfoline.com\/article\/news-sector-banking-financials\/sbi-gains-1-as-the-lender-rolls-out-vrs-scheme-to-save-costs-over-30-000-employees-eligible-120090700194_1.html","comment":[]}]}},
+
+    "newsDetailsData":{
+        "Status": "0",
+        "Message": "",
+        "data": {
+            "article": [
+                {
+                    "id": "120070300608",
+                    "title": "Bajaj Auto Ltd gains for third straight session",
+                    "published_date": "Jul 03,2020 01:05 PM",
+                    "content": "<p>Bajaj Auto Ltd is up for a third straight session today. The stock is quoting at Rs 2921.3, up 1.46% on the day as on 12:54 IST on the NSE. The benchmark NIFTY is up around 0.42% on the day, quoting at 10595.8. The Sensex is at 36008.42, up 0.46%. Bajaj Auto Ltd has gained around 3.69% in last one month. </p><p>Meanwhile, Nifty Auto index of which Bajaj Auto Ltd is a constituent, has gained around 6.67% in last one month and is currently quoting at 6907.1, up 0.56% on the day. The volume in the stock stood at 9.04 lakh shares today, compared to the daily average of 8.63 lakh shares in last one month.</p><p> The benchmark July futures contract for the stock is quoting at Rs 2926.1, up 1.25%  on the day. Bajaj Auto Ltd is up 0.92% in last one year as compared to a 11.31% slide in NIFTY and a 14.01% slide in the Nifty Auto index.</p><p>The PE of the stock is 16.3 based on TTM earnings ending March 20.</p><p><b><i>Powered by</i> Capital Market - Live News</b></p>"
+                }
+            ]
+        }
+    }
+}

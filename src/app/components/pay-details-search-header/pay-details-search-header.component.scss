@@ -1,0 +1,14 @@
+@media screen and (max-width: 500px) {
+    .search-section-changed {
+        background: #fff;
+        border-radius: 0;
+        flex-direction: row;
+        height: 68px;
+        padding-right: 4px;
+    }
+    .pay-detail-search-section {
+        .custom-searchbar {
+            visibility: hidden;
+        }
+    }
+}

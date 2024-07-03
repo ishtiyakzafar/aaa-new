@@ -1,0 +1,123 @@
+<div class="desktop-visibility">
+	<div class="web-equity thin-scroll">
+		<div class="header-table">
+			<table style="width: 100%" class="desktop-header-table">
+				<thead>
+					<tr>
+						<th>
+							Client ID
+						</th>
+						<th class="pointer" >
+							Client Name 
+                            <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending"> -->
+						</th>
+						<th *ngIf="toggleVal == 'Hierarchy'">
+							Group Code
+						</th>
+						<th class="pointer" [class.active]="order === 'count'" (click)="setOrder('count')">
+							No. of SIPs 
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+						</th>
+						<th class="pointer" [class.active]="order === 'value'" (click)="setOrder('value')">
+							Value (₹) 
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+						</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<div class="main-table thin-scroll" (scroll)="divScroll($event)">
+			<table style="width: 100%" class="mobile-table">
+				<tbody *ngIf="(datas).length > 0 && dataLoad">
+					<tr *ngFor="let dataObj of datas">
+						<td>
+							{{dataObj['clientId']}}
+						</td>
+						<td>
+							<span style="cursor:pointer" class="hyperlinkstyle" (click)="goToClientDetails(dataObj)">{{dataObj['clientName']}}</span>
+						</td>
+						<td *ngIf="toggleVal == 'Hierarchy'">
+							{{dataObj['groupCode']}}
+						</td>
+						<td>
+							{{dataObj['sips']}}
+						</td>
+						<td>
+							{{dataObj['value']}}
+						</td>
+					</tr>
+				</tbody>
+				<div class="loader" *ngIf="(datas).length == 0 && dataLoad" style="min-height: 378px;">
+					<h4>No records found.</h4>
+				</div>
+				<div class="loader" *ngIf="!dataLoad" style="min-height: 378px;">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="mobile-visibility">
+	<div class="detail-part-dashboard detail-part-aum-inner detail-part-aum-inner-table mobile-visibility">
+        <div class="header-part">
+            <div class="heading">
+                <span>Client Name 
+                    <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending"> -->
+				</span>
+				<span *ngIf="toggleVal == 'Hierarchy'">Group Code
+				</span>
+				<span [class.active]="order === 'sips'" (click)="setOrder('sips')">No. of SIPs 
+                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                </span>
+                <span [class.active]="order === 'value'" (click)="setOrder('value')">AUM (₹) 
+                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mobile-visibility">
+	<div class="detail-part-dashboard detail-part-aum-inner detail-part-aum-inner-table mobile-visibility">
+		<div class="listing-part" *ngIf="datas.length > 0">
+			<!-- <div class="items" *ngFor="let data of datas | orderBy: order:reverse | filter:searchTerm"> -->
+				<div class="items" *ngFor="let data of datas">
+				<div class="upper-section left-part">
+					<div class="type code">{{data['clientId']}}</div>
+					<div class="change-value name hyperlinkstyle" (click)="goToClientDetails(data)">{{data['clientName']}}</div>
+				</div>
+				<div *ngIf="toggleVal == 'Hierarchy'" class="lower-section left-part">
+					{{data['groupCode']}}
+				</div>
+				<div class="lower-section left-part">
+					{{data['sips']}}
+				</div>
+				<div class="lower-section right-part">
+					{{data['value']}}
+				</div>
+			</div>
+		</div>
+		<div class="listing-part loader" *ngIf="datas.length == 0 && dataLoad">
+			<div style="font-weight: bold;margin-top:40px">No Records Found</div>
+		</div>
+		<div class="loader" *ngIf="!dataLoad" style="min-height: 170px;">
+			<img src="/assets/imgs/loader.gif" alt="">
+		</div>
+	</div>
+	<ion-infinite-scroll *ngIf="enableNext" threshold="100px" (ionInfinite)="loadData($event)">
+		<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+</div>

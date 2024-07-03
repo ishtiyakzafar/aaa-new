@@ -1,0 +1,30 @@
+
+.calculator .duration-amount-block .value-block {
+    padding: 10px 4px;
+    max-width: 18vw;
+}
+
+@media screen and (max-width: 500px) {
+    .title-block-custom .icon-title .title {
+        font-size: 21px;
+        margin-right: 0;
+    }
+    .calculator {
+        .duration-amount-block {
+            justify-content: flex-start;
+            .value-block {
+                max-width: 30vw;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 370px) {
+    .title-block-custom .icon-title .title {
+        font-size: 19px;
+        margin-right: 0;
+    }
+    .calculator .duration-amount-block .value-block .value {
+        font-size: 13px;
+    }
+}

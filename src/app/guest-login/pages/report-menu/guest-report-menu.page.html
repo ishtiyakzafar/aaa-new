@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar color="tertiary" class="mobile-visibility">
+      <div class="title-block title-block-custom">
+          <div class="icon-title">
+              <ion-title class="title">Reports</ion-title>
+          </div>
+          <!-- <div class="icons">
+              <ion-icon name="power" class="logout-icon" (click)="confirmLogout()"></ion-icon>
+          </div> -->
+          <div class="search-block">
+            <ion-buttons class="header-icon-block">
+              <ion-icon class="iconsize first-icon noti-icon" src="./assets/svg/white-home-icon.svg" (click)="goToDashboard()"></ion-icon>
+                <!-- <ion-icon class="iconsize first-icon noti-icon" src="./assets/svg/notification.svg" (click)="goToNotification()"></ion-icon> -->
+            </ion-buttons>
+        </div>
+      </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="container">
+    <div class="mobile-visibility">
+      <div class="reportMenuoption ">
+        <div class="reportList" *ngFor="let tab of tabs; let i = index">
+          <h3 (click)="toggleTabItem(tab)"> 
+            <span><img src="assets/svg/{{tab.icon}}" alt="">
+            {{ tab.title }}</span>
+            <img src="assets/svg/down-arrow-gray.svg" class="arrowButton" *ngIf="!tab.isMobOpen">
+            <img src="assets/svg/down-arrow-gray.svg" class="rotate arrowButton" *ngIf="tab.isMobOpen">
+          </h3>
+          <div *ngIf="tab.isMobOpen" class="inner-moboptions"> 
+            <div class="reportMenuList" *ngFor="let innerItem of tab.innerItems; let j = index" >
+              <span class="reportInnerTitle" *ngIf="innerItem.innerTitle" (click)="toggleInnerItem(innerItem)">
+                {{ innerItem.innerTitle }} 
+                <img src="assets/svg/down-arrow-gray.svg" *ngIf="!innerItem.isOpen">
+                <img src="assets/svg/down-arrow-gray.svg" class="rotate" *ngIf="innerItem.isOpen">
+              </span>
+
+              <div *ngIf="innerItem.isOpen" class="inner-options">
+                <div *ngFor="let item of innerItem.innerOption">
+                  <a (click)="showToast()" href="javascript:void(0);" [ngClass]="{'report-not-available': item.option == 'Account Closure Status' || item.option == 'Real Time Margin Shortfall' || item.option == 'AMC Statement' || item.option == 'Shares Deposit'}">
+                    
+                    {{ item.option }}
+                    <img src="assets/svg/download_excel.svg" alt="" class="downloadReportExcel" *ngIf=" item.option == 'Detailed Clients Report'">
+                    <img src="assets/svg/right-arrow.svg" *ngIf=" item.option != 'Detailed Clients Report'">
+                  </a>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        <div class="reportList">
+          <h3 (click)="showToast()" class="btnFamily"><span><img src="./assets/svg/family-portfolio-icon.svg" width="25px"> Family Portfolio</span></h3>
+        </div>
+    </div>
+    </div>
+    <div class="desktop-visibility">
+      <div class="more-title">
+        Reports
+      </div>
+      <div class="reportMenuoption ">
+          <div class="reportList" *ngFor="let tab of tabs; let i = index">
+          <h3><span><img src="assets/svg/{{tab.icon}}" alt="">{{ tab.title }}</span> </h3> 
+          <div class="inner-moboptions">
+            <div class="reportMenuList" *ngFor="let innerItem of tab.innerItems; let j = index" >
+              <span class="reportInnerTitle" *ngIf="innerItem.innerTitle" (click)="toggleInnerItem(innerItem)">
+                {{ innerItem.innerTitle }} 
+                <img src="assets/svg/down-arrow-gray.svg" *ngIf="!innerItem.isOpen">
+                <img src="assets/svg/down-arrow-gray.svg" class="rotate" *ngIf="innerItem.isOpen">
+              </span>
+
+              <div *ngIf="innerItem.isOpen" class="inner-options">
+                <div *ngFor="let item of innerItem.innerOption">
+                  <a (click)="showToast()" href="javascript:void(0);">
+                     {{ item.option }}
+                    <img src="assets/svg/download_excel.svg" alt="" class="downloadReportExcel" *ngIf=" item.option == 'Detailed Clients Report'">
+                    <img src="assets/svg/right-arrow.svg" *ngIf=" item.option != 'Detailed Clients Report'">
+                  </a>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+          </div>
+          <div class="reportList">
+            <h3 (click)="showToast()" class="btnFamily"><span><img src="./assets/svg/family-portfolio-icon.svg" width="25px"> Family Portfolio</span></h3>
+          </div>
+      </div>
+    </div>
+  </div>
+
+</ion-content>

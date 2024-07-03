@@ -1,0 +1,31 @@
+.no-internet-modal {
+    padding: 10px !important;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // .header {
+        // height: 20px !important;
+        // background: transparent !important;
+    // }
+    .content {
+        border-radius: 10px 0 10px 10px !important;
+    }
+    .close {
+        position: absolute;
+        z-index: 10;
+        right: -10px;;
+        top: 0px;
+        width: 40px;
+        height: 40px;
+        background: #fff;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        font-size: 24px;
+        color: var(--ion-secondary-text-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: sanfranciscoThin;
+    }
+}

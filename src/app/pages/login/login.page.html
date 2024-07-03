@@ -1,0 +1,803 @@
+<ion-content *ngIf="!isShowRMlogin">
+	<div class="login-container">
+		<div class="mobile-content-section">
+			<div class="mobile-img">
+				<img src="./assets/imgs/login-mobile.png" alt="">
+			</div>
+
+			<div class="content-section">
+				<p>It's AAA LL <br>You Need To Be An Independent Financial Advisor.</p>
+				<ion-button shape="round" fill="outline" class="buy-now"
+					(click)="navigateLink('https://www.indiainfoline.com/business-partners/aaa-advisor-anytime-anywhere.html')">
+					Buy Now</ion-button>
+			</div>
+		</div>
+		<!-- old design  -->
+		<ion-card class="login-field-section" style="display: none;">
+			<form [formGroup]="validateForm" class="login-form" (keydown)="keyDownFunction($event)">
+				<div class="login-fields">
+					<div class="logo">
+						<img src="assets/svg/login_logo.svg" alt="">
+					</div>
+					<div class="field-block">
+						<ion-item lines="none">
+							<div class="field m-b-16">
+								<ion-label [ngClass]="{'focus-label': isFocusUser}">User ID</ion-label>
+								<!-- review removed customValidation -->
+								<!-- <ion-input [ngClass]="{'focus-input': isFocusUser}" formControlName="userID" type="text"
+									customValidate (ionFocus)="focusUser()" (ionBlur)="focusOutUser($event)"
+									autocomplete="off"></ion-input> -->
+
+								<ion-input [ngClass]="{'focus-input': isFocusUser}" formControlName="userID" type="text"
+									(ionFocus)="focusUser()" label="" (ionBlur)="focusOutUser($event)"
+									autocomplete="off"></ion-input>
+							</div>
+						</ion-item>
+						<div class="error-block m-t-16">
+							<ng-container *ngFor="let validation of validation_messages.userID">
+								<ion-label class="error-message "
+									*ngIf="validateForm.get('userID')?.hasError(validation.type) && validateForm.get('userID')?.dirty">
+									{{validation.message}}
+								</ion-label>
+							</ng-container>
+							<span *ngIf="flagValidUser && !validateForm.invalid" style="color: red;">Please Enter the
+								valid UserID</span>
+						</div>
+						<!-- <ion-item lines="none">
+							<div class="field">
+								<ion-label [ngClass]="{'focus-label': isFocusPassword}">Password</ion-label>
+								<ion-input [ngClass]="{'focus-input': isFocusPassword}" style="--padding-end:32px"
+									[type]="passwordVisible ? 'text' : 'password'" clearOnEdit="false"
+									autocomplete="off" inputmode="password" formControlName="password" customValidate
+									(ionFocus)="focusPassword()" (ionBlur)="focusOutPassword()"></ion-input>
+								<ion-icon [name]="passwordVisible ? 'eye' : 'eye-off' "
+									(click)="passwordVisible = !passwordVisible" class="eye-icon"></ion-icon>
+							</div>
+						</ion-item> -->
+						<!-- <div class="error-block">
+							<ng-container *ngFor="let validation of validation_messages.password">
+								<ion-label class="error-message"
+									*ngIf="validateForm.get('password')?.hasError(validation.type) && validateForm.get('password')?.dirty">
+									{{validation.message}}
+								</ion-label>
+							</ng-container>
+						</div> -->
+					</div>
+					<div class="forgot-password mobile-visibility">
+						<span (click)="forgotPasswordMobile()">Forgot Password?</span>
+					</div>
+					<div class="forgot-password desktop-visibility">
+						<span (click)="forgotPasswordDesktop()">Forgot Password?</span>
+					</div>
+					<div class="login-btn">
+						<ion-button shape="round" [disabled]="!validateForm.valid && showLoader" (click)="login()"
+							expand="full"><span *ngIf="!showLoader"> Login</span>
+							<ion-spinner *ngIf="showLoader" name="circles"></ion-spinner>
+						</ion-button>
+					</div>
+					<div (click)="guestLogin()" class="new-user">
+						<a>
+							<span style="cursor: pointer;">New User? Try Guest Login</span>
+						</a>
+					</div>
+				</div>
+			</form>
+			<div class="graph-img">
+				<span class="version mobile-visibility">v {{version}}</span>
+				<img src="./assets/imgs/login-graph.png" alt="">
+				<!-- <a href="javascript:void(0)" (click)="redirectTo('support')" class="help">Help</a> -->
+			</div>
+		</ion-card>
+		<!-- end -->
+
+        <!-- new code for login mobile screen lock -->
+		<ion-card class="login-field-section visible-for-mibile-screen screen-lock" *ngIf="isScreenLock">
+			<form class="login-form">
+				<div class="login-fields login-fields-mobile-updated">
+					<div class="logo logo-with-bg">
+						<img src="assets/svg/login_logo_mobile.svg" alt="">
+					</div>
+					<div class="lock-block">
+                        <div class="lock-mess">Enable Quick Login?</div>
+                        <img class="lock-img" src="assets/svg/lock.svg" alt="">
+                    </div>
+					<div class="button-block">
+                        <div class="login-btn login-button-updated">
+							<ion-button shape="round" (click)="fingerPrintAccess()">Use Device Lock</ion-button>
+						</div>
+                        <div class="skip" (click)=" skip(); navigateToDashboard(verifiedData)">SKIP</div>
+                    </div>
+				</div>
+			</form>
+		</ion-card>
+		<!-- end -->
+
+		<!-- new code for login mobile screen first time login -->
+		<ion-card class="login-field-section visible-for-mibile-screen" *ngIf="firstTimeLogin && displayLoginCredential">
+			<form [formGroup]="validateForm" class="login-form" (keydown)="keyDownFunction($event)">
+				<div class="login-fields login-fields-mobile-updated">
+					<div class="logo logo-with-bg">
+						<img src="assets/svg/login_logo_mobile.svg" alt="">
+					</div>
+					<div class="welcome-section">
+						<span class="welcome">Welcome To AAA</span>
+						<span class="start">Let’s get started</span>
+					</div>
+					<div class="field-block m-t-30 first-screen">
+						<ion-item lines="none">
+							<div class="field m-b-16">
+								<ion-label class="updated-label" [ngClass]="{'focus-label': isFocusUser}">Mobile No. / Partner ID</ion-label>
+								
+								<!-- review removed customValidation -->
+								<!-- <ion-input class="updated-input" [ngClass]="{'focus-input': isFocusUser}"
+									formControlName="userID" type="text" customValidate (ionFocus)="focusUser1()"
+									(keyup)="checkValidation($event)"
+									autocomplete="off"></ion-input> -->
+								<ion-input class="updated-input" [ngClass]="{'focus-input': isFocusUser}"
+									formControlName="userID" label="" type="text" (ionFocus)="focusUser1()"
+									(keyup)="checkValidation($event)"
+									autocomplete="off"></ion-input>
+									<a (click)="focusOutUser1($event, true)" class="login-arrow"> <img src="assets/svg/login_right_arrow.svg" alt=""></a>
+								<!-- <img class="login-arrow" src="assets/svg/login_right_arrow.svg" alt="" (click)="focusOutUser1($event, true)"> -->
+							</div>
+						</ion-item>
+						<div class="error-block upper-validation">
+							<ng-container *ngFor="let validation of validation_messages.userID">
+								<ion-label class="error-message "
+									*ngIf="validateForm.get('userID')?.hasError(validation.type) && validateForm.get('userID')?.dirty">
+									{{validation.message}}
+								</ion-label>
+							</ng-container>
+							<span class="error-message" *ngIf="validateForm.controls['userID'].valid"
+								style="font-size: small">{{UserIdFieldError}}</span>
+						</div>
+					</div>
+					<!-- <div class="forgot-password mobile-visibility">
+                        <span (click)="forgotPasswordMobile()">Forgot Password?</span>
+                    </div>
+                    <div class="login-btn">
+                        <ion-button shape="round" [disabled]="!validateForm.valid && showLoader" (click)="login()" expand="full"><span *ngIf="!showLoader"> Login</span> <ion-spinner *ngIf="showLoader" name="circles"></ion-spinner></ion-button>
+                    </div> -->
+					<div (click)="guestLogin()" class="new-user">
+						<a>
+							<span style="cursor: pointer;">New User? Try Guest Login</span>
+						</a>
+					</div>
+					<div style="padding: 20px;" *ngIf="!isApp">
+						<ion-button class="btn-outline-primary" (click)="employeeLoginClick()">
+							Employee Login
+						</ion-button>
+					</div>
+					<div style="padding: 20px;" *ngIf="isApp">
+						<ion-button class="btn-outline-primary" (click)="redirectTo('register')">
+							Become a Partner
+						</ion-button>
+					</div>
+				</div>
+			</form>
+			<div class="graph-img graph-img-mobile">
+				<span class="version mobile-visibility">v {{version}}</span>
+				<!-- <img src="./assets/imgs/login-graph.png" alt=""> -->
+				<a href="javascript:void(0)" (click)="redirectTo('support')" class="help">Help</a>
+			</div>
+		</ion-card>
+		<!-- end -->
+
+		<!-- new code for login mobile otp screen -->
+		<ion-card class="login-field-section visible-for-mibile-screen mobile-otp-screen" *ngIf="optStatus">
+			<form [formGroup]="validateForm" class="login-form" (keydown)="keyDownFunction($event)">
+				<div class="login-fields login-fields-mobile-updated">
+					<div class="logo logo-with-bg">
+						<img src="assets/svg/login_logo_mobile.svg" alt="">
+					</div>
+					<div class="welcome-section">
+						<img src="assets/svg/updated_back.svg" class="updated-back" alt="" (click)="backFromOtop()">
+						<span class="welcome">Hello,</span>
+						<span class="welcome">{{ userName ? userName : userID1}}</span>
+					</div>
+					<div class="opt-section">
+						<div class="message">Enter {{otpMsgDisplay}}</div>
+						<div class="form-group otp-form newClassOTP">
+							<ion-item-group class="ion-item-group">
+								<code-input #codeInput
+								[isCodeHidden]="false" 
+								[codeLength]="6"
+								[code]="otpInput"
+                                [initialFocusField] = "0"
+                                (codeChanged)="onOtpChanged($event)"
+                                (codeCompleted)="onotpFieldCompleted($event)"
+                                >
+                            </code-input>
+								<!-- <ng-otp-input #ngOtpInput class= "inputClass" (onInputChange)="onOtpChange($event)" [config]="config"></ng-otp-input> -->
+								<!-- <ion-item>
+                                    <ion-input type="pwd" #otp1 formControlName="otp1"  maxLength="1" (keyup)="otpController($event,otp2,'')">
+                                    </ion-input>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-input type="pwd" #otp2 formControlName="otp2"  maxLength="1" (keyup)="otpController($event,otp3,otp1)">
+                                    </ion-input>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-input type="pwd" #otp3 formControlName="otp3"  maxLength="1" (keyup)="otpController($event,otp4,otp2)">
+                                    </ion-input>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-input type="pwd" #otp4 formControlName="otp4" maxLength="1" (keyup)="otpController($event,otp5,otp3)">
+                                    </ion-input>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-input type="pwd" #otp5 formControlName="otp5" maxLength="1" (keyup)="otpController($event,otp6,otp4)">
+                                    </ion-input>
+                                </ion-item>
+
+                                <ion-item>
+                                    <ion-input type="pwd" #otp6 formControlName="otp6" maxLength="1" (keyup)="otpController($event,'',otp5)">
+                                    </ion-input>
+                                </ion-item> -->
+							</ion-item-group>
+							<!-- <div class="message-otp">If you didn't receive a OTP Code!</div>
+                            <div class="message-otp resend">Resend</div> -->
+							<div class="message-otp"><span class="resendOtp" [ngClass]="{'resend': resendTimer === null}" (click)="resetOtpClick()">Resend OTP</span> <span *ngIf="resendTimer !== null"> ({{this.resendTimer}}) </span></div>
+							<!-- <div class="message-otp resend">Resend OTP</div> -->
+							<!-- <ion-button class="opt-submit" (click)= "submitOtp()" [ngClass]="{'valid-submit': true}">Submit</ion-button> -->
+
+						</div>
+					</div>
+				</div>
+			</form>
+		</ion-card>
+		<!-- end -->
+
+		<!-- new code for login mobile screen for multiple id's are mapped with the enter mobile number -->
+		<ion-card class="login-field-section visible-for-mibile-screen" *ngIf="multipleIds">
+			<form [formGroup]="validateForm" class="login-form" (keydown)="keyDownFunction($event)">
+				<div class="login-fields login-fields-mobile-updated">
+					<div class="logo logo-with-bg">
+						<img src="assets/svg/login_logo_mobile.svg" alt="">
+					</div>
+					<div class="welcome-section">
+						<div class="message">Multiple Partner ID’s are mapped with the entered Mobile Number
+							+91********36</div>
+					</div>
+					<div class="field-block m-t-30 first-screen">
+						<ion-item lines="none">
+							<div class="field m-b-16">
+								<ion-label class="updated-label" [ngClass]="{'focus-label': isFocusUser}">Partner ID
+								</ion-label>
+
+								<!-- review removed customValidation -->
+								<!-- <ion-input class="updated-input" [ngClass]="{'focus-input': isFocusUser}"
+									formControlName="userID" type="text" customValidate (ionFocus)="focusUser()"
+									(ionBlur)="focusOutUser($event)" autocomplete="off"></ion-input> -->
+
+								<ion-input class="updated-input" [ngClass]="{'focus-input': isFocusUser}"
+									formControlName="userID" label="" type="text" (ionFocus)="focusUser()"
+									(ionBlur)="focusOutUser($event)" autocomplete="off"></ion-input>
+								<img class="login-arrow" src="assets/svg/login_right_arrow.svg" alt=""
+									(click)="nextFromPartner()">
+							</div>
+						</ion-item>
+					</div>
+				</div>
+			</form>
+		</ion-card>
+		<!-- end -->
+
+		<!-- new code for login mobile screen for set pin screen -->
+		<ion-card class="login-field-section visible-for-mibile-screen mobile-set-pin" *ngIf="setPinStatus">
+			<form [formGroup]="validateForm" class="login-form" (keydown)="keyDownFunction($event)">
+				<div class="login-fields login-fields-mobile-updated">
+					<div class="logo logo-with-bg">
+						<img src="assets/svg/login_logo_mobile.svg" alt="">
+					</div>
+					<div class="opt-section set-pin">
+						<form class="form-group otp-form">
+							<div class="message">Set Pin</div>
+							<ion-item-group class="ion-item-group">
+								<code-input #ngOtpInput
+									[isCodeHidden]="!setPinVisibility"
+									[codeLength]="4"
+									[initialFocusField] = "0"
+									(codeChanged)="onSetPinChanged($event)"
+									(codeCompleted)="onSetPinCompleted($event, ngOtpInput1)">
+								</code-input>
+                                <ion-icon (click)="pinVisibility()" *ngIf="!setPinVisibility" src="assets/svg/invisible_eye.svg"></ion-icon>
+                                <ion-icon (click)="pinVisibility()" *ngIf="setPinVisibility" src="assets/svg/visible_eye.svg"></ion-icon>
+								<!-- <ion-icon style="min-width: 15px;" [name]="setPinVisibility ? 'eye' : 'eye-off' "
+									(click)="setPinVisibility = !setPinVisibility" class="eye-icon"></ion-icon> -->
+							</ion-item-group>
+							<div class="message confirm-pin">Confirm Pin</div>
+							<ion-item-group class="ion-item-group">
+								<code-input #ngOtpInput1
+									[isCodeHidden]="!confirmPinVisibility"
+									[codeLength]="4"
+									[initialFocusField] = "confirmPinFocus"
+									(codeChanged)="onConPinChanged($event)"
+									(codeCompleted)="onConPinCompleted($event)">
+								</code-input>
+								<ion-icon (click)="passwordVisibility()" *ngIf="!confirmPinVisibility" src="assets/svg/invisible_eye.svg"></ion-icon>
+                                <ion-icon (click)="passwordVisibility()" *ngIf="confirmPinVisibility" src="assets/svg/visible_eye.svg"></ion-icon>
+								<!-- <ion-icon style="min-width: 15px;" [name]="confirmPinVisibility ? 'eye' : 'eye-off' "
+									(click)="confirmPinVisibility = !confirmPinVisibility" class="eye-icon"></ion-icon> -->
+							</ion-item-group>
+							<!-- <ion-button class="opt-submit pin-submit" (click)="setPin()">Submit</ion-button>
+                            <a class="back" (click)="backFromSetPin()">Back</a> -->
+						</form>
+					</div>
+				</div>
+			</form>
+		</ion-card>
+
+        <!-- new code for login mobile screen for successful login -->
+		<ion-card class="login-field-section visible-for-mibile-screen" *ngIf="successfulLogin">
+			<div class="login-form">
+				<div class="login-fields login-fields-mobile-updated">
+					<div class="logo logo-with-bg">
+						<img src="assets/svg/login_logo_mobile.svg" alt="">
+					</div>
+					<div class="successful-login mobile-visibility" *ngIf="successfulLogin">
+                        <div class="ion-icon">
+                            <img src="assets/svg/successful.svg" alt="">
+                        </div>
+                        <div class="success-message">
+                            Your PIN verified successfully! Logging you in…
+                        </div>
+                    </div>
+				</div>
+			</div>
+		</ion-card>
+
+		
+		<!-- end -->
+
+		<!-- new code for login mobile screen for relogin -->
+		<ion-card class="login-field-section visible-for-mibile-screen relogin" *ngIf="reLogin">
+			<form name="form" class="login-form" (keydown)="keyDownFunction($event)">
+				<div class="login-fields login-fields-mobile-updated">
+					<div class="logo logo-with-bg">
+						<img src="assets/svg/login_logo_mobile.svg" alt="">
+					</div>
+					<div class="welcome-section">
+						<img src="assets/svg/switch_user.svg" class="updated-back switch-account" alt=""
+							(click)="switchAccount()">
+						<span class="welcome">Welcome Back</span>
+						<span class="welcome">{{userName ? userName : userID1}}</span>
+					</div>
+					<div class="opt-section set-pin enter-pin">
+						<form class="form-group otp-form">
+							<div class="message confirm-pin">Enter your PIN</div>
+							<ion-item-group class="ion-item-group">
+								<ion-item lines="none" *ngFor="let pinObj of pinData">
+									<ion-input label="" [(ngModel)]="pinObj['value']" [ngModelOptions]="{standalone: true}">
+									</ion-input>
+								</ion-item>
+							</ion-item-group>
+							<!-- <ion-button class="opt-submit pin-submit" (click)="setPin()">Submit</ion-button>
+                            <a class="back" (click)="backFromSetPin()">Back</a> -->
+						</form>
+					</div>
+					<!-- <div class="forgot-password mobile-visibility">
+                        <span (click)="forgotPasswordMobile()">Forgot Password?</span>
+                    </div>
+                    <div class="login-btn">
+                        <ion-button shape="round" [disabled]="!validateForm.valid && showLoader" (click)="login()" expand="full"><span *ngIf="!showLoader"> Login</span> <ion-spinner *ngIf="showLoader" name="circles"></ion-spinner></ion-button>
+                    </div> -->
+					<div class="new-user forgot-pin">
+						<a href="javascript:void(0)">
+							<span (click)="forgotPin()">Forgot PIN</span>
+						</a>
+					</div>
+				</div>
+			</form>
+			<div class="keyboard-section">
+				<div *ngFor="let keyObj of keyboardValue" (click)="enterValue(keyObj)">
+					<span *ngIf="keyObj['value'] !=='x'">{{keyObj['value']}}</span>
+					<img class="close" *ngIf="keyObj['value'] ==='x'" src="assets/svg/keyboard_close.svg" alt="">
+				</div>
+			</div>
+			<div class="graph-img graph-img-mobile">
+				<!-- <div class="finger-print-block">
+					<img src="assets/svg/finger-print.svg" alt="">
+					<div class="finger-print">Use Fingerprint</div>
+				</div> -->
+				<!-- <a href="javascript:void(0)" (click)="redirectTo('support')" class="help">Help</a> -->
+			</div>
+		</ion-card>
+		<!-- end -->
+
+		<!-- for web  -->
+		<ion-card class="login-field-section visible-for-web-screen">
+			<form [formGroup]="validateForm" class="login-form" (keydown)="keyDownFunction($event)">
+				<div class="login-fields">
+					<div class="logo">
+						<img src="assets/svg/login_logo.svg" alt="">
+					</div>
+					<!-- new code first time login for web -->
+					<div *ngIf="firstTimeLogin" class="width-100">
+						<div class="field-block m-t-30 first-screen">
+							<ion-item lines="none">
+								<div class="field m-b-16">
+									<ion-label class="updated-label" [ngClass]="{'focus-label': isFocusUser}">{{userTypeTitle}}</ion-label>
+									<!-- review removed customValidation -->
+									<!-- <ion-input class="updated-input" [ngClass]="{'focus-input': isFocusUser}"
+										formControlName="userID" type="text" customValidate (ionFocus)="focusUser1()"
+										(change)="checkValidation($event)"
+										autocomplete="off"></ion-input> -->
+									<ion-input class="updated-input" [ngClass]="{'focus-input': isFocusUser}"
+										formControlName="userID" type="text" label="" (ionFocus)="focusUser1()"
+										(change)="checkValidation($event)"
+										autocomplete="off"></ion-input>
+								</div>
+							</ion-item>
+							<div class="error-block upper-validation">
+								<ng-container *ngFor="let validation of validation_messages.userID">
+									<ion-label class="error-message "
+										*ngIf="validateForm.get('userID')?.hasError(validation.type) && validateForm.get('userID')?.dirty">
+										{{validation.message}}
+									</ion-label>
+								</ng-container>
+								<span class="error-message" *ngIf="validateForm.controls['userID'].valid"
+									style="font-size: small">{{UserIdFieldError}}</span>
+							</div>
+						</div>
+						<div class="login-btn login-button-updated">
+							<ion-button shape="round" *ngIf="!clip_infl" (click)="next(true)">Next</ion-button>
+							<ion-button shape="round" *ngIf="clip_infl" (click)="inflSendOtp()">Send OTP</ion-button>
+						</div>
+
+						<div (click)="guestLogin()" class="new-user updated-new-user">
+							<a>
+								<span style="cursor: pointer;">New User? Try Guest Login</span>
+							</a>
+						</div>
+						<div style="padding: 25px 0 0;">
+							<ion-button class="btn-outline-primary" (click)="employeeLoginClick()">
+								Employee Login
+							</ion-button>
+						</div>
+						<!-- login As Influncer -->	
+						<!-- <div class="new-user updated-new-user">	
+							<span class="pointer" (click)="influncerLogin()">Login as Influencer</span>	
+						</div> -->
+						<!-- <a class="back" (click)="goBackScreen()">Back</a> -->
+					</div>
+					<!-- end -->
+					<!-- new code for opt screen -->
+					<div class="opt-section" *ngIf="optStatus">
+						<div class="message">{{otpMsgDisplay}}</div>
+						<div class="form-group otp-form newClassOTP">
+                        
+							<ion-item-group class="ion-item-group">
+                                <code-input #codeInput
+								[isCodeHidden]="false"
+                                [codeLength]="6"
+                                [initialFocusField] = "0"
+                                (codeChanged)="onOtpChanged($event)"
+                                (codeCompleted)="onotpFieldCompleted($event)">
+                            </code-input>
+								<!-- <ng-otp-input #ngOtpInput *ngIf="showOtpInputs"  class= "inputClass" (onInputChange)="onOtpChange($event)" [config]="config"></ng-otp-input> -->
+								<!-- <ion-item>
+									<ion-input type="tel" #otp1 formControlName="otp1" maxLength="1"
+										onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 0"
+										type="tel" placeholder="" class="otp-input ng-pristine ng-valid ng-touched"
+										id="otp_0_lfpxjvw6j98kxe7xvu2" pattern="\d*"
+										(keyup)="otpController($event,otp2,'')">
+									</ion-input>
+								</ion-item>
+
+								<ion-item>
+									<ion-input type="tel" #otp2 formControlName="otp2" maxLength="1"
+										onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 0"
+										type="tel" placeholder="" class="otp-input ng-pristine ng-valid ng-touched"
+										id="otp_0_lfpxjvw6j98kxe7xvu2" pattern="\d*"
+										(keyup)="otpController($event,otp3,otp1)">
+									</ion-input>
+								</ion-item>
+
+								<ion-item>
+									<ion-input type="tel" #otp3 formControlName="otp3" maxLength="1"
+										onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 0"
+										ng-reflect-disabled-number-only="false" type="tel" placeholder=""
+										class="otp-input ng-pristine ng-valid ng-touched" id="otp_0_lfpxjvw6j98kxe7xvu2"
+										pattern="\d*" (keyup)="otpController($event,otp4,otp2)">
+									</ion-input>
+								</ion-item>
+
+								<ion-item>
+									<ion-input type="tel" #otp4 formControlName="otp4" maxLength="1"
+										onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 0"
+										ng-reflect-disabled-number-only="false" type="tel" placeholder=""
+										class="otp-input ng-pristine ng-valid ng-touched" id="otp_0_lfpxjvw6j98kxe7xvu2"
+										pattern="\d*" (keyup)="otpController($event,otp5,otp3)">
+									</ion-input>
+								</ion-item>
+
+								<ion-item>
+									<ion-input type="tel" #otp5 formControlName="otp5" maxLength="1"
+										onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 0"
+										ng-reflect-disabled-number-only="false" type="tel" placeholder=""
+										class="otp-input ng-pristine ng-valid ng-touched" id="otp_0_lfpxjvw6j98kxe7xvu2"
+										pattern="\d*" (keyup)="otpController($event,otp6,otp4)">
+									</ion-input>
+								</ion-item>
+
+								<ion-item>
+									<ion-input type="tel" #otp6 formControlName="otp6" maxLength="1"
+										onkeypress="return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 0"
+										ng-reflect-disabled-number-only="false" type="tel" placeholder=""
+										class="otp-input ng-pristine ng-valid ng-touched" id="otp_0_lfpxjvw6j98kxe7xvu2"
+										pattern="\d*" (keyup)="otpController($event,'',otp5)">
+									</ion-input>
+								</ion-item> -->
+							</ion-item-group>
+
+							<div class="message-otp"><span class="resendOtp" [ngClass]="{'resend': resendTimer === null}" (click)="resetOtpClick()">Resend OTP</span> <span *ngIf="resendTimer !== null"> ({{this.resendTimer}}) </span> </div>
+							<!-- <div class="message-otp">Resend OTP ({{this.resendTimer}} s)</div> -->
+							<!-- <div class="message-otp resend" (click)="resetOtpClick()">Resend OTP</div> -->
+							<ion-button class="opt-submit" [disabled]="!submitOtpBtn" *ngIf="!clip_infl" (click)="submitOtp()"
+								[ngClass]="{'valid-submit': submitOtpBtn }">Submit</ion-button>
+							<ion-button class="opt-submit" [disabled]="!submitOtpBtn" *ngIf="clip_infl" (click)="infllogin()"	
+								[ngClass]="{'valid-submit': submitOtpBtn }">Login</ion-button>	
+							<a class="back" (click)="goBackScreen()">Back</a>
+						</div>
+					</div>
+
+
+					<!-- end -->
+
+					<!-- new code for multiple client code  -->
+					<div class="multiple-id-section width-100" *ngIf="multipleClientCode">
+						<div class="field-block m-t-30 first-screen">
+							<ion-item lines="none" class="overflow-visible">
+								<div class="field m-b-16">
+									<ion-label class="updated-label" [ngClass]="{'focus-label': isFocusUser}">Client Codes
+									</ion-label>
+									<ng-select [items]="multipleClientList" bindLabel="ClientCode" bindValue="ClientCode" [clearable]="false" [searchable] = "false" name="clientId"
+									(change)="changeClientCode($event)" >
+                                    </ng-select>
+								</div>
+							</ion-item>
+						</div>
+						<div class="login-btn login-button-updated">
+							<ion-button shape="round" [disabled]="!clientCodeChanges" (click)="proceedwithMultipleClient()">Proceed</ion-button>
+						</div>
+					</div>
+					<!-- end -->
+					<!-- new code for multiple id's are mapped with the enter mobile number -->
+					<div class="multiple-id-section" *ngIf="multipleIds">
+						<div class="welcome-section  multiple-message">
+							<div class="message">{{otpMsgDisplay}}</div>
+						</div>
+						<div class="field-block m-t-30 first-screen">
+							<ion-item lines="none">
+								<div class="field m-b-16">
+									<ion-label class="updated-label" [ngClass]="{'focus-label': isFocusUser}">Partner ID
+									</ion-label>
+									<!-- review removed customValidation -->
+									<!-- <ion-input class="updated-input" [ngClass]="{'focus-input': isFocusUser}"
+										formControlName="userID" type="text" customValidate (ionFocus)="focusUser()"
+										(change)="checkValidationForMultipleID($event)"
+										autocomplete="off"></ion-input> -->
+										
+									<ion-input class="updated-input" [ngClass]="{'focus-input': isFocusUser}"
+										formControlName="userID" label="" type="text" (ionFocus)="focusUser()"
+										(change)="checkValidationForMultipleID($event)"
+										autocomplete="off"></ion-input>
+								</div>
+							</ion-item>
+							<div class="error-block upper-validation">
+								<ng-container *ngFor="let validation of validation_messages.userID">
+									<ion-label class="error-message "
+										*ngIf="validateForm.get('userID')?.hasError(validation.type) && validateForm.get('userID')?.dirty">
+										{{validation.message}}
+									</ion-label>
+								</ng-container>
+								<span class="error-message" *ngIf="validateForm.controls['userID'].valid && UserIdFieldValidation == false"
+									style="font-size: small">{{UserIdFieldError}}</span>
+							</div>
+						</div>
+						<div class="login-btn login-button-updated">
+							<ion-button shape="round" (click)="next(true)">Next</ion-button>
+						</div>
+					</div>
+					<!-- end -->
+					<!-- new code for set pin screen -->
+					<div class="opt-section set-pin" *ngIf="setPinStatus">
+						<div class="form-group otp-form">
+							<div class="message">Set PIN</div>
+							<!-- <code-input [isCodeHidden]="false"
+										[codeLength]="6">
+							</code-input> -->
+							<ion-item-group class="ion-item-group">
+                                <code-input #ngOtpInput
+                                    [isCodeHidden]="!setPinVisibility"
+                                    [codeLength]="4"
+                                    [initialFocusField] = "0"
+                                    (codeChanged)="onSetPinChanged($event)"
+                                    (codeCompleted)="onSetPinCompleted($event, ngOtpInput1)">
+                                </code-input>
+                                
+                               
+								<!-- <ion-item>
+									<ion-input [type]="setPinVisibility ? 'number' : 'password'" #setotp1
+										formControlName="setotp1" autocomplete="off" maxLength="1"
+										(keyup)="otpController($event,setotp2,'')">
+									</ion-input>
+								</ion-item>
+
+								<ion-item>
+									<ion-input [type]="setPinVisibility ? 'number' : 'password'" #setotp2
+										formControlName="setotp2" autocomplete="off" maxLength="1"
+										(keyup)="otpController($event,setotp3,setotp1)">
+									</ion-input>
+								</ion-item>
+
+								<ion-item>
+									<ion-input [type]="setPinVisibility ? 'number' : 'password'" #setotp3
+										formControlName="setotp3" autocomplete="off" pattern="[0-9]"
+										(keyup)="otpController($event,setotp4,setotp2)">
+									</ion-input>
+								</ion-item>
+
+								<ion-item>
+									<ion-input [type]="setPinVisibility ? 'number' : 'password'" #setotp4
+										formControlName="setotp4" autocomplete="off" maxlength="1"
+										(keyup)="otpController($event,'',setotp3)">
+									</ion-input>
+								</ion-item> -->
+                                <ion-icon (click)="pinVisibility()" *ngIf="!setPinVisibility" src="assets/svg/invisible_eye.svg"></ion-icon>
+                                <ion-icon (click)="pinVisibility()" *ngIf="setPinVisibility" src="assets/svg/visible_eye.svg"></ion-icon>
+								<!-- <ion-icon style="min-width: 15px;" [name]="setPinVisibility ? 'eye' : 'eye-off' "
+									(click)="setPinVisibility = !setPinVisibility" class="eye-icon"></ion-icon> -->
+
+								<!-- <ng-otp-input #ngSetOtp class= "inputClass setPinClass" (onInputChange)="onSetOtpChange($event)" [config]="setConfig"></ng-otp-input> -->
+
+                                <!-- <ion-icon style="min-width: 15px;" [name]="setPinVisibility ? 'eye' : 'eye-off' " (click)="changeSetOtpVisibility(ngSetOtp)" class="eye-icon"></ion-icon> -->
+
+							</ion-item-group>
+							<div class="message confirm-pin">Confirm PIN</div>
+							<ion-item-group class="ion-item-group">
+
+                                <code-input #ngOtpInput1
+                                    [isCodeHidden]="!confirmPinVisibility"
+                                    [codeLength]="4"
+                                    [initialFocusField] = "confirmPinFocus"
+                                    (codeChanged)="onConPinChanged($event)"
+                                    (codeCompleted)="onConPinCompleted($event)">
+                                </code-input>
+								<!-- <ng-otp-input #ngConOtp class= "inputClass setPinClass" (onInputChange)="onConOtpChange($event)" [config]="setConfig"></ng-otp-input>
+                                <ion-icon style="min-width: 15px;" [name]="confirmPinVisibility ? 'eye' : 'eye-off' " (click)="changeSetConVisibility(ngConOtp)" class="eye-icon"></ion-icon> -->
+								<!-- <ion-item>
+									<ion-input [type]="confirmPinVisibility ? 'number' : 'password'" #conotp1
+										formControlName="conotp1" autocomplete="off" maxLength="1"
+										(keyup)="otpController($event,conotp2,'')">
+									</ion-input>
+								</ion-item>
+
+								<ion-item>
+									<ion-input [type]="confirmPinVisibility ? 'number' : 'password'" #conotp2
+										formControlName="conotp2" autocomplete="off" maxLength="1"
+										(keyup)="otpController($event,conotp3,conotp1)">
+									</ion-input>
+								</ion-item>
+
+								<ion-item>
+									<ion-input [type]="confirmPinVisibility ? 'number' : 'password'" #conotp3
+										formControlName="conotp3" autocomplete="off" maxLength="1"
+										(keyup)="otpController($event,conotp4,conotp2)">
+									</ion-input>
+								</ion-item>
+
+								<ion-item>
+									<ion-input [type]="confirmPinVisibility ? 'number' : 'password'" #conotp4
+										formControlName="conotp4" autocomplete="off" maxLength="1"
+										(keyup)="otpController($event,'',conotp3)">
+									</ion-input>
+								</ion-item> -->
+
+                                <ion-icon (click)="passwordVisibility()" *ngIf="!confirmPinVisibility" src="assets/svg/invisible_eye.svg"></ion-icon>
+                                <ion-icon (click)="passwordVisibility()" *ngIf="confirmPinVisibility" src="assets/svg/visible_eye.svg"></ion-icon>
+								<!-- <ion-icon style="min-width: 15px;" [name]="confirmPinVisibility ? 'eye' : 'eye-off' "
+									(click)="confirmPinVisibility = !confirmPinVisibility" class="eye-icon"></ion-icon> -->
+
+							</ion-item-group>
+							<ion-button class="opt-submit" [ngClass]="{'valid-submit': true}" (click)="setPin()">Submit
+							</ion-button>
+							<a class="back" (click)="goBackScreen()">Back</a>
+						</div>
+					</div>
+					<!-- end -->
+					<!-- new code for successful login -->
+					<div class="successful-login" *ngIf="successfulLogin">
+						<div class="ion-icon">
+							<img src="assets/svg/successful.svg" alt="">
+						</div>
+						<div class="success-message">
+							Your PIN verified successfully! Logging you in…
+						</div>
+					</div>
+					<!-- end -->
+					<!-- new code for relogin screen -->
+					<div class="opt-section set-pin relogin-web" *ngIf="reLogin">
+						<div class="welcome-section">
+							<span class="welcome">Welcome <span *ngIf="alreadySetMpin">Back</span></span>
+							<span class="welcome">{{ userName ? userName : userID1}}</span>
+						</div>
+						<div class="form-group otp-form">
+							<div class="message">Enter Pin</div>
+							<!-- <ion-item-group class="ion-item-group" style="margin-left: 0;">
+                                <ng-otp-input #ngOtpInput class= "inputClass setPinClass" (onInputChange)="onloginPinChange($event)" [config]="loginConfig"></ng-otp-input>
+                            </ion-item-group> -->
+							<ion-item-group class="ion-item-group">
+                                <code-input #loginNameField
+                                    [isCodeHidden]="loginPinVisibility"
+                                    [codeLength]="4"
+									[initialFocusField] = "0"
+									(codeChanged)="onLoginPinChanged($event)"
+									(codeCompleted)="onLoginPinCompleted($event, loginNameField)"
+									
+                                   >
+                                </code-input>
+                                <ion-icon (click)="loginVisibility()" *ngIf="loginPinVisibility" src="assets/svg/invisible_eye.svg"></ion-icon>
+                                <ion-icon (click)="loginVisibility()" *ngIf="!loginPinVisibility" src="assets/svg/visible_eye.svg"></ion-icon>
+                                <!-- <ion-icon class="min-width-15 eye-icon" [name]="loginPinVisibility ? 'eye-off' : 'eye' "
+								(click)="loginPinVisibility = !loginPinVisibility" name="eye-off"></ion-icon> -->
+								<!-- <ion-item>
+									<ion-input type="password" #loginPin1 formControlName="loginPin1" maxLength="1"
+										(keyup)="otpController($event,loginPin2,'')">
+									</ion-input>
+								</ion-item>
+
+								<ion-item>
+									<ion-input type="password" #loginPin2 formControlName="loginPin2" maxLength="1"
+										(keyup)="otpController($event,loginPin3,loginPin1)">
+									</ion-input>
+								</ion-item>
+
+								<ion-item>
+									<ion-input type="password" #loginPin3 formControlName="loginPin3" maxLength="1"
+										(keyup)="otpController($event,loginPin4,loginPin2)">
+									</ion-input>
+								</ion-item>
+
+								<ion-item>
+									<ion-input type="password" #loginPin4 formControlName="loginPin4" maxLength="1"
+										(keyup)="otpController($event,'',loginPin3)">
+									</ion-input>
+								</ion-item> -->
+
+							</ion-item-group>
+							<div class="new-user forgot-pin">
+								<a href="javascript:void(0)">
+									<span (click)="forgotPin()">Forgot PIN?</span>
+								</a>
+							</div>
+							<div class="login-btn login-button-updated">
+								<ion-button shape="round" [disabled]="!submitLogin" (click)="loginBtn()">Login
+								</ion-button>
+							</div>
+							<a class="back switch-account" (click)="switchAccount()">Switch account</a>
+						</div>
+					</div>
+					<!-- end -->
+				</div>
+			</form>
+			<div class="graph-img">
+				<!-- <span class="version" *ngIf="!reLogin">v {{version}}</span> -->
+				<img src="./assets/imgs/login-graph.png" alt="">
+				<!-- <a href="javascript:void(0)" (click)="redirectTo('support')" class="help">Help</a> -->
+			</div>
+		</ion-card>
+		<!-- end -->
+	</div>
+	<div class="loader1" *ngIf="isLoader">
+		<img src="/assets/imgs/loader4.gif" alt="" width="100px">
+	</div>
+</ion-content>
+<div class="loader" *ngIf="loader">
+	<img src="/assets/imgs/loader.gif" alt="">
+</div>

@@ -1,0 +1,52 @@
+.search-section-changed-revamped{border: 0px;padding: 12px 0;}
+.btn_orange, .btn_orange:hover{background: #F37921 !important; font-size: 12px; padding: 4px 10px; color: #fff !important; border-radius: 20px; text-align: center;  min-height: inherit; border: 1px solid #F37921; text-transform: capitalize;display: flex;justify-content: center; align-items: center; margin: 0px 5px;}
+.btn_orange_outline, .btn_orange_outline:hover{background: #fff !important; border: 1px solid #F37921; font-size: 12px; padding: 6px 0px; color: #F37921; border-radius: 20px; text-align: center;  min-height: inherit; margin-right: 10px;text-transform: capitalize; }
+
+
+// AMC Non Client css
+.amc_non_client{padding: 1.25rem; border: 1px solid rgba(0, 0, 0, 0.12); box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.12); border-radius: 8px; width: 100%;}
+.amc_non_client .name{font-size: 22px; font-weight: 700; color: #000; display: block;} 
+.amc_non_client .code{font-size: 18px; font-weight: 500; color: #9C9C9C;display: block; margin-top: 5px;}
+.non_client_type{display: flex;  gap: 50px; padding: 30px; }   
+.non_client_type div{width: 100%;}
+.non_client_type .label{font-size: 13px; color: #808080; padding-bottom: 6px;}
+.statement_period{width: 100%;}
+.statement_period{display: flex; gap: 90px; margin: 0; padding:10px 30px;}
+.statement_period li{display: flex; gap: 5px; justify-content: flex-start;}
+.statment_value label{font-size: 16px; color: #000000; font-weight: 500; display: block;}
+.statment_value span{font-size: 14px; color: #808080; font-weight: 500; display: block;}
+.amc_non_client a{width: 150px; margin: 30px auto 0; text-decoration: none; padding: 10px 20px;}
+.amc_error_msg{padding: 10px 20px; border: 1px solid #DF514C33; border-radius: 4px;background: rgba(223, 81, 76, 0.1); display: flex; gap: 15px;    width: max-content; margin: 30px auto 0;}
+.amc_error_msg span{font-size: 14px; font-weight: 500; color: #DF514C;}
+@media screen and (max-width: 991px) {
+    .statement_period{gap: 20px;}
+}
+@media screen and (min-width: 1200px) {
+    .container {
+        width: 1140px;
+    }
+}
+
+.loader{min-height: inherit;}
+/*radio button*/
+.reg1 input[type=radio] {width: 18px; height: 18px; margin: 5px;accent-color: #0075ff;}
+.reg1 input[type='radio']:after { width: 16px; height: 16px; border-radius: 15px; top: -1px; left: -1px; position: relative; background-color: #fff; content: ''; display: inline-block; visibility: visible; border: 2px solid #A6A8BA; }
+.reg1 input[type='radio']:checked:after { width: 6px; height: 6px; border-radius: 15px; top: -2px; left: 4px; position: relative; background-color: #0075ff; content: ''; display: inline-block; visibility: visible; border: 2px solid #0075ff; outline: #DF514C; }
+
+/*radio button*/
+
+@media screen and (max-width: 768px) {
+    .amc_non_client{border: 0px; box-shadow: inherit;padding: 0 16px;margin-top: 0px;}
+    .non_client_type{padding: 0;flex-wrap: wrap; gap: 20px;}
+    .statement_period{padding: 10px 0;flex-wrap: wrap; gap: 20px;flex-direction: column;}
+    .pannumber{display: block; color: #212121;}
+    .amc_non_client a{margin-bottom: 60px;}
+    .amc_non_client .code{font-size: 12px; padding-bottom: 10px;}
+    .pannumber{font-size: 16px;}
+    .amc_error_msg img{display: none;}
+    .amc_error_msg{width: 100%; text-align: center;}
+    .statement_period{padding: 15px 0;}
+    .amc_non_client a{ margin: 20px auto 40px auto;}
+    .pan_label{margin-top: 15px !important;}
+    
+}

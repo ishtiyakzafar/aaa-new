@@ -1,0 +1,203 @@
+.circularsheader {
+    .titleName{
+        display: flex;
+        align-items: center;
+    }
+}
+.circularsData-block-segment{
+    display: flex;
+}
+.circular_search{width: 100%; justify-content: space-between; align-items:self-start;
+    margin-bottom: 15px;
+    .search-section{width: 100%; margin: 10px 0px 10px 0;
+        background: transparent !important;
+        padding: 4px 0;
+    border: 1px
+ solid #DCDFE0;
+    font-size: 16px;
+    color: #BFBFBF;
+    border-radius: 10px;
+        @media (max-width: 768px) {
+            width: 100%; margin:10px 0 20px;
+        }
+        .custom-searchbar{
+            width: 100% !important;
+    height: inherit !important;
+    margin: 0;
+    padding: 0;
+    border: 0px !important;
+    text-align: left !important;
+        }
+    }
+  
+}
+.categoryCircular{
+    display: flex;
+    ion-segment-button{background:none;
+    color:#6E6E6E;
+    max-width:fit-content;
+    min-height: auto;
+    --indicator-color:transpartnt;
+    border:1px solid #6E6E6E;
+    --padding-top:4px;
+    --padding-bottom:4px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 400;
+    margin-left:10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    &:first-child{
+        margin-left: 0;
+    }
+    &:hover{
+        color:#F37921;
+        border-color:#F37921;
+        --background-hover:#F37921;
+    }
+    }
+    .segment-button-checked{
+        color:#F37921;
+        border-color:#F37921;
+    }
+}
+.circularTable{
+    margin-top: 20px;
+    margin-bottom: 30px;
+    tbody{
+        border: 1px solid #EBEBEB;
+    }
+    th{
+        color: #6E6E6E;
+        font-size: 14px;
+        font-family: nunitoRegular;
+        color: #6E6E6E;
+        background-color: #F2F4F4;
+        position: sticky;
+        padding:15px 10px;
+        text-align: left;
+        border-collapse: collapse;
+        
+        top: -1px;
+        z-index: 100;
+        &:first-child{
+            border-radius: 10px 0 0 0 !important;
+        }
+        &:last-child{
+            border-radius: 0 10px 0 0 !important;
+        }
+    }
+    td{
+        padding: 15px 10px;
+        text-align: left;
+        font-size: 14px;
+        color:#212121;
+        border-collapse: collapse;
+        border-bottom: 1px solid #EBEBEB;
+        font-weight: 600;
+    }
+    .text-center{
+        text-align: center;
+        border: 1px solid #EBEBEB;
+    }
+}
+.btnPDF{
+    background: transparent;
+    width: 30px;
+}
+.categoryTab{
+    justify-content:space-between ;
+    align-items: center;
+}
+@media (max-width:768px) {
+    .circular_search{flex-wrap: wrap; }
+    .categoryTab{
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        overflow: scroll;
+    }
+    .circular_container{
+        padding:0 15px;
+    }
+    .searchbar-search-icon.sc-ion-searchbar-md{
+       display: none;
+    }
+    .circularCard > div{
+        border: 1px solid #EBEBEB;
+        border-radius:5px ;
+        margin: 18px 0;
+        padding:15px;
+        box-shadow: 0px 0px 7px 5px rgb(0 0 0 / 10%);
+        font-size: 12px; color: #212121; font-weight: 600;
+        .d-flex{
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        h3{
+            font-size: 12px;
+            color: #212121;
+            font-weight: 600;
+            margin: 0 0 20px;
+        }
+        label{font-size: 11px;color:#6E6E6E;font-weight:600;display: block;}
+        .btnPDF{
+            width:50px;
+        }
+        .secondaryBox > div{
+            width:33%;
+        }
+    }
+}
+.date-section {
+    display: flex;
+    justify-content: space-between;
+    
+    @media (min-width:992px) {
+        margin-left: 20px;
+        margin-right: 80px;
+        width: 40%;  
+    }
+    .inner-section {
+        width: 48%;
+    }
+}
+.date-section {
+    .section {
+        position: relative;
+        .calendar {
+            position: absolute;
+            right: 10px;
+            bottom: 9px;
+        }
+    }
+}
+.section {
+    .label {
+        margin-bottom: 1px;
+        font-family: 'nunitoRegular';
+        color: #808080;
+        font-size: 14px;
+        text-align: left;
+        margin-bottom: 3px;
+    }
+}
+.section .ion-input {
+    border: 1px solid #cbcbcb;
+    background: #fff;
+    color: #333;
+    border-radius: 5px;
+    height: 36px;
+    width: 100%;
+    font-size: 15px;
+    --padding-top: 7px;
+}
+.section .ion-input::placeholder {
+    font-size: 12px;
+}
+::ng-deep .date-position-right{
+    @media (min-width:769px) {
+        right: 0 !important;
+        left: inherit !important;
+        transform: translate(-50px, 0px) !important;
+    }
+}

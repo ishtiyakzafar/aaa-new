@@ -1,0 +1,434 @@
+<ion-header class="mobile-visibility">
+    <ion-toolbar color="tertiary">
+        <div class="title-block title-block-custom">
+            <div class="icon-title">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <ion-title class="title">JV Request</ion-title>
+            </div>
+        </div>
+	</ion-toolbar>
+</ion-header>
+
+<div class="mobile-visibility rquest-tabs">
+	<div >
+	  <button class="active" >
+		JV Request
+	  </button>
+	  <button (click)="jvRequestRedirect()">
+		JV Request Status
+	  </button>
+	</div>
+</div>
+	<form name="form" #jvForm="ngForm" class="limit-change-block desktop-visibility" *ngIf="device == 'desktop'">
+		<!-- <div class="heading">JV Request</div> -->
+		<div class="field-block">
+			<div class="section">
+				<div class="label">Amount JV<span class="labelColor">*</span></div>
+				<ion-input type="text" class="ion-input" name="jvAmount" [(ngModel)]="jvRequest.jvAmount"
+					#jvAmount="ngModel" maxlength="10" required 
+					(keypress)="numberOnly($event)"></ion-input>
+				<div *ngIf="(jvForm.submitted && jvAmount.invalid) || ( jvAmount.invalid && jvAmount.dirty || jvAmount.touched)"  class="invalid-feedback">
+					<span *ngIf="jvAmount.errors?.['required']">Amount JV is required</span>
+					<span *ngIf="jvAmount.errors?.['maxlength']">Amount cannot be more than 10 digits</span>
+				</div>
+			</div>
+			
+			<div class="section">
+				<div class="label">Credit Period From<span class="labelColor">*</span></div>
+				<!-- <ion-input type="date" class="ion-input" name="dateFrom" [(ngModel)]="jvRequest.dateFrom"
+					#dateFrom="ngModel" required (ngModelChange)="inputChange($event,jvForm.form.valid)"></ion-input> -->
+					<!-- <ion-datetime class="ion-input" displayFormat="DD-MM-YYYY" name="dateFrom" [(ngModel)]="jvRequest.dateFrom" #dateFrom="ngModel" [min]="last25Year" [max]="currentDay" placeholder="Credit Period date" required (ionChange)="changed($event)"></ion-datetime> -->
+					
+					<!-- review. datepicker issue			42 to 52 -->		
+					<!-- <span class="position-relative">
+
+						<input class="ion-input dateField" angular-mydatepicker name="dateFrom" [(ngModel)]="jvRequest.dateFrom" [options]="myOptions" #dateFrom="ngModel" readonly placeholder="Credit Period From Date" required (dateChanged)="onDateChanged($event)" autocomplete="off"
+						#dp="angular-mydatepicker" (click)="dp.openCalendar()">
+						
+				   <img class="calendar" src="assets/svg/calendar_report.svg" (click)="dp.openCalendar()" alt=""></span>
+					
+					<div class="invalid-feedback">
+						<span *ngIf="(jvForm.submitted && dateFrom.invalid)">Credit Period From Date is required</span>
+					</div> -->
+
+					<div class="position-relative">
+						<div class="datePopover">
+							<ion-item class="date_Picker" (click)="toggleStartDatePicker()">
+							  <!-- <ion-label class="ion-lable-end">Start Date</ion-label> -->
+							  <ion-input placeholder="Select Date" [value]="jvRequest.dateFrom | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+							  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+							</ion-item>
+							<div class="calendarBackdrop" *ngIf="showStartDatePicker" (click)="hideDatePicker('start')"></div>
+							<ion-datetime name="dateFrom"
+							#dateFrom="ngModel" class="calendarOpen datePositionLeft" *ngIf="showStartDatePicker" presentation="date"
+							[(ngModel)]="jvRequest.dateFrom" presentation="date" min="1973-01-01" [max]="currentDate"
+							  (ionChange)="hideDatePicker('start',$event)">
+							</ion-datetime>
+						  </div>
+					</div>
+
+					<div class="invalid-feedback">
+						<span *ngIf="!isFromDtSelected">Credit Period From Date is required</span>
+					</div>
+			</div>
+			
+			<div class="section position-relative">
+				<div class="label">Credit Period To<span class="labelColor">*</span></div>
+				<!-- <ion-input type="date" class="ion-input datepicker" name="dateTo" [(ngModel)]="jvRequest.dateTo" #dateTo="ngModel"
+					required (ngModelChange)="inputChange($event,jvForm.form.valid)"></ion-input> -->
+					<!-- <ion-datetime class="ion-input" displayFormat="DD-MM-YYYY" name="dateTo" [(ngModel)]="jvRequest.dateTo" #dateTo="ngModel" [min]="jvRequest.dateFrom" [max]="currentDay" placeholder="Select To Date" required [disabled]="disableToDte"></ion-datetime>	 -->
+					
+					<!-- review. datepicker issue  62 to 71-->
+					<!-- <span class="position-relative">
+						<input class="ion-input dateField" angular-mydatepicker name="dateTo" [(ngModel)]="jvRequest.dateTo" readonly [options]="myOptions1" 
+						#dateTo="ngModel" placeholder="Credit Period To Date" required [disabled]="disableToDte" autocomplete="off"
+							 #dp1="angular-mydatepicker" (click)="dp1.openCalendar()">
+						<img class="calendar" src="assets/svg/calendar_report.svg" (click)="dp1.openCalendar()" alt="">	
+					</span>
+					<div class="invalid-feedback">
+						<span *ngIf="(jvForm.submitted && dateTo.invalid)">Credit Period To Date is required</span>
+					</div> -->
+
+					<div class="position-relative">
+
+						<div class="datePopover">
+							<ion-item class="date_Picker" (click)="toggleEndDatePicker()">
+							  <!-- <ion-label class="ion-lable-end">End Date</ion-label> -->
+							  <ion-input placeholder="Select Date" [value]="jvRequest.dateTo | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+							  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+							</ion-item>
+							<div class="calendarBackdrop" *ngIf="showEndDatePicker" (click)="hideDatePicker('end')"></div>
+							<ion-datetime name="dateTo"
+							#dateTo="ngModel" class="calendarOpen datePositionRight" *ngIf="showEndDatePicker" presentation="date"
+							[(ngModel)]="jvRequest.dateTo" presentation="date" min="1973-01-01" [max]="currentDate"
+							  (ionChange)="hideDatePicker('end',$event)">
+							</ion-datetime>
+						  </div>
+
+						</div>
+					<div class="invalid-feedback">
+						<span *ngIf="!isToDtSelected">Credit Period To Date is required</span>
+					</div>
+			</div>
+		
+			<div class="section position-relative">
+				<div class="label">JV Date<span class="labelColor">*</span></div>
+				<!-- <ion-input type="date" class="ion-input" name="jvDate" [(ngModel)]="jvRequest.jvDate" #jvDate="ngModel"
+					required (ngModelChange)="inputChange($event,jvForm.form.valid)"></ion-input> -->
+					<!-- <ion-datetime class="ion-input" name="jvDate" displayFormat="DD-MM-YYYY" name="dateTo" [(ngModel)]="jvRequest.jvDate" #jvDate="ngModel" [min]="jvRequest.dateFrom" [max]="currentDay" placeholder="Select Jv Date" required [disabled]="disableToDte"></ion-datetime>	 -->
+					
+					<!-- review. datepicker issue 82 to 92-->
+					
+					<!-- <span class="position-relative">
+						<input class="ion-input dateField" angular-mydatepicker name="jvDate" [(ngModel)]="jvRequest.jvDate" readonly [options]="myOptions1" 
+					#jvDate="ngModel" placeholder="Select JV Date" required [disabled]="disableToDte"
+							 #dp2="angular-mydatepicker" (click)="dp2.openCalendar()" [disabled]="disableToDte" autocomplete="off"> 
+					<img class="calendar" src="assets/svg/calendar_report.svg" (click)="dp2.openCalendar()" alt="">
+					</span>
+					
+					<div class="invalid-feedback">
+						<span *ngIf="(jvForm.submitted && jvDate.invalid)">JV Date is requierd</span>
+					</div> -->
+
+					<div class="position-relative">
+						<div class="datePopover">
+							<ion-item class="date_Picker" (click)="toggleJvDatePicker()">
+							  <!-- <ion-label class="ion-lable-end">End Date</ion-label> -->
+							  <ion-input placeholder="Select Date" [value]="jvRequest.jvDate | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+							  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+							</ion-item>
+							<div class="calendarBackdrop" *ngIf="showJvDatePicker" (click)="hideDatePicker('jvend')"></div>
+							<ion-datetime name="jvDate"
+							#jvDate="ngModel" class="calendarOpen datePositionLeft" *ngIf="showJvDatePicker" presentation="date"
+							[(ngModel)]="jvRequest.jvDate" presentation="date" min="1973-01-01" [max]="currentDate"
+							  (ionChange)="hideDatePicker('jvend',$event)">
+							</ion-datetime>
+						  </div>
+
+						</div>
+
+					<div class="invalid-feedback">
+						<span *ngIf="!isJvDtSelected">JV Date is requierd</span>
+					</div>
+
+			</div>
+			<div class="section">
+				<div class="label">Invoice Number<span class="labelColor">*</span></div>
+				<ion-input type="text" class="ion-input" name="invoiceNum" customValidate [(ngModel)]="jvRequest.invoiceNum"
+					#invoiceNum="ngModel" required  maxlength="16"
+					></ion-input>
+				<div *ngIf="(jvForm.submitted && invoiceNum.invalid) || ( invoiceNum.invalid && invoiceNum.dirty || invoiceNum.touched)" class="invalid-feedback">
+					<span *ngIf="invoiceNum.errors?.['required']">Invoice Number is required</span>
+				</div>
+			</div>
+			<div class="section">
+				<div class="label">Narration<span class="labelColor">*</span></div>
+				<ion-input type="text" class="ion-input" name="narration" customValidate [(ngModel)]="jvRequest.narration"
+					#narration="ngModel" required maxlength="25">
+				</ion-input>
+	
+				<div *ngIf="(jvForm.submitted && narration.invalid) || ( narration.invalid && narration.dirty || narration.touched)" class="invalid-feedback">
+					<span *ngIf="narration.errors?.['required']">Narration is required</span>
+					<span *ngIf="narration.errors?.['maxlength']">Narration cannot be more than 25 characters</span>
+				</div>
+	
+			</div>
+			<div class="section reason-section">
+				<div class="label">JV Reason<span class="labelColor">*</span></div>
+
+				<ng-select [items]="ReasonList" bindLabel="reason" bindValue="reason" name="jvReason" [loading]="Loadvalue" [clearable]="false" [searchable] ="false" [(ngModel)]="jvRequest.jvReason" #jvReason="ngModel" required>
+
+				</ng-select> 
+				<div *ngIf="(jvForm.submitted && jvReason.invalid)" class="invalid-feedback">
+					<span *ngIf="jvReason.errors?.['required']">Jv Reason is required</span>
+				</div>
+				<!-- <ion-textarea class="ion-textarea" name="jvReason" [(ngModel)]="jvRequest.jvReason"
+				#jvReason="ngModel" required maxlength="100" (ngModelChange)="inputChange($event,jvForm.form.valid)"></ion-textarea> -->
+				<!-- <ion-input type="text" class="ion-input" name="jvReason" [(ngModel)]="jvRequest.jvReason"
+					#jvReason="ngModel" required maxlength="100" (ngModelChange)="inputChange($event,jvForm.form.valid)">
+				</ion-input>-->
+				<!-- <div *ngIf="jvReason.invalid" class="invalid-feedback">
+					<span *ngIf="jvReason.errors.required">Jv Reason is required</span>
+					<span *ngIf="jvReason.errors.maxlength">Jv Reason cannot be more than 100 Characters</span>
+				</div>  -->
+			</div>
+			<div class="section remark-section">
+				<div class="label">JV Remark<span class="labelColor">*</span></div>
+
+				<ng-select [items]="RemarkList" bindLabel="remark" bindValue="remark" name="jvRemark" [loading]="Loadvalue" [clearable]="false" [searchable] ="false" [(ngModel)]="jvRequest.jvRemark" #jvRemark="ngModel" required>
+
+				</ng-select> 
+				<div *ngIf="(jvForm.submitted && jvRemark.invalid)" class="invalid-feedback">
+					<span *ngIf="jvRemark.errors?.['required']">Jv Remark is required</span>
+				</div>
+				<!-- <ion-textarea class="ion-textarea" name="jvRemark" [(ngModel)]="jvRequest.jvRemark"
+				#jvRemark="ngModel" required maxlength="100" (ngModelChange)="inputChange($event,jvForm.form.valid)"></ion-textarea> -->
+				<!-- <ion-input type="text" class="ion-input" name="jvRemark" [(ngModel)]="jvRequest.jvRemark"
+					#jvRemark="ngModel" required maxlength="100" (ngModelChange)="inputChange($event,jvForm.form.valid)">
+				</ion-input> -->
+				<!-- <div *ngIf="jvRemark.invalid" class="invalid-feedback">
+					<span *ngIf="jvRemark.errors.required">Jv Remark is required</span>
+					<span *ngIf="jvRemark.errors.maxlength">Jv Remark cannot be more than 100 Characters</span>
+				</div> -->
+			</div>
+			<div class="section section-button">
+				<ion-button type="submit" [disabled]="!passClientId" (click)="submitJvForm(jvForm.form.valid)">Submit Request</ion-button>
+			</div>
+		</div>
+		<div class="loader-position" *ngIf="!dataLoad"> 
+			<img src="/assets/imgs/loader.gif" alt="">
+		</div>
+	</form>
+
+
+
+
+	<ion-content class="mobile-visibility" *ngIf="device == 'mobile'">
+		<form name="form" #jvForm1="ngForm" class="limit-change-block">
+			<!-- <div class="heading">JV Request</div> -->
+			<div class="field-block">
+		
+				<div class="section">
+					<div class="label">Client ID</div>
+					<div class="client-code-input">
+						<ion-toolbar>
+						  <ion-searchbar (ionClear)="onCancel()" (ionBlur)="hideDropDown()" (ngModelChange)="searchClient($event)"
+							search-icon="false" class="bodReprotsInput" name="clientId" [(ngModel)]="jvRequest.passClientId" #passClientId="ngModel"
+							placeholder="Type client ID">
+						  </ion-searchbar>
+						</ion-toolbar>
+					  </div>
+					 
+					  <ion-toolbar class="drop-down-toolbar" *ngIf="isListVisible">
+						<div class="drop-down thin-scroll" *ngIf="allClients.length && dtLoad">
+						  <div class="item" *ngFor="let data of allClients"
+							(click)="displayClientDetails(data)">
+							<span class="name">{{data.ClientCode}}</span>
+						  </div>
+						</div>
+						<div class="drop-down thin-scroll" *ngIf="allClients.length==0 && dtLoad">
+						  <span>No Data Found</span>
+						</div>
+						<div class="loader" *ngIf="!dtLoad">
+						  <img src="/assets/imgs/loader.gif" alt="">
+						</div>
+					  </ion-toolbar>
+					<!-- <ng-select [items]="clientCodeList" bindLabel="ClientCode" bindValue="ClientCode" [loading]="Loadvalue" name="clientId" [(ngModel)]="passClientId" (change)="inputClientId($event)" [searchable]="searchEvent" [clearSearchOnAdd]="clearEvent" (close)="closeDropdown()" (open)="openDropdown()">
+					</ng-select>  -->
+					<div class="invalid-feedback error-message">
+						<span>{{clientIdLimitErrMsg}}</span>
+					</div>
+				</div>
+		
+				<div class="section">
+					<div class="label">Amount JV<span class="labelColor">*</span></div>
+					<ion-input type="text" class="ion-input" name="jvAmount" [(ngModel)]="jvRequest.jvAmount"
+						#jvAmount="ngModel" maxlength="10" required 
+						(keypress)="numberOnly($event)"></ion-input>
+					<div *ngIf="(jvForm1.submitted && jvAmount.invalid) || ( jvAmount.invalid && jvAmount.dirty || jvAmount.touched)"  class="invalid-feedback">
+						<span *ngIf="jvAmount.errors?.['required']">Amount JV is required</span>
+						<span *ngIf="jvAmount.errors?.['maxlength']">Amount cannot be more than 10 digits</span>
+					</div>
+				</div>
+				
+				<div class="section" >
+					<div class="label">Credit Period From<span class="labelColor">*</span></div>
+					<!-- review. datepicker issue 220 to 229-->
+						
+					<!-- <span class="position-relative">
+							<input class="ion-input dateField" angular-mydatepicker name="dateFrom" [(ngModel)]="jvRequest.dateFrom" [options]="myOptions" #dateFrom="ngModel" readonly placeholder="Credit Period From Date" required (dateChanged)="onDateChanged($event)" autocomplete="off"
+							#dp4="angular-mydatepicker" (click)="dp4.openCalendar()">
+					<img class="calendar" src="assets/svg/calendar_report.svg" (click)="dp4.openCalendar()" alt=""></span>
+						
+						<div class="invalid-feedback">
+							<span *ngIf="(jvForm1.submitted && dateFrom.invalid)">Credit Period From Date is required</span>
+						</div> -->
+
+						<div class="position-relative">
+							<div class="datePopover">
+								<ion-item class="date_Picker" (click)="toggleStartDatePicker()">
+								  <!-- <ion-label class="ion-lable-end">Start Date</ion-label> -->
+								  <ion-input placeholder="Select Date" [value]="jvRequest.dateFrom | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+								  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+								</ion-item>
+								<div class="calendarBackdrop" *ngIf="showStartDatePicker" (click)="hideDatePicker('start')"></div>
+								<ion-datetime name="dateFrom"
+								#dateFrom="ngModel" class="calendarOpen" *ngIf="showStartDatePicker" presentation="date"
+								[(ngModel)]="jvRequest.dateFrom" presentation="date" min="1973-01-01" [max]="currentDate"
+								  (ionChange)="hideDatePicker('start',$event)">
+								</ion-datetime>
+							  </div>
+							</div>
+						
+						<div class="invalid-feedback">
+							<span *ngIf="!isFromDtSelected">Credit Period From Date is required</span>
+						</div>
+
+				</div>
+				
+				<div class="section position-relative">
+					<div class="label">Credit Period To<span class="labelColor">*</span></div>
+				
+					<!-- review. datepicker issue 235 to 244-->
+					<!-- <span class="position-relative">
+							<input class="ion-input dateField" angular-mydatepicker name="dateTo" [(ngModel)]="jvRequest.dateTo" readonly [options]="myOptions1" 
+							#dateTo="ngModel" placeholder="Credit Period To Date" required [disabled]="disableToDte" autocomplete="off"
+								#dp5="angular-mydatepicker" (click)="dp5.openCalendar()">
+							<img class="calendar" src="assets/svg/calendar_report.svg" (click)="dp5.openCalendar()" alt="">	
+						</span>
+						<div class="invalid-feedback">
+							<span *ngIf="(jvForm1.submitted && dateTo.invalid)">Credit Period To Date is required</span>
+						</div> -->
+
+						<div class="position-relative">
+							<div class="datePopover">
+								<ion-item class="date_Picker" (click)="toggleEndDatePicker()">
+								  <!-- <ion-label class="ion-lable-end">End Date</ion-label> -->
+								  <ion-input placeholder="Select Date" [value]="jvRequest.dateTo | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+								  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+								</ion-item>
+								<div class="calendarBackdrop" *ngIf="showEndDatePicker" (click)="hideDatePicker('end')"></div>
+								<ion-datetime name="dateTo"
+								#dateTo="ngModel" class="calendarOpen" *ngIf="showEndDatePicker" presentation="date"
+								[(ngModel)]="jvRequest.dateTo" presentation="date" min="1973-01-01" [max]="currentDate"
+								  (ionChange)="hideDatePicker('end',$event)">
+								</ion-datetime>
+							  </div>
+							</div>
+						<div class="invalid-feedback">
+							<span *ngIf="!isToDtSelected">Credit Period To Date is required</span>
+						</div>
+
+				</div>
+			
+				<div class="section position-relative">
+					<div class="label">JV Date<span class="labelColor">*</span></div>
+
+					<!-- review. datepicker issue 251 to 262-->
+
+						<!-- <span class="position-relative">
+							<input class="ion-input dateField" angular-mydatepicker name="jvDate" [(ngModel)]="jvRequest.jvDate" readonly [options]="myOptions1" 
+						#jvDate="ngModel" placeholder="Select JV Date" required [disabled]="disableToDte"
+								#dp6="angular-mydatepicker" (click)="dp6.openCalendar()" [disabled]="disableToDte" autocomplete="off"> 
+						<img class="calendar" src="assets/svg/calendar_report.svg" (click)="dp6.openCalendar()" alt="">
+						</span>
+						<div class="invalid-feedback">
+							<span *ngIf="(jvForm1.submitted && jvDate.invalid)">JV Date is requierd</span>
+						</div> -->
+
+						<div class="position-relative">
+							<div class="datePopover">
+                                <ion-item class="date_Picker" (click)="toggleJvDatePicker()">
+                                  <!-- <ion-label class="ion-lable-end">End Date</ion-label> -->
+                                  <ion-input placeholder="Select Date" [value]="jvRequest.jvDate | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+								  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+                                </ion-item>
+                                <div class="calendarBackdrop" *ngIf="showJvDatePicker" (click)="hideDatePicker('jvend')"></div>
+                                <ion-datetime name="jvDate"
+                                #jvDate="ngModel" class="calendarOpen" *ngIf="showJvDatePicker" presentation="date"
+                                [(ngModel)]="jvRequest.jvDate" presentation="date" min="1973-01-01" [max]="currentDate"
+                                  (ionChange)="hideDatePicker('jvend',$event)">
+                                </ion-datetime>
+                              </div>
+						</div>
+						<div class="invalid-feedback">
+							<span *ngIf="!isJvDtSelected">JV Date is requierd</span>
+						</div>
+
+				</div>
+				<div class="section">
+					<div class="label">Invoice Number<span class="labelColor">*</span></div>
+					<ion-input type="text" class="ion-input" name="invoiceNum" customValidate [(ngModel)]="jvRequest.invoiceNum"
+						#invoiceNum="ngModel" required  maxlength="16"></ion-input>
+					<div *ngIf="(jvForm1.submitted && invoiceNum.invalid) || ( invoiceNum.invalid && invoiceNum.dirty || invoiceNum.touched)" class="invalid-feedback">
+						<span *ngIf="invoiceNum.errors?.['required']">Invoice Number is required</span>
+						<span *ngIf="invoiceNum.errors?.['customValidate']">Invalid Charaters</span>
+					</div>
+				</div>
+				<div class="section">
+					<div class="label">Narration<span class="labelColor">*</span></div>
+					<ion-input type="text" class="ion-input" name="narration" customValidate [(ngModel)]="jvRequest.narration"
+						#narration="ngModel" required maxlength="25">
+					</ion-input>
+		
+					<div *ngIf="(jvForm1.submitted && narration.invalid) || ( narration.invalid && narration.dirty || narration.touched)" class="invalid-feedback">
+						<span *ngIf="narration.errors?.['required']">Narration is required</span>
+						<span *ngIf="narration.errors?.['maxlength']">Narration cannot be more than 25 characters</span>
+						<span *ngIf="narration.errors?.['customValidate']">Invalid Charaters</span>
+					</div>
+		
+				</div>
+				<div class="section reason-section">
+					<div class="label">JV Reason<span class="labelColor">*</span></div>
+
+					<ng-select [items]="ReasonList" bindLabel="reason" bindValue="reason" name="jvReason" [loading]="Loadvalue" [clearable]="false" [searchable] ="false" [(ngModel)]="jvRequest.jvReason" #jvReason="ngModel" required>
+
+					</ng-select> 
+					<div *ngIf="(jvForm1.submitted && jvReason.invalid)" class="invalid-feedback">
+						<span *ngIf="jvReason.errors?.['required']">Jv Reason is required</span>
+					</div>
+					
+				</div>
+				<div class="section remark-section">
+					<div class="label">JV Remark<span class="labelColor">*</span></div>
+
+					<ng-select [items]="RemarkList" bindLabel="remark" bindValue="remark" name="jvRemark" [loading]="Loadvalue" [clearable]="false" [searchable] ="false" [(ngModel)]="jvRequest.jvRemark" #jvRemark="ngModel" required>
+
+					</ng-select> 
+					<div *ngIf="(jvForm1.submitted && jvRemark.invalid)" class="invalid-feedback">
+						<span *ngIf="jvRemark.errors?.['required']">Jv Remark is required</span>
+					</div>
+					
+				</div>
+				<div class="section section-button">
+					<ion-button type="submit" [disabled]="!passClientId" (click)="submitJvForm(jvForm1.form.valid)">Submit Request</ion-button>
+				</div>
+			</div>
+			<div *ngIf="!dataLoad" class="loader-position">
+				<img src="/assets/imgs/loader.gif" alt="">
+			</div>
+		</form>
+	</ion-content>
+
+
+

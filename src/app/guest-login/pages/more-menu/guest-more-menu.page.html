@@ -1,0 +1,98 @@
+<ion-header>
+    <ion-toolbar color="tertiary" class="mobile-visibility">
+        <div class="title-block title-block-custom">
+            <div class="icon-title">
+                <ion-title class="title">More</ion-title>
+            </div>
+            <div class="icons">
+                <ion-icon class="iconsize first-icon noti-icon" style="margin-right:10px;" src="./assets/svg/white-home-icon.svg" (click)="goToDashboard()"></ion-icon>
+                <!-- <ion-icon name="power" class="logout-icon"></ion-icon> -->
+            </div>
+        </div>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="mobile-visibility">
+        <!-- new code start -->
+        <div class="revamp-more-option">
+            <ion-card>
+                <ion-card-header class="btnRequest" (click)="callBecomePartnerModal()">
+                    <div>
+                    <img src="assets/svg/report.svg" alt="">
+                    <ion-card-title>
+                        <span>Request</span>
+                    </ion-card-title></div>
+                    <img src="assets/svg/right-arrow.svg" style="width:5px;">
+                </ion-card-header>
+            </ion-card>
+            <ion-card *ngFor="let dataObj of menuOptions; let i = index">
+                <ion-card-header (click)="dropClick(i, menuOptions)"  [ngClass]="{'p-b-4': dataObj['isVisible']}">
+                    <img src="assets/svg/{{dataObj['icon']}}" alt="">
+                    <ion-card-title>
+                        <span>{{dataObj['name']}}</span>
+                        <span *ngIf="!dataObj['isVisible']" class="description">
+                            {{dataObj['description']}}
+                        </span>
+                    </ion-card-title>
+                    <ion-icon *ngIf="!dataObj['isVisible']" src="./assets/svg/down-arrow.svg" class="arrow-button"
+                        alt="arrow"></ion-icon>
+                    <ion-icon *ngIf="dataObj['isVisible']" src="./assets/svg/down-arrow.svg" class="rotate arrow-button"
+                        alt="arrow"></ion-icon>
+                </ion-card-header>
+                <ion-card-content *ngIf="dataObj['isVisible']">
+                    <ion-item *ngFor="let menDataObj of dataObj['subMenuOptionsMob']" (click)="callBecomePartnerModal(menDataObj.label)">
+                        <ion-icon src="assets/svg/right-arrow.svg" slot="end"></ion-icon>
+                        <ion-label>{{menDataObj['label']}}</ion-label>
+                    </ion-item>
+                </ion-card-content>
+            </ion-card>
+        </div>
+        <!-- end -->
+    </div>
+    <div class="desktop-visibility">
+        <!-- new code -->
+        <div class="container">
+            <div class="more-title">
+                More
+            </div>
+            <div class="revamp-more-option">
+                <ion-card>
+                    <ion-card-header class="btnRequest"  (click)="callBecomePartnerModal()">
+                        <div>
+                        <img src="assets/svg/report.svg" alt="">
+                        <ion-card-title>
+                            <span>Request</span>
+                        </ion-card-title></div>
+                        <img src="assets/svg/right-arrow.svg" style="width:5px;">
+                    </ion-card-header>
+                </ion-card>
+                <ion-card>
+                    <ion-card-header class="btnRequest" (click)="callBecomePartnerModal()">
+                        <div>
+                        <img src="assets/svg/circulars-icon.svg" alt="">
+                        <ion-card-title>
+                            <span>Circulars</span>
+                        </ion-card-title></div>
+                        <img src="assets/svg/right-arrow.svg" style="width:5px;">
+                    </ion-card-header>
+                </ion-card>
+                <ion-card *ngFor="let dataObj of menuOptions">
+                    <ion-card-header>
+                        <img src="assets/svg/{{dataObj['icon']}}" alt="">
+                        <ion-card-title>
+                            <span>{{dataObj['name']}}</span>
+                           </ion-card-title>
+                     </ion-card-header>
+                    <ion-card-content>
+                        <ion-item *ngFor="let menDataObj of dataObj['subMenuOptions']" class="pointer" (click)="callBecomePartnerModal()">
+                            <ion-icon src="assets/svg/right-arrow.svg" slot="end"></ion-icon>
+                            <ion-label>{{menDataObj['label']}}</ion-label>
+                        </ion-item>
+                    </ion-card-content>
+                </ion-card>
+            </div>
+        </div>
+        <!-- end -->
+    </div>
+</ion-content>

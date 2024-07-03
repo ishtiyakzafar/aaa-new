@@ -1,0 +1,246 @@
+<ion-header class="mobile-visibility">
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Premium & Discount(%)</ion-title>
+			</div>
+			<div class="search-block">
+				<ion-buttons class="header-icon-block">
+					<ion-icon class="iconsize first-icon noti-icon" src="./assets/svg/white-home-icon.svg" (click)="goToDashboard()"></ion-icon>
+					<ion-icon class="iconsize first-icon noti-icon" src="./assets/svg/notification.svg"
+						(click)="goToNotification()"></ion-icon>
+					<ion-icon class="iconsize" src="./assets/svg/search.svg" (click)="goToAddScript()"></ion-icon>
+				</ion-buttons>
+			</div>
+		</div>
+	</ion-toolbar>
+	<ion-toolbar style="--min-height:0">
+		<div>
+			<!-- header for gainers & losers in snapshot tab -->
+			<div>
+				<div class="gainer-container">
+					<div class="displaytabletitle mt10">
+						<span class="titleheader"> Premium (%) </span>
+						<!-- <label class="switch">
+                      <input type="checkbox" id="togBtn" name="gainersLosers" [(ngModel)]="gainersLosers"
+                      (ngModelChange)="optionCheckValue($event)">
+                      <div class="slider round">
+                         <span class="on">BSE</span><span class="off">NSE</span>
+                      </div>
+                   </label> -->
+						<span class="titleheader" style="color: #B92121"> Discount (%) </span>
+					</div>
+					<div class="gainerstable">
+						<div class="gainertableleft">
+							<table class="mt10">
+								<thead class="snapshot-mobile-header-first-table">
+									<tr>
+										<th>Scrip</th>
+										<th>%</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+						<div class="gainertableright">
+							<table class="mt10">
+								<thead class="snapshot-mobile-header-second-table" style="background: #FCCCCC">
+									<tr>
+										<th>Scrip</th>
+										<th>%</th>
+									</tr>
+								</thead>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content class="custom-content displayoffmobile">
+	<div class="gainer-container displayoffmobile">
+		<div class="gainerstable">
+			<div class="gainertableleft">
+				<table class="no-wrap-table">
+					<tbody *ngIf="premiuimPerList.length > 0 && !loader">
+						<tr *ngFor="let data of premiuimPerList" (click)="goToCompanydetail(data)">
+							<td style="color: #000000;font-family: 'nunitoBold';">{{data.Symbol}}</td>
+							<td style="color: #17C257;">
+								<p class="m-pt0 ltp">{{data.perchange}}</p>
+								<!-- <p class="m-pt0 percentage-change">{{data.PerChange}}%</p> -->
+							</td>
+						</tr>
+					</tbody>
+					<tbody *ngIf="premiuimPerList.length == 0 && !loader">
+						<tr class="cursor-auto">
+						   <td class="no-data-found" colspan="2">No Data Found</td>
+						</tr>
+					 </tbody>
+				</table>
+			</div>
+			<div class="gainertableright">
+				<table class="no-wrap-table">
+					<tbody *ngIf="discountPerList.length > 0 && !loader">
+						<tr *ngFor="let data of discountPerList" (click)="goToCompanydetail(data)">
+							<td class="fontboldblack">{{data.Symbol}}</td>
+							<td class="loser-colors">
+								<p class="m-pt0 ltp">{{data.perchange}}</p>
+								<!-- <p class="m-pt0 percentage-change">{{data.PerChange}}%</p> -->
+							</td>
+						</tr>
+					</tbody>
+					<tbody *ngIf="discountPerList.length == 0 && !loader">
+						<tr class="cursor-auto">
+						   <td class="no-data-found" colspan="2">No Data Found</td>
+						</tr>
+					 </tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="loader" *ngIf="loader" style="min-height: 275px;">
+		<img src="/assets/imgs/loader.gif" alt="">
+	</div>
+</ion-content>
+
+<div class="gainer-container gainer-container-second displayoffweb">
+	<div class="displaytabletitle">
+		<span class="titleheader"> Premium(%) </span>
+		<!-- <span> -->
+		<!-- <label class="switch">
+             <input type="checkbox" id="togBtn" name="gainersLosers">
+             <div class="slider round">
+                <span class="on">BSE</span><span class="off">NSE</span>
+             </div>
+          </label> -->
+		<!-- </span> -->
+		<span class="titleheader" style="color: #B92121"> Discount(%) </span>
+	</div>
+	<div class="gainerstable desktop-table-snapshot">
+		<div class="gainertableleft">
+			<table class="no-wrap-table">
+				<thead>
+					<tr>
+						<th>Scrip</th>
+						<th>%</th>
+					</tr>
+				</thead>
+				<tbody *ngIf="premiuimPerList.length > 0 && !loader">
+					<tr *ngFor="let data of premiuimPerList.slice(0, 3);" (click)="goToCompanydetail(data)">
+						<td class="fontboldblack">{{data['Symbol']}}</td>
+						<td class="fontgreen">
+							<p class="m-pt0 ltp">{{data['perchange']}}</p>
+							<!-- <p class="m-pt0 percentage-change">{{data.PerChange}}%</p> -->
+						</td>
+					</tr>
+				</tbody>
+				<tbody *ngIf="premiuimPerList.length == 0 && !loader">
+					<tr class="cursor-auto">
+						<td class="no-data-found" colspan="2">No Data Found</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="gainertableright">
+			<table class="no-wrap-table">
+				<thead style="background: #FCCCCC">
+					<tr>
+						<th>Scrip</th>
+						<th>%</th>
+					</tr>
+				</thead>
+				<tbody *ngIf="discountPerList.length > 0 && !loader">
+					<tr *ngFor="let data of discountPerList.slice(0, 3);" (click)="goToCompanydetail(data)">
+						<td class="fontboldblack">{{data['Symbol']}}</td>
+						<td class="loser-colors">
+							<p class="m-pt0 ltp">{{data['perchange']}}</p>
+							<!-- <p class="m-pt0 percentage-change">{{data.PerChange | number: '1.2-2'}}%</p> -->
+						</td>
+					</tr>
+				</tbody>
+				<tbody *ngIf="discountPerList.length == 0 && !loader">
+					<tr class="cursor-auto">
+						<td class="no-data-found" colspan="2">No Data Found</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="viewall" *ngIf="!loader">
+		<span (click)="openModal('premium-discount')"
+			[ngClass]="{'disabled': (premiuimPerList.length == 0 && discountPerList.length === 0)}">View All</span>
+	</div>
+	<div class="loader" *ngIf="loader" style="min-height: 275px;">
+		<img src="/assets/imgs/loader.gif" alt="">
+	</div>
+</div>
+
+<jw-modal id="premium-discount">
+	<div class="gainers-losers">
+		<div class="header">
+			<span class="fal fa-times modal-dismiss jw-modal-close" (click)="closeModal('premium-discount');">X</span>
+		</div>
+
+		<div class="container-head gainer-container">
+			<div class="displaytabletitle">
+				<span class="titleheader"> Premium(%) </span>
+				<!-- <span> -->
+				<!-- <label class="switch">
+                   <input type="checkbox" id="togBtn" [(ngModel)]="gainersLosers"
+                   (ngModelChange)="optionCheckValue($event)">
+                   <div class="slider round">
+                      <span class="on">BSE</span><span class="off">NSE</span>
+                   </div>
+                </label> -->
+				<!-- </span> -->
+				<span class="titleheader" style="color: #B92121"> Discount(%) </span>
+			</div>
+		</div>
+
+		<div class="gainers-losers_contains gainer-container snapshot-modal-parent gainer-modal-parent">
+
+			<div class="gainerstable">
+				<div class="gainertableleft">
+					<table class="no-wrap-table">
+						<thead style="background: #D5EFCC" class="snapshot-mobile-header-first-table">
+							<tr>
+								<th>Scrip</th>
+								<th>%</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let data of premiuimPerList" (click)="goToCompanydetail(data,'premium-discount')">
+								<td style="color: #000000;font-family: 'nunitoBold';">{{data['Symbol']}}</td>
+								<td class="font-green">
+									<p class="m-pt0 ltp">{{data['perchange']}}</p>
+									<!-- <p class="m-pt0 percentage-change">{{data.PerChange}}%</p> -->
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="gainertableright">
+					<table class="no-wrap-table">
+						<thead style="background: #FCCCCC">
+							<tr>
+								<th>Scrip</th>
+								<th>%</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let data of discountPerList" (click)="goToCompanydetail(data,'premium-discount')">
+								<td class="fontboldblack">{{data['Symbol']}}</td>
+								<td class="loser-colors">
+									<p class="m-pt0 ltp">{{data['perchange']}}</p>
+									<!-- <p class="m-pt0 percentage-change">{{data.PerChange}}%</p> -->
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</jw-modal>

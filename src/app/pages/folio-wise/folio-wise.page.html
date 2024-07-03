@@ -1,0 +1,243 @@
+<ion-header>
+  <div *ngIf="isDiv" class="info-drop  header-over" (click)="close()">  </div>
+  <ion-toolbar color="tertiary" class="mobile-visibility">
+    <div class="title-block title-block-custom">
+      <div class="icon-title">
+        <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+        <ion-title class="title">Foliowise Client Report</ion-title>
+      </div>
+    </div>
+  </ion-toolbar>
+  <ion-toolbar class=" desktop-visibility">
+    <div class="container">
+      <div class="heading-part notificationheader">
+        <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+        <span class="heading">Foliowise Client Report</span>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="isDiv" class="info-drop" (click)="close()"></div>
+  <div class="container">
+    <div class="folio_search">
+      <div class="search-section">
+        <ion-searchbar class="custom-searchbar" placeholder="Search by client name/PAN number"
+          (ionChange)="searchInList($event)">
+        </ion-searchbar>
+      </div>
+      <div class="download_filter">
+        <a href="javascript:void(0)" (click)="downloadReprt()">Download <img src="assets/svg/download_excel.svg"
+            alt="excel"></a>
+        <a href="javascript:void(0)" (click)="onFilterIcon()">Filter by <img
+            src="assets/svg/folio_filter_icon.svg" alt="filter"></a>
+      </div>
+      <div class="filter_main_box" *ngIf="visible">
+        <div class="filter_option">
+          <div>
+            <input type="radio" id="misMb" name="Mobile mismatch" value="Mobile mismatch" [(ngModel)]="filterBy">
+            <label for="misMb">Mobile No. Mismatch</label>
+          </div>
+          <div>
+            <input type="radio" id="misEmail" name="Email mismatch" value="Email mismatch" [(ngModel)]="filterBy">
+            <label for="misEmail">Email ID Mismatch</label>
+          </div>
+          <div>
+            <input type="radio" id="misMbEmail" name="Both mismatch" value="Both mismatch" [(ngModel)]="filterBy">
+            <label for="misMbEmail">Mobile No. and Email
+              ID Mismatch</label>
+          </div>
+
+        </div>
+        <div class="filter_btn">
+          <a href="javascript:void(0)" (click)="onClearAll()" class="clear_all">Clear All</a>
+          <a href="javascript:void(0)" (click)="onFilterApply()" class="apply">Apply</a>
+        </div>
+      </div>
+    </div>
+    <div class="web-equity thin-scroll detail-table desktop-visibility" style="margin-top:25px">
+      <div class="header-table">
+        <table style="width: 100%" class="desktop-header-table ">
+          <thead>
+            <tr>
+              <th>Folio Number</th>
+              <th>Scheme Name</th>
+              <th>Client Name</th>
+              <th>PAN No.</th>
+              <th>Subbroker Code</th>
+              <th>Mobile No.</th>
+              <th style="text-align: center;">Email ID</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="main-table thin-scroll folio_main_tbl">
+        <div class="table-block">
+          <table class="desktop-table thin-scroll">
+            <tr *ngFor="let item of folioList">
+              <td>{{item.fNumber}}</td>
+              <td>{{item.schemeName}}</td>
+              <td>{{item.clientName | titlecase }}</td>
+              <td>{{item.clientPan}}</td>
+              <td>{{item.partnerCode}}</td>
+              <td>{{item.rtamobileno ? item.rtamobileno : '-'}}
+                <div *ngIf="item.reason === 'Both mismatch' || item.reason === 'Mobile mismatch'"
+                  class="mismatch_msg_main">
+                  <span class="mismatch_msg">Mismatch Found
+                    <img src="assets/svg/info_red.png" alt="pdf" (mouseenter)="showMob(item)"
+                      (mouseleave)="hideMob(item)">
+                    <div class="mismatch_details" *ngIf="item.showMobPopup">
+                      <h2>Mismatch in Mobile No.</h2>
+                      <div class="mismatch_grid">
+                        <div class="mis_amc">
+                          <label>At AMC</label>
+                          <span>{{item.rtamobileno ? item.rtamobileno : '-'}}</span>
+                        </div>
+                        <div>
+                          <label>At IIFL</label>
+                          <span>{{item.iiflmobileno ? item.iiflmobileno : '-'}}</span>
+                        </div>
+                      </div>
+                      <p>Ask the Client to update Mobile Number as mismatch can lead to order Rejections. </p>
+                    </div>
+                  </span>
+                </div>
+              </td>
+              <td style="text-align: center;">{{item.rtaemail ? item.rtaemail : '-'}}
+                <div *ngIf="item.reason === 'Both mismatch' || item.reason === 'Email mismatch'"
+                  class="mismatch_msg_main">
+                  <span class="mismatch_msg">Mismatch Found
+                    <img src="assets/svg/info_red.png" alt="pdf" (mouseenter)="showPopUp(item)"
+                      (mouseleave)="hidePopup(item)">
+                    <div class="mismatch_details email_mismatch_main" *ngIf="item.showEmlPopup">
+                      <h2>Mismatch in Email ID</h2>
+                      <div class="mismatch_grid">
+                        <div class="mis_amc">
+                          <label>At AMC</label>
+                          <span>{{item.rtaemail ? item.rtaemail : '-'}}</span>
+                        </div>
+                        <div>
+                          <label>At IIFL</label>
+                          <span>{{item.iiflemail ? item.iiflemail : '-'}}</span>
+                        </div>
+                      </div>
+                      <p>Ask the Client to update Email ID as mismatch can lead to order Rejections.</p>
+                    </div>
+                  </span>
+                </div>
+              </td>
+            </tr>
+            <!-- </tbody> -->
+            <tbody *ngIf="tableLoader">
+              <div class="center"> <img *ngIf="tableLoader" class="tableLoader" src="/assets/imgs/loader.gif" alt="">
+              </div>
+            </tbody>
+
+            <tbody *ngIf="!tableLoader && folioList && folioList.length == 0">
+              <td align="center" colspan="7">
+                <div class="center tableLoader"> <img class="raise-image" src="assets/svg/not_raised.svg" alt="">
+                  <div class="raise-message">No Data</div>
+                </div>
+              </td>
+            </tbody>
+
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-visibility">
+      <div class="grid_main" >
+    <div class="table_grid_box" *ngFor="let item of folioList">
+    <div class="table_grid">
+      <label>Folio Number</label>
+      <span>{{item.fNumber}}</span>
+    </div>
+    
+    <div class="table_grid">
+      <label>Scheme Name</label>
+      <span>{{item.schemeName}}</span>
+    </div>
+    
+    <div class="table_grid">
+      <label>Client Name</label>
+      <span>{{item.clientName | titlecase }}</span>
+    </div>
+    
+     <div class="table_grid">
+      <label>PAN No.</label>
+      <span>{{item.clientPan}}</span>
+    </div>
+    <div class="table_grid">
+      <label>Subbroker Code</label>
+      <span>{{item.partnerCode}}</span>
+    </div>
+    <div class="table_grid">
+      <label>Mobile No.</label>
+      <span>
+        {{item.rtamobileno ? item.rtamobileno : '-'}}
+                <div *ngIf="item.reason === 'Both mismatch' || item.reason === 'Mobile mismatch'"
+                  class="mismatch_msg_main">
+                  <span class="mismatch_msg">Mismatch Found
+                    <img src="assets/svg/info_red.png" alt="pdf" (mouseenter)="showMob1(item)"
+                      (mouseleave)="hideMob1(item)">
+                    <div class="mismatch_details" *ngIf="item.showMobPopup1">
+                      <h2>Mismatch in Mobile No.</h2>
+                      <div class="mismatch_grid">
+                        <div class="mis_amc">
+                          <label>At AMC</label>
+                          <span>{{item.rtamobileno ? item.rtamobileno : '-'}}</span>
+                        </div>
+                        <div>
+                          <label>At IIFL</label>
+                          <span>{{item.iiflmobileno ? item.iiflmobileno : '-'}}</span>
+                        </div>
+                      </div>
+                      <p>Ask the Client to update Mobile Number as mismatch can lead to order Rejections. </p>
+                    </div>
+                  </span>
+                </div>
+      </span>
+    </div>
+    <div class="table_grid">
+      <label>Email ID</label>
+      <span>
+        {{item.rtaemail ? item.rtaemail : '-'}}
+                <div *ngIf="item.reason === 'Both mismatch' || item.reason === 'Email mismatch'"
+                  class="mismatch_msg_main">
+                  <span class="mismatch_msg">Mismatch Found
+                    <img src="assets/svg/info_red.png" alt="pdf" (mouseenter)="showPopUp1(item)"
+                      (mouseleave)="hidePopup1(item)">
+                    <div class="mismatch_details email_mismatch_main" *ngIf="item.showEmlPopup1">
+                      <h2>Mismatch in Email ID</h2>
+                      <div class="mismatch_grid">
+                        <div class="mis_amc">
+                          <label>At AMC</label>
+                          <span>{{item.rtaemail ? item.rtaemail : '-'}}</span>
+                        </div>
+                        <div>
+                          <label>At IIFL</label>
+                          <span>{{item.iiflemail ? item.iiflemail : '-'}}</span>
+                        </div>
+                      </div>
+                      <p>Ask the Client to update Email ID as mismatch can lead to order Rejections.</p>
+                    </div>
+                  </span>
+                </div>
+      </span>
+    </div>
+    
+    </div>
+    </div>
+    <div *ngIf="tableLoader">
+      <div class="center"> <img *ngIf="tableLoader" class="tableLoader" src="/assets/imgs/loader.gif" alt="">
+      </div>
+    </div>
+    <div *ngIf="!tableLoader && folioList && folioList.length == 0">
+       <div class="center tableLoader"> <img class="raise-image" src="assets/svg/not_raised.svg" alt="">
+          <div class="raise-message">No Data</div>
+        </div>
+    </div>
+    </div>
+  </div>
+</ion-content>

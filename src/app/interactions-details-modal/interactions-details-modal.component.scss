@@ -1,0 +1,16 @@
+.card_details_pop{border-radius: 25px;}
+.pop_close img{width: 22px; cursor: pointer;}
+.modal_title{display: flex; justify-content: space-between; padding: 25px 20px; background: #F6F6F6; align-items: center;}
+.modal_title span{font-size: 20px; font-weight: 700; color: #212121;}
+.card_details_inner{padding: 20px; overflow: auto; height: 250px;}
+.query_dt_table td{font-size: 15px; color: #7F7F7F; padding:10px 0; vertical-align: top;}
+.query_dt_table td:first-child{width: 25%; padding-right: 15px;}
+.query_dt_table td:last-child{color: #282828; font-weight: 600;}
+.status.open{color: #17C257 !important; font-weight: 600;}
+.status.wip{color: #DEB224 !important;font-weight: 600;}
+.status.close{color: #6E6E6E !important;font-weight: 600;}
+.query_dt_table{margin-bottom:20px;}
+
+@media screen and  (max-width: 768px)  {
+    .query_dt_table td:first-child{width: inherit;}
+}

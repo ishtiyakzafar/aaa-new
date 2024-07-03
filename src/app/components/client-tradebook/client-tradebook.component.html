@@ -1,0 +1,136 @@
+<ion-content class="mobile-visibility">
+  <div class="data-block-parent" *ngIf="tradeBookData.length > 0">
+    <div class="data-block" *ngFor="let data of tradeBookData; let i = index">
+      <div class="upper-section">
+        <div class="qty-block">
+          <div class="buy-block">
+            <span class="buy">
+               <span *ngIf="data.BuySell == 'B'">BUY</span>
+                <span *ngIf="data.BuySell == 'S'">SELL</span>&nbsp;&nbsp;
+            </span><span class="gray-block">{{data.ExchangeTradeTime | formatTime}}</span>
+          </div>
+          <span class="buy intraday">
+              <span *ngIf="data.DelvIntra == 'D'">Delivery</span>
+              <span *ngIf="data.DelvIntra == 'I'">Intraday</span>
+              <span *ngIf="data.DelvIntra == 'S'">BO</span>
+              <span *ngIf="data.DelvIntra == 'C'">CO</span>
+          </span>
+        </div>
+        <div class="data-section">
+          <div class="item">
+            <div class="upper scrip-name" (click)="goToClientDetails(data)">{{data.ScripName | splitNameDate: "name"}} <span class="gray-block">{{data.Exch}}{{data.ExchType}}</span></div>
+            <div class="lower">{{data.ScripName | splitNameDate: "date"}}</div>
+            <div class="trade-id">
+              <span class="gray-block">Trade ID {{data.ExchangeTradeID}}</span>
+            </div>
+          </div>
+          <div class="item">
+            <div class="upper text-right">
+              <span class="option m-r-8">Avg. Rate</span><span class="rupees">₹</span><span class="value">{{data.Rate | formatNumerDecimal: data.ExchType}}</span>
+            </div>
+            <div class="upper text-right">
+              <span class="option m-r-8">Qty.</span><span class="value">{{data.Qty-data.PendingQty}} / {{data.Qty}}</span>
+            </div>                                                         
+        </div>
+      </div>
+      </div>
+      <!-- <div class="trade-id">
+        <span class="gray-block">Trade ID {{data.ExchangeTradeID}}</span>
+      </div> -->
+    </div>
+    <!-- <div class="no-data-found" *ngIf="tradeBookData.length == 0">
+      No Records Found
+    </div> -->
+  </div>
+  <div class="data-block-parent" *ngIf="tradeBookData.length == 0">
+     <span class="no-data-found">No Records Found</span> 
+  </div>
+</ion-content>
+<div class="desktop-visibility">
+  <div class="refreshBtn">
+    <div class="refresh-block pointer" (click)="doRefresh()">
+      <ion-icon class="refresh" src="assets/svg/refresh_colored.svg"></ion-icon>
+      <span>Refresh</span>
+    </div>
+  </div>
+  <div class="web-equity thin-scroll">
+    <div class="header-table">
+      <table class="desktop-header-table width-100">
+        <thead>
+          <tr>
+            <th>
+              Time
+            </th>
+            <th>
+              Trade ID
+            </th>
+            <th>
+              Type
+            </th>
+            <th>
+              Scrip
+            </th>
+            <th>
+              Rate
+            </th>
+            <th>
+              Traded Qty
+            </th>
+            <th>
+              Product
+            </th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="main-table thin-scroll" *ngIf="dataLoad">
+      <table class="mobile-table width-100">
+        <tbody *ngIf="tradeBookData && tradeBookData.length > 0">
+            <tr *ngFor="let data of tradeBookData">
+              <td>
+                {{data.ExchangeTradeTime | formatTime}}
+              </td>
+              <td>
+                {{data.ExchangeTradeID}}
+              </td>
+              <td>
+                <div class="type-data" [ngClass]="{'buy': data['BuySell'] == 'B', 'sell': data['BuySell'] == 'S'}">
+                  <span *ngIf="data.BuySell == 'B'">BUY</span>
+                  <span *ngIf="data.BuySell == 'S'">SELL</span>
+                </div>
+              </td>
+              <td> 
+                <div class="td-heading first-column">
+                  <span class="first-span-block">
+                    <span class="first-span" (click)="goToClientDetails(data)">{{data.ScripName | splitNameDate: "name"}}</span> 
+                    <span class="spanStyle"> {{data.Exch}},{{data.ExchType}}</span>
+                  </span>
+                  <span class="date">{{data.ScripName | splitNameDate: "date"}}</span>
+                </div>
+              </td>
+              <td>
+                {{data.Rate | formatNumerDecimal: data.ExchType}}
+              </td>
+              <td>
+                {{data.Qty}}
+              </td>
+              <td>
+                <span *ngIf="data.DelvIntra == 'D'">Delivery</span>
+                <span *ngIf="data.DelvIntra == 'I'">Intraday</span>
+                <span *ngIf="data.DelvIntra == 'S'">BO</span>
+                <span *ngIf="data.DelvIntra == 'C'">CO</span>
+              </td>
+            </tr>
+        </tbody>
+        <tbody *ngIf="tradeBookData.length === 0">
+          <tr>
+            <td class="no-data-found">No Record Found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="loader" *ngIf="!dataLoad" style="min-height: 120px">
+      <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+  </div>
+</div>

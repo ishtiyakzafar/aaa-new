@@ -1,0 +1,189 @@
+<ion-header>
+	<ion-toolbar class="desktop-visibility">
+		<div class="filter-part">
+			<div class="filter-block">
+				<div>
+					<ion-searchbar [(ngModel)]="searchTerm" (ionFocus)="showDropDown()" (ionBlur)="hideDropDown()" placeholder="Search by Client Code"></ion-searchbar>
+				</div>
+			</div>
+		</div>
+		
+		<div class="table-header">
+			<table class="desktop-table">
+				<thead class="width-100">
+					<tr>
+						<th>Client Code</th>
+						<th [class.active]="order === 'todate'" class="pointer" (click)="setOrder('todate')">Date
+							<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+							<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+							<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+						</th>
+						<th>Particulars</th>
+						<th [class.active]="order === 'voucher'" class="pointer text-center" (click)="setOrder('voucher')">Voucher
+							<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+							<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+							<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+						</th>
+						<th [class.active]="order === 'amount'" class="pointer" (click)="setOrder('amount')">Credit/Debit(&#x20b9;) 
+							<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+							<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+							<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+						</th>
+						<th>Balance((&#x20b9;))</th>
+					
+					</tr>
+				</thead>
+			</table>
+		</div>
+
+	</ion-toolbar>
+	<ion-toolbar class="search-toolbar mobile-visibility">
+		<div class="filter-block">
+			  <div class="search-block">
+					<ion-searchbar [(ngModel)]="searchTerm" (ionFocus)="showDropDown()" (ionBlur)="hideDropDown()" placeholder="Search by Client Code"></ion-searchbar>
+			  </div>
+		</div>
+		<div class="status-block quantity-block">
+			<div class="refresh-parent-block">
+				<div class="a-z-sorting"> Sort by <span class="sort-by" [class.active]="order === 'todate'" class="pointer" (click)="setOrder('todate')">Date (A - Z)
+					<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+					<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+					<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending"> </span></div>
+				<div class="refresh-block" (click)="resetData()">
+				  <img src="assets/svg/refresh_colored.svg" alt="">
+				  <span class="reset">Reset</span>
+				</div>
+			  </div>
+		</div>	
+	</ion-toolbar>
+
+	<ion-toolbar class="drop-down-toolbar" *ngIf="isDropDownVisible">
+		
+		<!-- review. removed filter  -->
+		<!-- <div class="drop-down thin-scroll" *ngIf="(clientList|filter:searchTerm).length > 0">
+			<div class="item" *ngFor="let data of clientList | filter:searchTerm" (click)="displayClientDetails(data)"> -->
+		<div class="drop-down thin-scroll" *ngIf="(clientList|filter:searchTerm).length > 0">
+			<div class="item" *ngFor="let data of clientList | filter:searchTerm" (click)="displayClientDetails(data)">
+				<span class="name">{{data.ClientCode}}</span>
+				<span class="first">{{data.ClientName}}</span>
+			</div>
+		</div>
+
+		<!-- review. removed filter  -->
+		<!-- <div class="drop-down thin-scroll" *ngIf="(clientList|filter:searchTerm).length == 0"> -->
+		<div class="drop-down thin-scroll" *ngIf="(clientList|filter:searchTerm).length == 0">
+			<div class="item text-center">
+				<span>No Data Found</span>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+<!-- <ion-content> -->
+<div class="main-table thin-scroll desktop-visibility" (scroll)="divScroll($event)">
+	<div class="table-block" *ngIf="!isRefresh">
+		<table class="desktop-table">
+			<tbody *ngIf="fundPayData.length > 0">
+				<tr *ngFor="let dataObj of fundPayData; let i = index">
+					<td>
+						<div class="upper-part justify-content-start">{{dataObj.ClientCode}}</div>
+					</td>
+					<td>
+						<div class="upper-part">
+							{{splitDate(dataObj.Date)}}
+						</div>
+					</td>
+
+					<td>
+						<div class="upper-part justify-content-start">{{dataObj['Particulars']}}</div>
+
+					</td>
+					<td>
+						<div class="upper-part">{{dataObj['Voucher']}}</div>
+					</td>
+					<td>
+						<div class="upper-part">{{dataObj['Amount'] | formatNumerDecimal}}</div>
+					</td>
+					<td>
+						<div class="upper-part justify-content-end p-r-inherit">
+							<span *ngIf="dataObj['Balance'] != '' ">{{dataObj['Balance'] | formatNumerDecimal}}</span>
+							<span *ngIf="dataObj['Balance'] == '' ">N/A</span>
+						</div>
+					</td>
+					
+				</tr>
+			</tbody>
+			<tbody *ngIf="fundPayData.length == 0">
+				<tr>
+					<td class="no-data-found">{{msgDisplay}}</td>
+				</tr>
+     		 </tbody>
+		</table>
+	</div>
+	<div class="loader loader-height-350" *ngIf="isRefresh">
+		<img src="/assets/imgs/loader.gif" alt="">
+	</div>
+</div>
+
+
+<ion-content #scrollArea scrollEvents="true" class="mobile-visibility">
+	<div class="data-block-parent" *ngIf="fundPayData.length > 0 && !isRefresh">
+		<div class="data-block" *ngFor="let dataObj of fundPayData; let i = index">
+			<div class="upper-section" (click)="dropClick(dataObj.srNo, fundPayData)">
+			  <div class="qty-block">
+				<div class="buy-block">
+				  <div class="client-code">
+					<span class="client-value">{{splitDate(dataObj.Date)}}</span>
+				  </div> 
+				</div>
+			
+			  </div>
+			  <div class="data-section">
+				<div class="item">
+				  <div class="upper scrip-name">{{dataObj.ClientCode}}</div>
+				  <div class="lower">Voucher: {{dataObj['Voucher']}}</div>
+				</div>
+				<div class="item">
+				  <div class="upper text-right" [ngClass]="{'amountplus': dataObj['Amount'] >= 0, 'amountminus': dataObj['Amount'] < 0}">
+					<span class="option m-r-8"></span><span class="rupees">₹</span><span
+					  class="value">{{dataObj['Amount'] | formatNumerDecimal}}</span>
+				  </div>
+				  <div class="upper text-right">
+					<span class="option m-r-8">Balance:</span><span class="value">
+						<span *ngIf="dataObj['Balance'] != '' ">{{dataObj['Balance'] | formatNumerDecimal}}</span>
+						<span *ngIf="dataObj['Balance'] == '' ">N/A</span>
+					</span>
+				  </div>
+				</div>
+			  </div>
+			</div>
+			<div class="detail-section" *ngIf="dataObj['isVisible']">
+				{{dataObj['Particulars']}}
+			</div>
+		</div>
+	</div>
+	<div>
+		<div class="loader loader-height-259" *ngIf="isRefresh">
+			<img src="/assets/imgs/loader.gif" alt="">
+		</div>
+	</div>
+	<div class="data-block-parent" *ngIf="fundPayData.length === 0 && !isRefresh">
+	  <span class="no-data-found">{{msgDisplay}}</span>
+	</div>
+
+
+	<div>
+		<div class="loader loader-height-370" *ngIf="isRefresh" >
+			<img src="/assets/imgs/loader.gif" alt="">
+		</div>
+	</div>
+	<!-- <div class="data-block-parent" *ngIf="fundPayData.length === 0 && !isRefresh">
+	  <span class="no-data-found">No Data Found</span>
+	</div> -->
+
+	<ion-infinite-scroll *ngIf="enableNext" threshold="100px" (ionInfinite)="loadData($event)">
+		<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+</ion-content>
+
+<!-- </ion-content> -->

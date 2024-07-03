@@ -1,0 +1,31 @@
+.web-equity {
+    .header-table {
+        th {
+            width: 15% !important;
+        }
+        th:nth-child(2) {
+            text-align: left;
+            width: 20% !important;
+        }
+    }
+    .main-table {
+        max-height: 380px;
+        overflow: auto;
+        td {
+            width: 15% !important;
+        }
+        td:nth-child(2) {
+            text-align: left;
+            font-family: 'nunitoBold';
+            width: 20% !important;
+        }
+    }
+    td:nth-child(3), th:nth-child(3) {
+        text-align: center !important;
+        width: 20% !important;
+    }
+    td:nth-child(4), th:nth-child(4) {
+        text-align: left !important;
+    }
+}
+

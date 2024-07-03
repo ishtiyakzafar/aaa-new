@@ -1,0 +1,61 @@
+# CI/CD Pipeline YAML for Angular app deploy on Azure Blob
+
+trigger:
+  branches:
+    include:
+    - develop   # CI/CD for UAT (develop branch)
+    - preprod   # CI/CD for Preprod (preprod branch)
+    - main    # CI/CD for Prod (master branch)
+
+variables:
+  NODE_OPTIONS: '--max-old-space-size=8192'
+
+stages:
+  - stage: Build
+    displayName: 'AAA-WEB'
+    jobs:
+      - job: Build
+        displayName: 'Build and Package'
+        pool:
+          vmImage: 'ubuntu-latest'
+
+        steps:          
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '20.x'
+            displayName: 'Install Node.js'
+          - script: |                                   
+              npm install -g @angular/cli
+              npm install -g @ionic/cli
+              npm i apexcharts@3.35.2
+              npm i ng-apexcharts@1.6.0
+              npm install              
+            displayName: 'install Angular dependencies'
+          - script: | 
+              echo "Branch name: $(Build.SourceBranchName)"
+              if [ "$(Build.SourceBranchName)" == "develop" ]; then
+                echo " Building Angular app for Branch name: $(Build.SourceBranchName)"
+                ng build --configuration=development
+              elif [ "$(Build.SourceBranchName)" == "preprod" ]; then
+                echo " Building Angular app for Branch name: $(Build.SourceBranchName)"
+                ng build --configuration=production
+              elif [ "$(Build.SourceBranchName)" == "main" ]; then
+                echo " Building Angular app for Branch name: $(Build.SourceBranchName)"
+                ng build --configuration=production
+              else
+                echo "This Branch not for build"
+              fi
+            displayName: 'Build Angular App $(Build.SourceBranchName)'
+            continueOnError: true
+          
+          - task: ArchiveFiles@2
+            displayName: 'Archive files'
+            inputs:
+              rootFolderOrFile: '$(System.DefaultWorkingDirectory)/www'
+              includeRootFolder: false
+              archiveType: zip
+              archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+              replaceExistingArchive: true
+
+          - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+            artifact: drop

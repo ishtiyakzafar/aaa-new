@@ -1,0 +1,293 @@
+<div class="card_details_pop" >
+  <div class="modal_title">
+  <span>Your KPI</span>
+  <div class="pop_close" (click)="dismisss()"><img src="assets/svg/close_black.svg" width="18" alt="close"></div>
+  </div>
+   <div class="card_details_inner card_details_YoureKPI">
+    <span class="last_date" *ngIf="userChannel === 'Franchisee'">Last updated on - {{datas.LastUpdatedOn}}</span>
+    <div class="your-KPI">
+      <div>
+        <img class="iconsize iconKPI icon-score"
+        src="./assets/svg/score.svg"/>
+        <label>Overall Score <span class="infoTooltip"><img src="./assets/svg/info-tooltip.svg"> <span class="tooltiptext" *ngIf="userChannel === 'Premia'">Overall Score = Income Revenue + Net AUM + Clients Acquisition</span>
+          <span class="tooltiptext" *ngIf="userChannel === 'Franchisee'">Overall Score is the achieved weightage of your Key Performance Indicators</span>
+        </span></label> 
+        <p *ngIf="userChannel === 'Premia'">{{datas?.totalscore == " " ? 0 : datas?.totalscore | formatNumberUnit}}</p>
+        <p *ngIf="userChannel === 'Franchisee'">{{datas?.OverallScore == " " ? 0 : datas?.OverallScore | formatNumberUnit}}</p>
+      </div>
+      <div>
+        <img class="iconsize iconKPI icon-rank"
+        src="./assets/svg/rank_star.svg"/>
+        <label>Rank</label> 
+        <p *ngIf="userChannel === 'Premia'">{{datas?.rank == " " ? 0 : datas?.rank | formatNumberUnit }}</p>
+        <p *ngIf="userChannel === 'Franchisee'">{{datas?.Rank == " " ? 0 : datas?.Rank | formatNumberUnit }}</p>
+     
+      </div>
+
+    </div>
+    <div class="userpremia" *ngIf="userChannel === 'Premia'">
+    <div class="borderBox">
+        <div class="titleBox">
+            <h3>Income Revenue</h3>
+            <div><img width="16" src="./assets/svg/score.svg" class="m-r-5"/> <span>Score</span> {{!datas?.irscore ? 0 : datas?.irscore | formatNumerDecimal}}</div>
+        </div>
+        <div class="targetBar">
+          <div class='progress-bar progress-orange-bar'>
+            <div [style.width] ="barIncomeRevenue+ '%'">
+              <span class="round"><img src="./assets/svg/progress-you.svg" width="12"/></span>
+              <span class="Digit"><span  class="rupees">₹</span> {{datas?.ir == " " ? 0 : datas?.ir | formatNumberUnit}}</span>
+            </div>
+            <label *ngIf="datas?.irtarget >= datas?.ir">You  <span class="leftDigit">(<span  class="rupees">₹</span> {{datas?.irtarget - datas?.ir  | formatNumberUnit}} left to achieve target)</span></label>
+            <label *ngIf="datas?.irtarget < datas?.ir">You  <span class="leftDigit">(<span  class="rupees">₹</span> You have achieved the target)</span></label>
+          </div>
+          <div class="targetValue">{{datas?.irtarget == " " ? 0 : datas?.irtarget | formatNumberUnit}}</div>
+        </div>
+        <div class="targetBar topPerformerBar">
+
+          
+          <div class='progress-bar' *ngIf="topIRPerformer === false">
+            <div [style.width] ="barIncometopPerformer+ '%'">
+              <span class="round"><img src="./assets/svg/progress-performer.svg" width="12"/></span>
+              <span class="Digit"><span  class="rupees">₹</span> {{datas?.TPIRscore == " " ? 0 : datas?.TPIRscore | formatNumberUnit}}</span>
+            </div>
+            <label>Top Performer</label>
+          </div>
+          <div class="youTopPerformer" *ngIf="topIRPerformer === true">
+            <span class="round"><img src="./assets/svg/progress-performer.svg" width="12"/></span>
+            You're a Top Performer
+          </div>
+        </div>
+        <!-- <ion-progress-bar class="main_progress_bar"  value="80"></ion-progress-bar> -->
+    </div>
+
+    <div class="borderBox">
+      <div class="titleBox">
+          <h3>Net AUM</h3>
+          <div><img width="16" src="./assets/svg/score.svg" class="m-r-5"/> <span>Score</span> {{!datas?.collscore ? 0 : datas?.collscore | formatNumerDecimal}}</div>
+      </div>
+      <div class="targetBar">
+        <div class='progress-bar progress-orange-bar'>
+          <div [style.width] ="barNetAUM+ '%'">
+            <span class="round"><img src="./assets/svg/progress-you.svg" width="12"/></span>
+            <span class="Digit"><span  class="rupees">₹</span> {{datas?.newcoll == " " ? 0 : datas?.newcoll | formatNumberUnit}}</span>
+          </div>
+          <label *ngIf="datas?.newcolltarget >= datas?.newcoll">You  <span class="leftDigit">(<span  class="rupees">₹</span> {{datas?.newcolltarget - datas?.newcoll | formatNumberUnit}} left to achieve target)</span></label>
+          <label *ngIf="datas?.newcolltarget < datas?.newcoll">You  <span class="leftDigit">(<span  class="rupees">₹</span> You have achieved the target)</span></label>
+        </div>
+        <div class="targetValue">{{datas?.newcolltarget == " " ? 0 : datas?.newcolltarget  | formatNumberUnit}}</div>
+      </div>
+      <div class="targetBar topPerformerBar">
+        <div class='progress-bar' *ngIf="topNAPerformer === false">
+          <div [style.width] ="barNetAUMPerformer+ '%'">
+            <span class="round"><img src="./assets/svg/progress-performer.svg" width="12"/></span>
+            <span class="Digit"><span  class="rupees">₹</span>  {{datas?.TPAUMScore == " " ? 0 : datas?.TPAUMScore | formatNumberUnit}}</span>
+          </div>
+          <label>Top Performer</label>
+        </div>
+        <div class="youTopPerformer" *ngIf="topNAPerformer === true">
+          <span class="round"><img src="./assets/svg/progress-performer.svg" width="12"/></span>
+          You're a Top Performer
+        </div>
+      </div>
+      <!-- <ion-progress-bar class="main_progress_bar"  value="80"></ion-progress-bar> -->
+  </div>
+
+  <div class="borderBox">
+    <div class="titleBox">
+        <h3>Clients Acquisition</h3>
+        <div><img width="16" src="./assets/svg/score.svg" class="m-r-5"/> <span>Score</span> {{!datas?.newactvscore ? 0 : datas?.newactvscore | formatNumerDecimal}}</div>
+    </div>
+    <div class="targetBar">
+      <div class='progress-bar progress-orange-bar'>
+        <div [style.width] ="barAcquisition+ '%'">
+          <span class="round"><img src="./assets/svg/progress-you.svg" width="12"/></span>
+          <span class="Digit">{{datas?.newactive == " " ? 0 : datas?.newactive | formatNumberUnit}}</span>
+        </div>
+        <label *ngIf="datas?.newactvtarget >= datas?.newactive">You  <span class="leftDigit">({{datas?.newactvtarget - datas?.newactive | formatNumberUnit}} left to achieve target)</span></label>
+        <label *ngIf="datas?.newactvtarget < datas?.newactive">You  <span class="leftDigit">(<span  class="rupees">₹</span> You have achieved the target)</span></label>
+      </div>
+      <div class="targetValue">{{datas?.newactvtarget == " " ? 0 : datas?.newactvtarget | formatNumberUnit}}</div>
+    </div>
+    <div class="targetBar topPerformerBar">
+      <div class='progress-bar' *ngIf="topCAPerformer === false">
+        <div [style.width] ="barAcquisitionPerformer+ '%'">
+          <span class="round"><img src="./assets/svg/progress-performer.svg" width="12"/></span>
+          <span class="Digit">{{datas?.TPActvscore == " " ? 0 : datas?.TPActvscore | formatNumberUnit}}</span>
+        </div>
+        <label>Top Performer</label>
+      </div>
+      <div class="youTopPerformer" *ngIf="topCAPerformer === true">
+        <span class="round"><img src="./assets/svg/progress-performer.svg" width="12"/></span>
+        You're a Top Performer
+      </div>
+    </div>
+    <!-- <ion-progress-bar class="main_progress_bar"  value="80"></ion-progress-bar> -->
+</div>
+</div>
+
+<div class="userfranchisee" *ngIf="userChannel === 'Franchisee'">
+  <div class="borderBox" >
+    <div class="titleBox">
+        <h3>Fan Acquisition</h3>
+        <div><img width="16" src="./assets/svg/score.svg" class="m-r-5"/> <span>Score</span> {{datas.FanAcquisitionWeightageScore == " " ? 0 : datas.FanAcquisitionWeightageScore | formatNumberUnit}}</div>
+    </div>
+    <div class="targetBar">
+      <div class='progress-bar progress-orange-bar'>
+        <div [style.width] ="barFanAcquisition+ '%'">
+          <span class="round"><img src="./assets/svg/progress-you.svg" width="12"/></span>
+          <span class="Digit">{{datas.FanAcquisitionAchievedScore == " " ? 0 : datas.FanAcquisitionAchievedScore | formatNumberUnit}}</span>
+        </div>
+        <label *ngIf="datas?.FanAcquisitionTargetScore >= datas?.FanAcquisitionAchievedScore">You  <span class="leftDigit">({{datas?.FanAcquisitionTargetScore - datas?.FanAcquisitionAchievedScore | formatNumberUnit}} left to achieve target)</span></label>
+        <label *ngIf="datas?.FanAcquisitionTargetScore < datas?.FanAcquisitionAchievedScore"><span class="leftDigit">(You have achieved the target)</span></label>
+      </div>
+      <div class="targetValue">{{datas.FanAcquisitionTargetScore == " " ? 0 : datas.FanAcquisitionTargetScore | formatNumberUnit}}</div>
+    </div>
+    <div class="targetBar topPerformerBar">
+      <div class='progress-bar' *ngIf="topFAPerformer === false">
+        <div [style.width] ="barFanAcquisitionPerformer+ '%'">
+          <span class="round"><img src="./assets/svg/progress-performer.svg" width="12"/></span>
+          <span class="Digit">{{datas.FanAcquisitionTopPerformerScore == " " ? 0 : datas.FanAcquisitionTopPerformerScore | formatNumberUnit}}</span>
+        </div>
+        <label>Top Performer</label>
+      </div>
+      <div class="youTopPerformer" *ngIf="topFAPerformer === true">
+        <span class="round"><img src="./assets/svg/progress-performer.svg" width="12"/></span>
+        You're a Top Performer
+      </div>
+    </div>
+    <!-- <ion-progress-bar class="main_progress_bar"  value="80"></ion-progress-bar> -->
+  </div>
+  <div class="borderBox" >
+    <div class="titleBox">
+        <h3>New Fan IR</h3>
+        <div><img width="16" src="./assets/svg/score.svg" class="m-r-5"/> <span>Score</span> {{datas.NewFanIRWeightageScore == " " ? 0 : datas.NewFanIRWeightageScore | formatNumberUnit}}</div>
+    </div>
+    <div class="targetBar">
+      <div class='progress-bar progress-orange-bar'>
+        <div [style.width] ="barFanIRAcquisition+ '%'">
+          <span class="round"><img src="./assets/svg/progress-you.svg" width="12"/></span>
+          <span class="Digit">{{datas.NewFanIRAchievedScore == " " ? 0 : datas.NewFanIRAchievedScore | formatNumberUnit}}</span>
+        </div>
+        
+        <label *ngIf="datas?.NewFanIRTargetScore > datas?.NewFanIRAchievedScore">You  <span class="leftDigit">({{datas?.NewFanIRTargetScore - datas?.NewFanIRAchievedScore | formatNumberUnit}} left to achieve target)</span></label>
+        <label *ngIf="datas?.NewFanIRTargetScore <= datas?.NewFanIRAchievedScore"><span class="leftDigit">(You have achieved the target)</span></label>
+      </div>
+      <div class="targetValue">{{datas.NewFanIRTargetScore == " " ? 0 : datas.NewFanIRTargetScore | formatNumberUnit}}</div>
+    </div>
+    <div class="targetBar topPerformerBar">
+      <div class='progress-bar' *ngIf="topFanIRPerformer === false">
+        <div [style.width] ="barFanIRAcquisitionPerformer+ '%'">
+          <span class="round"><img src="./assets/svg/progress-performer.svg" width="12"/></span>
+          <span class="Digit">{{datas.NewFanIRTopPerformerScore == " " ? 0 : datas.NewFanIRTopPerformerScore | formatNumberUnit}}</span>
+        </div>
+        <label>Top Performer</label>
+      </div>
+      <div class="youTopPerformer" *ngIf="topFanIRPerformer === true">
+        <span class="round"><img src="./assets/svg/progress-performer.svg" width="12"/></span>
+        You're a Top Performer
+      </div>
+    </div>
+    <!-- <ion-progress-bar class="main_progress_bar"  value="80"></ion-progress-bar> -->
+  </div>
+  <div class="borderBox" >
+    <div class="titleBox">
+        <h3>Cross Sell IR</h3>
+        <div><img width="16" src="./assets/svg/score.svg" class="m-r-5"/> <span>Score</span> {{datas.CrossSellIRWeightageScore == " " ? 0 : datas.CrossSellIRWeightageScore | formatNumberUnit}}</div>
+    </div>
+    <div class="targetBar">
+      <div class='progress-bar progress-orange-bar'>
+        <div [style.width] ="barCrossSellIRAcquisition+ '%'">
+          <span class="round"><img src="./assets/svg/progress-you.svg" width="12"/></span>
+          <span class="Digit">{{datas.CrossSellIRAchievedScore == " " ? 0 : datas.CrossSellIRAchievedScore | formatNumberUnit}}</span>
+        </div>
+        <label *ngIf="datas?.CrossSellIRTargetScore >= datas?.CrossSellIRAchievedScore">You  <span class="leftDigit">(<span  class="rupees">₹</span> {{datas?.CrossSellIRTargetScore - datas?.CrossSellIRAchievedScore | formatNumberUnit}} left to achieve target)</span></label>
+        <label *ngIf="datas?.CrossSellIRTargetScore < datas?.CrossSellIRAchievedScore"><span class="leftDigit">( You have achieved the target)</span></label>
+      </div>
+      <div class="targetValue">{{datas.CrossSellIRTargetScore == " " ? 0 : datas.CrossSellIRTargetScore | formatNumberUnit}}</div>
+    </div>
+    <div class="targetBar topPerformerBar">
+      <div class='progress-bar' *ngIf="topCrossSellIRPerformer === false">
+        <div [style.width] ="barCrossSellIRAcquisitionPerformer+ '%'">
+          <span class="round"><img src="./assets/svg/progress-performer.svg" width="12"/></span>
+          <span class="Digit">{{datas.CrossSellIRTopPerformerScore == " " ? 0 : datas.CrossSellIRTopPerformerScore | formatNumberUnit}}</span>
+        </div>
+        <label>Top Performer</label>
+      </div>
+      <div class="youTopPerformer" *ngIf="topCrossSellIRPerformer === true">
+        <span class="round"><img src="./assets/svg/progress-performer.svg" width="12"/></span>
+        You're a Top Performer
+      </div>
+    </div>
+    <!-- <ion-progress-bar class="main_progress_bar"  value="80"></ion-progress-bar> -->
+  </div>
+  <div class="borderBox" >
+    <div class="titleBox">
+        <h3>AUM Collection</h3>
+        <div><img width="16" src="./assets/svg/score.svg" class="m-r-5"/> <span>Score</span> {{datas.AUMCollectionWeightageScore == " " ? 0 : datas.AUMCollectionWeightageScore | formatNumberUnit}}</div>
+    </div>
+    <div class="targetBar">
+      <div class='progress-bar progress-orange-bar'>
+        <div [style.width] ="barCollectionAcquisition+ '%'">
+          <span class="round"><img src="./assets/svg/progress-you.svg" width="12"/></span>
+          <span class="Digit">{{datas.AUMCollectionAchievedScore == " " ? 0 : datas.AUMCollectionAchievedScore | formatNumberUnit}}</span>
+        </div>
+        <label *ngIf="isAUMCollectionTragetAchieved">You  <span class="leftDigit">(<span  class="rupees">₹</span> {{datas?.AUMCollectionTargetScore - datas?.AUMCollectionAchievedScore | formatNumberUnit}} left to achieve target</span>)</label>
+        <label *ngIf="!isAUMCollectionTragetAchieved"><span class="leftDigit">( You have achieved the target)</span></label>
+      </div>
+      <div class="targetValue">{{datas.AUMCollectionTargetScore == " " ? 0 : datas.AUMCollectionTargetScore | formatNumberUnit}}</div>
+    </div>
+    <div class="targetBar topPerformerBar">
+      <div class='progress-bar' *ngIf="topCollectionPerformer === false">
+        <div [style.width] ="barCrossSellIRAcquisitionPerformer+ '%'">
+          <span class="round"><img src="./assets/svg/progress-performer.svg" width="12"/></span>
+          <span class="Digit">{{datas.AUMCollectionTopPerformerScore == " " ? 0 : datas.AUMCollectionTopPerformerScore | formatNumberUnit}}</span>
+        </div>
+        <label>Top Performer</label>
+      </div>
+      <div class="youTopPerformer" *ngIf="topCollectionPerformer === true">
+        <span class="round"><img src="./assets/svg/progress-performer.svg" width="12"/></span>
+        You're a Top Performer
+      </div>
+    </div>
+    <!-- <ion-progress-bar class="main_progress_bar"  value="80"></ion-progress-bar> -->
+  </div>
+  <div class="borderBox" >
+    <div class="titleBox">
+        <h3>Account Activation</h3>
+        <div><img width="16" src="./assets/svg/score.svg" class="m-r-5"/> <span>Score</span> {{datas.AccountActivationWeightageScore == " " ? 0 : datas.AccountActivationWeightageScore | formatNumberUnit}}</div>
+    </div>
+    <div class="targetBar">
+      <div class='progress-bar progress-orange-bar'>
+        <div [style.width] ="barAccountActivationAcquisition+ '%'">
+          <span class="round"><img src="./assets/svg/progress-you.svg" width="12"/></span>
+          <span class="Digit">{{datas.AccountActivationAchievedScore == " " ? 0 : datas.AccountActivationAchievedScore | formatNumberUnit}}</span>
+        </div>
+        <label *ngIf="datas?.AccountActivationTargetScore >= datas?.AccountActivationAchievedScore">You  <span class="leftDigit">(<span  class="rupees">₹</span> {{datas?.AccountActivationTargetScore - datas?.AccountActivationAchievedScore | formatNumberUnit}} left to achieve target)</span></label>
+        <label *ngIf="datas?.AccountActivationTargetScore < datas?.AccountActivationAchievedScore"> <span class="leftDigit">( You have achieved the target)</span></label>
+      </div>
+      <div class="targetValue">{{datas.AccountActivationTargetScore == " " ? 0 : datas.AccountActivationTargetScore | formatNumberUnit}}</div>
+    </div>
+    <div class="targetBar topPerformerBar">
+      <div class='progress-bar' *ngIf="topAccountActivationPerformer === false">
+        <div [style.width] ="barAccountActivationAcquisitionPerformer+ '%'">
+          <span class="round"><img src="./assets/svg/progress-performer.svg" width="12"/></span>
+          <span class="Digit">{{datas.AccActivationTopPerformerScore == " " ? 0 : datas.AccActivationTopPerformerScore | formatNumberUnit}}</span>
+        </div>
+        <label>Top Performer</label>
+      </div>
+      <div class="youTopPerformer" *ngIf="topAccountActivationPerformer === true">
+        <span class="round"><img src="./assets/svg/progress-performer.svg" width="12"/></span>
+        You're a Top Performer
+      </div>
+    </div>
+    <!-- <ion-progress-bar class="main_progress_bar"  value="80"></ion-progress-bar> -->
+  </div>
+  </div>
+
+
+
+
+   </div>
+ 
+ 
+  </div>

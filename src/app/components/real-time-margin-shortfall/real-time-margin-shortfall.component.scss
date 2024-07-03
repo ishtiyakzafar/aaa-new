@@ -1,0 +1,116 @@
+
+@media screen and (min-width: 768px){
+    .container {width: 720px;margin: 0 auto;position: relative;}
+}
+@media screen and (min-width: 992px){
+    .container {width: 960px;margin: 0 auto;position: relative;}
+}
+@media screen and (min-width: 1200px){
+    .container {width: 1140px;margin: 0 auto;position: relative;}
+    }
+
+    .center {text-align: center !important; width: 100% !important;}
+ .web-equity .main-table td, .web-equity .header-table th { padding: 10px 15px !important; text-align: right; font-size: 14px; width: 16%; max-width: inherit ;word-break: break-word;}
+ .web-equity th:first-child, .web-equity td:first-child{width: 8% !important; max-width: inherit !important; text-align: left; margin-left: 15px;}
+ .web-equity th:nth-child(2), .web-equity td:nth-child(2){ width: 8% !important;}
+ .web-equity th:nth-child(3), .web-equity td:nth-child(3){ width: 12% !important;}
+ .web-equity th:nth-child(4), .web-equity td:nth-child(4){ width: 16% !important;}
+ .web-equity th:nth-child(5), .web-equity td:nth-child(5){ width: 18% !important;}
+ .web-equity th:nth-child(6), .web-equity td:nth-child(6){ width: 16% !important;}
+
+ .search_and_download{display: flex; justify-content: space-between; align-items: center; margin: 15px 0 0 0;}
+.script_search{width: 75%; margin-right: 20px;}
+.search-section-changed-revamped .custom-searchbar {width: 100% !important;  text-align: left !important; }
+.download_file{display: flex;justify-content: flex-end; gap: 10px; margin-top: 10px;position: relative; width:19%;}
+.download_file > div{cursor: pointer;}
+.download_file img{width: 20px;cursor: pointer;}
+// .real_time_tbl{height: 400px;    overflow-y: scroll;}
+
+.download_msg { width: auto; font-size: 12px; display: block; position: absolute; right: 40px; padding: 10px; border-radius: 5px; bottom: -3px; background: #fbefe6;box-shadow: 1px 0px 2px #dedad7; z-index: 1060; }
+.download_msg:after { content: ""; display: block; /* float: right; */ margin-top: .25em; border-color: transparent; border-top-color: #fbefe6; border-style: solid; border-width: 1rem; width: 0; height: 0; position: relative; line-height: 0; position: absolute; top: 0; bottom: 0; margin: 0 auto; right: -25px; z-index: 1060; transform: rotate(270deg); white-space: nowrap; }
+
+
+.search-section-changed-revamped.search_pad_20{
+    padding-right: 20px;
+}
+
+.desktop-table {
+    // width: 100%;
+    width: 1140px;
+    margin-left: 0;
+    margin: auto;
+    max-height: unset !important;
+    tbody{
+        border: 1px solid #cbcbcb;
+    }
+    tr {
+        border-bottom: 1px solid #CBCBCB;
+        th {
+            background: #F2F4F4;
+            padding: 10px 2px;
+        }
+        
+        td {
+            cursor: pointer;
+            position: relative;
+        }
+        th, td {
+            font-size: 14px;
+            color: #6E6E6E;
+            text-align: center;
+            padding:10px 5px !important;
+            // padding-left: 2px !important;
+            // padding-right: 2px !important;
+        }
+        th:nth-child(1), td:nth-child(1) {
+            text-align: left;
+            border-radius: 8px 0 0 0;
+            padding-left: 16px!important;
+            // width: 11%;
+        }
+        th:nth-child(3), th:nth-child(4), th:nth-child(5), th:nth-child(6),
+        td:nth-child(3), td:nth-child(4), td:nth-child(5), td:nth-child(6) {
+            text-align: right;
+          
+        }
+       
+        th:last-child, td:last-child {
+            padding-right: 20px !important;
+        }
+        th:last-child {
+            border-radius: 0 8px 0 0;
+        }
+        td:last-child {
+            border-radius: 0 0 0 8px;
+        }
+        
+    }
+    tr:last-child {
+        border-bottom: none !important;
+    }
+    tbody {
+        tr {
+            border-bottom: 1px solid #cbcbcb;
+        }
+        tr:first-child {
+            border-top: none;
+        }
+    }
+}
+table {
+    border: none !important;
+}
+.header-segment-bottom {
+    .segment-button-checked {
+        border-bottom: 4px solid #2D197F;
+    }
+}
+.seg-one {
+    padding-top: 5px;
+    margin-top: 15px;
+    border-bottom: 1px solid #e4e7eb;   
+    padding-bottom: 7px !important;
+    ion-segment{
+        justify-content: flex-start !important;
+    }
+}

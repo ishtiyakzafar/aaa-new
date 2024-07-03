@@ -1,0 +1,9 @@
+@import 'src/app/pages/wire-requests/wire-requests.page.scss';
+@media screen and (max-width: 768px) {
+    .drop-down-toolbar {
+        top: 65px;
+        width: 100%;
+        // margin: 0 2%;;
+        background-color: #ffffff;
+    }
+}

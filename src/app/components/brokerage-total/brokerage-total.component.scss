@@ -1,0 +1,75 @@
+.web-equity {
+    .header-table {
+        th {
+            // width: 20% !important;
+            width: 11% !important;
+        }
+        th:nth-child(2) {
+            text-align: left;
+        }
+    }
+    .main-table {
+        // max-height: 175px;
+        max-height: 468px;
+        overflow: auto;
+        td {
+            // width: 20% !important;
+            width: 11% !important;
+        }
+        td:nth-child(2) {
+            text-align: left;
+            // font-family: 'nunitoBold';
+        }
+    }
+}
+
+.search-section-changed-revamped{border: 0px;padding: 12px 0;}
+.btn_orange, .btn_orange:hover{background: #F37921 !important; font-size: 12px; padding: 4px 10px; color: #fff !important; border-radius: 20px; text-align: center;  min-height: inherit; border: 1px solid #F37921; text-transform: capitalize;display: flex;justify-content: center; align-items: center; margin: 0px 5px;}
+.btn_orange_outline, .btn_orange_outline:hover{background: #fff !important; border: 1px solid #F37921; font-size: 12px; padding: 6px 0px; color: #F37921; border-radius: 20px; text-align: center;  min-height: inherit; margin-right: 10px;text-transform: capitalize; }
+
+
+// AMC Non Client css
+.amc_non_client{padding: 1.25rem; border: 1px solid rgba(0, 0, 0, 0.12); box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.12); border-radius: 8px; width: 100%;}
+.amc_non_client .name{font-size: 22px; font-weight: 700; color: #000; display: block;} 
+.amc_non_client .code{font-size: 18px; font-weight: 500; color: #9C9C9C;display: block; margin-top: 5px;}
+.non_client_type{display: flex;  gap: 50px; padding: 30px; }   
+.non_client_type div{width: 100%;}
+.non_client_type .label{font-size: 13px; color: #808080; padding-bottom: 6px;}
+.statement_period{width: 100%;}
+.statement_period{display: flex; gap: 90px; margin: 0; padding:10px 30px;}
+.statement_period li{display: flex; gap: 5px; justify-content: flex-start;}
+.statment_value label{font-size: 16px; color: #000000; font-weight: 500; display: block;}
+.statment_value span{font-size: 14px; color: #808080; font-weight: 500; display: block;}
+.amc_non_client a{width: 150px; margin: 30px auto 0; text-decoration: none; padding: 10px 20px;}
+.amc_error_msg{padding: 10px 20px; border: 1px solid #DF514C33; border-radius: 4px;background: rgba(223, 81, 76, 0.1); display: flex; gap: 15px;    width: max-content; margin: 30px auto 0;}
+.amc_error_msg span{font-size: 14px; font-weight: 500; color: #DF514C;}
+@media screen and (max-width: 991px) {
+    .statement_period{gap: 20px;}
+}
+@media screen and (min-width: 1200px) {
+    .container {
+        width: 1140px;
+    }
+}
+
+.loader{min-height: inherit;}
+/*radio button*/
+.reg1 input[type=radio] {width: 18px; height: 18px; margin: 5px;}
+/*radio button*/
+.detailed_tbl th span{display: block; color: #000;font-weight: 600;
+    font-size: 14px;}
+    .desktop-visibility th { font-size: 13px; font-weight: 400; }
+
+
+.download_file{display: flex;justify-content: flex-end; gap: 10px; margin: 15px 0;}
+.download_file > div{cursor: pointer;}
+.download_file img{width: 16px;}
+    
+@media screen and (max-width: 768px) {
+  .download_file{padding-right: 10px;}
+}
+.download_msg_main{position: relative; margin: 10px 0; display: flex; width: 100%; justify-content: flex-end;}
+.download_msg { width: auto; font-size: 12px; display: block; position: absolute; right: 40px; padding: 10px; border-radius: 5px; bottom: -3px; background: #fbefe6;box-shadow: 1px 0px 2px #dedad7; z-index: 1060; }
+.download_msg:after { content: ""; display: block; /* float: right; */ margin-top: .25em; border-color: transparent; border-top-color: #fbefe6; border-style: solid; border-width: 1rem; width: 0; height: 0; position: relative; line-height: 0; position: absolute; top: 0; bottom: 0; margin: 0 auto; right: -25px; z-index: 1060; transform: rotate(270deg); }
+.download_msg_main img{ cursor: pointer;}
+.overlay{position: fixed; width: 100%; height: 100%; z-index: 1060; background: rgba(0, 0, 0, 0.5); top: 0; left: 0; right: 0; bottom: 0;}

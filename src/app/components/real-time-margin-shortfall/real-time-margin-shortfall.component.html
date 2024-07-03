@@ -1,0 +1,188 @@
+<section class="desktop-visibility">   
+  <div class="container">
+<div *ngIf="partnerID">
+<div class="seg-one container">          
+  <ion-segment class="header-segment-bottom d-flex" [(ngModel)]="tabValue"
+      (ionChange)="tabChanged()">
+      <div *ngFor="let data of tabButton; let i = index">
+          <ion-segment-button value={{data.Value}}>
+              {{data.Name}}
+          </ion-segment-button>
+      </div>                   
+  </ion-segment>
+</div>
+<div class="segment-parent-block" [ngSwitch]="tabValue">
+<div class="segment-block-child" *ngSwitchCase="'rtms'">
+    <div class="box-container">
+      <div class="container">
+        <div class="search_and_download ">
+            <div class="search-section search-section-changed search-section-changed-revamped script_search search_pad_20">
+              <ion-searchbar search-icon="false" class="custom-searchbar hold_search" placeholder="Client Code/Group Code"
+                [(ngModel)]="searchValue" [debounce]="1000" (ionChange)="searchInList($event)">
+              </ion-searchbar>            
+            </div>
+      
+            <div class="download_file" (mouseenter)="excelDownlod = !excelDownlod" (mouseleave)="excelDownlod = !excelDownlod">
+             
+              <div style="float: right; cursor: pointer;" (click)="onExcelDownload()">
+                <img src="assets/svg/download_excel.svg" alt="">            
+              </div>
+              <div class="download_msg" *ngIf="excelDownlod">
+                Click here to Download
+            </div>
+              </div>
+          </div>
+
+          <div class="web-equity thin-scroll detail-table desktop-visibility" style="margin-top:10px">
+            
+            <div class="main-table-1  real_time_tbl">
+              <div class="table-block table-fixed-header">
+                <table class="desktop-table  ">
+                  <thead>
+                    <tr>
+                        <th [class.active]="order === 'Clientcode'" class="pointer">Client Code</th>
+                        <th [class.active]="order === 'WireCode'" class="pointer">Group Code</th>
+                        <th [class.active]="order === 'AvailableMargin'" (click)="setOrder('AvailableMargin')">Available Margin (₹)
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                        </th>
+                        <th [class.active]="order === 'MarginAvailableforReporting'" (click)="setOrder('MarginAvailableforReporting')">Margin Shortfall (₹)
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                        </th>
+                        <th [class.active]="order === 'PeakMarginRequirement'" (click)="setOrder('PeakMarginRequirement')">Peak Margin Requirement (₹)
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                        </th>
+                        <th [class.active]="order === 'ActualMarginUtilization'" (click)="setOrder('ActualMarginUtilization')">Actual Margin Utilization (₹)
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                        </th>
+                    </tr>
+                </thead>
+                    <tbody *ngIf="datas && datas.length > 0 && dataLoad">
+                      <tr *ngFor="let dataObj of datas | orderBy: order:val; let i = index">
+                            <td> {{dataObj['Clientcode']}}</td>
+                            <td> {{dataObj['WireCode']}}</td>
+                            <td>{{dataObj['AvailableMargin'] | formatNumerDecimal}}</td>
+                            <td>{{dataObj['MarginAvailableforReporting'] | formatNumerDecimal}}</td>
+                            <td>{{dataObj['PeakMarginRequirement'] | formatNumerDecimal}}</td>
+                            <td>{{dataObj['ActualMarginUtilization'] | formatNumerDecimal}}</td>
+                   </tr>
+                    </tbody>
+                    <!-- <tbody *ngIf="tableLoader && !dataLoad">
+                        <div class="center"> <img *ngIf="tableLoader" class="tableLoader" src="/assets/imgs/loader.gif" alt="">
+                        </div>
+                      </tbody> -->
+                    <tbody *ngIf="dataLoad && !datas.length">
+                        <tr>
+                            <td colspan="5" class="no-data-found cntr center" style="width: 100% !important; text-align: center !important;">No Data Found</td>
+                        </tr>
+                    </tbody>
+      
+                </table>
+                <div class="loader" *ngIf="!dataLoad">
+                  <img src="/assets/imgs/loader.gif" alt="">
+                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+<div class="segment-block-child" *ngSwitchCase="'nmr'">
+  <div class="box-container">
+    <div class="container">
+      <div class="search_and_download ">
+          <div class="search-section search-section-changed search-section-changed-revamped script_search">
+            <ion-searchbar search-icon="false" class="custom-searchbar hold_search" placeholder="Client Code/Group Code"
+              [(ngModel)]="searchValue" [debounce]="1000" (ionChange)="searchInList($event)">
+            </ion-searchbar>
+          
+            
+            <ion-button class="search-button">
+              <img src="assets/svg/updated_search.svg" alt="">
+            </ion-button>
+            
+          </div>
+    
+          <div class="download_file" (mouseenter)="excelDownlod = !excelDownlod" (mouseleave)="excelDownlod = !excelDownlod">
+             
+            <div style="float: right; cursor: pointer;" (click)="onExcelDownload()">
+              <img src="assets/svg/download_excel.svg" alt="">            
+            </div>
+            <div class="download_msg" *ngIf="excelDownlod">
+              Click here to Download
+          </div>
+            </div>
+        </div>
+         <div class="web-equity thin-scroll detail-table desktop-visibility" style="margin-top:10px">
+          <div class="header-table">
+            <table style="width: 100%" class="desktop-header-table ">
+              <thead>
+                  <tr>
+                      <th class="pointer">Client Code</th>
+                      <th [class.active]="order === 'GroupCode'" (click)="setOrder('GroupCode')">Group Code  
+                          <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                          <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                          <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                      </th>
+                      <th [class.active]="order === 'AvailableMargin'" (click)="setOrder('AvailableMargin')">Available Margin (₹)
+                        <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                        <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                        <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                    </th>                      
+                      <th [class.active]="order === 'Shortfall'" (click)="setOrder('Shortfall')">Margin Shortfall (₹)
+                          <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                          <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                          <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                      </th>
+                      <th [class.active]="order === 'MarginUtilization'" (click)="setOrder('MarginUtilization')">Actual Margin Utilization (₹)
+                        <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                        <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                        <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                    </th>
+                  </tr>
+              </thead>
+            </table>
+          </div>
+          <div class="main-table thin-scroll real_time_tbl">
+            <div class="table-block">
+              <table class="desktop-table thin-scroll ">
+                  <tbody *ngIf="datas && datas.length > 0 && dataLoad">
+                      <tr *ngFor="let dataObj of datas | orderBy: order:val; let i = index">
+                          <td> {{dataObj['ClientCode']}}</td>
+                          <td> {{dataObj['GroupCode']}}</td>
+                          <td>{{dataObj['AvailableMargin'] | formatNumerDecimal}}</td>
+                          <td>{{dataObj['Shortfall'] | formatNumerDecimal}}</td>
+                          <td>{{dataObj['MarginUtilization'] | formatNumerDecimal}}</td>
+                 </tr>
+                  </tbody>
+                  <!-- <tbody *ngIf="!dataLoad">
+                      <div class="center"> <img class="tableLoader" src="/assets/imgs/loader.gif" alt="">
+                      </div>
+                    </tbody> -->
+                  <tbody *ngIf="dataLoad && !datas.length">
+                      <tr>
+                          <td colspan="5" class="no-data-found cntr center" style="width: 100% !important; text-align: center !important;">No Data Found</td>
+                      </tr>
+                  </tbody>
+    
+              </table>
+              <div class="loader" *ngIf="!dataLoad">
+                <img src="/assets/imgs/loader.gif" alt="">
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</section>

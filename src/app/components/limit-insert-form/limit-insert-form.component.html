@@ -1,0 +1,125 @@
+<ion-header class="mobile-visibility">
+    <ion-toolbar color="tertiary">
+        <div class="title-block title-block-custom">
+            <div class="icon-title">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <ion-title class="title">Limit Requests</ion-title>
+            </div>
+        </div>
+	</ion-toolbar>
+
+</ion-header>
+
+<div class="rquest-tabs mobile-visibility">
+	<div >
+	  <button class="active" >
+		Limit Request
+	  </button>
+	  <button (click)="limitChangeRedirect()">
+		Limit Request Status
+	  </button>
+	</div>
+</div>
+
+	<form name="form" #limitForm="ngForm" class="limit-change-block">
+		<div class="heading desktop-visibility">Limit Change</div>
+		<div class="field-block">
+			<div class="section position-relative mobile-visibility"> 
+				<div class="label">Client ID</div>
+				<div class="client-code-input">
+					<ion-toolbar>
+					  <ion-searchbar (ionClear)="onCancel()" (ionBlur)="hideDropDown()" (ngModelChange)="searchClient($event)"
+						search-icon="false" class="bodReprotsInput" name="clientId" [(ngModel)]="limitform.passClientId" #passClientId="ngModel"
+						placeholder="Type client ID">
+					  </ion-searchbar>
+					</ion-toolbar>
+				  </div>
+				 
+				  <ion-toolbar class="drop-down-toolbar" *ngIf="isListVisible">
+					<div class="drop-down thin-scroll" *ngIf="allClients.length && dtLoad">
+					  <div class="item" *ngFor="let data of allClients"
+						(click)="displayClientDetails(data)">
+						<span class="name">{{data.ClientCode}}</span>
+					  </div>
+					</div>
+					<div class="drop-down thin-scroll" *ngIf="allClients.length==0 && dtLoad">
+					  <span>No Data Found</span>
+					</div>
+					<div class="loader" *ngIf="!dtLoad">
+					  <img src="/assets/imgs/loader.gif" alt="">
+					</div>
+				  </ion-toolbar>
+
+				<!-- <ng-select [items]="clientCodeList" bindLabel="ClientCode" bindValue="ClientCode" appendTo="body" name="clientId" [(ngModel)]="passClientId" (change)="inputClientId($event)"
+				>
+				   </ng-select>  -->
+				<div class="invalid-feedback error-message">
+                    <span>{{clientIdLimitErrMsg}}</span>
+				</div>
+			</div>
+	
+
+             	
+			<div class="section">
+				<div class="label">Actual Limit<span class="labelColor">*</span></div>
+				<ion-input type="text" name="ActualLimit" [(ngModel)]="limitform.ActualLimit" #ActualLimit="ngModel"
+					class="ion-input" customValidate required maxlength="10" [ngClass]="{ 'is-invalid': limitForm.submitted && ActualLimit.invalid }"
+					(keypress)="numberOnly($event)"></ion-input>
+				<div *ngIf="(limitForm.submitted && ActualLimit.invalid) || ( ActualLimit.invalid && ActualLimit.dirty || ActualLimit.touched)" class="invalid-feedback">
+					<span *ngIf="ActualLimit.errors?.['required']">Actual Limit is required</span>
+					<span *ngIf="ActualLimit.errors?.['maxlength']">Actual Limit be more than 10 Characters</span>
+					<span *ngIf="ActualLimit.errors?.['customValidate']">Invalid Charaters</span>
+				</div>
+			</div>
+
+			<div class="section">
+				<div class="label">Request Limit<span class="labelColor">*</span></div>
+				<ion-input type="text" name="ReqLimit" [(ngModel)]="limitform.ReqLimit" #ReqLimit="ngModel" required
+					maxlength="10" customValidate [ngClass]="{ 'is-invalid': limitForm.submitted && ReqLimit.invalid}" class="ion-input"
+					(keypress)="numberOnly($event)"></ion-input>
+				<div *ngIf="(limitForm.submitted && ReqLimit.invalid) || ( ReqLimit.invalid && ReqLimit.dirty || ReqLimit.touched)" class="invalid-feedback">
+					<span *ngIf="ReqLimit.errors?.['required']">Request Limit is required</span>
+					<span *ngIf="ReqLimit.errors?.['maxlength']">Request Limit cannot be more than 10 Characters</span>
+					<span *ngIf="ReqLimit.errors?.['customValidate']">Invalid Charaters</span>
+				</div>
+			</div>
+			<div class="section">
+				<div class="label">Segment<span class="labelColor">*</span></div>
+				<ng-select [items]="segmentData" bindLabel="segment" bindValue="value" name="SegmentID" [clearable]="false" [searchable] ="false" [(ngModel)]="limitform.SegmentID"  #SegmentID="ngModel" required>
+				   </ng-select> 
+				<div *ngIf="(limitForm.submitted && SegmentID.invalid) || ( SegmentID.invalid && SegmentID.dirty || SegmentID.touched)" class="invalid-feedback">
+					<span *ngIf="SegmentID.errors?.['required']">Please Select the segment ID</span>
+				</div>
+			</div>
+			<div class="section">
+				<div class="label">Margin Requirement<span class="labelColor">*</span></div>
+				<ng-select [items]="marginRequirementData" bindLabel="marginRequirement" bindValue="marginRequirement" [clearable]="false" [searchable] ="false" name="MarginRequirement" [(ngModel)]="limitform.MarginRequirement"  #MarginRequirement="ngModel" required>
+			 </ng-select> 
+			 <div *ngIf="(limitForm.submitted && MarginRequirement.invalid)" class="invalid-feedback">
+				<span *ngIf="MarginRequirement.errors?.['required']">Please Select the Margin Requirement</span>
+			</div>
+			</div>
+			<div class="section">
+				<div class="label">Request Remark<span class="labelColor">*</span></div>
+				<ion-input type="text" name="ReqRemark" customValidate [(ngModel)]="limitform.ReqRemark" #ReqRemark="ngModel"
+					class="ion-input" required maxlength="100">
+				</ion-input>
+				<div *ngIf="(limitForm.submitted && ReqRemark.invalid) || ( ReqRemark.invalid && ReqRemark.dirty || ReqRemark.touched)" class="invalid-feedback">
+					<span *ngIf="ReqRemark.errors?.['required']">Request Remark is required</span>
+					<span *ngIf="ReqRemark.errors?.['maxlength']">Request Remark cannot be more than 100 Characters</span>
+					<span *ngIf="ReqRemark.errors?.['customValidate']">Invalid Charaters</span>
+				</div>
+			</div>
+	
+			<div class="section section-button">
+				<ion-button type="submit" [disabled]="!passClientId" (click)="submitLimitForm(limitForm.form.valid)">
+					Submit Request</ion-button>
+			</div>
+		</div>
+	
+		<div class="loader-position" *ngIf="!dataLoad"> 
+			<img src="/assets/imgs/loader.gif" alt="">
+		</div>
+	
+	</form>
+

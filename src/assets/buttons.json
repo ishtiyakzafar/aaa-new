@@ -1,0 +1,7 @@
+[
+    {"Name":"Watchlist","Value":"watchlist", "active": 1},
+    {"Name":"Snapshot","Value":"snapshot", "active": 0},
+    {"Name":"Indices","Value":"indices", "active": 0},
+    {"Name":"Market Status","Value":"status", "active": 0},
+    {"Name":"Exposure","Value":"exposure", "active": 0}
+]

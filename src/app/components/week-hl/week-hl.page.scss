@@ -1,0 +1,384 @@
+@import 'src/app/pages/markets/markets.page.scss';
+
+
+.gainers-losers {
+    border-radius: 50px !important;
+
+    .header {
+        height: 40px;
+        color: rgb(35, 35, 35);
+        font-size: 14px;
+        font-family: 'HelveticaNeue';
+        text-transform: uppercase;
+        margin: 0;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 0 16px;
+         ion-icon {
+            font-size: 24px;
+            cursor: pointer;
+            color:#C1C4CC;
+        }
+    }
+
+    .container-head {
+        // width: 89%;
+        width: 91%;
+        padding-right: 11px;
+        margin: 0 auto !important;
+        display: block;
+    }
+
+    .gainers-losers_contains {
+        // width:89%;
+        // overflow: auto;
+        // border-radius: 10px;
+        // margin-left: 10%;
+        // max-height: 63vh;
+        // padding-right: 10% !important;
+        .gainerstable {
+            border: 1px solid #cbcbcb !important;
+        }
+        &::-webkit-scrollbar{
+			height:20px;
+			width:4px;
+		}
+		&::-webkit-scrollbar-thumb:vertical{
+			border-radius: 1em;
+			background: #CFCFCF;
+			background-clip: padding-box;
+			
+		}
+    }
+ }
+
+ .gainerstable {
+    border: 1px solid #dddd;
+    border-radius: 10px;
+ }
+
+ .gainertableleft {
+     table {
+         border: none
+     }
+    
+     thead {
+         background: none !important;
+         tr {
+             border: none;
+         }
+     }
+     th {
+        background: #D5EFCC;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        // font-size: 11px;
+        // font-size: 13px;
+     }
+     th:first-child {
+         border-radius: 10px 0 0 0;
+     }
+     tbody {
+        tr {
+            // border: 1px solid #dddddd;
+            border: none;
+            border-left: 0;
+            border-bottom: 1px solid #cbcbcb;
+            border-right: .5px solid #cbcbcb;
+            cursor: pointer;
+        }
+        tr:last-child {
+            border-bottom: none;
+        }
+     }
+ }
+
+ .gainertableright {
+    table {
+        border: none
+    }
+    tr {
+    //    border: 1px solid #cbcbcb;
+       border-right: none;
+       border-left: .5px solid #cbcbcb;
+       cursor: pointer;
+   }
+    thead {
+        background: none !important;
+        tr {
+            border: none;
+        }
+    }
+    th {
+        background: #FCCCCC;
+    }
+    th:last-child {
+        border-radius: 0 10px 0 0;
+    }
+    tr:last-child {
+        border-bottom: none;
+    }
+}
+
+.ltp {
+    font-size: 14px;
+}
+
+.percentage-change {
+    font-size: 12px;
+    font-family: nunitoLight;
+}
+
+tr {
+    th {
+        cursor: default;
+    }
+}
+
+.loser-colors {
+    color: #F55858;
+}
+
+.no-data-found {
+    padding: 10px !important;
+    text-align: center !important;
+    color: #212121 !important;
+    font-family: nunitoRegular !important;
+}
+
+@media screen and (max-width: 500px) {
+    .commonlowhightable {
+        background: none;
+    }
+    // .gainerstable {
+    //     border: none;
+    //     border-radius: 0;
+    // }
+    // th:first-child {
+    //     border-radius: 0 !important;
+    // }
+    // th:last-child {
+    //     border-radius: 0 !important;
+    // }
+}
+
+
+    // .header {
+    //     height: 40px;
+    //     color: rgb(35, 35, 35);
+    //     font-size: 14px;
+    //     font-family: 'HelveticaNeue';
+    //     text-transform: uppercase;
+    //     margin: 0;
+    //     display: flex;
+    //     justify-content: flex-end;
+    //     align-items: center;
+    //     padding: 0 16px;
+    //      ion-icon {
+    //         font-size: 24px;
+    //         cursor: pointer;
+    //         color:#C1C4CC;
+    //     }
+    // }
+
+    // .head_weekhighlow{
+    //     .switch{
+    //         // margin-top:4px;
+    //     }
+    //     font-size: 20px;
+    //     display:flex;
+    //     width:80% !important;
+    //     margin:0 auto;
+    //     align-items: center;
+    // }
+
+    // .week_hl_contains {
+    //     padding:0 12px;
+    //     width:90%;
+    //     margin:0 auto;
+    //     table{
+    //         margin-bottom:30px;
+    //     }
+    //     .tbodyscroll{
+    //         height: 290px;
+           
+    //         overflow: auto;
+         
+    //         &::-webkit-scrollbar{
+    //             height:20px;
+    //             width:2px;
+    //         }
+    //         &::-webkit-scrollbar-thumb:vertical{
+    //             border-radius: 1em;
+    //             background: #2D197F;
+    //             background-clip: padding-box;
+                
+    //         }
+    //     }
+    //    // padding: 16px;
+      
+    // }
+    .weekhighlistfirst {
+        .first-table-block {
+            border: 1px solid #d8d8d8;
+            border-radius: 10px 0 0 10px;
+            table {
+                border: none !important;
+            }
+            tr {
+            //    border: 1px solid #dddddd;
+        }
+            thead {
+                background: none;
+                tr {
+                    border: none !important;
+                }
+            }
+            th {
+                background: #D5EFCC;
+            }
+            th:first-child {
+                border-radius: 10px 0 0 0;
+            }
+            tbody {
+                tr {
+                    // border: 1px solid #dddddd;
+                    border: none;
+                    border-bottom: 1px solid #dddddd;
+                } 
+                tr:last-child {
+                    border-bottom: none !important;
+                }
+            }
+        }
+        
+    }
+    
+    .weekhighlistsecond {
+        .second-table-block {
+            border: 1px solid #d8d8d8;
+            border-radius: 0 10px 10px 0;
+            table {
+                border: none !important;
+            }
+            tr {
+            //    border: 1px solid #dddddd;
+        }
+            thead {
+                background: none;
+                tr {
+                    border: none !important;
+                }
+            }
+            th {
+                background: #FCCCCC;
+            }
+            th:last-child {
+                border-radius: 0 10px 0 0;
+            }
+            tbody {
+                tr {
+                    // border: 1px solid #dddddd;
+                    border: none;
+                    border-bottom: 1px solid #dddddd;
+                } 
+                tr:last-child {
+                    border-bottom: none !important;
+                }
+            }
+        }
+    //    table {
+    //        border: none
+    //    }
+    //    tr {
+    //       border: 1px solid #dddddd;
+    //   }
+    //    thead {
+    //        background: none;
+    //        tr {
+    //            border: none !important;
+    //        }
+    //    }
+    //    th {
+    //        background: #FCCCCC;
+    //    }
+    //    th:last-child {
+    //        border-radius: 0 10px 0 0;
+    //    }
+    }
+
+    .pr-15 {
+        padding-right: 15px !important;
+    }
+
+    .pb-5 {
+        padding-bottom: 5px !important;
+    }
+
+    .font-green {
+        color: #17C257 !important;
+    }
+    
+    .loser-colors {
+        color: #F55858 !important;
+    }
+
+    .weekhighlow_container {
+        thead {
+            th {
+                background: #D5EFCC;
+            }
+        }
+    } 
+
+    .week-high-head {
+        thead {
+            th {
+                background: #D5EFCC;
+            }
+        }
+    }
+
+    .hide {
+        display: none !important;
+    }
+
+    // .modal-container {
+    //     .weekhighlist {
+    //         border: 1px solid #cbcbcb;
+    //         border-radius: 10px;
+    //         margin-bottom: 50px;
+    //     }
+    //     thead {
+    //         background: none;
+    //         th {
+    //             background: #D5EFCC;
+    //         }
+    //         th:first-child {
+    //             border-radius: 10px 0 0;
+    //         }
+    //         th:last-child {
+    //             border-radius: 0 10px 0 0;
+    //         }
+
+    //     }
+    //     tr {
+    //         border: none;
+    //         border-bottom: 1px solid #cbcbcb;
+    //     }
+        
+    // }
+
+    // @media screen and (max-width: 500px) {
+    //     .week_hl_contains {
+    //         .tbodyscroll{
+    //             height: auto;
+    //             max-height: 70vh;
+    //             overflow: auto;
+    //         }
+    //        // padding: 16px;
+          
+    //     }
+    // }

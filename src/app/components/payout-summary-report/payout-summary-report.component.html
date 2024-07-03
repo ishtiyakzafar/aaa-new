@@ -1,0 +1,183 @@
+<ion-header class="equity-deposit-container z-index-0">
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">FAN Payout Summary</ion-title>
+			</div>
+		</div>
+	</ion-toolbar>
+
+	<ion-toolbar class="container smaller-container equity-deposit-head-content">
+		<!-- <div class="download-report">
+			<span class="name">{{partnerName}}</span>
+			<span class="download" (click)="comingOption($event)"><img src="assets/svg/download_excel.svg" alt="">
+				Download Report</span>
+		</div> -->
+
+		<div class="download_file">
+			<div (click)="onPdfDownload()">
+				<img src="assets/svg/pdf.svg" alt="">
+			</div>
+		</div>
+		<div class="box-container">
+			<div class="items">
+				<span class="itemtitle">FAN Code</span>
+				<span class="itemvalue">{{fanCode}}</span>
+			</div>
+			<div class="items">
+				<span class="itemtitle">PAN No.</span>
+				<span class="itemvalue">{{panNo}}</span>
+			</div>
+			<div class="items">
+				<span class="itemtitle">Month</span>
+				<span class="itemvalue">{{displayMonthValue}}</span>
+			</div>
+			<div class="items">
+				<span class="itemtitle">Total Payout</span>
+				<span class="itemvalue"><span class="ruppee">₹</span> {{totalPayout }}</span>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+
+<div class="container smaller-container main-parent-block" [ngClass]="{'noData': additionsData === null && deductionData === null}">
+	<div class="table-block-parent">
+		<!-- <div class="table-part">
+			<div class="web-equity">
+				<div class="header-table">
+					<table style="width: 100%" class="desktop-header-table">
+						<thead>
+							<tr>
+								<th>
+									Market
+								</th>
+								<th>
+									Status
+								</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+			<div class="web-equity thin-scroll">
+				<div class="main-table thin-scroll">
+					<table style="width: 100%" class="mobile-table">
+						<tbody *ngIf="statusTable1.length  && dataLoad">
+							<tr *ngFor="let dataObj of statusTable1; let i = index">
+								<td>
+									<div class="scrip">
+										{{dataObj.MarketType}}
+									</div>
+								</td>
+								<td>
+									<div class="value-block status">
+										<span *ngIf="dataObj['ExchStatus'] == 'Y'">Open</span>  
+										<span *ngIf="dataObj['ExchStatus'] == 'N'" style="color: #F55858">Close</span>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+						<tbody *ngIf="!statusTable1.length && dataLoad">
+							<tr>
+								<td class="no-data-found">No Data Found</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="loader loader-height" *ngIf="!dataLoad" style="min-height: calc(100vh - 439px)">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div>
+			</div>
+		</div> -->
+		<div class="table-part">
+			<div class="web-equity">
+				<div class="header-table">
+					<table style="width: 100%" class="desktop-header-table">
+						<thead>
+							<tr>
+								<th>
+									Additions
+								</th>
+								<th>
+									<span class="itemvalue"><span class="ruppee">₹</span> {{totalAddition }}</span>
+								</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+			<div class="web-equity thin-scroll" [ngClass]="{'noHeight' : additionsData === null && !dataLoad}">
+				<div class="main-table thin-scroll">
+					<table style="width: 100%" class="mobile-table">
+						<tbody *ngIf="additionsData !== null && !dataLoad">
+							<tr *ngFor="let item of additionsData | keyvalue">
+								<td>
+									<div class="scrip">
+										{{item.key}}
+									</div>
+								</td>
+								<td>
+									<span class="itemvalue"><span class="ruppee">₹</span> {{item.value}}</span>
+								</td>
+							</tr>
+						</tbody>
+						<tbody class="noData" *ngIf="additionsData === null && !dataLoad">
+							<tr>
+								<td class="no-data-found">No Data Found</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="loader loader-height" *ngIf="dataLoad" style="min-height: calc(100vh - 439px)">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div>
+			</div>
+		</div>
+		<div class="table-part">
+			<div class="web-equity">
+				<div class="header-table">
+					<table style="width: 100%" class="desktop-header-table">
+						<thead>
+							<tr>
+								<th>
+									Deductions
+								</th>
+								<th>
+									<span class="itemvalue"><span class="ruppee">₹</span> {{totalDeduction }}</span>
+								</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+			<div class="web-equity thin-scroll" [ngClass]="{'noHeight' : deductionData === null && !dataLoad}">
+				<div class="main-table thin-scroll">
+					<table style="width: 100%" class="mobile-table">
+						<tbody *ngIf="deductionData !== null && !dataLoad">
+							<tr *ngFor="let item of deductionData | keyvalue">
+								<td>
+									<div class="scrip">
+										{{item.key}}
+									</div>
+								</td>
+								<td>
+									<span class="itemvalue"><span class="ruppee">₹</span> {{item.value }}</span>
+								</td>
+							</tr>
+						</tbody>
+						<tbody class="noData" *ngIf="deductionData === null && !dataLoad">
+							<tr>
+								<td class="no-data-found">No Data Found</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="loader loader-height" *ngIf="dataLoad" style="min-height: calc(100vh - 439px)">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

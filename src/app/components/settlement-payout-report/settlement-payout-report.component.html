@@ -1,0 +1,182 @@
+<ion-content>
+    <ion-header>
+      <ion-toolbar color="tertiary" class="mobile-visibility">
+        <div class="title-block title-block-custom">
+          <div class="icon-title">
+            <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+            <ion-title class="title">Settlement Payout Report</ion-title>
+          </div>
+        </div>
+      </ion-toolbar>
+    </ion-header>
+    <div class="desktop-visibility">
+      <div class="container">
+        <div class="heading-part notificationheader">
+         <span class="heading">Settlement Payout Report</span>
+        </div>
+      </div>
+      <br>
+      <div class="container">
+        <div class="search-section-reports search-section scriptwise">
+          <div class="d-flex w-500">
+            <ion-searchbar class="custom-searchbar" placeholder="Search Client Code/Group Code" [debounce]="1000"
+              (ngModelChange)="searchText($event)" [(ngModel)]="searchValue">
+            </ion-searchbar>
+          </div>
+          <div class="section download_file ">
+            <div class="option-type-dp-modification" (click)="onExcelDownload()">
+              <img src="assets/svg/download_excel.svg" alt="">
+              <span class="tooltiptext">
+                <span>Download Report</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="web-dp-modification-details">
+          <table>
+            <thead>
+              <tr>
+                <th>
+                  Client Code
+                </th>
+                <th>
+                  Group Code
+                </th>
+                <th>
+                  Client Name
+                </th>
+                <th [class.active]="order === 'ProcessDate'" class="pointer" (click)="setOrder('ProcessDate')">
+                  Process Date
+                  <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                  <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                  <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                </th>
+                <th [class.active]="order === 'ledgerbal'" class="pointer" (click)="setOrder('ledgerbal')">
+                  Ledger Balance
+                  <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                  <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                  <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                </th>
+                <th [class.active]="order === 'TentativePayoutDate'" class="pointer"
+                  (click)="setOrder('TentativePayoutDate')">
+                  Tentative Payout Date
+                  <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                  <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                  <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                </th>
+                <th [class.active]="order === 'payoutVal'" class="pointer" (click)="setOrder('payoutVal')">
+                  Payout Value
+                  <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                  <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                  <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                </th>
+              </tr>
+            </thead>
+            <!-- review.orderBy -->
+            <!-- <tbody *ngFor="let dataObj of settlementPayoutReportList | orderBy: order:reverse; let i = index"> -->
+              <tbody *ngFor="let dataObj of settlementPayoutReportList; let i = index">
+              <tr>
+                <td>
+                  {{dataObj.ClientCode}}
+                </td>
+                <td>
+                  {{dataObj.GroupCode}}
+                </td>
+                <td>
+                  {{dataObj.ClientName}}
+                </td>
+                <td>
+                  {{dataObj.ProcessDate | date : 'dd/MM/yyyy'}}
+                </td>
+                <td>
+                  {{dataObj.ledger_bal_two_decimal}}
+                </td>
+                <td>
+                  {{dataObj.TentativePayoutDate | date : 'dd/MM/yyyy'}}
+                </td>
+                <td>
+                  {{dataObj.PayoutValue}}
+                </td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="settlementPayoutReportList.length === 0 && !dataLoad">
+              <tr>
+                <td class="no-data-found text-center" colspan="12">No Records Found</td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="dataLoad">
+              <tr>
+                <td class="no-data-found text-center" colspan="12" style="border: 0px!important; height: 200px;">
+                  <img style="width:30px" src="/assets/imgs/loader.gif" alt="loader">
+                </td>                
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="mobile-visibility">
+      <div class="search-section-reports search-section scriptwise" *ngIf="!dataLoad">
+        <div class="d-flex spacing">
+          <ion-searchbar class="custom-searchbar" placeholder="Search Client Code/Demat ID" [debounce]="1000"
+            (ngModelChange)="searchText($event)" [(ngModel)]="searchValue">
+          </ion-searchbar>
+        </div>
+      </div>
+      <div class="" *ngIf="!dataLoad">
+        <!-- <small class="dp-notes">
+          Note: *Client ID and Demat ID can be found in alternate columns.
+        </small>
+        <small class="dp-notes">
+          *Please change the DP type if the details are not available in the selected DP'
+        </small> -->
+        <div class="download_file">
+          <div (click)="onExcelDownload()">
+            <img src="assets/svg/download_excel.svg" class="excel55p-img" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="grid_main" *ngIf="settlementPayoutReportList.length > 0 && !dataLoad">
+        <div class="table_grid_box" *ngFor="let dataObj of settlementPayoutReportList; let i = index">
+          <div class="table_grid">
+            <label>Client Code</label>
+            <span> {{dataObj.ClientCode}} </span>
+          </div>
+          <div class="table_grid">
+            <label>Group Code</label>
+            <span> {{dataObj.GroupCode}} </span>
+          </div>
+          <div class="table_grid">
+            <label>Client Name</label>
+            <span> {{dataObj.ClientName}} </span>
+          </div>
+          <div class="table_grid">
+            <label>Process Date</label>
+            <span> {{dataObj.ProcessDate | date : 'dd/MM/yyyy'}} </span>
+          </div>
+          <div class="table_grid">
+            <label>Ledger Balance</label>
+            <span> {{dataObj.ledger_bal_two_decimal}} </span>
+          </div>
+          <div class="table_grid">
+            <label>Tentative Payout Date</label>
+            <span> {{ dataObj.TentativePayoutDate | date : 'dd/MM/yyyy' }} </span>
+          </div>
+          <div class="table_grid">
+            <label>Payout Value</label>
+            <span> {{dataObj.PayoutValue}} </span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="dataLoad" class="overlay-div">
+        <div style="position:absolute;top:30%; left:48%" *ngIf="dataLoad">
+          <img style="width:30px" src="/assets/imgs/loader.gif" alt="">
+        </div>
+      </div>
+      <div *ngIf="settlementPayoutReportList.length == 0 && !dataLoad" style="margin-top: 150px;">
+        <div class="text-center tableLoader"> <img class="raise-image" src="assets/svg/not_raised.svg" alt="">
+          <div class="raise-message">No Data</div>
+        </div>
+      </div>
+    </div>
+  </ion-content>

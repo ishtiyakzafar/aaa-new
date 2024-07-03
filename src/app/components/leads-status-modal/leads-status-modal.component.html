@@ -1,0 +1,36 @@
+<div class="card_details_pop">
+  <div class="modal_title">
+    <span>Leads Stats</span>
+    <div class="pop_close" (click)="dismisss()"><img src="assets/svg/close_black.svg" width="18" alt="close"></div>
+  </div>
+  <div class="card_details_inner">
+    <p class="month_lead"><sup>*</sup> Lead stats shown below is of current month only</p>
+    <div class="mychartSize">
+      <div class="graphCss">
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+    <div *ngIf="chartData && dataLoad" class="chartLables">
+      <div>
+        <label>Leads generated</label>
+        <p>{{ chartData?.Total_Leads_Count == '' ? 0 : chartData?.Total_Leads_Count}}</p>
+      </div>
+      <div>
+        <label>Meeting conducted</label>
+        <p>{{chartData?.Total_Meetings_Count}}</p>
+        <span class="lead_gen"> {{ meetConInPercnt }}% of leads generated</span>
+      </div>
+      <div>
+        <label>Converted clients</label>
+        <p>{{chartData?.Total_Converted_Count}}</p>
+        <span class="lead_gen"> {{ clientInPercnt }}% of leads generated</span>
+      </div>
+    </div>
+  </div>
+  <div class="loader" *ngIf="dataLoad" style="min-height: 170px;">
+    <h4>No records found.</h4>
+  </div>
+  <div class="loader" *ngIf="!dataLoad" style="min-height: 170px;">
+    <img src="/assets/imgs/loader.gif" alt="">
+  </div>
+</div>

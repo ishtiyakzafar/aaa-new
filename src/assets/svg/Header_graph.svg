@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1080" height="302" viewBox="0 0 1080 302">
+  <defs>
+    <linearGradient id="linear-gradient" x1="1" y1="1" x2="0" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#4811cb"/>
+      <stop offset="1" stop-color="#1e1c57"/>
+    </linearGradient>
+    <clipPath id="clip-path">
+      <rect id="Rounded_Rectangle_1" data-name="Rounded Rectangle 1" width="1080" height="302" transform="translate(8903 19974)" fill="url(#linear-gradient)"/>
+    </clipPath>
+    <linearGradient id="linear-gradient-2" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0.006" stop-color="#5a8dee"/>
+      <stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+  </defs>
+  <g id="Mask_Group_13" data-name="Mask Group 13" transform="translate(-8903 -19974)" clip-path="url(#clip-path)">
+    <g id="Group_1544" data-name="Group 1544">
+      <g id="Group_63" data-name="Group 63" transform="translate(11023.5 20715.5)" opacity="0.81">
+        <path id="Path" d="M0,211.667s126.692-14.715,163.227,56.6,101.007,42.38,122.014-28.3,68.125-78.033,114.323-28.3c32.97,41.345,87.468,54.26,116.323-4.836,14.252-27.575,9.381-49.343,63.818-62.66,55.506-20.014,64.524-106.184,64.524-106.184S651.532,2.934,682.6,0c26.708.214,35.792,7.238,55.859,34.959,29.217,46.054,22.855,79.852,57.263,109.212C832.286,162.609,871.3,97.313,871.3,97.313s34.986-50.349,66.082,5.968S980.491,251.8,1023.26,260.03s54.317,39.67,54.317,39.67" transform="translate(-2120.5 -723.5)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="bevel" stroke-miterlimit="10" stroke-width="2" stroke-dasharray="5" opacity="0.2" style="mix-blend-mode: screen;isolation: isolate"/>
+        <path id="Path-2" data-name="Path" d="M601.657,110.185S540.279,27.909,478.194,71.172c-70.032,59.049-70.032,121.912-159.419,121.912-53.752-10.862-60.765-38.067-80.037-55.329-20.791-21.772-48.485-26.233-63.242,0-25.139,33.4-52.18,17.505-52.18,17.505S68.58,113.053,13.776,23.632-103.456,150.706-103.456,150.706s-17.063,58.133-73.649,8.806-108.114,12.3-108.114,12.3-26.282,34.265-94.691-21.108S-477,178.567-477,178.567V379.052l1079.841,2.264Z" transform="translate(-1643.5 -647.522)" opacity="0.3" fill="url(#linear-gradient-2)"/>
+      </g>
+    </g>
+  </g>
+</svg>

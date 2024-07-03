@@ -1,0 +1,93 @@
+<div class="overview">
+    <div class="overview-main-card">
+   <div class="aum-card" (click)="onAumClick()">
+    <div class="d-flex ion-justify-content-between ion-align-items-start">
+        <div class="d-flex aum-ti">
+            <img src="assets/svg/aum-icon.svg" alt="aum-icon" width="45px">
+            <span>Equity AUM <img src="assets/svg/next-arrow-purple.svg" alt="next-arrow" width="9px"></span>
+        </div>
+        <!-- <div class="d-flex stats ion-align-items-center">
+            <img src="assets/svg/stats-purple.svg" alt="stats">
+        <span>Stats</span>
+        </div> -->
+    </div>
+    <div *ngIf="!showHideDashboardValue" class="aum-amt"><span class="rupees">₹</span> {{equityDashboardData[0]?.EquityAUM ? convertFormat(equityDashboardData[0]?.EquityAUM) : '0'}} </div>
+    <span class="showstar" *ngIf="showHideDashboardValue"><span class="rupees">₹</span>xxxx</span>
+    <!-- <div class="growth-map-msg d-flex ion-align-items-baseline">
+        <img src="assets/svg/growth-path.svg" alt="growth-path" width="22px">
+        <span class="positive percentage">{{equityDashboardData[0]?.AUMIncDecPercentage ? equityDashboardData[0]?.AUMIncDecPercentage : '0'}}%  <label>Higher AUM generated from last month</label></span>
+    </div> -->
+   </div>
+   <div class="overview-right-card d-flex">
+    <div class="overview-small-card" (click)="onBrokerageClick()" *ngIf="showBrokerage">
+        <div class="d-flex ion-justify-content-between ion-align-items-start">
+        <span class="overview-small-card-amt-ti">Brokerage (YTD)<img src="assets/svg/next-arrow-orange.svg" alt="next-arrow" width="8px"></span>
+        <!-- <div class="d-flex stats ion-align-items-center">
+            <img src="assets/svg/stats-orange.svg" alt="stats">
+            <span>Stats</span>
+        </div> -->
+    </div>
+
+    <div class="growth-map-msg d-flex ion-align-items-baseline">
+        <div *ngIf="!showHideDashboardValue" class="overview-small-card-amt"><span class="rupees">₹</span> {{equityDashboardData[0]?.EquityBrokerage ? convertFormat(equityDashboardData[0]?.EquityBrokerage): '0'}}</div>
+        <span class="showstar" *ngIf="showHideDashboardValue"><span class="rupees">₹</span>xxxx</span>
+        <!-- <img src="assets/svg/growth-path.svg" alt="growth-path" width="20px">
+        <span class="positive percentage">{{equityDashboardData[0]?.EquityBrokerageIncDecPercentage ? equityDashboardData[0]?.EquityBrokerageIncDecPercentage : '0'}}% <label>Higher from last month</label></span> -->
+    </div>
+
+    </div>
+
+    <div class="overview-small-card" (click)="onClientsClick()">
+        <div class="d-flex ion-justify-content-between ion-align-items-start">
+        <span class="overview-small-card-amt-ti">Clients <img src="assets/svg/next-arrow-orange.svg" alt="next-arrow" width="8px">
+            <span class="active-client-main"><img src="assets/svg/client-info-icon.svg"  alt="info" width="13px" (mouseenter)="dashClientinfomsg = !dashClientinfomsg" (mouseleave)="dashClientinfomsg = !dashClientinfomsg"><div class="active-client-msg client-msg-L20" *ngIf="dashClientinfomsg">Clients with demat account.</div></span>
+  
+        </span>
+        <!-- <div class="d-flex stats ion-align-items-center">
+            <img src="assets/svg/stats-orange.svg" alt="stats">
+            <span>Stats</span>
+        </div> -->
+    </div>
+
+    <div class="growth-map-msg d-flex ion-align-items-baseline">
+        <div *ngIf="!showHideDashboardValue" class="overview-small-card-amt">{{equityDashboardData[0]?.TotalClients ? convertFormat(equityDashboardData[0]?.TotalClients) : '0'}}</div>
+        <span class="showstar" *ngIf="showHideDashboardValue">xxxx</span>
+        <!-- <img src="assets/svg/growth-path.svg" alt="growth-path" width="20px">
+        <span class="positive percentage">{{equityDashboardData[0]?.ClientIncDecPercentage ? convertFormat(equityDashboardData[0]?.ClientIncDecPercentage) : '0'}} <label>Added from last month</label></span> -->
+    </div>
+
+    </div>
+   </div>
+    </div>
+    <div class="overview-child-card tab-child-card-wrap">
+        <div class="ov-ch-card" (click)="onDashClients('Dormant')">
+            <label>Dormant Clients
+                <span class="active-client-main"><img src="assets/svg/info.svg"  alt="info" width="11px" (mouseenter)="Dormantinfomsg = !Dormantinfomsg" (mouseleave)="Dormantinfomsg = !Dormantinfomsg"><div class="active-client-msg" *ngIf="Dormantinfomsg">Clients who haven't traded in the past 12 months</div></span>
+            </label>
+            <div *ngIf="!showHideDashboardValue" class="amt d-flex ion-align-items-center">{{equityDashboardData[0]?.DormantClientCount ? convertFormat(equityDashboardData[0]?.DormantClientCount) : '0'}}</div>
+            <span class="showstar" *ngIf="showHideDashboardValue">xxxx</span>
+        </div>
+        
+        <div class="ov-ch-card" (click)="onDashClients('NewClient')">
+            <label>New Clients 
+                <span class="active-client-main"><img src="assets/svg/info.svg"  alt="info" width="11px" (mouseenter)="NewClientinfomsg = !NewClientinfomsg" (mouseleave)="NewClientinfomsg = !NewClientinfomsg"><div class="active-client-msg" *ngIf="NewClientinfomsg">Clients onboarded in last 30 days</div></span>
+            </label>
+            <div *ngIf="!showHideDashboardValue" class="amt d-flex ion-align-items-center">{{equityDashboardData[0]?.NewClientCount ? convertFormat(equityDashboardData[0]?.NewClientCount) : '0'}}</div>
+            <span class="showstar" *ngIf="showHideDashboardValue">xxxx</span>    
+        </div>
+        <div class="ov-ch-card" (click)="onDashClients('Active')">
+            <label>Active Clients
+                <span class="active-client-main"><img src="assets/svg/info.svg"  alt="info" width="11px" (mouseenter)="ActiveClientinfomsg = !ActiveClientinfomsg" (mouseleave)="ActiveClientinfomsg = !ActiveClientinfomsg"><div class="active-client-msg" *ngIf="ActiveClientinfomsg">Active clients traded in the last 12 months and not frozen</div></span>
+            </label>
+            <div *ngIf="!showHideDashboardValue" class="amt d-flex ion-align-items-center">{{equityDashboardData[0]?.ActiveClientCount ? convertFormat(equityDashboardData[0]?.ActiveClientCount) : '0'}}</div>
+            <span class="showstar" *ngIf="showHideDashboardValue">xxxx</span>
+        </div>
+        
+    </div>
+</div>
+
+<div class="loader-backdrop" *ngIf="loader">
+    <div class="loader">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+</div>

@@ -1,0 +1,94 @@
+.otp-generate{
+    margin-top:15px;
+    .label{
+        color:#9C9C9C;
+        font-size:13px;
+    }
+    .otp-label{
+        text-align: center;
+        display:block;
+    }
+    .ion-input{
+        height: 40px;
+        font-size: 12px !important;
+        padding: 0;
+        margin-top:10px;
+        color:#000000;
+        padding-left: 8px; 
+        border:1px solid #00083959;
+        background-color: #ffffff;
+        width:100%;
+        border-radius: 10px;
+    }
+
+    .resend{
+        margin-top: 25px;
+    }
+
+    .ion-item-group {
+        display: flex;
+        justify-content: space-evenly;
+        margin-bottom: 16px;
+        ion-item {
+            width: 8%;
+            height: 43px;
+            --padding-start: 0;
+            --padding-end: 0;
+            --inner-padding-end: 0;
+            --inner-padding-start: 0;
+            --min-height: 36px;
+            //margin-top: 14px;
+            ion-input {
+                text-align: center;
+            }
+        }
+    }
+}
+
+.otp-button{
+        display:flex;
+        align-items: center;
+        margin-top: 10px;
+        text-align: center;
+        ion-button {
+            border-radius: 8px;
+            --border-radius: 8px;
+            --background: #F37921;
+            width: 100%;
+            // box-shadow: 0px 2px 18px #f37921ad;
+            font-size: 15px;
+            font-family: "nunitoExtraBold";
+            height: 41px;
+            // margin-left: 46px;
+        }
+}
+
+.m-b-20{
+    margin-bottom: 20px;
+}
+
+.errorDisplay{
+    font-size: small;
+    color: #c51244;
+}
+
+@media screen and (max-width: 500px) {
+    .m-b-20{
+        margin-bottom: 0 !important;
+    }
+
+}
+
+code-input {
+    --item-spacing: 10px;
+    --item-height: 3em;
+    --item-border: none;
+    --item-border-bottom: 1.5px solid #dddddd;
+    --item-border-has-value: none;
+    --item-border-bottom-has-value: 1.5px solid #dddddd;
+    --item-border-focused: none;
+    --item-border-bottom-focused: 1.5px solid #dddddd;
+    --item-shadow-focused: none;
+    --item-border-radius: 0px;
+  }
+

@@ -1,0 +1,16 @@
+<ion-header>
+  <div class="close" (click)="dismisss()">x</div>
+  <div class="title"> 
+    <span>Select mode of application</span>  
+  </div>
+</ion-header>
+<ion-content>
+  <div class="table-wrapper thin-scroll">
+    <div class="text-center">
+      <h5 (click)="onlineIPO()">Apply for Online IPOs / NCDs</h5>
+      <h5 (click)="offlineIPO()">Apply for Offline IPOs</h5>
+      <h5 (click)="offlineNCD()">Apply for Offline NCDs</h5>
+      <h5 (click)="downloadForm()">Download IPO Form</h5>
+    </div>
+  </div>
+</ion-content>

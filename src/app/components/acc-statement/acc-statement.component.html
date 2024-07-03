@@ -1,0 +1,132 @@
+<div class="container-smaller">
+
+	<div class="acc-header">
+		<ion-segment class="block-segment" [(ngModel)]="monthWeekTabValue" (ionChange)="changeTimeDuration($event.detail.value)">
+			<ion-segment-button value="month">Last 1M</ion-segment-button>
+			<ion-segment-button value="week">Last 1Wk</ion-segment-button>
+		</ion-segment>
+		<div class="calender date-picker-block calendar-date-block-section" style="position: relative;">
+            <div class="calender-heading">
+                <span>Select Date Range</span>
+            </div>
+			<div class="datePopover">
+				<ion-item class="date_Picker" (click)="toggleStartDatePicker()">
+				  <ion-label class="ion-lable-end">Start Date</ion-label>
+				  <ion-input placeholder="Select Date" [value]="startDate | date: 'dd/MM/yyyy'" readonly class="ion-text-end"></ion-input>
+				  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+				</ion-item>
+				<div class="calendarBackdrop" *ngIf="showStartDatePicker" (click)="hideDatePicker('start')"></div>
+				<ion-datetime class="calendarOpen" *ngIf="showStartDatePicker" presentation="date"
+				  [(ngModel)]="startDate" presentation="date" min="1973-01-01" [max]="currentDate"
+				  (ionChange)="hideDatePicker('start',$event)">
+				</ion-datetime>
+			  </div>
+			  
+			  <div class="datePopover">
+				<ion-item class="date_Picker" (click)="toggleEndDatePicker()">
+				  <ion-label class="ion-lable-end">End Date</ion-label>
+				  <ion-input placeholder="Select Date" [value]="endDate | date: 'dd/MM/yyyy'" readonly class="ion-text-end"></ion-input>
+				  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+				</ion-item>
+				<div class="calendarBackdrop" *ngIf="showEndDatePicker" (click)="hideDatePicker('end')"></div>
+				<ion-datetime class="calendarOpen" *ngIf="showEndDatePicker" presentation="date"
+				  [(ngModel)]="endDate" presentation="date" min="1973-01-01" [max]="currentDate"
+				  (ionChange)="hideDatePicker('end',$event)">
+				</ion-datetime>
+			  </div>
+
+         
+		</div>
+	</div>
+</div>
+
+
+<div class="desktop-visibility container-smaller">
+	<div class="main-table thin-scroll" *ngIf="dataLoad">
+
+		<div *ngIf="accStatementList.length > 0">
+			<div class="table-block" *ngFor="let data of accStatementList; let i = index">
+				<div class="section-header">
+					{{data.SchemeName}}
+				</div>
+	
+				<div class="section-details updated-section-details">
+					<div class="sec-column">
+						<span class="label">Date</span>
+						<span class="value">{{data.TransactionDate}}</span>
+					</div>
+					<div class="sec-column">
+						<span class="label">Transaction Type</span>
+						<span class="value">{{data.TransactionType}}</span>
+					</div>
+					<div class="sec-column">
+						<span class="label">Units</span>
+						<span class="value">{{data.Units | formatNumerDecimal}}</span>
+					</div>
+					<div class="sec-column">
+						<span class="label">Nav</span>
+						<span class="value">{{data.NAVRS}}</span>
+					</div>
+					<div class="sec-column">
+						<span class="label">Amount</span>
+						<span class="value"><span class="rupees">₹</span>{{data.Amount | formatNumerDecimal}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="no-data-found" *ngIf="accStatementList.length == 0">
+			<span>No Data Found</span>
+		</div>
+	
+	</div>
+
+	<div class="loader loader-height-300" *ngIf="!dataLoad">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+</div>
+
+
+<div class="mobile-visibility">
+	<div class="main-table thin-scroll">
+
+		<div *ngIf="accStatementList.length > 0 && dataLoad">
+			<div class="table-block" *ngFor="let data of accStatementList; let i = index">
+				<div class="section-header-mob">
+					<span class="title-mob">{{data.TransactionDate}}</span>
+					<span class="value-mob">{{data.SchemeName}}</span>
+				</div>
+	
+				<div class="section-details">
+					<div class="sec-column">
+						<span class="label">Units</span>
+						<span class="value">{{data.Units | formatNumerDecimal}}</span>
+					</div>
+					<div class="sec-column">
+						<span class="label">Transaction Type</span>
+						<span class="value">{{data.TransactionType}}</span>
+					</div>
+					<div class="sec-column">
+						<span class="label">Nav</span>
+						<span class="value">{{data.NAVRS}}</span>
+					</div>
+					<div class="sec-column">
+						<span class="label">Amount</span>
+						<span class="value"><span class="rupees">₹</span>{{data.Amount | formatNumerDecimal}}</span>
+					</div>
+				</div>
+	
+			</div>
+		</div>
+
+		<div class="no-data-found" *ngIf="accStatementList.length == 0 && dataLoad">
+			<span>No Data Found</span>
+		</div>
+	
+		<div class="loader loader-height-300" *ngIf="!dataLoad">
+			<img src="/assets/imgs/loader.gif" alt="">
+		</div>
+
+	</div>
+	
+</div>

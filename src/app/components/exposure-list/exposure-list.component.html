@@ -1,0 +1,361 @@
+<ion-header class="changeZindex">
+	<div class="mobile-visibility mobile_pd">
+		<div class="header-toogle">
+			<label class="switch">
+				<input type="checkbox" id="togBtn" name="toogleExpoTable" [(ngModel)]="toogleExpoTable"
+					(ngModelChange)="toogleValue($event)">
+				<div class="slider round">
+					<span class="on">F&O</span><span class="off">Equity</span>
+				</div>
+			</label>
+		</div>
+		<div class="web-equity" *ngIf="!toogleExpoTable">
+			<div class="header-table">
+				<table class="desktop-header-table width-100">
+					<thead>
+						<tr>
+							<th>
+								Category
+							</th>
+							<th>
+								Intraday
+							</th>
+							<th>
+								Delivery
+							</th>
+							<th class="width-10">
+
+							</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</ion-header>
+
+<div class="mobile-visibility">
+	<!-- Toogle false -->
+	<div class="table-part" *ngIf="!toogleExpoTable">
+		<div class="web-equity thin-scroll">
+			<div class="main-table thin-scroll">
+				<table class="mobile-table width-100">
+					<tbody>
+						<tr *ngFor="let dataObj of equityList; let i = index">
+							<td>
+								<div class="scrip">
+									{{catagotyFullName(dataObj.Category)}}
+								</div>
+							</td>
+							<td>
+								<div class="value-block status">
+									{{calculateValue(dataObj.BuyMgnIntra)}}
+								</div>
+							</td>
+							<td>
+								<div class="value-block status">
+									{{calculateValue(dataObj.BuyMgnDel)}}
+								</div>
+							</td>
+							<td class="width-10" (click)="goToDetails(dataObj.Category)">
+								<img src="assets/svg/right-arrow.svg" alt="">
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- Toogle true -->
+	<!-- mobile Equity Derivatives Table -->
+	<div class="eqDerFo" *ngIf="toogleExpoTable">
+		<div class="eqDerFo-header">
+			Equity Derivatives
+		</div>
+		<div class="web-equity">
+			<div class="header-table">
+				<table class="desktop-header-table width-100">
+					<thead>
+						<tr>
+							<th>
+								Category
+							</th>
+							<th>
+								Intraday
+							</th>
+							<th>
+								Delivery
+							</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+
+		<div class="web-equity thin-scroll">
+			<div class="main-table Derivative thin-scroll">
+				<table class="mobile-table width-100">
+					<tbody>
+						<tr *ngFor="let dataObj of derivativeEqList; let i = index">
+							<td>
+								<div class="scrip value-block">
+									<div class="upper"> {{dataObj.Category}}</div>
+									<div class="lower">({{dataObj.type}})</div>
+								</div>
+							</td>
+							<td>
+								<div class="scrip">
+									{{dataObj.Intraday}}
+								</div>
+							</td>
+							<td>
+								<div class="scrip">
+									{{dataObj.Delivery}}
+								</div>
+							</td>
+							<!-- <td style="width:10%">
+								<img src="assets/svg/right-arrow.svg" alt="">
+							</td> -->
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- mobile f&O Table -->
+		<div class="eqDerFo-header mb-t15">
+			F&O
+		</div>
+		<div class="web-equity">
+			<div class="header-table">
+				<table class="desktop-header-table width-100">
+					<thead>
+						<tr>
+							<th>
+								Category
+							</th>
+							<th>
+								Intraday
+							</th>
+							<th>
+								Delivery
+							</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+
+		<div class="web-equity thin-scroll">
+			<div class="main-table Derivative thin-scroll">
+				<table class="mobile-table width-100">
+					<tbody>
+						<tr *ngFor="let dataObj of derivativeCurrList; let i = index">
+							<td>
+								<div class="scrip value-block">
+									<div class="upper"> {{dataObj.Category}}</div>
+									<div class="lower">({{dataObj.type}})</div>
+								</div>
+							</td>
+							<td>
+								<div class="scrip">
+									{{dataObj.Intraday}}
+								</div>
+							</td>
+							<td>
+								<div class="scrip">
+									{{dataObj.Delivery}}
+								</div>
+							</td>
+							<!-- <td style="width:10%">
+								<img src="assets/svg/right-arrow.svg" alt="">
+							</td> -->
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<div class="container desktop-visibility">
+	<div class="table-block-parent" *ngIf="dataLoad">
+		<h3 class="exposure-heading">Global Markets</h3>
+		<div class="table-gm-part">
+			<div class="web-equity">
+				<div class="header-table">
+					<table class="desktop-header-table width-100">
+						<thead>
+							<tr>
+								<th>
+									Category
+								</th>
+								<th>
+									Intraday
+								</th>
+								<th>
+									Delivery
+								</th>
+								<th>
+
+								</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+			<div class="web-equity thin-scroll">
+				<div class="main-table thin-scroll">
+					<table class="mobile-table width-100">
+						<tbody *ngIf="equityList.length">
+							<tr *ngFor="let dataObj of equityList; let i = index">
+								<td>
+									<div class="scrip scripbold">
+										{{catagotyFullName(dataObj.Category)}}
+									</div>
+								</td>
+								<td>
+									<div class="scrip">
+										{{calculateValue(dataObj.BuyMgnIntra)}}
+									</div>
+								</td>
+								<td>
+									<div class="scrip">
+										{{calculateValue(dataObj.BuyMgnDel)}}
+									</div>
+								</td>
+								<td>
+									<div class="value-block status" (click)="openScripDetails(dataObj.Category)">
+										<span class="pointer">View all Scrips</span>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+                        <tbody *ngIf="equityList.length === 0">
+                            <tr class="no-data-row">
+                                <td class="no-data-found">No Data Found</td>
+                            </tr>
+                        </tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div *ngIf="dataLoad">
+		<h3 class="exposure-heading">F&O</h3>
+		<div class="table-block-parent exposure-inline-table">
+			<div class="table-fo-part">
+				<span class="fo-heading">Equity Derivatives</span>
+				<div class="web-equity">
+					<div class="header-table">
+						<table class="desktop-header-table width-100">
+							<thead>
+								<tr>
+									<th>
+										Category
+									</th>
+									<th>
+										Intraday
+									</th>
+									<th>
+										Delivery
+									</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+				<div class="web-equity thin-scroll">
+					<div class="main-table thin-scroll">
+						<table class="mobile-table width-100">
+							<tbody *ngIf="derivativeEqList.length">
+								<tr *ngFor="let dataObj of derivativeEqList; let i = index">
+									<td>
+										<div class="scrip value-block">
+											<div class="upper"> {{dataObj.Category}}</div>
+											<div class="lower">({{dataObj.type}})</div>
+										</div>
+									</td>
+									<td>
+										<div class="scrip">
+											{{dataObj.Intraday}}
+										</div>
+									</td>
+									<td>
+										<div class="scrip">
+											{{dataObj.Delivery}}
+										</div>
+									</td>
+								</tr>
+							</tbody>
+                            <tbody *ngIf="derivativeEqList.length === 0">
+                                <tr class="no-data-row">
+                                    <td class="no-data-found">No Data Found</td>
+                                </tr>
+                            </tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="table-fo-part m-l-2-per">
+				<div class="web-equity">
+					<span class="fo-heading">Currency Derivatives</span>
+					<div class="header-table">
+						<table class="desktop-header-table width-100">
+							<thead>
+								<tr>
+									<th>
+										Category
+									</th>
+									<th>
+										Intraday
+									</th>
+									<th>
+										Delivery
+									</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+				<div class="web-equity thin-scroll">
+					<div class="main-table thin-scroll">
+						<table class="mobile-table width-100">
+							<tbody *ngIf="derivativeCurrList">
+								<tr *ngFor="let dataObj of derivativeCurrList; let i = index">
+									<td>
+										<div class="scrip value-block">
+											<div class="upper"> {{dataObj.Category}}</div>
+											<div class="lower">({{dataObj.type}})</div>
+										</div>
+									</td>
+									<td>
+										<div class="scrip">
+											{{dataObj.Intraday}}
+										</div>
+									</td>
+									<td>
+										<div class="scrip">
+											{{dataObj.Delivery}}
+										</div>
+									</td>
+								</tr>
+							</tbody>
+                            <tbody *ngIf="derivativeCurrList.length === 0">
+                                <tr class="no-data-row">
+                                    <td class="no-data-found">No Data Found</td>
+                                </tr>
+                            </tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="loader loader-height-other" *ngIf="!dataLoad">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+
+</div>

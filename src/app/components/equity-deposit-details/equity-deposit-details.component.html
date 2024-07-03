@@ -1,0 +1,57 @@
+<ion-header class="equity-deposit-container" style="z-index:0 !important">
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Deposit Ledger</ion-title>
+			</div>
+		</div>
+	</ion-toolbar>
+
+	<ion-toolbar class="container smaller-container equity-deposit-head-content">
+		<!-- <div class="download-report" *ngIf="partnerName !== null">
+			<span class="name" >{{partnerName}} ({{partnerCode}})</span>
+			<span class="download" (click)="comingOption($event)"><img src="assets/svg/download_excel.svg" alt="">
+				Download Report</span>
+		</div> -->
+
+		<div class="download_file">
+			<div (click)="onPdfExcelDownload('pdf')">
+				<img src="assets/svg/pdf.svg" alt="">            
+			</div>
+			<div (click)="onPdfExcelDownload('excel')">
+				<img src="assets/svg/download_excel.svg" alt="">            
+			</div>
+			</div>
+		<div class="box-container">
+			<div class="items">
+				<span class="itemtitle">FAN Code</span>
+				<span class="itemvalue" *ngIf="partnerCode !== null">{{partnerCode}}</span>
+			</div>
+			<div class="items">
+				<span class="itemtitle">FAN Name</span>
+				<span class="itemvalue" *ngIf="partnerName !== null">{{partnerName}}</span>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+<div class="container  card-container thin-scroll">
+	
+
+	<div class="card" *ngFor="let data of reportData">
+		<div class="upper-section">
+			<span class="card-date">{{data['closureDate']}}</span>
+			<span class="card-amount" [ngClass]="{'positive': data['DebitCreditFlag'] === 'C', 'negative': data['DebitCreditFlag'] === 'D'}"><span class="ruppee">₹</span> {{data['amount']}}</span>
+		</div>
+		<div class="bottom-section">
+			<span class="card-description">{{data['description']}}</span>
+			<span class="card-balance-amount" [ngClass]="{'positive': data['DebitCreditFlag'] === 'C', 'negative': data['DebitCreditFlag'] === 'D'}">Balance <span class="ruppee">₹</span> {{ data['balance'] }}</span>
+		</div>
+	</div>
+	<div class="loader" [ngClass]="{'mobileScreen': commonService.isApp()}" *ngIf="reportData.length == 0 && !dataLoad">
+		<h4>No records found.</h4>
+	</div>
+	<div class="loader" *ngIf="dataLoad">
+		<img src="/assets/imgs/loader.gif" alt="">
+	</div>
+</div>

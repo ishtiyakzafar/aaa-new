@@ -1,0 +1,76 @@
+<!-- <div class="chart-section">
+	<div class="chart">
+		<canvas #dognutChart width="156px" height="156px"></canvas>
+	</div>
+</div> -->
+<div class="tab-block desktop-visibility sip-book">
+	<ion-segment [(ngModel)]="liveBlockTabValue" (ionChange)="onSegmentChanged($event)">
+		<ion-segment-button *ngFor="let dataObj  of sipBlock" [value]="dataObj['value']">
+			<div class="items">
+				<div class="upper-section">
+					<div class="type">{{dataObj['name']}}</div>
+					<div class="change-value date">{{dataObj['time']}}</div>
+				</div>
+				<div class="lower-section">
+					<div class="part">
+						<span class="title">No.of SIPs</span>
+						<span class="data">{{dataObj['sips']}}</span>
+					</div>
+					<div class="part">
+						<span class="title">Value(₹)</span>
+						<span class="data">{{dataObj['dataValue']}}</span>
+					</div>
+				</div>
+			</div>
+		</ion-segment-button>
+	</ion-segment>
+</div>
+<div class="desktop-visibility">
+    <div class="search-section search-section-changed">
+        <ion-label>Search by</ion-label>
+        <ion-segment [(ngModel)]="clientBlockSegmentValue" mode="md" (ionChange)="segmentChange()">
+            <ion-segment-button *ngFor="let entry of segmentButtonOption" value="{{entry['value']}}">{{entry['name']}}</ion-segment-button>
+        </ion-segment>
+        <ion-searchbar search-icon="false" class="custom-searchbar" [(ngModel)]="searchTerm" customValidate debouce="1000" [placeholder]='placeholderInput'></ion-searchbar>
+        <ion-button class="search-button" (click)="searchText()">
+            <img src="assets/svg/search.svg" alt="">
+        </ion-button>
+    </div>
+</div>
+<div class="tab-content desktop-visibility" [ngSwitch]="liveBlockTabValue">
+	<div class="content" *ngSwitchCase="'liveSips'">
+		<app-sip-live></app-sip-live>
+	</div>
+	<div class="content" *ngSwitchCase="'newSips'">
+		<app-sip-new></app-sip-new>
+	</div>
+	<div class="content" *ngSwitchCase="'bouncedSips'">
+		<app-sip-bounced></app-sip-bounced>
+	</div>
+	<div class="content" *ngSwitchCase="'ceasedSips'">
+		<app-sip-ceased></app-sip-ceased>
+	</div>
+</div>
+<div class="detail-part-dashboard detail-part-mobile mobile-visibility">
+	<table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>No. of SIPs</th>
+                <th>Value (₹)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let dataObj of sipBlock" (click)="goToPage(dataObj['page'])">
+                <td>
+                    <div class="block">
+                        <span class="type">{{dataObj['name']}}</span>
+                        <span class="time">{{dataObj['time']}}</span>
+                    </div>
+                </td>
+                <td>{{dataObj['sips']}}</td>
+                <td>{{dataObj['dataValue']}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

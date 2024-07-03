@@ -1,0 +1,32 @@
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Business Opportunity</ion-title>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="business-opportunities order-5">
+		<div class="opportunities-block" style="justify-content: space-between" >
+			<div class="opportunitiy" [ngStyle]="{'cursor': dataObj['value'] > 0 ? 'pointer' : 'auto'}"
+				[ngClass]="{'client-fo': dataObj['key'] === 'FAOActiveNotTraded' || dataObj['key'] === 'EquityMFLeadsCount' || dataObj['key'] === 'otherclients', 'not-invested-mutual': dataObj['key'] === 'NotInvestedInMF' || dataObj['key'] === 'Last30bday',
+				'not-invested-sip': dataObj['key'] === 'NotInvestedInSIP' || dataObj['key'] === 'PMSAIFLeadsCount' || dataObj['key'] === 'P1P2Clients', 'high-networth': dataObj['key'] === 'EquityHoldingsAbove25L',
+				'nfo-maturing': dataObj['key'] === 'MaturingFDCount','fixed-income':dataObj['key'] === 'FixedIncomeLeadsCount'
+				}"
+			  *ngFor="let dataObj of businessOppsCard  let i = index" (click)="opportunitiesDetails(dataObj.key, i)">
+				<div class="value-section">
+					<div class="value">{{dataObj.value}}</div>
+					<div class="type">Clients</div>
+				</div>
+				<div class="description">{{titleBusinessOpps(dataObj.key, 'displayName')}}</div>
+				<div class="icon-section">
+					<ion-icon src="{{titleBusinessOpps(dataObj.key,'icon')}}"></ion-icon>
+				</div>
+			</div>
+		</div>
+	</div>
+</ion-content>

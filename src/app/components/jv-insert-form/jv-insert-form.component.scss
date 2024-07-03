@@ -1,0 +1,80 @@
+@import 'src/app/pages/wire-requests/wire-requests.page.scss';
+
+
+.reason-section {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 3;
+    padding-right: 27%;
+    grid-row-start: 1;
+    grid-row-end: 1;
+}
+
+.remark-section {
+    grid-column-start: 2;
+    grid-column-end: 4;
+    grid-row-start: 3;
+    padding-left: 27%;
+    grid-row-start: 1;
+}
+
+
+@media screen and (max-width: 768px){
+    .error-message {
+        position: unset;
+    }
+    .reason-section {
+        grid-column-start: unset;
+        grid-column-end: unset;
+        grid-row-start: unset;
+        padding-right: unset;
+        grid-row-start: 2;
+        grid-row-end: 2;
+    }
+    
+    .remark-section {
+        grid-column-start: unset;
+        grid-column-end: unset;
+        grid-row-start: unset;
+        padding-left: unset;
+        grid-row-start: 3;
+        grid-row-end: 3;
+    }
+}
+
+.calendar{
+    position: absolute;
+    right: 10px;
+    bottom: 0;
+}
+
+@media screen and (max-width: 768px) {
+    .drop-down-toolbar {
+        top: 75px;
+        width: 91%;
+        // margin: 0 2%;;
+        background-color: #ffffff;
+    }
+}
+.datePopover .calendar { position: absolute; right: 0px; bottom: 9px; }
+
+::ng-deep .datePositionRight{
+    @media (min-width: 1190px) {
+        right: inherit !important;
+        transform: inherit !important;
+    }
+}
+::ng-deep .datePositionRight{
+    @media (min-width:769px) and (max-width: 1189px) {
+        right: 0;
+        left: inherit !important;
+        transform: translate(-50px, 0px);
+    }
+}
+
+::ng-deep .datePositionLeft{
+    @media (min-width:769px) {
+        left: 0;
+        transform: inherit !important;
+    }
+}

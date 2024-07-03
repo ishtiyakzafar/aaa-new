@@ -1,0 +1,14 @@
+<ion-header>
+    <div class="close" (click)="dismiss()">x</div>
+    <div class="title">
+        Details
+    </div>
+</ion-header>
+<ion-content>
+    <div class="items">
+        <div class="item" *ngFor="let dataObj of datas" [ngClass]="{'total': dataObj['type'] === 'Total AUM (₹)' }">
+            <span class="type">{{dataObj['type']}}</span>
+            <span class="value">{{dataObj['value']}}</span>
+        </div>
+    </div>
+</ion-content>  

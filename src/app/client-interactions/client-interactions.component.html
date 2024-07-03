@@ -1,0 +1,263 @@
+<ion-header>
+  <!-- <div *ngIf="isDiv" class="info-drop" (click)="close()">  </div> -->
+  <ion-toolbar color="tertiary" class="mobile-visibility">
+    <div class="title-block title-block-custom">
+      <div class="icon-title">
+        <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+        <ion-title class="title">Client Interactions</ion-title>
+      </div>
+    </div>
+  </ion-toolbar>
+  <ion-toolbar class=" desktop-visibility">
+    <div class="container">
+      <div class="heading-part notificationheader">
+        <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+        <span class="heading">Client Interactions</span>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  appScrollbarTheme>
+  <div class="container">
+  <article class="common-content-section querirstab">
+    <ion-segment [(ngModel)]="equityBlockTabValue" scrollable="true" class="card-type-segment" (ionChange)="segmentTabChanged($event.detail.value)">
+        <ion-segment-button value="queries" >
+            <ion-card class="card">
+                <span class="title">Last 5 Queries</span>
+              
+            </ion-card>
+            <img class="indicator" src="assets/imgs/card_down_icon_new.png"  width="16px">
+        </ion-segment-button>
+
+        <ion-segment-button value="interactions">
+          <ion-card class="card">
+              <span class="title">Last 5 Interactions</span>
+           
+          </ion-card>
+          <img class="indicator" src="assets/imgs/card_down_icon_new.png" width="16px">
+      </ion-segment-button>
+    </ion-segment>
+    
+</article>
+<div class="search-section search-section-changed search-section-changed-revamped" *ngIf="equityBlockTabValue == 'queries'">
+  <ion-label class="search_label">Search by Subject</ion-label>
+ 
+  <ion-searchbar search-icon="false" class="custom-searchbar w-100" [(ngModel)]="searchTermDetails" (ngModelChange)="typeSearchTextDetails($event)"></ion-searchbar>
+  <ion-button class="search-button" (click)="searchText()">
+      <img class="changeColor" src="assets/svg/search_new.svg" alt="">
+  </ion-button>
+
+</div>
+<div class="search-section search-section-changed search-section-changed-revamped" *ngIf="equityBlockTabValue == 'interactions'">
+  <ion-label class="search_label">Search by Title</ion-label>
+ 
+  <ion-searchbar search-icon="false" class="custom-searchbar w-100" [(ngModel)]="searchTermInteractions" (ngModelChange)="typeSearchTextInteractions($event)"></ion-searchbar>
+
+  <ion-button class="search-button" (click)="searchText()">
+      <img class="changeColor" src="assets/svg/search_new.svg" alt="">
+  </ion-button>
+
+</div>
+<!--Last 5 Queries table-->
+<div class="queries_tbl" *ngIf="equityBlockTabValue == 'queries'">
+<div class="web-equity thin-scroll detail-table desktop-visibility">
+  <div class="header-table">
+    <table style="width: 100%" class="desktop-header-table ">
+      <thead>
+        <tr>
+
+          <th [class.active]="ordeBy === 'Created_Time'" class="pointer" (click)="setOrder('Created_Time')">Ticket Raise Date
+            <span class="vr_middle_1">
+              <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                    *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                    *ngIf="!ascending">
+                  </span>
+          </th>
+          <th [class.active]="ordeBy === 'Closed_Date'" class="pointer" (click)="setOrder('Closed_Date')">Ticket Close Date
+            <span class="vr_middle_1">
+              <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                    *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                    *ngIf="!ascending">
+                  </span>
+          </th>
+          <th>Subject</th>
+          <th>Description by client</th>
+          <th>Description by support</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+  <div class="main-table thin-scroll">
+    <div class="table-block">
+      <table class="desktop-table thin-scroll">
+          <tr *ngFor="let dataObj of queriesData | dateSorting: ordeBy:reverse; let i = index">
+          <td>{{dataObj['Created_Time'] ? dataObj['Created_Time'].slice(0,10) : '-'}}</td>
+          <td>{{dataObj['Closed_Date'] ? dataObj['Closed_Date'].slice(0,10) : '-'}}</td>
+          <td>{{dataObj['Subject'] ? dataObj['Subject'] : '-'}}</td>
+          <td>{{dataObj['Details'] ? dataObj['Details'].length < 50 ? dataObj['Details'] : dataObj['Details'].slice(0,49) : '-'}}<span *ngIf="dataObj['Details'] && dataObj['Details'].length > 50" class="see_more" (click)="displyPopupQueryDetails(dataObj)">...see more</span></td>
+          <td>{{dataObj['Resolution'] ? dataObj['Resolution'].length < 50 ? dataObj['Resolution'] : dataObj['Resolution'].slice(0,49) : '-'}}<span *ngIf="dataObj['Resolution'] && dataObj['Resolution'].length > 50" class="see_more" (click)="displyPopupQueryDetails(dataObj)">...see more</span></td>
+          <td class="status" [ngClass]="{'open': dataObj?.StatusLabel == 'Open' , 'close': dataObj?.StatusLabel == 'Closed' , 'wip': dataObj?.StatusLabel == 'WIP' }">{{dataObj['StatusLabel'] ? dataObj['StatusLabel'] : '-'}}</td>
+          </tr>
+        <!-- </tbody> -->
+        <tbody *ngIf="tableLoader">
+          <div class="text-center"> <img *ngIf="tableLoader" class="tableLoader" src="/assets/imgs/loader.gif" alt="">
+          </div>
+        </tbody>
+
+        <tbody *ngIf="!queriesData || queriesData && queriesData.length == 0">
+          <td align="center" colspan="6">
+            <div class="text-center tableLoader"> <img class="raise-image" src="assets/svg/not_raised.svg" alt="">
+              <div class="raise-message">No Data</div>
+            </div>
+          </td>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="mobile-visibility">
+  <div class="grid_main">
+<div class="table_grid_box" *ngFor="let dataObj of queriesData | dateSorting: ordeBy:reverse; let i = index">
+<div class="table_grid">
+  <label>Ticket Raise Date</label>
+  <span>{{dataObj['Created_Time'] ? dataObj['Created_Time'].slice(0,10) : '-'}}</span>
+</div>
+<div class="table_grid">
+  <label>Ticket Close Date</label>
+  <span>{{dataObj['Closed_Date'] ? dataObj['Closed_Date'].slice(0,10) : '-'}}</span>
+</div>
+<div class="table_grid">
+  <label>Subject</label>
+  <span>{{dataObj['Subject'] ? dataObj['Subject'] : '-'}}</span>
+</div>
+ <div class="table_grid">
+  <label>Description by client</label>
+  <span> {{dataObj['Details'] ? dataObj['Details'].length < 50 ? dataObj['Details'] : dataObj['Details'].slice(0,49) : '-'}}<span *ngIf="dataObj['Details'] && dataObj['Details'].length > 50" class="see_more" (click)="displyPopupQueryDetails(dataObj)">...see more</span></span>
+</div>
+<div class="table_grid">
+  <label>Description by support</label>
+  <span>{{dataObj['Resolution'] ? dataObj['Resolution'].length < 50 ? dataObj['Resolution'] : dataObj['Resolution'].slice(0,49) : '-'}}<span *ngIf="dataObj['Resolution'] && dataObj['Resolution'].length > 50" class="see_more" (click)="displyPopupQueryDetails(dataObj)">...see more</span></span>
+</div> 
+<div class="table_grid">
+  <label>Status</label>
+  <span class="status" [ngClass]="{'open': dataObj?.StatusLabel == 'Open' , 'close': dataObj?.StatusLabel == 'Closed' , 'wip': dataObj?.StatusLabel == 'WIP' }">{{dataObj['StatusLabel'] ? dataObj['StatusLabel'] : '-'}}</span>
+</div>
+</div>
+</div>
+
+<div *ngIf="tableLoader">
+  <div class="text-center"> <img *ngIf="tableLoader" class="tableLoader" src="/assets/imgs/loader.gif" alt="">
+  </div>
+</div>
+
+<div *ngIf="!queriesData || queriesData && queriesData.length == 0">
+  <div class="text-center tableLoader"> <img class="raise-image" src="assets/svg/not_raised.svg" alt="">
+      <div class="raise-message">No Data</div>
+    </div>
+</div>
+</div>
+
+
+</div>
+<!--Last 5 Queries table-->
+
+<!--Last 5 Interactions table-->
+<div class="interactions_tbl" *ngIf="equityBlockTabValue == 'interactions'">
+<div class="web-equity thin-scroll detail-table desktop-visibility">
+  <div class="header-table">
+    <table style="width: 100%" class="desktop-header-table ">
+      <thead>
+        <tr>
+          <th [class.active]="order === 'Date'" class="pointer" (click)="setOrder('Date')">Date of meeting
+            <span class="vr_middle_1">
+              <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                    *ngIf="ascendingOrder">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                    *ngIf="!ascendingOrder">
+                  </span>
+          </th>
+          <th>Mode</th>
+          <th>Meeting Title</th>
+          <th>Description of meeting</th>
+       </tr>
+      </thead>
+    </table>
+  </div>
+  <div class="main-table thin-scroll">
+    <div class="table-block">
+      <table class="desktop-table thin-scroll">
+            <tr *ngFor="let dataObj of interactionsData | dateSorting: order:reverseOrder; let i = index">
+          <td>
+            {{dataObj['Date'] ? dataObj['Date'] : '-'}}
+          </td>
+          <td>{{dataObj['Type_of_Engagement'] ? dataObj['Type_of_Engagement'] : '-'}}</td>
+          <td>{{dataObj['Title'] ? dataObj['Title'] : '-'}}</td>
+          <td>{{dataObj['Description'] ? dataObj['Description'].length < 50 ? dataObj['Description'] : dataObj['Description'].slice(0,49) : '-'}} <span *ngIf="dataObj['Description'] && dataObj['Description'].length > 50" class="see_more"  (click)="displyPopupInteractionsDetails(dataObj)">...see more</span></td>
+         </tr>
+
+        <!-- </tbody> -->
+        <tbody *ngIf="tableLoader">
+          <div class="text-center"> <img *ngIf="tableLoader" class="tableLoader" src="/assets/imgs/loader.gif" alt="">
+          </div>
+        </tbody>
+
+        <tbody *ngIf="!interactionsData || interactionsData && interactionsData.length == 0">
+          <td align="center" colspan="6">
+            <div class="text-center tableLoader"> <img class="raise-image" src="assets/svg/not_raised.svg" alt="">
+              <div class="raise-message">No Data</div>
+            </div>
+          </td>
+        </tbody>
+
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="mobile-visibility">
+  <div class="grid_main">
+<div class="table_grid_box" *ngFor="let dataObj of interactionsData | dateSorting: order:reverseOrder; let i = index">
+<div class="table_grid">
+  <label>Date of meeting</label>
+  <span>{{dataObj['Date'] ? dataObj['Date'] : '-'}}</span>
+</div>
+<div class="table_grid">
+  <label>Mode</label>
+  <span>{{dataObj['Type_of_Engagement'] ? dataObj['Type_of_Engagement'] : '-'}}</span>
+</div>
+<div class="table_grid">
+  <label>Meeting Title</label>
+  <span>{{dataObj['Title'] ? dataObj['Title'] : '-'}}</span>
+</div>
+ <div class="table_grid">
+  <label>Description of meeting</label>
+  <span>{{dataObj['Description'] ? dataObj['Description'].length < 50 ? dataObj['Description'] : dataObj['Description'].slice(0,49) : '-'}} <span *ngIf="dataObj['Description'] && dataObj['Description'].length > 50" class="see_more"  (click)="displyPopupInteractionsDetails(dataObj)">...see more</span></span>
+</div>
+</div>
+</div>
+<div *ngIf="tableLoader">
+  <div class="text-center"> <img *ngIf="tableLoader" class="tableLoader" src="/assets/imgs/loader.gif" alt="">
+  </div>
+</div>
+
+<div *ngIf="!interactionsData || interactionsData && interactionsData.length == 0">
+  <div class="text-center tableLoader"> <img class="raise-image" src="assets/svg/not_raised.svg" alt="">
+      <div class="raise-message">No Data</div>
+    </div>
+</div>
+</div>
+
+</div>
+<!--Last 5 Interactions table-->
+  </div>
+
+</ion-content>

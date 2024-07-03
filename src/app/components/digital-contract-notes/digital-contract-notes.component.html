@@ -1,0 +1,36 @@
+<div>
+    <div class="desktop-visibility">
+        <div class="container">
+            <div width="100%" class="digital_note_table">
+                <table class="dn_th">
+                    <tr>
+                        <th>Date</th>
+                        <th>Settlement No.</th>
+                        <th>Settlement Type</th>
+                        <th>Download</th>
+                        <th>Email to Client</th>
+                    </tr>
+                </table>
+                <div *ngIf="settlementList && settlementList.length>0 && dataLoad" class="table_main vr_scroll">
+                    <table class="inside_table">
+                        <tr class="dn_td" *ngFor="let item of settlementList">
+                            <td>{{item.Date}}</td>
+                            <td>{{item.SettlementNo}}</td>
+                            <td>{{item.Type.option}}</td>
+                            <td><img src="./assets/svg/pdf_icon_dt.svg" width="30px" alt="PDF" (click)="download(item)">
+                            </td>
+                            <td><img src="./assets/svg/mail_icon_dt.svg" width="30px" alt="mail" (click)="email(item)">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="no-data-found" *ngIf="settlementList.length == 0 && dataLoad">
+                    <span>No Data Found</span>
+                </div>
+            </div>
+        </div>
+        <div class="loader" *ngIf="!dataLoad">
+            <img src="/assets/imgs/loader.gif" alt="">
+        </div>
+    </div>
+</div>

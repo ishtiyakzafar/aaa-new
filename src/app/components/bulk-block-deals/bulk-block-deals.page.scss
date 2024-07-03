@@ -1,0 +1,266 @@
+@import 'src/app/pages/markets/markets.page.scss';
+
+// .custom-content {
+//     height: calc(100vh - 308px);
+// }
+
+ion-toolbar{
+    --border-width: 0 !important;
+    .gainer-container{
+        padding: 0 10px;
+    }
+}
+
+.gainers-losers {
+    border-radius: 50px !important;
+
+    .header {
+        height: 40px;
+        color: rgb(35, 35, 35);
+        font-size: 14px;
+        font-family: 'HelveticaNeue';
+        text-transform: uppercase;
+        margin: 0;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 0 16px;
+         ion-icon {
+            font-size: 24px;
+            cursor: pointer;
+            color:#C1C4CC;
+        }
+    }
+
+    .container-head {
+       // padding: 16px;
+        width:80%;
+        display:block !important;
+        margin: 0 auto;
+
+        
+    }
+
+    .gainers-losers_contains {
+        // overflow: auto;
+        // width: 95.5%;
+        // border-radius: 10px;
+        // margin-left: 4%;
+        // max-height: 68vh;
+         &::-webkit-scrollbar{
+             height:20px;
+             width:4px;
+         }
+         &::-webkit-scrollbar-thumb:vertical{
+             border-radius: 1em;
+             background: #CFCFCF;
+             background-clip: padding-box;
+             
+         }
+        //  .gainertableleft, .gainertableright {
+        //      position: relative;
+        //      table {
+        //         margin-top: 35.2px;
+        //          thead {
+        //             position: absolute;
+        //             width: 100%;
+        //             top: 0;
+        //          }
+        //      }
+        //  }
+     }
+ }
+
+//  .gainertableleft {
+//     table {
+//         border: none
+//     }
+//     tr {
+//        border: 1px solid #dddddd;
+//    }
+//     thead {
+//         background: #D5EFCC;
+//         tr {
+//             border: none;
+//         }
+//     }
+//     th:first-child {
+//         border-radius: 10px 0 0 0;
+//     }
+// }
+
+// .gainertableright {
+//    table {
+//        border: none
+//    }
+//    tr {
+//       border: 1px solid #dddddd;
+//   }
+//    thead {
+//        background: #D5EFCC;
+//        tr {
+//            border: none;
+//        }
+//    }
+//    th:last-child {
+//        border-radius: 0 10px 0 0;
+//    }
+// }
+
+.gainerstable {
+    border: 1px solid #dddd;
+    border-radius: 10px;
+ }
+
+ .gainertableleft {
+     table {
+         border: none
+     }
+     tr {
+        border: none;
+        border-bottom: 1px solid #dddddd;
+        border-right: .5px solid #dddddd;
+        cursor:pointer;
+    }
+     thead {
+         background: none !important;
+         tr {
+             border: none;
+         }
+     }
+     th {
+        background: #F2F4F4;
+     }
+     th:first-child {
+         border-radius: 10px 0 0 0;
+     }
+     tr:last-child {
+         border-bottom: none;
+     }
+ }
+
+ .gainertableright {
+    table {
+        border: none
+    }
+    tr {
+        border: none;
+        border-bottom: 1px solid #dddddd;
+        border-left: .5px solid #dddddd;
+        cursor:pointer;
+   }
+   tr:last-child {
+       border-bottom: none;
+   }
+    thead {
+        background: none !important;
+        tr {
+            border: none;
+        }
+    }
+    th {
+        background: #F2F4F4;
+    }
+    th:last-child {
+        border-radius: 0 10px 0 0;
+    }
+}
+
+tr {
+    th {
+        cursor: default;
+    }
+}
+
+.fontboldblack {
+    max-width: 100px;
+    width: 100px;
+    // white-space: nowrap;
+    // overflow: hidden;
+}
+
+.qty {
+    max-width: 83px;
+    width: 83px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+#custom-modal-4 {
+    .gainers-losers{
+        .container-head {
+            width: 89%;
+            padding-right: 11px;
+        }
+    } 
+    .switch {
+        height: 21px;
+    }
+}
+
+.deals-container {
+    table {
+        th:first-child, td:first-child {
+            width: 36%;
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .dealstable {
+        tr {
+            border-top: 0 !important;
+        }
+    }
+    
+    .custom-content {
+        height: calc(100vh - 308px);
+    }
+    .fontboldblack {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 101px;
+        width: 101px;
+        font-size: 12px;
+    }
+    .k-value {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 101px;
+        width: 101px;  
+        font-size: 12px;
+    }
+    .gainerstable {
+        border: none !important; 
+        border-radius: 0px !important; 
+    }
+    // th:first-child {
+    //     border-radius: 0 !important;
+    // }
+    // th:last-child {
+    //     border-radius: 0 !important;
+    // }
+}
+
+@media screen and (max-width: 375px) {
+    .fontboldblack {
+        max-width: 88px;
+        width: 88px;
+        // font-size: 14px;
+        font-size: 12px;
+    }
+    .k-value {
+        max-width: 88px;
+        width: 88px;
+        // font-size: 12px;
+        font-size: 12px;
+    }
+}
+
+
+
+
+ 
+
+
+

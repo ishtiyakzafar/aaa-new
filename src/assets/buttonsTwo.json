@@ -1,0 +1,7 @@
+[
+    {"Name":"Nifty","Value":"nifty", "default":"D", "active": 1},
+    {"Name":"Recently Searched","Value":"searched", "active": 0},
+    {"Name":"Watchlist 1","Value":"watchlist1", "active": 0},
+    {"Name":"Watchlist 2","Value":"watchlist2", "active": 0},
+    {"Name":"Watchlist 3","Value":"watchlist3", "active": 0}
+]

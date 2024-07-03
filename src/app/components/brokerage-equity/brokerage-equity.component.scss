@@ -1,0 +1,80 @@
+.web-equity {
+    .header-table {
+        th {
+            width: 20% !important;
+        }
+        th:nth-child(2) {
+            text-align: left;
+        }
+    }
+    .main-table {
+        // max-height: 175px;
+        max-height: 468px;
+        overflow: auto;
+        td {
+            width: 20% !important;
+        }
+        td:nth-child(2) {
+            text-align: left;
+            font-family: 'nunitoBold';
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .inner-content {
+        // height: calc(100vh - 550px);
+    }
+    .web-equity {
+        .header-table {
+            th {
+                width: 23% !important;
+            }
+            th:nth-child(1) {
+                width: 30% !important;
+            }
+            th:nth-child(2) {
+                text-align: center;
+            }
+            th:nth-child(3) {
+                text-align: center;
+            }
+        }
+        .main-table {
+            // max-height: 175px;
+            max-height: unset;
+            overflow: auto;
+            td {
+                width: 23% !important;
+            }
+            td:nth-child(1) {
+                width: 30% !important;
+            }
+            td:nth-child(2) {
+                text-align: center;
+                font-family: 'nunitoRegular';
+            }
+            td:nth-child(3) {
+                text-align: center;
+            }
+        }
+    }
+    .detail-part-aum-inner {
+        .code-block {
+            .name {
+                max-width: 28vw;
+            }
+        }
+    }
+}
+.desktop-visibility th { font-size: 13px; font-weight: 400; }
+.brokerage_tbl th span{display: block; color: #000;font-weight: 600;
+    font-size: 14px;}
+
+.download_file{display: flex;justify-content: flex-end; gap: 10px; margin: 15px 0;}
+.download_file > div{cursor: pointer;}
+.download_file img{width: 16px;}
+
+@media screen and (max-width: 768px) {
+.download_file{padding-right: 10px;}
+}

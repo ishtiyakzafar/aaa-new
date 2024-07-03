@@ -1,0 +1,19 @@
+.callfor_support{ position: relative; padding-top: 25px;
+    h2{font-size: 20px; color: #000; font-weight: 700; text-align: center; margin: 0; padding-bottom: 5px;
+         padding: 0px;}
+    h2:after{content: ""; display: block; width: 100px; border-bottom: 2px solid #F37921; position:
+         absolute; left: 0; right: 0; margin: 0 auto; }
+    .pop_close{position: absolute; right: -15px; top: -15px;cursor: pointer;}
+    .call_support_table{ margin-top: 25px;
+    td{ padding: 10px; font-size: 14px; color: #000000; font-weight: 700; vertical-align: top; border-bottom: 1px solid #E6E6E6;
+    span.sb_ti{color: #959595; font-size: 13px;}
+    .d-block{display: block;} 
+    
+    }
+     
+}
+}
+
+.call_support_table td:last-child{text-align: right; font-size: 14px; font-weight: 700;}
+.call_support_table tr:last-child td{border-bottom: 0px;}
+

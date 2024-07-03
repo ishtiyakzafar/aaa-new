@@ -1,0 +1,173 @@
+<ion-content class="mobile-visibility">
+  <div class="data-block-parent" *ngIf="netPositionListArray.length > 0 && dataLoad">
+    <div class="data-block" *ngFor="let dataObj of netPositionListArray; let i = index">
+      <div class="upper-heading-section" (click)="dropClick(i, netPositionListArray)">
+        <div class="qty-block">
+          <span class="intraday">
+            <span *ngIf="dataObj.data[0].DelvIntra == 'D'">Delivery</span>
+              <span *ngIf="dataObj.data[0].DelvIntra == 'I'">Intraday</span>
+              <span *ngIf="dataObj.data[0].DelvIntra == 'S'">BO</span>
+              <span *ngIf="dataObj.data[0].DelvIntra == 'C'">CO</span>
+          </span>
+          <span class="qty">LTP</span><span class="qty-value">
+            {{dataObj.data[0].LastRate | formatNumerDecimal: dataObj.ExchType}}
+          </span>
+        </div>
+        <div class="data-section">
+          <div class="item">
+            <div class="upper scrip-name" (click)="goToCompanyDetails(dataObj)">{{dataObj.name | splitNameDate: "name"}}</div>
+            <div class="lower">{{dataObj.name | splitNameDate: "date"}}</div>
+          </div>
+          <div class="item">
+            <div class="upper">Booked P&L</div>
+            <div class="lower" [ngStyle]="{'color':(bookedPL(dataObj.BuyRateQty, dataObj.sellRateQty) == 0) ? '#656565' :(bookedPL(dataObj.BuyRateQty, dataObj.sellRateQty) > 0 ? '#17C257' : '#F55858')}">
+              <span class="rupees">₹</span>{{bookedPL(dataObj.BuyRateQty, dataObj.sellRateQty) | formatNumerDecimal: dataObj.ExchType}}
+            </div>
+          </div>
+          <div class="item">
+            <div class="upper">MTM</div>
+            <div class="lower" [ngStyle]="{'color':(calculateMtoM(dataObj.data[0].LastRate,dataObj.data, dataObj.BuyRateQty,dataObj.sellRateQty) == 0 )  ? '#656565' :(calculateMtoM(dataObj.data[0].LastRate,dataObj.data, dataObj.BuyRateQty,dataObj.sellRateQty) > 0 ? '#17C257' : '#F55858')}">
+              <span class="rupees">₹</span>{{calculateMtoM(dataObj.data[0].LastRate, dataObj.data, dataObj.BuyRateQty,dataObj.sellRateQty) | formatNumerDecimal: dataObj.ExchType}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="detail-section" *ngIf="dataObj['isVisible']">
+        <div class="detail-item">
+          <div class="detail-topest">Net</div>
+          <!-- <div class="detail-upper">Qty. / Avg Rate</div> -->
+          <div class="detail-upper">Qty.</div>
+          <div class="detail-lower">
+              <!-- <span class="rupees">₹</span>  -->
+              {{calculateNetQty(dataObj.BuyRateQty, dataObj.sellRateQty)}}
+            </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-topest">Buy</div>
+          <div class="detail-upper">Qty. / Avg Rate</div>
+          <div class="detail-lower font-green">{{displayBuyRateQty(dataObj.BuyRateQty, dataObj.data)}}</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-topest">Sell</div>
+          <div class="detail-upper">Qty. / Avg Rate</div>
+          <div class="detail-lower loser-colors">{{displaySellRateQty(dataObj.sellRateQty, dataObj.data)}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="data-block-parent" *ngIf="netPositionList.length == 0 && dataLoad">
+    <span class="no-data-found">No Records Found</span>
+  </div>
+  <div class="loader" *ngIf="!dataLoad" style="min-height: calc(100vh - 210px)">
+    <img src="/assets/imgs/loader.gif" alt="">
+  </div>
+  
+</ion-content>
+<div class="desktop-visibility">
+  <div class="refreshBtn">
+    <div class="refresh-block pointer" (click)="doRefresh()">
+      <ion-icon class="refresh" src="assets/svg/refresh_colored.svg"></ion-icon>
+      <span>Refresh</span>
+    </div>
+  </div>
+  <div class="web-equity thin-scroll">
+    <div class="header-table">
+      <table style="width: 100%" class="desktop-header-table">
+        <thead>
+          <tr>
+            <th>
+              Scrip
+            </th>
+            <th>
+              Type
+            </th>
+            <th>
+              LTP
+            </th>
+            <th>
+              Booked P&L
+            </th>
+            <th>
+              MTM
+            </th>
+            <th>
+              <div class="block">
+                <div class="upper-heading">Net</div>
+                 <div class="lower-heading">Qty.</div>
+                <!-- <div class="lower-heading">Qty.Avg Rate</div> -->
+              </div>
+            </th>
+            <th>
+              <div class="block">
+                <div class="upper-heading">Buy</div>
+                <div class="lower-heading">Qty. / Avg Rate</div>
+              </div> 
+            </th>
+            <th>
+              <div class="block">
+                <div class="upper-heading">Sell</div>
+                <div class="lower-heading">Qty. / Avg Rate</div>
+              </div> 
+            </th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="main-table thin-scroll" *ngIf="dataLoad">
+      <table style="width: 100%" class="mobile-table">
+        <tbody *ngIf="netPositionListArray.length > 0">
+            <tr *ngFor="let dataObj of netPositionListArray | sort:'name'">
+                <td> 
+                  <div class="td-heading first-column">
+                    <span class="first-span-block">
+                      <span class="first-span" (click)="goToCompanyDetails(dataObj)">{{dataObj.name | splitNameDate: "name"}}</span> 
+                      <span class="spanStyle">&nbsp;{{dataObj.data[0].Exch}},{{dataObj.data[0].ExchType}}</span>
+                    </span>
+                    <span class="date">{{dataObj.name | splitNameDate: "date"}}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="ltp-data">
+                    <span *ngIf="dataObj.data[0].DelvIntra == 'D'">Delivery</span>
+                    <span *ngIf="dataObj.data[0].DelvIntra == 'I'">Intraday</span>
+                    <span *ngIf="dataObj.data[0].DelvIntra == 'S'">BO</span>
+                    <span *ngIf="dataObj.data[0].DelvIntra == 'C'">CO</span>
+                   
+                  </div>
+                </td>
+                <td [ngStyle]="{'color':(dataObj.data[0].LastRate == 0) ? '#656565' :(dataObj.data[0].LastRate > 0 ? '#17C257' : '#F55858')}">
+                  {{dataObj.data[0].LastRate | formatNumerDecimal: dataObj.ExchType}}
+                </td>
+                <td [ngStyle]="{'color':(bookedPL(dataObj.BuyRateQty, dataObj.sellRateQty) == 0) ? '#656565' :(bookedPL(dataObj.BuyRateQty, dataObj.sellRateQty) > 0 ? '#17C257' : '#F55858')}">
+                  <span class="rupees">₹</span>
+                  <span> {{bookedPL(dataObj.BuyRateQty, dataObj.sellRateQty) | formatNumerDecimal: dataObj.ExchType}}</span>
+                  
+                </td>
+                <td [ngStyle]="{'color':(calculateMtoM(dataObj.data[0].LastRate, dataObj.data, dataObj.BuyRateQty,dataObj.sellRateQty) == 0 )  ? '#656565' :(calculateMtoM(dataObj.data[0].LastRate, dataObj.data, dataObj.BuyRateQty,dataObj.sellRateQty) > 0 ? '#17C257' : '#F55858')}">
+                  <span class="rupees">₹</span>
+                  <span>{{calculateMtoM(dataObj.data[0].LastRate, dataObj.data, dataObj.BuyRateQty,dataObj.sellRateQty) | formatNumerDecimal: dataObj.ExchType}}</span>
+                </td>
+                <td>
+                  {{calculateNetQty(dataObj.BuyRateQty, dataObj.sellRateQty)}}
+                </td>
+                <td class="font-green">
+                <span> {{displayBuyRateQty(dataObj.BuyRateQty,dataObj.data)}}</span>  
+                </td>
+                <td class="loser-colors">
+                <span> {{displaySellRateQty(dataObj.sellRateQty,dataObj.data)}}</span> 
+                </td>
+            </tr>
+        </tbody>
+        <tbody *ngIf="netPositionListArray.length == 0">
+          <tr>
+            <td class="no-data-found" style="text-align: center !important;">No Record Found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- show loader -->
+    <div class="loader" *ngIf="!dataLoad" style="min-height: 120px">
+      <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+  </div>
+</div>

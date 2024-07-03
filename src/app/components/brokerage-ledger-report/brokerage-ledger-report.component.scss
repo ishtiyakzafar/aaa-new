@@ -1,0 +1,339 @@
+.equity-deposit-container {
+    // width: 750px;
+    // margin: 0 auto;
+    .jv-header {
+        .heading {
+            font-family: "nunitoBold";
+            font-size: 20px;
+            padding-left: 5px !important;
+            color: #212121;
+        }
+    }
+    .equity-deposit-head-content {
+       
+        .box-container {
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+            padding: 30px 30px;
+            background-color: #f4f3f9;
+            text-align: center;
+            .items {
+                display: flex;
+                flex-direction: column;
+                .itemtitle {
+                    color: #716a90;
+                    font-size: 15px;
+                    margin: 5px;
+                    font-family: "nunitoRegular";
+                }
+                .itemvalue {
+                    color: #212121;
+                    font-size: 16px;
+                    font-family: "nunitoSemiBold";
+                }
+            }
+        }
+        .download-report {
+            padding:0 0 15px 0px;
+            padding: 16px 0 16px 0px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            span.download {
+                font-size: 14px;
+                font-family: "nunitoSemiBold";
+                color: #f37921;
+                margin-right: 10px;
+                cursor: pointer;
+            }
+            .name {
+                color: #000000;
+                font-size: 20px;
+                font-family: "nunitoSemiBold";
+            }
+        }
+    }
+
+}
+.card-container{
+    border: 1px solid #cbcbcb;
+    border-radius: 10px;
+
+    &.thin-scroll{
+        // max-height: 250px;
+        max-height: 468px;
+        margin-bottom: 24px;
+        overflow: auto;
+    }
+}
+.card{
+    padding: 15px;
+    border-bottom: 1px solid #cbcbcb;
+    .upper-section, .bottom-section{
+        display: flex;
+        justify-content: space-between;
+        .ruppee{
+            font-size: 10px;
+        }
+    }
+    .upper-section{
+        .card-date{
+            font-family: 'nunitoBold';
+        }
+        .card-amount{
+            font-family: 'nunitoBold';
+        }
+        .positive{
+            color: #17C257;
+        }
+        .negative{
+            color: #EB2B2B;
+        }
+    }
+    .bottom-section{
+        padding-top: 10px;
+        color: #6E6E6E;
+        font-family: 'nunitoRegular';
+        font-size: 14px;
+        .card-description{
+            width: 80%;
+        }
+    }
+}
+
+.loader{
+    min-height: 245px;
+}
+
+@media (max-width: 768px) {
+    .equity-deposit-container {
+        .equity-deposit-head-content {
+            width: 100%;
+
+            .box-container {
+                display: flex !important;
+                justify-content: space-around;
+                margin: 15px 10px;
+                padding: 15px 15px;
+                background-color: #f4f3f9;
+                .items {
+                    display: flex;
+                    flex-direction: column;
+                    
+                    .itemtitle {
+                        font-size: 12px;
+                    }
+                    .itemvalue {
+                        font-size: 14px;
+                    }
+                }    
+            }
+            .download-report {
+                padding:15px 0 15px 0px;
+                border-bottom: 1px solid #9c9c9c6b;
+                justify-content: flex-end;
+                align-items: flex-start;
+                // display: none;
+                span.download {
+                    color: #f37921;
+                    font-size: 12px;
+                    margin-left:15px;
+                }
+                .name {
+                    display: none;
+                    color: #000000;
+                    font-size: 16px;
+                    padding: 0 15px;
+                    font-family: "nunitoSemiBold";
+                }
+            }
+        }
+    }
+    .card-container{
+        max-height: none !important;
+        border: none;
+        height: 100%;
+    }
+    .card{
+        .bottom-section{
+            .card-description{
+                width: 60%;
+            }
+        }
+    }
+    .loader{
+        min-height: 50vh;
+    }
+}
+
+.download_file{display: flex;justify-content: flex-end; gap: 10px; margin: 10px;}
+.download_file > div{cursor: pointer;}
+.download_file img{width: 16px;}
+.desktop-table {
+     width: 100%;
+    margin-left: 0;
+    margin: auto;
+    max-height: unset !important;
+    tr {
+        border: none;
+        border-bottom: 1px solid #cbcbcb;
+        th {
+            background: #f2f4f4;
+            padding: 10px 5px !important;
+        }
+        th:nth-child(1) {
+            border-radius: 8px 0 0px 0; 
+        }
+
+        td {
+            cursor: pointer;
+            position: relative;
+        }
+        th,
+        td {
+            font-size: 14px;
+            color: #6e6e6e;
+            text-align: center;
+            width: 10%;
+            padding: 10px 5px !important;
+       }
+       
+       th:nth-child(1),
+        td:nth-child(1) {
+            text-align: center;
+            width: 10%;
+        }
+
+        th:nth-child(3),
+        td:nth-child(3) {
+            text-align: left;
+            width: 15%;
+        }
+       
+        th:last-child,
+        td:last-child {
+            //padding-right: 16px !important;
+            width: 15%;
+            
+        }
+        // th:first-child,
+        // td:first-child {
+        //     padding-left: 16px !important;
+            
+        // }
+        th:last-child {
+            border-radius: 0 8px 0 0;
+        }
+        td:last-child {
+            border-radius: 0 0 0 8px;
+        }
+    }
+
+    tr:last-child {
+        border-bottom: none !important;
+    }
+
+    .raatableHeader {
+        th,
+        td {
+            width: 10%;
+        }
+    }
+    tr:last-child {       
+        border-bottom: none !important;
+    }
+    tbody {
+        tr {
+            border-bottom: 1px solid #cbcbcb;
+        }
+        tr:first-child {
+            border-top: none;
+        }
+    }
+}
+table {
+   border: none !important;
+}
+.overflow-hidden {
+   overflow: hidden !important;
+}
+.main-table {
+   overflow: auto;
+   overflow-x: hidden;
+   padding-bottom: 2px;
+   max-height: 464px !important;
+   margin-bottom: 24px;
+   border-radius: 0 0 8px 8px;
+   border: 1px solid #cbcbcb;
+   .table-block {
+       border-radius: 0 0 8px 8px;
+       width: 100%;
+       border-top: none;
+   }
+}
+.no-data-found{text-align: center;}
+.card-amount.positive{
+   color: #17C257 !important;
+}
+.card-amount.negative{
+   color: #EB2B2B !important;
+}
+@media screen and (min-width: 1200px) {
+    .container {
+        width: 1140px;
+        width: 94% !important;
+    }
+}
+.smaller-container{margin: 0 auto;}
+@media screen and (min-width: 768px) and (max-width: 1199px)  {
+.desktop-table, .main-table .table-block{width: 100%;}
+}
+
+
+.mobile-visibility{
+    .card_mobile_view{margin: 10px;}
+    .bod_card{box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.25); border-radius: 10px; padding: 16px; margin-bottom: 16px;}
+    .bod_card h2{color: #000; font-size: 18px; font-weight: 700; margin: 0; padding-bottom: 15px;}
+    .bod_card_list{list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; }
+    .bod_silder .bod_card_list{width: 230px;}
+    .bod_card_list li{padding-top: 15px;}
+    .bod_card_list li:first-child{padding-top: 0px;}
+    .bod_card_list li:nth-child(2){padding-top: 0px;}
+    .bod_card_list li label{font-size: 14px; color: #6E6E6E; font-weight: 400; display: block; margin-bottom: 4px;}
+    .bod_card_list li span{font-size: 14px; color: #010101; font-weight: 400;}
+    .bod_card_list li span .nagative{color: #EA5143;}
+    .table_card_bod{display: grid; grid-template-columns: 1fr 1fr 1fr !important;grid-gap: 0 10px;}
+    .table_card_bod_main h2{color: #3F3D56 !important; font-size: 14px !important;}
+    .table_card_bod li:nth-child(3){padding-top: 0px;}
+    .font-weight-normal{font-size: 16px; display: block;color: #6E6E6E;font-weight: 400;font-family: 'nunitoRegular';}
+    @media screen and (max-width: 500px){
+        .custom-searchbar{border: 1px solid #DCDFE0;border-radius: 6px;margin-bottom: 20px;margin-top: 10px;}
+    }
+    @media screen and (max-width: 768px){
+        .data-block-parent{display: block; }
+    }
+    .dot span{
+        background: none repeat scroll 0 0 rgb(17, 17, 17);
+        height: 5px;
+        width: 5px;
+        line-height: 0;
+        list-style: none outside none;
+        margin-right: 0px;
+        margin-top: 3px;
+        border-radius: 50%;
+        pointer-events: none;
+        display: block;
+    
+    }
+    .mobDetails{
+        padding: 10px 0 0;
+        width: 100%;
+    }
+    .qty-block{
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    }

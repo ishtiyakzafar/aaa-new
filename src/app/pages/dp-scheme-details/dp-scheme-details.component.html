@@ -1,0 +1,116 @@
+<div class="schemedetail-main">
+<div  class="details_part"  *ngFor="let data of dataArray;let i=index">
+  <div class="dp-equityhead">
+    <div class="header-part">
+      <div class="section-1">
+        <span class="title">DMAT A/C No.</span>
+        <div class="below-part">
+        {{dematNumber[i]}}<span class="default-btn">Default</span>
+        </div>
+      </div>
+
+      <div class="section-2"><span class="title">DP</span>
+        <div class="below-part">
+         {{data.Dp}}
+        </div>
+      </div>
+
+      <div class="section-3">
+        <span class="title">DP Charge Scheme</span>
+        <div class="below-part">
+          {{data.SchemeName}}
+        </div>
+      </div>
+      <div class="section-4" *ngIf="!showtable[i]" (click)="toggle(i)">
+        <img src="https://images.indiainfoline.com/mailers/aaa-02-09-22/downward-arrow.svg">
+      </div>
+      <div class="section-5"  *ngIf="showtable[i]" (click)="toggle(i)">
+        <img src="https://images.indiainfoline.com/mailers/aaa-02-09-22/upward-arrow.svg">
+      </div>
+    </div>
+  </div>
+  <div class="dpbdr">&nbsp;</div>
+  <div class="dp-equity m-t-16">
+   <div *ngIf="showtable[i]">
+    <div class="header-table-amc">
+      <table style="width: 100%" class="desktop-header-table">
+          <tbody>
+              <tr>
+                  <td>AMC Amount <span  class="pt4 d-block">{{data.Amount}}</span></td>
+                  <td>Frequency <span  class="pt4 d-block">{{data.Frequency}}</span></td>
+                  <td>Based On Date <span  class="pt4 d-block">{{data.Based_On_Date}}</span></td>
+                  <td>Free For Years <span  class="pt4 d-block">{{data.Free_For_Years}}</span></td>
+                  <td>Pro Rata <span  class="pt4 d-block">{{data.ProRata}}</span></td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+
+    <div class="header-table">
+        <table style="width: 100%" class="desktop-header-table">
+            <thead>
+                <tr >
+                    <th>
+                      Transaction Type
+                    </th>
+                    <th style="padding-left:9%">
+                      Min Amt (₹)
+                    </th>
+                    <th style="padding-left:3%">
+                      Max Amt (₹)
+                    </th>
+                    <th>
+                      Fixed Amt (₹)
+                    </th>
+                    <th>
+                      %
+                    </th>
+                    <th>
+                      Per
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div class="main-table thin-scroll">
+        <table style="width: 100%" class="mobile-table">
+            <tbody>
+                <tr *ngFor="let childData of data['DPSchemeDetails']">
+                    <td  >
+                      {{childData.TransDesc}}
+                    </td>
+                    <td style="padding-left:12%">
+                      {{childData.Min_Amount}}
+                    </td>
+                    <td>
+                      {{childData.Max_Amount}}
+                    </td>
+                    <td>
+                      {{childData.Fixed_Amount}}
+                    </td>
+                    <td>
+                      {{childData.Percentage}}
+                    </td>
+                    <td>
+                      {{childData.Per_Certificate}}
+                    </td>
+                 </tr>
+            </tbody>
+            
+        </table>
+    </div>
+  </div>
+</div>
+
+
+</div>
+<tbody *ngIf="showNoData" style="text-align: center;">
+  <tr>
+      <span class="no-data-found">No Data Found</span>
+  </tr>
+</tbody> 
+<div style="position:absolute;top:50%; left:50%" *ngIf="showLoader">
+  <img style="width:40px" src="/assets/imgs/loader.gif" alt="">
+</div>
+
+</div>

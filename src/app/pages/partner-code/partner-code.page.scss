@@ -1,0 +1,133 @@
+.search-part {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+}
+
+ion-button {
+    width: 210px;
+    background: #F37921;
+    --background: #F37921;
+    border-radius: 3px;
+    --border-radius: 3px;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.custom-searchbar {
+    // width:0%;
+    margin-right: 10%;
+    margin-top: 0;
+    height: 35px;
+    font-family: 'nunitoBold';
+}
+
+.detail-part {
+    border: 1px solid #CBCBCB;
+    width: 90%;
+    border-radius: 8px;
+    overflow: hidden;
+    color: #212121;
+    margin-top: 50px;
+    .header {
+        background: #F4F3F9;
+        padding: 6px 8px;
+        .upper {
+            // color: #212121;
+            font-family: 'nunitoBold';
+            font-size: 20px;
+        }
+        .lower {
+            // color: #212121;
+            font-size: 14px;
+        }
+    }
+    .listing {
+        padding: 6px 8px;
+        border-bottom: 1px solid #CBCBCB;
+    }
+    .listing:last-child {
+        border-bottom: none;
+    }
+}
+.drop-down-toolbar {
+    position: absolute;
+    top: 33px;
+    width: 90%;
+    // margin-left: 10%;
+    z-index: 999;
+    box-shadow: 0px 2px 10px #00000029;
+    .drop-down {
+        padding: 16px;
+        // max-height: 60vh;
+        max-height: calc(100vh - 305px);
+        overflow-y: scroll;
+        .item {
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            .first {
+                color: #000;
+                font-family: nunitoSemiBold;
+                font-size: 14px;
+            }
+            .name {
+                color: #9C9C9C;
+                font-size: 12px;
+            }
+        }
+        .item:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
+
+@media screen and (max-width: 500px) {
+    ion-button {
+        width: 56px;
+        background: #351696;
+        --background: #351696;
+        border-radius: 8px;
+        --border-radius: 8px;
+        color: #fff;
+        margin-bottom: 16px;
+        height: 40px;
+        min-width: 56px;
+        img {
+            width: 17px;
+        }
+    }
+    .search-part {
+        margin-top: 16px;
+        padding: 0 16px;
+        border-bottom: 1px solid #f4f4f4;
+        // padding-bottom: 16px;
+    }
+    .custom-searchbar {
+        margin-right: 16px;
+        font-family: 'nunitoRegular';
+    }
+    .detail-part {
+        border: none;
+        width: unset;
+        .header {
+            background: unset;
+            padding: 10px 16px;
+        }
+        .listing {
+            padding: 10px 16px;
+            border: 0;
+            display: flex;
+            justify-content: space-between;
+            .lower {
+                font-family: 'nunitoSemiBold';
+            }
+        }
+    }
+
+    .drop-down-toolbar {
+        width: 100%;
+    }    
+    
+}

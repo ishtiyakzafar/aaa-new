@@ -1,0 +1,286 @@
+<ion-header class="mobile-visibility">
+    <ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Gainers & Losers</ion-title>
+			</div>
+			<div class="search-block">
+                <ion-buttons class="header-icon-block">
+                  <ion-icon class="iconsize first-icon noti-icon" src="./assets/svg/white-home-icon.svg" (click)="goToDashboard()"></ion-icon>
+                    <ion-icon class="iconsize first-icon noti-icon" src="./assets/svg/notification.svg" (click)="goToNotification()"></ion-icon>
+                    <ion-icon class="iconsize" src="./assets/svg/search.svg" (click)="goToAddScript()"></ion-icon>
+                </ion-buttons>
+            </div>
+		</div>
+	</ion-toolbar>
+   <ion-toolbar  class="-min-height-0">
+      <div>
+        <!-- header for gainers & losers in snapshot tab -->
+        <div>
+          <div class="gainer-container">
+             <div class="displaytabletitle mt10">
+                <span class="titleheader"> Gainers </span>
+                <!-- <span> -->
+                   <label class="switch">
+                      <input type="checkbox" id="togBtn" name="gainersLosers" [(ngModel)]="gainersLosers"
+                      (ngModelChange)="optionCheckValue($event)">
+                      <div class="slider round">
+                         <span class="on">BSE</span><span class="off">NSE</span>
+                      </div>
+                   </label>
+                <!-- </span> -->
+                <span class="titleheader title-header-looser"> Losers </span>
+             </div>
+             <div class="gainerstable">
+                <div class="gainertableleft">
+                   <table class="mt10">
+                      <thead class="snapshot-mobile-header-first-table">
+                         <tr class="cursor-default">
+                            <th>Scrip</th>
+                            <th>LTP</th>
+                         </tr>
+                      </thead>
+                   </table>
+                </div>
+                <div class="gainertableright">
+                   <table class="mt10">
+                      <thead class="snapshot-mobile-header-second-table fcc-bg">
+                         <tr class="cursor-default">
+                            <th>Scrip</th>
+                            <th>LTP</th>
+                         </tr>
+                      </thead>
+                   </table>
+                </div>
+             </div>
+          </div>
+       </div>
+      </div>
+   </ion-toolbar>
+</ion-header>
+
+<ion-content class="custom-content">
+   <div class="gainer-container displayoffmobile" *ngIf="gainerDataLoad">
+      <!-- <div class="displaytabletitle">
+         <span class="titleheader"> Gainers </span>
+         <span>
+            <label class="switch">
+               <input type="checkbox" id="togBtn">
+               <div class="slider round">
+                  <span class="on">BSE</span><span class="off">NSE</span>
+               </div>
+            </label>
+         </span>
+         <span class="titleheader" style="color: #B92121"> Losers </span>
+      </div> -->
+      <div class="gainerstable">
+         <div class="gainertableleft">
+            <table class="no-wrap-table">
+               <!-- <thead style="background: #FCCCCC">
+                  <tr>
+                     <th>Scrip</th>
+                     <th>LTP</th>
+                  </tr>
+                  </thead> -->
+               <tbody class="height-350 overflow-auto" *ngIf="gainerDataForWEB.length > 0">
+                  <tr *ngFor="let data of gainerDataForWEB" (click)="goToCompanydetail(data)">
+                     <td class="black-color font-bold">{{data.Symbol}}</td>
+                     <td class="font-green">
+                        <p class="m-pt0 ltp">{{data.LTP | number: '1.2-2'}}</p>
+                        <p class="m-pt0 percentage-change">{{data.PerChange | number: '1.2-2'}}%</p>
+                     </td>
+                  </tr>
+               </tbody>
+               <!-- <tbody *ngIf="gainerDataForWEB.length == 0" style="text-align: center;">
+                  <span>No Data Found</span>
+               </tbody> -->
+               <tbody *ngIf="gainerDataForWEB.length == 0">
+                  <tr class="cursor-auto">
+                     <td class="no-data-found" colspan="2">No Data Found</td>
+                  </tr>
+               </tbody>
+               
+            </table>
+         </div>
+         <div class="gainertableright">
+            <table class="no-wrap-table">
+               <!-- <thead style="background: #FCCCCC">
+                  <tr>
+                     <th>Scrip</th>
+                     <th>LTP</th>
+                  </tr>
+                  </thead> -->
+               <tbody *ngIf="loserDataForWEB.length > 0">
+                  <tr *ngFor="let data of loserDataForWEB" (click)="goToCompanydetail(data)">
+                     <td class="fontboldblack">{{data.Symbol}}</td>
+                     <td class="loser-colors">
+                        <p class="m-pt0 ltp">{{data.LTP | number: '1.2-2'}}</p>
+                        <p class="m-pt0 percentage-change">{{data.PerChange | number: '1.2-2'}}%</p>
+                     </td>
+                  </tr>
+               </tbody>
+               <!-- <tbody *ngIf="loserDataForWEB.length == 0" style="text-align: center;">
+                  <span>No Data Found</span>
+               </tbody> -->
+               <tbody *ngIf="loserDataForWEB.length == 0">
+                  <tr class="cursor-auto">
+                     <td class="no-data-found border-right-ddd" colspan="2">No Data Found</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+   <div class="loader min-height-275" *ngIf="!gainerDataLoad">
+      <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+</ion-content>
+
+
+
+<div class="gainer-container gainer-container-second displayoffweb">
+   <div class="displaytabletitle">
+      <span class="titleheader"> Gainers </span>
+      <!-- <span> -->
+         <label class="switch">
+            <input type="checkbox" id="togBtn" name="gainersLosers" [(ngModel)]="gainersLosers"
+            (ngModelChange)="optionCheckValue($event)">
+            <div class="slider round">
+               <span class="on">BSE</span><span class="off">NSE</span>
+            </div>
+         </label>
+      <!-- </span> -->
+      <span class="titleheader title-header-looser"> Losers </span>
+   </div>
+   <div class="gainerstable desktop-table-snapshot">
+      <div class="gainertableleft">
+         <table class="no-wrap-table">
+            <thead>
+               <tr class="cursor-default">
+                  <th>Scrip</th>
+                  <th>LTP</th>
+               </tr>
+            </thead>
+            <tbody *ngIf="gainerDataForWEB.length > 0 && gainerDataLoad">
+               <tr *ngFor="let data of gainerDataForWEB.slice(0, 3);" (click)="goToCompanydetail(data)">
+                  <td class="fontboldblack">{{data.Symbol}}</td>
+                  <td class="fontgreen">
+                     <p class="m-pt0 ltp">{{data.LTP | number: '1.2-2'}}</p>
+                     <p class="m-pt0 percentage-change">{{data.PerChange | number: '1.2-2'}}%</p>
+                  </td>
+               </tr>
+            </tbody>
+            <tbody *ngIf="gainerDataForWEB.length == 0 && gainerDataLoad">
+               <tr class="cursor-auto">
+                  <td class="no-data-found" colspan="2">No Data Found</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+      <div class="gainertableright">
+         <table class="no-wrap-table">
+            <thead class="fcc-bg">
+               <tr class="cursor-default">
+                  <th>Scrip</th>
+                  <th>LTP</th>
+               </tr>
+            </thead>
+            <tbody *ngIf="loserDataForWEB.length > 0 && gainerDataLoad">
+               <tr *ngFor="let data of loserDataForWEB.slice(0, 3);" (click)="goToCompanydetail(data)">
+                  <td class="fontboldblack">{{data.Symbol}}</td>
+                  <td class="loser-colors">
+                     <p class="m-pt0 ltp">{{data.LTP | number: '1.2-2'}}</p>
+                     <p class="m-pt0 percentage-change">{{data.PerChange | number: '1.2-2'}}%</p>
+                  </td>
+               </tr>
+            </tbody>
+            <!-- <tbody *ngIf="loserDataForWEB.length == 0" style="text-align: center;">
+               <span>No Data Found</span>
+            </tbody> -->
+            <tbody *ngIf="loserDataForWEB.length == 0 && gainerDataLoad">
+               <tr class="cursor-auto">
+                  <td class="no-data-found" colspan="2">No Data Found</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </div>
+   <div class="viewall" *ngIf="gainerDataLoad">
+     <span (click)="openModal('custom-modal-1', gainerDataForWEB, loserDataForWEB)" [ngClass]="{'disabled': (gainerDataForWEB.length == 0 && loserDataForWEB.length == 0)}">View All</span> 
+   </div>
+   <div class="loader min-height-275" *ngIf="!gainerDataLoad">
+      <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+   
+</div>
+
+
+
+ <jw-modal id="custom-modal-1">
+   <div class="gainers-losers">
+     <div class="header">
+         <span class="fal fa-times modal-dismiss jw-modal-close" (click)="closeModal('custom-modal-1');">X</span>
+     </div>
+
+     <div class= "container-head gainer-container">
+         <div class="displaytabletitle">
+            <span class="titleheader"> Gainers </span>
+            <!-- <span> -->
+               <label class="switch">
+                  <input type="checkbox" id="togBtn" [(ngModel)]="gainersLosers"
+                  (ngModelChange)="optionCheckValue($event)">
+                  <div class="slider round">
+                     <span class="on">BSE</span><span class="off">NSE</span>
+                  </div>
+               </label>
+            <!-- </span> -->
+            <span class="titleheader title-header-looser"> Losers </span>
+         </div>
+     </div>
+ 
+     <div class="gainers-losers_contains gainer-container snapshot-modal-parent gainer-modal-parent">
+      
+         <div class="gainerstable">
+            <div class="gainertableleft">
+               <table class="no-wrap-table">
+                  <thead class="snapshot-mobile-header-first-table d5e-bg">
+                     <tr class="cursor-default">
+                        <th>Scrip</th>
+                        <th>LTP</th>
+                     </tr>
+                  </thead>
+                  <tbody class="height-350 overflow-auto">
+                     <tr *ngFor="let data of gainerDataForWEB" (click)="fromModelToCompanyDetails(data,'custom-modal-1')">
+                        <td class="black-color font-bold">{{data.Symbol}}</td>
+                        <td class="font-green">
+                           <p class="m-pt0 ltp">{{data.LTP  | number: '1.2-2'}}</p>
+                           <p class="m-pt0 percentage-change">{{data.PerChange | number: '1.2-2'}}%</p>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+            <div class="gainertableright">
+               <table class="no-wrap-table">
+                  <thead class="fcc-bg">
+                     <tr>
+                        <th>Scrip</th>
+                        <th>LTP</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr *ngFor="let data of loserDataForWEB" (click)="fromModelToCompanyDetails(data,'custom-modal-1')">
+                        <td class="fontboldblack">{{data.Symbol}}</td>
+                        <td class="loser-colors">
+                           <p class="m-pt0 ltp">{{data.LTP  | number: '1.2-2'}}</p>
+                           <p class="m-pt0 percentage-change">{{data.PerChange | number: '1.2-2'}}%</p>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+     </div>
+   </div>
+</jw-modal>

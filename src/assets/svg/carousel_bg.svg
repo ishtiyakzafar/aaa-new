@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="351" height="339" viewBox="0 0 351 339">
+  <defs>
+    <clipPath id="clip-path">
+      <path id="Path_3999" data-name="Path 3999" d="M20,0H331a20,20,0,0,1,20,20V319a20,20,0,0,1-20,20H20A20,20,0,0,1,0,319V20A20,20,0,0,1,20,0Z" transform="translate(916 249)" fill="#fff"/>
+    </clipPath>
+    <clipPath id="clip-path-2">
+      <rect id="Rectangle_2219" data-name="Rectangle 2219" width="106.976" height="91.521" fill="#eae4fc"/>
+    </clipPath>
+    <clipPath id="clip-path-3">
+      <rect id="Rectangle_2219-2" data-name="Rectangle 2219" width="53.488" height="45.761" fill="#eae4fc"/>
+    </clipPath>
+    <clipPath id="clip-path-4">
+      <rect id="Rectangle_2219-3" data-name="Rectangle 2219" width="78.414" height="67.086" fill="#eae4fc"/>
+    </clipPath>
+  </defs>
+  <g id="Mask_Group_8" data-name="Mask Group 8" transform="translate(-916 -249)" clip-path="url(#clip-path)">
+    <g id="Group_2315" data-name="Group 2315" transform="translate(1106 240.915)" style="mix-blend-mode: normal;isolation: isolate">
+      <g id="Group_2298" data-name="Group 2298" transform="translate(0 0)">
+        <g id="Group_2297" data-name="Group 2297" clip-path="url(#clip-path-2)">
+          <path id="Path_3992" data-name="Path 3992" d="M53.488,91.522,106.976,0H0Z" transform="translate(0 0)" fill="#eae4fc"/>
+        </g>
+      </g>
+    </g>
+    <g id="Group_2316" data-name="Group 2316" transform="translate(1164.127 275.134)" style="mix-blend-mode: multiply;isolation: isolate">
+      <g id="Group_2298-2" data-name="Group 2298" transform="translate(0 0)">
+        <g id="Group_2297-2" data-name="Group 2297" clip-path="url(#clip-path-3)">
+          <path id="Path_3992-2" data-name="Path 3992" d="M26.744,45.761,53.488,0H0Z" transform="translate(0 0)" fill="#eae4fc"/>
+        </g>
+      </g>
+    </g>
+    <g id="Group_2349" data-name="Group 2349" transform="matrix(0.866, -0.5, 0.5, 0.866, 879.73, 578.555)" style="mix-blend-mode: multiply;isolation: isolate">
+      <g id="Group_2298-3" data-name="Group 2298" transform="translate(0 0)">
+        <g id="Group_2297-3" data-name="Group 2297" clip-path="url(#clip-path-4)">
+          <path id="Path_3992-3" data-name="Path 3992" d="M39.207,0,78.414,67.086H0Z" transform="translate(0 0)" fill="#eae4fc"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

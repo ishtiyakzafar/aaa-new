@@ -1,0 +1,184 @@
+<ion-header>
+  <ion-toolbar color="tertiary" class="mobile-visibility">
+    <div class="title-block title-block-custom">
+      <div class="icon-title">
+        <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+        <!-- <ion-title class="title">Top Leads</ion-title> -->
+      </div>
+    </div>
+  </ion-toolbar>
+  <ion-toolbar class=" desktop-visibility">
+    <div class="container">
+      <div class="heading-part notificationheader lead_dt_header">
+        <div>
+          <ion-icon name="arrow-back-outline" class="back-button back_ar" (click)="goBack()"></ion-icon>
+          <!-- <span class="heading">Top Leads <img src="assets/svg/fire_icon.svg" alt="fire"></span> -->
+        </div>
+        <div class="faq">Have any question? <a
+            href="https://help.indiainfoline.com/portal/en/kb/iifl-help/ipo-ofs?_ga=2.42252579.729177556.1667200052-1464807352.1666084292"
+            target="_blank">View FAQ</a></div>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="desktop-visibility">
+
+  <div class="container">
+    <div class="card_grid_box" id="{{ selectedProduct?.productType === 'IPO' ? '': selectedProduct?.productType }}">
+      <span class="lead_type">{{selectedProduct?.productType}}</span>
+      <div class="grid_box_left">
+        <div class="grid_logo"> <img
+            src="{{selectedProduct?.logo ? selectedProduct?.logo : 'assets/imgs/dummy-top-lead.jpg'}}" alt="EMI"></div>
+        <div class="lead_value">
+          <div class="tp_lead_nm">
+            <h2>{{selectedProduct?.name}} </h2>
+            <div class="time_subscribe"> <span [ngClass]="selectedProduct?.isDay ? 'open_in_days' : 'time'"
+                class="time"><img *ngIf="!selectedProduct?.isDay" src="assets/svg/cil_clock.svg"
+                  alt="clock">{{selectedProduct?.timerText}}</span> </div>
+          </div>
+          <div class="grid_box_right"> 
+            <a *ngIf="selectedProduct?.productType != 'TB' && selectedProduct?.productType != 'SD' && selectedProduct?.productType != 'GS'" href="javascript:void(0)" (click)="applyNonClients()"
+              class="btn secondary_btn mr-15">Apply for Non - IIFL Clients</a> 
+              <a href="javascript:void(0)"
+              (click)="applyClients()" class="btn primary_btn">Apply for IIFL Clients</a> </div>
+          <div class="lead_value_grid">
+            <div>
+              <label>Bids closes on</label>
+              <span> {{selectedProduct?.bidsClose}}</span>
+            </div>
+            <div *ngIf="selectedProduct?.productType === 'IPO'">
+              <label>Investment Amt.</label>
+              <span> &#8377;{{selectedProduct?.cutOff }}<small> /{{ selectedProduct?.lotSize}} Shares</small></span>
+            </div>
+            <div *ngIf="selectedProduct?.productType === 'IPO'">
+              <label>Share Price</label>
+              <span> &#8377;{{selectedProduct?.lowPrice }} - ₹{{selectedProduct?.highPrice }}</span>
+            </div>
+            <div *ngIf="selectedProduct?.productType === 'NCD' || selectedProduct?.productType === 'BOND' || selectedProduct?.productType === 'SGB'">
+              <label>Minimum Investment</label>
+              <span> &#8377;{{selectedProduct?.minInvestAmt }}</span>
+            </div>
+            <div *ngIf="selectedProduct?.productType === 'NCD' || selectedProduct?.productType === 'BOND'">
+              <label>Issue size</label>
+              <span> &#8377;{{selectedProduct?.issueSize }} </span>
+            </div>
+            <div *ngIf="selectedProduct?.productType === 'NCD' || selectedProduct?.productType === 'BOND'">
+              <label>Returns</label>
+              <span>upto {{ selectedProduct?.maxYield }} %</span>
+            </div>
+            <div *ngIf="selectedProduct?.pdfReport" class="download_reports">
+              <a href="{{selectedProduct?.pdfReport}}" target="_blank">
+                <img src="assets/svg/download_report.svg" alt="reports">
+                Download Report
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="lead_total" *ngIf="selectedProduct?.clientCount != 0 && selectedProduct?.clientCount != undefined">
+      <h2>Leads <span class="total_leads">{{ selectedProduct?.clientCount?.client_interested_Count ?
+          selectedProduct?.clientCount?.client_interested_Count : 0 }}</span></h2>
+
+      <div class="lead_table_search_filter">
+        <div>
+          <div class="search_and_download">
+            <div class="search-section search-section-changed search-section-changed-revamped   dp_script_search">
+              <ion-button class="search-button"> <img src="assets/svg/search_new.svg" width="20px" alt=""> </ion-button>
+              <ion-searchbar search-icon="false" class="custom-searchbar hold_search"
+                placeholder="Search by client name or client ID" [debounce]="1000" (ionChange)="searchInList($event)">
+              </ion-searchbar>
+
+            </div>
+          </div>
+
+        </div> 
+
+        <!-- <div>
+  <div class="lead_filter">
+    <span>Lead Status:</span>
+    <ng-select [items]="cities"
+                   bindLabel="name"
+                   placeholder="All">
+        </ng-select>
+  </div>
+</div> -->
+       <!-- <div>
+          <div class="lead_filter application_status">
+            <span>Application Status:</span>
+            <ng-select [items]="applicationList" [(ngModel)]="selectedApplicn" (change)="filterByApplicationSts($event)"
+              bindLabel="status" placeholder="All" class="lead_select">
+            </ng-select>
+          </div>
+        </div> -->
+
+      </div>
+
+      <div class="lead_data">
+        <div class="table-header">
+          <table class="desktop-table">
+            <thead class="raatableHeader">
+              <tr>
+                <th>Client
+                  <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                  <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                  <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending"> -->
+
+                </th>
+                <th>Contact Details</th>
+                <th [class.active]="order === 'TotalAUM'" (click)="setOrder('TotalAUM')">AUM
+                  <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                  <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                  <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+
+                </th>
+                <!-- <th>Lead Status</th> -->
+                <!-- <th>Bid Status -->
+                  <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                  <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                  <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending"> -->
+
+                <!-- </th> -->
+                <th>Action</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="main-table thin-scroll">
+          <div class="table-block">
+            <table class="desktop-table">
+              <tbody *ngIf="dataLoad && clientList && clientList.length>0">
+                <tr *ngFor="let client of clientList | orderBy: order:val" class="main_tr">
+                  <td>{{client.ClientCode}} <span>{{client.ClientName}}</span> </td>
+                  <td>{{client.MobileNumber}} <span>{{client.EMailID}}</span></td>
+                  <td>₹{{commonService.numberFormatWithCommaUnit(client.TotalAUM)}}</td>
+                  <!-- <td><ng-select [items]="cities"
+                        bindLabel="New"
+                        placeholder="New">
+             </ng-select></td> -->
+             <!-- <ng-container *ngIf="!client?.NoStatus; else isSts">
+              <td><img src=" {{ client?.ApplicationStatus?.option === 'Request Sent' || client?.ApplicationStatus?.option === 'Request Accepted by Bank' ? '/assets/svg/pendding_mandate.svg':client?.ApplicationStatus?.option === 'Rejected by Investor Bank Due To Technical Error'|| client?.ApplicationStatus?.option ==='Rejected due to invalid UPI'|| client?.ApplicationStatus?.option === 'Rejected by Bank' || client?.ApplicationStatus?.option === 'Rejected by investor Bank' || client?.ApplicationStatus?.option === 'Request Failed'|| client?.ApplicationStatus?.option === 'Rejected by investor.' ? '/assets/svg/mandate_reject.svg': '/assets/svg/not_applied.svg'}}"
+                alt="icon">{{ client?.NoStatus ? '-' : client?.ApplicationStatus?.status}}</td>
+                   </ng-container>
+             <ng-template #isSts>
+              <td><img *ngIf="client?.NoStatus"
+                src='/assets/svg/not_applied.svg'
+                alt="icon">Not Applied </td>
+           
+             </ng-template> -->
+                      <td><a href="javascript:void(0)" (click)="OnApplyClick(client,client?.NoStatus)"
+                      class="btn primary_btn">{{ client?.NoStatus ? 'Apply' : 'Modify/Delete'}}</a></td>
+                </tr>
+              </tbody>
+              <div class="listing-part loader" *ngIf="dataLoad && clientList.length == 0">
+                <div style="font-weight: bold;margin-top:40px">No Records Found</div>
+              </div>
+              <div class="loader" *ngIf="!dataLoad"> <img src="/assets/imgs/loader.gif" alt=""> </div>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

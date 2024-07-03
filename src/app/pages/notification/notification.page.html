@@ -1,0 +1,149 @@
+<ion-header (click)="hideOption()">
+    <ion-toolbar color="tertiary" class="mobile-visibility">
+        <div class="segment-title-block">
+            <div class="title-block title-block-custom">
+                <div class="icon-title">
+                    <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                    <ion-title class="title">Notification Center</ion-title>
+                </div>
+            </div>
+            <!-- <ion-segment scrollable class="header-segment-top" mode="md" [(ngModel)]="notificationTabValue">
+                <div *ngFor="let data of buttonData">
+                    <ion-segment-button value="{{data['value']}}">{{data['name']}}</ion-segment-button>
+                </div>
+            </ion-segment> -->
+        </div>
+      </ion-toolbar>
+    <ion-toolbar class="desktop-visibility">
+        <div class="container">
+            <div class="heading-part notificationheader">
+               <span class="titleName"><ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <span class="heading">Notification Center</span></span> 
+                <ion-button fill="outline" (click)="exchMessage()">Exchanges Messages</ion-button>
+            </div>
+            <ion-row class="colorback">
+                <!-- <ion-segment scrollable class="destop-segment-middle wathlist-block-segment"
+                    [(ngModel)]="notificationTabValue">
+                    <div *ngFor="let data of buttonData">
+                        <ion-segment-button value="{{data['value']}}">{{data['name']}}</ion-segment-button>
+                    </div>
+                </ion-segment> -->
+            </ion-row>
+        </div>
+    </ion-toolbar>
+    <div class="container" *ngIf="dataLoad">
+        <div class="mobile-visibility mobile-button">
+            <ion-button fill="outline" (click)="exchMessage()">Exchanges Messages</ion-button>
+        </div>
+        <ion-toolbar>
+          
+            <ion-row class="colorback border-bottom">
+                <ion-segment scrollable mode="md" class="destop-segment-middle notification-block-segment"
+                    [(ngModel)]="notificationTabValue" (ionChange)="segmentChange($event)">
+                    <div *ngFor="let data of notificationData">
+                        <ion-segment-button value="{{data['value']}}">{{data['name']}}</ion-segment-button>
+                    </div>
+                </ion-segment>
+            </ion-row>
+    
+    </ion-toolbar>
+        <!-- <div class="filter-block border-bottom">
+            <div class="selection-block" (click)="showOption($event)">
+                <span>Filter</span>
+                <img src="assets/svg/down-arrow.svg" alt="">
+            </div>
+            <div class="option-block" *ngIf="isOptionVisible">
+                <ion-list>
+                    <ion-item lines="none" (click)="showOption($event, true)">
+                        <ion-label>All</ion-label>
+                        <ion-checkbox slot="end" [(ngModel)]="isAllChecked" (ionChange)="selectAll($event.detail.checked)"></ion-checkbox>
+                      </ion-item>
+                    <ion-item lines="none" *ngFor="let entry of options; let i = index" (click)="showOption($event, true)">
+                      <ion-label [ngClass]=
+                      "{
+                          'personalize': entry['Category'].toLowerCase() === 'pa',
+                          'ideas': entry['Category'].toLowerCase() === 'ii',
+                          'news': entry['Category'].toLowerCase() === 'ne'
+                      }">{{entry.val}}</ion-label>
+                      <ion-checkbox slot="end" [(ngModel)]="entry.isChecked" (ionChange)="filterData(options, i)"></ion-checkbox>
+                    </ion-item>
+                  </ion-list>
+            </div>
+        </div> -->
+    </div>
+    <div class="loader" *ngIf="!dataLoad" style="min-height: calc(100vh - 286px);">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+</ion-header>
+<ion-content>  
+    <div class="parent-block-section">
+        <div class="tab-content container" [ngSwitch]="notificationTabValue">
+            <div class="tab-content-data" *ngSwitchCase="'notifications'">
+                <div class="filter-block border-bottom">
+                    <div class="selection-block" (click)="showOption($event)">
+                        <span>Filter</span>
+                        <img src="assets/svg/down-arrow.svg" alt="">
+                    </div>
+                    <div class="option-block" *ngIf="isOptionVisible">
+                        <ion-list>
+                            <ion-item lines="none" (click)="showOption($event, true)">
+                                <ion-label>All</ion-label>
+                                <ion-checkbox slot="end" [(ngModel)]="isAllChecked" (ionChange)="selectAll($event.detail.checked)"></ion-checkbox>
+                              </ion-item>
+                            <ion-item lines="none" *ngFor="let entry of options; let i = index" (click)="showOption($event, true)">
+                              <ion-label [ngClass]=
+                              "{
+                                  'personalize': entry['Category'].toLowerCase() === 'pa',
+                                  'ideas': entry['Category'].toLowerCase() === 'ii',
+                                  'news': entry['Category'].toLowerCase() === 'ne'
+                              }">{{entry.val}}</ion-label>
+                              <ion-checkbox slot="end" [(ngModel)]="entry.isChecked" (ionChange)="filterData(options, i)"></ion-checkbox>
+                            </ion-item>
+                          </ion-list>
+                    </div>
+                </div>
+                <div (click)="hideOption()">
+                    <div class="" *ngIf="dataLoad">
+                        <div class="block-parent" *ngIf="notificationList.length > 0">
+                            <div class="message-block" *ngFor="let dataObj of notificationList; let i=index"
+                            [ngClass]=
+                            "{
+                                'personalize': dataObj['Category'].toLowerCase() === 'pa',
+                                'ideas': dataObj['Category'].toLowerCase() === 'ii',
+                                'news': dataObj['Category'].toLowerCase() === 'ne'
+                            }">
+                                <div class="message-title">{{dataObj['NotificationMessage']}}</div>
+                                <span class="message-time">{{getDateTimeFormat(dataObj['NotificationTime'])}}</span>
+                            </div>
+                        </div>
+                        <div class="block-parent" *ngIf="notificationList.length == 0" style="text-align: center;">
+                            <span>No Records Found</span>
+                        </div>
+                    </div>
+                    <div class="loader" *ngIf="!dataLoad" style="min-height: calc(100vh - 286px);">
+                        <img src="/assets/imgs/loader.gif" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content-data" *ngSwitchCase="'version'">
+                <div class="" *ngIf="dataLoad">
+                    <div class="block-parent version-parent" *ngIf="versionUpdatesData.length > 0; else noRecords">
+                        <div class="message-block" *ngFor="let circular of versionUpdatesData">
+                            <div class="message-title">{{ circular.title}}</div>
+                            <span class="message-time">{{ circular.modifiedTime | date: 'dd-MM-yyyy' }}</span>
+                            <div class="pdf-link">  <button class="btnPDF" (click)="downloadPdf(circular.id)"><img  src="assets/svg/pdf.svg" width="24" alt=""></button></div>
+                        </div>
+                        
+                    </div>
+                    <ng-template #noRecords>
+                        <span>No Records Found</span>
+                    </ng-template>
+                </div>
+                <div class="loader" *ngIf="!dataLoad" style="min-height: calc(100vh - 286px);">
+                    <img src="/assets/imgs/loader.gif" alt="">
+                </div>       
+            </div>
+            </div>
+        </div>        
+  
+    </ion-content>

@@ -1,0 +1,314 @@
+<ion-header class="mobile-visibility">
+    <ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Bulk & Block Deals</ion-title>
+			</div>
+			<div class="search-block">
+                <ion-buttons class="header-icon-block">
+                  <ion-icon class="iconsize first-icon noti-icon" src="./assets/svg/white-home-icon.svg" (click)="goToDashboard()"></ion-icon>
+                    <ion-icon class="iconsize first-icon noti-icon" src="./assets/svg/notification.svg" (click)="goToNotification()"></ion-icon>
+                    <ion-icon class="iconsize" src="./assets/svg/search.svg" (click)="goToAddScript()"></ion-icon>
+                </ion-buttons>
+            </div>
+		</div>
+	</ion-toolbar>
+   <ion-toolbar>
+      <div>
+         <div class="gainer-container">
+            <div class="displaytabletitle mt10">
+               <span class="titleheader black-color"> Bulk Deals </span>
+               <span>
+                  <label class="switch">
+                     <input type="checkbox" id="togBtn" [(ngModel)]="bulkBlockBtn"
+                     (ngModelChange)="bulkBlockBtnToggle($event)">
+                     <div class="slider round">
+                        <span class="on">BSE</span><span class="off">NSE</span>
+                     </div>
+                  </label>
+               </span>
+               <span class="titleheader black-color"> Block Deals </span>
+            </div>
+            <div class="gainerstable">
+               <div class="gainertableleft">
+                  <table>
+                     <thead class="f2f-bg snapshot-mobile-header-first-table">
+                        <tr>
+                           <th>
+                            <div>Scrip</div>
+                            <div>Qty (k)</div>
+                           </th>
+                           <th>Price</th>
+                        </tr>
+                     </thead>
+                  </table>
+               </div>
+               <div class="gainertableright" >
+                  <table>
+                     <thead class="f2f-bg snapshot-mobile-header-second-table">
+                        <tr>
+                           <th>
+                            <div>Scrip</div>
+                            <div>Qty (k)</div>
+                           </th>
+                           <th>Price</th>
+                        </tr>
+                     </thead>
+                  </table>
+               </div>
+            </div>
+         </div>
+      </div>
+   </ion-toolbar>
+</ion-header>
+
+<ion-content class="custom-content">
+   <div class="deals-container displayoffmobile">
+      <!-- <div class="displaytabletitle">
+         <span class="titleheader" style="color: #000000;"> Bulk Deals </span>
+         <span>
+            <label class="switch">
+               <input type="checkbox" id="togBtn">
+               <div class="slider round">
+                  <span class="on">BSE</span><span class="off">NSE</span>
+               </div>
+            </label>
+         </span>
+         <span class="titleheader" style="color: #000000;"> Block Deals </span>
+         </div> -->
+      <div class="dealstable">
+         <div class="dealstableleft">
+            <table class="no-wrap-table">
+               <!-- <thead style="background: #F2F4F4">
+                  <tr>
+                     <th>Scrip</th>
+                     <th>LTP</th>
+                  </tr>
+                  </thead> -->
+               <tbody *ngIf="bulkList.length > 0 && dataLoad">
+                  <tr *ngFor="let data of bulkList" (click)="goToCompnayDetail(data)">
+                     <td>
+                        <p class="m-pt0 fontboldblack">{{data.Symbol}}</p>
+                        <p class="m-pt0 k-value ccc-color">{{changeQtyNumberFormat(data.Quantity)}}</p>
+                     </td>
+                     <td>
+                        <p class="m-pt0">{{data.Price | number: '1.2-2'}}</p>
+                     </td>
+                  </tr>
+               </tbody>
+               <!-- <tbody *ngIf="bulkList.length > 0" style="text-align: center;">
+                  <span>No Data Found</span>
+               </tbody> -->
+               <tbody *ngIf="bulkList.length == 0 && dataLoad">
+                  <tr>
+                     <td class="no-data-found" colspan="3">No Data Found</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+         <div class="dealstableright">
+            <table class="no-wrap-table">
+               <!-- <thead style="background: #F2F4F4">
+                  <tr>
+                     <th>Scrip</th>
+                     <th>LTP</th>
+                  </tr>
+                  </thead> -->
+               <tbody *ngIf="blockList.length > 0 && dataLoad">
+                  <tr *ngFor="let data of blockList" (click)="goToCompnayDetail(data)">
+                     <td>
+                        <p class="m-pt0 fontboldblack">{{data.Symbol}}</p>
+                        <p class="m-pt0 k-value ccc-color">{{changeQtyNumberFormat(data.Quantity)}}</p>
+                     </td>
+                     <td>
+                        <p class="m-pt0">{{data.Price | number: '1.2-2'}}</p>
+                     </td>
+                  </tr>
+               </tbody>
+               <!-- <tbody *ngIf="blockList.length == 0">
+                  <span>No Data Found</span>
+               </tbody> -->
+               <tbody *ngIf="blockList.length == 0 && dataLoad">
+                  <tr>
+                     <td class="no-data-found border-right-ddd" colspan="3">No Data Found</td>
+                  </tr>
+               </tbody>
+            </table>
+         </div>
+      </div>
+      <div class="loader min-height-275" *ngIf="!dataLoad">
+         <img src="/assets/imgs/loader.gif" alt="">
+        </div>
+    </div>
+</ion-content>
+
+
+
+
+<div class="deals-container deals-container-second displayoffweb">
+  <div class="displaytabletitle mt10">
+     <span class="titleheader black-color"> Bulk Deals </span>
+     <!-- <span> -->
+        <label class="switch">
+           <input type="checkbox" id="togBtn" [(ngModel)]="bulkBlockBtn"
+           (ngModelChange)="bulkBlockBtnToggle($event)">
+           <div class="slider round">
+              <span class="on">BSE</span><span class="off">NSE</span>
+           </div>
+        </label>
+     <!-- </span> -->
+     <span class="titleheader black-color"> Block Deals </span>
+  </div>
+  <div class="gainerstable desktop-table-snapshot-bulk">
+     <div class="gainertableleft">
+        <table class="no-wrap-table">
+           <thead class="f2f-bg">
+              <tr>
+                 <th>Scrip</th>
+                 <th>Qty(K)</th>
+                 <th>Price</th>
+              </tr>
+           </thead>
+           <tbody *ngIf="bulkList.length > 0 && dataLoad">
+              <tr *ngFor="let data of bulkList.slice(0, 3);" (click)="goToCompnayDetail(data)">
+                 <td>
+                    {{data.Symbol}}
+                 </td>
+                 <td>
+                    {{changeQtyNumberFormat(data.Quantity)}}
+                 </td>
+                 <td>
+                    {{data.Price | number: '1.2-2'}}
+                 </td>
+              </tr>
+           </tbody>
+           <!-- <tbody *ngIf="bulkList.length == 0" style="text-align: center;">
+               <span>No Data Found</span>
+            </tbody> -->
+            <tbody *ngIf="bulkList.length == 0 && dataLoad">
+               <tr>
+                  <td class="no-data-found" colspan="3">No Data Found</td>
+               </tr>
+            </tbody>
+        </table>
+     </div>
+     <div class="gainertableright">
+        <table class="no-wrap-table b-l-0">
+           <thead class="f2f-bg">
+              <tr>
+                 <th>Scrip</th>
+                 <th>Qty(K)</th>
+                 <th>Price</th>
+              </tr>
+           </thead>
+           <tbody *ngIf="blockList.length > 0 && dataLoad">
+              <tr *ngFor="let data of blockList.slice(0, 3);" (click)="goToCompnayDetail(data)">
+                 <td>
+                    {{data.Symbol}}
+                 </td>
+                 <td>
+                    {{changeQtyNumberFormat(data.Quantity)}}
+                 </td>
+                 <td>
+                    {{data.Price | number: '1.2-2'}}
+                 </td>
+              </tr>
+           </tbody>
+           <!-- <tbody *ngIf="blockList.length == 0">
+               <span>No Data Found</span>
+            </tbody> -->
+            <tbody *ngIf="blockList.length == 0 && dataLoad">
+               <tr>
+                  <td class="no-data-found" colspan="3">No Data Found</td>
+               </tr>
+            </tbody>
+        </table>
+     </div>
+  </div>
+  <div class="viewall" *ngIf="dataLoad">
+   <span (click)="openModal('custom-modal-4', bulkList, blockList)" [ngClass]="{'disabled': (bulkList.length == 0 && blockList.length == 0)}">View All</span> 
+  </div>
+  <div class="loader min-height-275" *ngIf="!dataLoad">
+   <img src="/assets/imgs/loader.gif" alt="">
+  </div>
+</div>
+
+
+<jw-modal id="custom-modal-4">
+   <div class="gainers-losers">
+     <div class="header">
+         <span class="fal fa-times modal-dismiss jw-modal-close" (click)="closeModal('custom-modal-4');">X</span>
+     </div>
+
+     <div class= "container-head gainer-container">
+         <div class="displaytabletitle">
+            <span class="titleheader black-color"> Bulk Deals </span>
+               <label class="switch">
+                  <input type="checkbox" id="togBtn" [(ngModel)]="bulkBlockBtn"
+                  (ngModelChange)="bulkBlockBtnToggle($event)">
+                  <div class="slider round">
+                     <span class="on">BSE</span><span class="off">NSE</span>
+                  </div>
+               </label>
+            <span class="titleheader black-color"> Block Deals </span>
+         </div>
+     </div>
+ 
+     <div class="gainers-losers_contains gainer-container snapshot-modal-parent">
+      
+         <div class="gainerstable">
+            <div class="gainertableleft">
+               <!-- <table class="no-wrap-table"> -->
+               <table>
+                  <thead class="f2f-bg">
+                     <tr>
+                        <th class="p-l-10">Scrip</th>
+                        <th>Qty(K)</th>
+                        <th>Price</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr *ngFor="let data of bulkList" (click)="fromModelToCompanyDetails(data,'custom-modal-4')">
+                        <td class="p-l-10">
+                           {{data.Symbol}}
+                        </td>
+                        <td class="text-center">
+                           {{changeQtyNumberFormat(data.Quantity)}}
+                        </td>
+                        <td class="p-r-10">
+                           {{data.Price | number: '1.2-2'}}
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+            <div class="gainertableright">
+               <!-- <table style="border-left: 0;" class="no-wrap-table"> -->
+               <table class="b-l-0">
+                  <thead class="f2f-bg">
+                     <tr>
+                        <th>Scrip</th>
+                        <th class="text-center">Qty(K)</th>
+                        <th>Price</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr *ngFor="let data of blockList" (click)="fromModelToCompanyDetails(data,'custom-modal-4')">
+                        <td>
+                           <p class="m-pt0 fontboldblack">{{data.Symbol}}</p>
+                        </td>
+                        <td class="text-center">
+                           <p class="m-pt0">{{changeQtyNumberFormat(data.Quantity)}}</p>
+                        </td>
+                        <td class="p-r-10">
+                           <p class="m-pt0">{{data.Price | number: '1.2-2'}}</p>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+     </div>
+   </div>
+</jw-modal>

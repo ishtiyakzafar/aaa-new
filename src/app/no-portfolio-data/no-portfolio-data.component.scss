@@ -1,0 +1,46 @@
+
+.no-portfolio {
+    position: relative;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0px;
+      color: #211b19;
+      text-transform: uppercase;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      -webkit-transform: translate(-50%, -50%);
+          -ms-transform: translate(-50%, -50%);
+              transform: translate(-50%, -50%);
+    }
+  }
+  
+  @media only screen and (max-width: 767px) {
+    .notfound .notfound-404 h1 {
+      font-size: 148px;
+    }
+  }
+  
+  @media only screen and (max-width: 480px) {
+    .notfound .notfound-404 {
+      height: 148px;
+      margin: 0px auto 10px;
+    }
+    .notfound .notfound-404 h1 {
+      font-size: 86px;
+    }
+    .notfound .notfound-404 h2 {
+      font-size: 16px;
+    }
+    .notfound a {
+      padding: 7px 15px;
+      font-size: 14px;
+    }
+  }
+  

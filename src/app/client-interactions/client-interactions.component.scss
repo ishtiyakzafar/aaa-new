@@ -1,0 +1,56 @@
+.search-section, .common-content-section{margin-top: 15px;}
+.queries_tbl, .interactions_tbl{margin-bottom: 120px;}
+.queries_tbl .web-equity .header-table th{color: #6E6E6E !important; font-weight: 500;}
+.queries_tbl .web-equity .header-table td{color: #282828 !important;}
+.queries_tbl .web-equity .main-table td, .queries_tbl .web-equity .header-table th { padding: 10px 10px !important; text-align: left; font-size: 14px; width: 8%; max-width: inherit ; }
+.queries_tbl .web-equity th:first-child, .queries_tbl .web-equity td:first-child{width: 9% !important; max-width: inherit !important;}
+.queries_tbl .web-equity td:nth-child(4), .queries_tbl .web-equity th:nth-child(4){width: 13% !important; }
+.queries_tbl .web-equity td:nth-child(5), .queries_tbl .web-equity th:nth-child(5){width: 13% !important; }
+.queries_tbl .web-equity th:last-child, .queries_tbl .web-equity td:last-child{width: 6% !important; text-align: center !important;}
+.see_more{color: #4733cb; cursor: pointer;}
+.w-100{width: 100% !important;}
+.status.open{color: #17C257; font-weight: 600;}
+.status.wip{color: #DEB224;font-weight: 600;}
+.status.close{color: #6E6E6E;font-weight: 600;}
+.search-section-changed-revamped ion-label{min-width: 115px;}
+
+.interactions_tbl .web-equity .header-table th{color: #6E6E6E !important; font-weight: 500;}
+.interactions_tbl .web-equity .header-table td{color: #282828 !important;}
+.interactions_tbl .web-equity .main-table td, .interactions_tbl .web-equity .header-table th { padding: 10px 10px !important; text-align: left; font-size: 14px; width: 8%; max-width: inherit ; }
+.interactions_tbl .web-equity th:last-child, .interactions_tbl .web-equity td:last-child{width: 40% !important; text-align: left !important;}
+.interactions_tbl .web-equity th:first-child, .interactions_tbl .web-equity td:first-child{width: 10% !important; max-width: inherit !important;}
+.interactions_tbl .web-equity td:nth-child(2), .interactions_tbl .web-equity th:nth-child(2){width: 8% !important; text-align: center !important; }
+.interactions_tbl .web-equity td:nth-child(3), .interactions_tbl .web-equity th:nth-child(3){width: 15% !important; text-align: center !important; }
+
+.common-content-section .card-type-segment ion-segment-button .card{margin-left: 0px !important;}
+.common-content-section .card-type-segment .segment-button-checked .card
+{color: #282828 !important; background: #fff !important;}
+.common-content-section .card-type-segment ion-segment-button{    --padding-start: 5px !important;}
+.common-content-section .card-type-segment .segment-button-layout-icon-top .indicator{
+    display: none;
+}
+.common-content-section .card-type-segment .segment-button-layout-icon-top.segment-button-checked .indicator{
+    position: absolute;
+    display: block;
+    bottom: 2px;
+    left: 45%;
+}
+
+
+@media screen and  (max-width: 768px)  {
+    .container{padding: 10px;}
+    .common-content-section .card-type-segment ion-segment-button .card{padding: 12px;font-size: 12px;}
+    .common-content-section .card-type-segment ion-segment-button{    --padding-start: 10px !important;}
+    .search-section-changed{flex-direction: row;}
+    .search-section-changed-revamped{width: 100%; left: inherit;}
+    .search-section-changed{padding: 8px 16px;}
+    .grid_main{margin: 20px 0;}
+    .table_grid_box{ padding: 10px 15px; background: #fff; border: 1px solid rgba(0,0,0,.04); box-shadow: 0 3px 18px hsla(0,0%,58.8%,.24); border-radius: 10px; margin-bottom: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;}
+    .table_grid label{font-size: 12px; color: #969696; display: flex;}
+    .table_grid span{font-size: 13px; color: #000; font-weight: 500;}
+    .table_grid span span{font-weight: 700;}
+    }
+    @media screen and  (max-width: 500px)  {
+    .search-section-changed-revamped ion-label{min-width: 80px;}
+    }
+    

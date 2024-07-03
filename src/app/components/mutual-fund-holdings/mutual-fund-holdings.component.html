@@ -1,0 +1,328 @@
+<div>
+    <div class="web-equity thin-scroll">
+        <div class="segment-search-block header-segment-with-border-parent input-search-padding">
+            <ion-segment class="header-segment-with-border" [(ngModel)]="holdingTabValue"  (ionChange)="segmentChange($event.detail.value)">
+                <ion-segment-button [ngClass]="{'first': dataObj['value'] === 'portfolio', 'second': dataObj['value'] === 'dpPortfolio'}" value="{{dataObj['value']}}" *ngFor="let dataObj of holdingOptions">
+                    <div class="segment-inner-data">
+                        <img class="checkmar-img" src="assets/svg/checkmark.svg" alt="">
+                        <span class="segment-value">{{dataObj['name']}}</span>
+                    </div> 
+                </ion-segment-button>
+            </ion-segment>
+            <div class="desktop-visibility">
+                <div class="search-filter-parent">
+                    <ion-searchbar  class="custom-searchbar" name="searchScheme" [(ngModel)]="searchScheme" placeholder="Search for Holding" ></ion-searchbar>
+                    <img src="assets/svg/filter_portfolio.svg" *ngIf="holdingTabValue === 'portfolio'" alt="" (click)="filterOption($event)">
+                </div>
+            </div>
+            <div class="mobile-visibility">
+                <div class="search-filter-parent-mobile">
+                    <ion-searchbar  class="custom-searchbar" name="searchScheme" [(ngModel)]="searchScheme" placeholder="Search for Holding"></ion-searchbar>
+                    <img src="assets/svg/filter_portfolio.svg" *ngIf="holdingTabValue === 'portfolio'" alt="" (click)="filterOption($event)">
+                </div>
+            </div>
+        </div>
+        <!-- <div *ngIf="holdingTabValue === 'portfolio'">
+            <ion-button class="transact" (click)="transctClick()" >Transact</ion-button>
+        </div> -->
+        <div class="portfolio-dp-portfolio-section desktop-visibility" [ngSwitch]="holdingTabValue">
+            <div class="portfolio" *ngSwitchCase="'portfolio'">
+                <!-- <div class="coming-soon" style="height: 200px;">
+                    coming soon
+                </div> -->
+                <!-- uncomment below line when showing coming soon option -->
+                <div class="header-part">
+                    <div class="section section-1">
+                        <span class="title">Total Investment</span>
+                        <div class="below-part">
+                            <span class="rupees">₹ </span>
+                            <span class="value">{{totalInvestment | formatNumerDecimal}}</span>
+                        </div>
+                    </div>
+                    <div class="section section-2">
+                        <span class="title">Total Current Value</span>
+                        <div class="below-part">
+                            <span class="rupees">₹ </span>
+                            <span class="value">{{totalCurrentValue | formatNumerDecimal}}</span>
+                        </div>
+                    </div>
+                    <div class="section section-3">
+                        <span class="title">Total Gain/Loss</span>
+                        <div class="below-part">
+                            <span class="rupees" [ngStyle]="{'color':(totalgainLoss == 0) ? '#656565' : (totalgainLoss > 0 ? '#17C257' : '#F55858')}">₹ </span>
+                            <span class="value" [ngStyle]="{'color':(totalgainLoss == 0) ? '#656565' : (totalgainLoss > 0 ? '#17C257' : '#F55858')}">
+                               {{totalgainLoss | formatNumerDecimal}} ({{totalPerct | formatNumerDecimal}}%)
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-block header-part header-part-2 desktop-visibility">
+                    <table class="desktop-table">
+                        <thead class="width-100">
+                            <tr>
+                                <th [class.active]="order === 'scheme'">Scheme</th>
+                                <th>Asset Category</th>
+                                <th [class.active]="order === 'totalInvestment'" class="pointer" (click)="setOrder('totalInvestment')">Investment
+                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                                </th>
+                                <th [class.active]="order === 'currValue'" class="pointer" (click)="setOrder('currValue')">Current Value
+                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                                </th>
+                                <th [class.active]="order === 'profLoss'" class="pointer" (click)="setOrder('profLoss')">Profit / Loss
+                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="main-table thin-scroll desktop-visibility scroll-inner">
+                    <div class="table-block body-part thin-scroll">
+                        <table class="desktop-table" *ngIf="dataLoad">
+                            <tbody *ngIf="(portfolioDetails | filterSearch: searchScheme : 'scheme').length > 0">
+
+                                <tr *ngFor="let dataObj of portfolioDetails | orderBy: order:val | filterSearch: searchScheme : 'scheme'; let i = index" (click)="dropClick(dataObj.srNo , portfolioDetails)">
+                                    <td>
+                                        <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                            <ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg"
+                                            *ngIf="!dataObj['isVisible']"></ion-icon>
+                                            <ion-icon *ngIf="dataObj['isVisible']" class="rotate arrow-button down-arrow-button"
+                                                src="./assets/svg/down-arrow.svg"></ion-icon>
+                                            <span class="scheme">
+                                                {{dataObj['scheme']}}
+                                            </span>
+                                        </div>
+                                        <div class="detail-part-fix" #detail *ngIf="dataObj['isVisible']">
+                                            <table class="detail-part-fix-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Folio Number</th>
+                                                        <th>Date</th>
+                                                        <th>Holding Type</th>
+                                                        <th>Units</th>
+                                                        <th>Amount</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let data of dataObj.datas">
+                                                        <td>{{data.Folio_No}}</td>
+                                                        <td>{{data.NAVDate}}</td>
+                                                        <td>{{data.HoldingType}}</td>
+                                                        <td>{{data.PresentUnits}}</td>
+                                                        <td>{{data.TotalInvestment}}</td>
+                                                        <!-- <td><ion-button (click)="trnsctClickfun($event, data)" class="transact" >Transact</ion-button></td> -->
+                                                        <!-- <td><ion-button class="transact" (click)="test($event)">Transact</ion-button></td> -->
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                            {{dataObj.assetCatagoty}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                            <span class="rupees">₹</span>{{dataObj['totalInvestment'] | formatNumerDecimal}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                            <span class="rupees">₹</span>{{dataObj['currValue'] | formatNumerDecimal}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="upper-part profit-loss-block" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                             <span class="profit-loss" [ngStyle]="{'color':(dataObj.profLoss == 0) ? '#656565' : (dataObj.profLoss > 0 ? '#17C257' : '#F55858')}"><span class="rupees">₹</span>
+                                             {{dataObj['profLoss'] | formatNumerDecimal}} &nbsp;
+                                             ({{(dataObj['profLoss'] / dataObj['totalInvestment'])*100 | formatNumerDecimal}}%)</span>
+                                             <!-- <span class="profit-loss" [ngStyle]="{'color':(dataObj.profLoss == 0) ? '#656565' : (dataObj.profLoss > 0 ? '#17C257' : '#F55858')}">
+                                                
+                                             </span> -->
+                                             <!-- <span class="pro-loss-per">{{dataObj['profLossPer']}}</span> -->
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            
+                            <div class="no-data-found" *ngIf="(portfolioDetails | filterSearch: searchScheme : 'scheme').length == 0">
+                                <span>No Data Found</span>
+                            </div>
+                        </table>
+
+                        <div class="loader loader-height-191" *ngIf="!dataLoad">
+                            <img src="/assets/imgs/loader.gif" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dp-portfolio" *ngSwitchCase="'dpPortfolio'">
+                <div class="table-block header-part header-part-2 desktop-visibility">
+                    <table class="desktop-table">
+                        <thead class="width-100">
+                            <tr>
+                                <th>Scheme</th>
+                                <th>Units</th>
+                                <th [class.active]="order === 'currentnav'" class="pointer" (click)="setOrder('currentnav')">Curr. Nav(₹)
+                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                        *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                        *ngIf="!ascending">
+                                </th>
+                                <th [class.active]="order === 'currentvalue'" class="pointer" (click)="setOrder('currentvalue')">Curr. Value(₹)
+                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                        *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                        *ngIf="!ascending">
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="main-table thin-scroll desktop-visibility scroll-inner">
+                    <!-- <div class="table-header"> -->
+                    <div class="table-block body-part thin-scroll" *ngIf="dataLoad">
+                        <table class="desktop-table">
+                            <tbody *ngIf="(dpHoldingList | filterSearch: searchScheme : 'schemename').length > 0">
+
+                                <tr *ngFor="let dataObj of dpHoldingList | orderBy: order:val | filterSearch: searchScheme : 'schemename'; let i = index">
+                                    <td> {{dataObj['schemename']}}</td> 
+                                    <td> {{dataObj['UNITS'] | formatNumerDecimal}}</td>
+                                    <td>
+                                        <span class="rupees">₹</span>{{dataObj['currentnav'] | formatNumerDecimal:'Z'}}
+                                    </td>
+                                    <td>
+                                        <span class="rupees">₹</span>{{dataObj['currentvalue'] | formatNumerDecimal}}
+                                    </td>                
+                                </tr>
+                            </tbody>
+                            <div class="no-data-found" *ngIf="(dpHoldingList | filterSearch: searchScheme : 'schemename').length == 0">
+                                <span>No Data Found</span>
+                            </div>
+                        </table>
+                    </div>
+                    <div class="loader loader-height-300" *ngIf="!dataLoad">
+                        <img src="/assets/imgs/loader.gif" alt="">
+                    </div>
+                    <!-- <div class="no-data-found" *ngIf="dpHoldingList.length == 0 && dataLoad">
+                        <span>No Data Found</span>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <div class="portfolio-dp-portfolio-section mobile-visibility" [ngSwitch]="holdingTabValue">
+            <div class="portfolio" *ngSwitchCase="'portfolio'">
+                <!-- <div class="coming-soon">
+                    coming soon
+                </div> -->
+                <!-- uncomment below line when show coming soon option -->
+                <div class="header-part">
+                    <div class="section section-1">
+                        <span class="title">Total Investment</span>
+                        <div class="below-part">
+                            <span class="rupees">₹ </span>
+                            <span class="value">{{totalInvestment | formatNumerDecimal}}</span>
+                        </div>
+                    </div>
+                    <div class="section section-2">
+                        <span class="title">Total Current Value</span>
+                        <div class="below-part">
+                            <span class="rupees">₹ </span>
+                            <span class="value">{{totalCurrentValue | formatNumerDecimal}}</span>
+                        </div>
+                    </div>
+                    <div class="section section-3">
+                        <span class="title">Total Gain/Loss</span>
+                        <div class="below-part">
+                            <span class="rupees" [ngStyle]="{'color':(totalgainLoss == 0) ? '#656565' : (totalgainLoss > 0 ? '#17C257' : '#F55858')}">₹ </span>
+                            <span class="value" [ngStyle]="{'color':(totalgainLoss == 0) ? '#656565' : (totalgainLoss > 0 ? '#17C257' : '#F55858')}">
+                                {{totalgainLoss | formatNumerDecimal}} ({{totalPerct | formatNumerDecimal}}%)
+                             </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-section" *ngIf="(portfolioDetails | filterSearch: searchScheme : 'scheme').length > 0 && dataLoad">
+                    
+                    <div class="section" *ngFor="let dataObj of portfolioDetails | orderBy: order:val | filterSearch: searchScheme : 'scheme'; let i = index">    
+                        <div class="top-section">
+                            <div class="title">{{dataObj.scheme}}</div>
+                        </div>
+                        <div class="lower-section">
+                            <div class="section-block">
+                                <span class="section-title">Investment</span>
+                                <span class="section-value"><span class="rupees">₹</span>{{dataObj.totalInvestment}}</span>
+                            </div>
+                            <div class="section-block">
+                                <span class="section-title">Current Value</span>
+                                <span class="section-value"><span class="rupees">₹</span>{{dataObj.currValue}}</span>
+                            </div>
+                            <div class="section-block profit-loss-block">
+                                <span class="section-title">Profit / Loss</span>
+                                <div class="profit-loss section-value" [ngStyle]="{'color':(dataObj.profLoss == 0) ? '#656565' : (dataObj.profLoss > 0 ? '#17C257' : '#F55858')}"><span class="rupees">₹</span>
+                                    {{dataObj.profLoss | formatNumerDecimal}}
+                                    <span>({{(dataObj['profLoss'] / dataObj['totalInvestment'])*100 | formatNumerDecimal}}%)</span>
+                                </div>
+                                <!-- <span class="pro-loss-per section-value">{{dataObj['profLossPer']}}</span> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="loader loader-height-191" *ngIf="!dataLoad">
+                    <img src="/assets/imgs/loader.gif" alt="">
+                </div>
+                <div class="no-data-found" *ngIf="(portfolioDetails | filterSearch: searchScheme : 'scheme').length == 0 && dataLoad">
+                    <span>No Data Found</span>
+                </div>
+            </div>
+            <div class="dp-portfolio" *ngSwitchCase="'dpPortfolio'">
+                <div class="main-section" *ngIf="(dpHoldingList | filterSearch: searchScheme : 'schemename').length > 0 && dataLoad">
+                    <div class="section"  *ngFor="let dataObj of dpHoldingList | filterSearch: searchScheme : 'schemename'; let i = index">
+                        <div class="top-section">
+                            <div class="title">{{dataObj['schemename']}}</div>
+                            <!-- <div class="status-section" [ngClass]="{'status-section-inactive': dataObj['status'] === 'inactive'}">
+                                <span class="status">{{dataObj['status'] === 'active' ?  'Paused': 'Inactive'}}</span>
+                                <span class="circle"></span>
+                            </div> -->
+                        </div>
+                        <div class="lower-section">
+                            <div class="section-block">
+                                <span class="section-title">Units</span>
+                                <span class="section-value">{{dataObj['UNITS'] | formatNumerDecimal}}</span>
+                            </div>
+                            <div class="section-block">
+                                <span class="section-title">Curr. Nav (₹)</span>
+                                <span class="section-value">{{dataObj['currentnav'] | formatNumerDecimal:'Z'}}</span>
+                            </div>
+                            <div class="section-block profit-loss-block">
+                                <span class="section-title">Curr. Val (₹)</span>
+                                <div class="section-value">{{dataObj['currentvalue'] | formatNumerDecimal}}</div>
+                            </div>
+                        </div>
+                        <!-- <div class="detail-section" *ngIf="dataObj['isVisible']">
+                            <div class="section-block">
+                                <ion-button class="transact">Transact</ion-button>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <div>
+                    <div class="loader" *ngIf="!dataLoad" style="min-height: 191px;">
+                        <img src="/assets/imgs/loader.gif" alt="">
+                    </div>
+                    <div class="no-data-found" *ngIf="(dpHoldingList | filterSearch: searchScheme : 'schemename').length == 0 && dataLoad">
+                        <span>No Data Found</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

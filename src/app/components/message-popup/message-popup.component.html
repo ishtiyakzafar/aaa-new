@@ -1,0 +1,16 @@
+
+  <ion-header>
+    <div class="modal-head">
+  <div class="close" (click)="dismisss()">x</div>
+</div>
+</ion-header>
+<ion-content>
+  <div class="card_details_pop">
+  <div class="table-wrapper">
+    <div class="text-center" *ngFor="let item of msgList">
+      <h5>{{ item }}</h5>
+    </div>
+  </div>
+</div>
+</ion-content>
+

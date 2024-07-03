@@ -1,0 +1,21 @@
+<ion-header>
+  <div class="close" (click)="dismiss()">x</div>
+  <div class="title"> 
+    <span>Contract Info</span>  
+  </div>
+</ion-header>
+<ion-content>
+  <div class="table-wrapper thin-scroll">
+    <table class="body-table">
+      <tbody *ngIf="contractInfosList.length > 0">
+        <tr *ngFor="let dataObj of contractInfosList">
+          <td>{{dataObj['type']}}</td>
+          <td>{{displaydash(dataObj['value'])}}</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="contractInfosList.length == 0">
+        {{msgNoData}}
+      </tbody>
+    </table>
+  </div>
+</ion-content>

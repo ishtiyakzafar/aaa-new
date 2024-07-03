@@ -1,0 +1,93 @@
+<ion-header class="desktop-visibility">
+	<div class="close" (click)="dismiss()">x</div>
+	<div class="pay-detail-header">
+		<span class="heading">{{modelCode}} ({{modelName}}) </span>
+		<span class="sub-heading">{{modelType}}</span>
+	</div>
+</ion-header>
+
+<ion-header class="mobile-visibility">
+	<ion-toolbar color="tertiary">
+		<div class="title-block title-block-custom aum-title">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">
+					<span *ngIf="TabValue != 'insu'">{{modelCode}}</span>
+					<span *ngIf="TabValue == 'insu'">{{modelName}}</span>
+					<div class="total-clients-block">
+						<div class="item-block" *ngIf="TabValue != 'insu'">
+							<div class="top" style="font-size: 12px;">Total {{titleDisplayMobile}} Payout ({{PayoutMonthYear}}) </div>
+							<div class="lower" *ngIf="payoutValue > 0">₹ {{payoutValue | formatNumberUnit}}</div>
+							<div class="lower" *ngIf="payoutValue == 0">₹ 0.00</div>
+						</div>
+					</div>
+				</ion-title>
+				<ion-icon class="search-icon" name="search"></ion-icon>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="table-block-parent">
+		<div class="table-width">
+			<div class="paydetail-web-equity">
+				<div class="header-table" *ngIf="detailsArray.length > 0">
+					<table style="width: 100%" class="desktop-header-table" *ngIf="TabValue != 'equity'">
+						<tr *ngFor="let dataObj of detailsArray; let i=index" (click)="dropClick(i,detailsArray)">
+							<td>
+								<!-- <div class="upper-part justify-content-start padding-name" [ngClass]="{'m-b-72': detailsData <= 5 && dataObj['isVisible'] , 'm-b-102': detailsData > 5  && dataObj['isVisible'] && detailsData <= 10 && dataObj['isVisible'], 'm-b-142': detailsData > 10 && detailsData <= 15 && dataObj['isVisible']}">{{dataObj.CompanyName}}</div> -->
+								<div #upperPart class="upper-part justify-content-start padding-name"
+									[ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+									{{dataObj.CompanyName}}</div>
+								<div class="detail-part-fix" #detail *ngIf="dataObj['isVisible']" 
+                                [ngStyle]="{'top': (upperHeight + 10) + 'px'}">
+									<div class="detail-part" *ngFor="let item  of dataObj.depositDetails | keys: 0">
+										<span class="detail-heading">{{item.key}}</span>
+										<span *ngIf="item.value != '' " class="detail-value">{{item.value}}</span>
+										<span *ngIf="item.value == '' || item.value == null" class="detail-value">-</span>
+									</div>
+
+								</div>
+							</td>
+							<td>
+								<div class="upper-part"
+									[ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+									<span class="payoutdigits"><span *ngIf="dataObj.payout != undefined" class="rupees">₹</span>&nbsp;
+									<span *ngIf="dataObj.payout < 1000 && dataObj.payout != undefined">{{dataObj.payout | formatNumerDecimal }}</span>
+									<span *ngIf="dataObj.payout > 1000 && dataObj.payout != undefined">{{dataObj.payout | formatNumberUnit}}</span>
+								</span>
+									<ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg"
+										*ngIf="!dataObj['isVisible']"></ion-icon>
+									<ion-icon *ngIf="dataObj['isVisible']" class="rotate arrow-button down-arrow-button"
+										src="./assets/svg/down-arrow.svg"></ion-icon>
+								</div>
+							</td>
+						</tr>
+					</table>
+
+					<table style="width: 100%" class="desktop-header-table" *ngIf="TabValue == 'equity'">
+						<tr *ngFor="let dataObj of detailsArray; let i=index">
+							<div *ngFor="let item  of dataObj.depositDetails | keys: 0">
+								<div class="detail-part-eq">
+									<td>
+										<span class="font-eq">{{item.key}}</span>	
+									</td>
+									<td class="font-eq" style="text-align: right;">
+										{{item.value}}
+									</td>
+								</div>
+							</div>
+						</tr>	
+
+					</table>
+					
+				</div>
+
+				<div class="no-data-model" *ngIf="detailsArray.length == 0">
+					<span>No Data Found</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</ion-content>

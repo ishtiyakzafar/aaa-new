@@ -1,0 +1,36 @@
+<ion-content>
+  <div>
+<div class="dp_report_main">
+<div class="dp_report_card">
+  <h2 class="desktop-visibility">Download Report</h2>
+  <p class="desktop-visibility">Available Options for download</p>
+
+  <div class="dp_report_download_box">
+    <div class="radio_group">
+     <div class="radio_box" [ngClass]="{'orange_line_active': fileType == 'pdf'}">
+      <div class="radio">
+        <input  id="dp1" type="radio" (change)="onRadioChange($event)" name="dp report" value="pdf" >
+      <label for="dp1"></label>
+      </div>
+      <img src="assets/svg/pdf_big.svg" width="20px" alt="">
+      <span class="d-block">PDF</span>
+     </div>
+     
+     <div class="radio_box" [ngClass]="{'orange_line_active': fileType == 'excel'}">
+      <div class="radio">
+      <input  id="dp2" (change)="onRadioChange($event)" type="radio" name="dp report" value="excel">
+      <label for="dp2"></label>
+      </div>
+      <img src="assets/svg/download_excel.svg" width="20px" alt="">
+      <span class="d-block">Excel</span>
+     </div>   
+    </div>    
+    </div>
+
+</div>
+<div class="mobile-visibility section button-section download_btn">
+  <ion-button [disabled]="!fileType" (click)="downloadReport(fileType)">Download</ion-button>
+</div>
+</div>
+</div>
+</ion-content>

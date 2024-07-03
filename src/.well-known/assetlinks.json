@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.aiconnect.app",
+      "sha256_cert_fingerprints": [
+        "65:12:3F:3A:E6:EE:AD:70:7A:09:78:10:C1:12:FD:15:A4:BC:3D:A1:72:0E:B0:B6:E2:B8:CB:2A:61:7D:5D:7B"
+      ]
+    }
+  }
+]

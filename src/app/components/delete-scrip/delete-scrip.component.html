@@ -1,0 +1,27 @@
+  <!-- <ion-content> -->
+    <div class="container">
+      <div class="parent-block">
+        <div class="block mobile-block thin-scroll">
+          <!-- <div class="header">
+            Scrip
+          </div> -->
+          <div class="listing" *ngFor="let obj of data">
+            <div class="scrip-data">
+              <div class="name-block">
+                <span class="name">{{obj['ShortName']}}</span>
+                <span class="option">{{obj['Exch']}},{{obj['ExchType']}}</span>
+              </div>
+              <div class="date" *ngIf="obj['ExchType'] !== 'C'" [ngClass]="getDate(obj['LastTradeTime'])">{{formattedDate}}</div>
+            </div>
+            <div class="icon">
+              <img src="./assets/svg/delete.svg" (click)="removeScrip(obj['Exch'], obj['ExchType'], obj['ScripCode'], 'D')" alt="">
+            </div>
+          </div>
+          
+        </div>
+        <!-- <div class="btn-block">
+          <ion-button (click)="refresh()">Go to watchlist</ion-button>
+        </div> -->
+      </div>
+    </div>
+  <!-- </ion-content> -->

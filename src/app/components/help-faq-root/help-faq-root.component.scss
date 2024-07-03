@@ -1,0 +1,45 @@
+.ion-page{justify-content: flex-start !important;}
+.help_banner{background: linear-gradient(270deg, #DCD5FC 0%, #F5DFED 100%); padding: 2rem 0 1rem 0; width: 100%;}
+.help_banner h2{font-size: 2rem; font-weight: 700; color: #231965; padding-bottom: 1rem;margin: 0px;}
+.calculator-segment{ border: 1px solid #CBCBCB; border-radius: 5px; width:260px;background: #fff; }
+.calculator-segment {    border: 1px solid #CBCBCB;    border-radius: 5px;    width:260px;
+ion-segment-button {  --indicator-height: 36px;  --color: #212121;
+font-size: 16px;--indicator-color: #f37921;--color-checked: #fff;text-transform: capitalize;
+min-height: 36px;}
+ion-segment-button:first-child{border-right:1px solid #00083959;}
+}
+.help_banner .label{font-size: 16px; color: #717171; padding-bottom: 8px;}
+.banner_main{display: flex;justify-content: space-between; align-items: center;}
+.search-section-changed-revamped{padding: 0px;   }
+.serchbar_help{  padding: 0px; ;}
+.serch_box{margin: 2.5rem 0; width: 600px;}
+.serch_box h3{font-size: 1.25rem; color: #000000; font-weight: 600;}
+.search-button{background: #F37921; margin: 0; height: 46px;border-radius: 0px 9px 9px 0;width: inherit;}
+.bed_crum{padding: 1.5rem 0;}
+.bed_crum a{font-size: 14px; color: #1186DB; text-decoration: none; padding-right: 1.5rem; position: relative;}
+.bed_crum a:first-child{padding-left: 0px;}
+.bed_crum a::after{content: ""; display: block; width: 1px; height: 55%; position: absolute; right: 12px; background: #1186DB; top: 5px; transform: rotate(15deg);}
+.bed_crum a:last-child::after{display: none;}
+.faq_main_grid{display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 1.5rem 0;    grid-gap: 2rem;}
+.faq_grid_box{padding-bottom: 1rem;}
+.grid_top{display: flex; align-items: flex-start; border-bottom: 1px solid #f2f2f2; padding-bottom: 0.75rem;}
+.grid_top img{margin-right: 15px; width: 25px;}
+.grid_top h2{font-size: 1.1875rem; font-weight: 700; margin: 0; color: #333; cursor: pointer;}
+.grid_top h2:hover{color: #F37921;}
+.grid_top p{font-size: 14px;  margin: 5px 0 0 0; color: #777;}
+.recent_topic_list{list-style: none; margin: 16px 0 0 0; padding: 0;}
+.recent_topic_list h2{font-size: 1.1875rem; font-weight: 700; margin: 0; color: #333; padding-bottom: 1.75rem;}
+.recent_topic_list li div{width: 25px; margin-right:15px; text-align: center;}
+.recent_topic_list li div img{width: 13px; margin: 0 auto; }
+.recent_topic_list h2 img{vertical-align: middle; margin-right: 3px;}
+.recent_topic_list li{color: #000; display: flex; margin-bottom: 1rem;align-items: flex-start;}
+.recent_topic_list a{text-decoration: none; color: #000; cursor: pointer;}
+.recent_topic_list a:hover{color:#e46317}
+.more{font-size: 0.9375rem; color: #e46317; display: block; text-decoration: none;}
+.more img{vertical-align: middle; margin-left: 4px;}
+.raise-query-submit-box{background: #F7F9FC; padding: 2rem 0;}
+.sub_section{display: flex; justify-content: space-between; align-items: center; width: 80%; margin: 0 auto;}
+.sub_section h2{font-size: 2rem; color: #465367; font-weight: 600; margin-bottom: 0px;}
+.sub_section p{font-size: 16px; color: #465367; font-weight: 500; margin: 0; padding: 0px;}
+ion-button { border-radius: 25px; --border-radius: 25px; --background: #F37921; width: 230px; box-shadow: 0px 2px 12px #f37921ad; font-size: 15px; font-family: "nunitoExtraBold"; height: 41px; margin: 0; margin-left: 46px; }
+.recent_topic{margin-bottom: 2rem;}

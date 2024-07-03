@@ -1,0 +1,257 @@
+<div class="container">
+    <div class="filterbar">
+        <div class="filter-serach">
+            <!-- <ion-label>Search By:</ion-label>
+            <ion-segment [(ngModel)]="clientBlockSegmentValue" class="ion-btn" mode="md" (ionChange)="segmentChange()">
+                <ion-segment-button class="ion-segment ion-segment-button" *ngFor="let entry of segmentButtonOption" value="{{entry['value']}}">{{entry['name']}}</ion-segment-button>
+            </ion-segment> -->
+            <ion-searchbar (ngModelChange)="searchText($event)" search-icon="false" class="custom-searchbar" [debounce]="1000" [(ngModel)]="searchValue" [placeholder]='placeholderInput'>
+            </ion-searchbar>
+        </div>
+        <div class="d-flex">
+            <div class="paginationbtn">
+                <ion-segment-button class="btn_orange_outline" (click)="cancel()">Cancel</ion-segment-button>
+                <ion-segment-button class="btn_orange" (click)="save()"><span><img src="assets/svg/save.svg" width="14px" alt="" class="save">Save ({{saveCount}})</span></ion-segment-button>
+            </div>
+            <div class="download_file">
+                <div (click)="initClientSummary(true,'pdf')">
+                    <img src="assets/svg/pdf.svg" alt="">
+                </div>
+                <div (click)="initClientSummary(true,'excel')">
+                    <img src="assets/svg/download_excel.svg" alt="">
+                </div>
+            </div>
+        </div>
+       
+    </div>
+    </div> 
+    <div class="desktop-table overflow-hidden">
+        <!-- <div class="download_file">
+            <div (click)="initClientSummary(true,'pdf')">
+                <img src="assets/svg/pdf.svg" alt="">
+            </div>
+            <div (click)="initClientSummary(true,'excel')">
+                <img src="assets/svg/download_excel.svg" alt="">
+            </div>
+        </div> -->
+        <!-- <div class="search-section search-section-changed search-section-changed-revamped pr-20">
+            <ion-label>Search by</ion-label>
+            <ion-segment [(ngModel)]="clientBlockSegmentValue" mode="md" (ionChange)="segmentChange()">
+                <ion-segment-button class="ion-segment ion-segment-button" *ngFor="let entry of segmentButtonOption" value="{{entry['value']}}">{{entry['name']}}</ion-segment-button>
+            </ion-segment>
+            <ion-searchbar (ngModelChange)="searchText($event)" search-icon="false" class="custom-searchbar" [debounce]="1000" [(ngModel)]="searchValue" [placeholder]='placeholderInput'>
+            </ion-searchbar>
+            
+        </div> -->
+
+        <!-- <div class="d-flex pagination_ui">
+
+          <div class="d-flex pagination_btn">  
+        <button *ngIf="PageNo > 1" [ngClass]="{'prev-disable': PageNo == 1}" class="btn_orange" (click)="onPrev()">Prev</button>
+        
+        <span [ngClass]="{'btn-sep': showBtn , 'btn-sep-left': PageNo > 1}">
+            {{this.summaryDetails.length > 0 ? "Page " : ''}}
+            {{this.summaryDetails.length > 0 ? PageNo : ''}}
+        </span>
+        <button *ngIf="showBtn" [ngClass]="{'next-disable': true}" class="btn_orange" (click)="onNext()">Next</button>
+    </div>
+<div class="d-flex">
+    <ion-segment-button class="btn_orange_outline" (click)="cancel()">Cancel</ion-segment-button>
+    <ion-segment-button class="btn_orange" (click)="save()"><span><img src="assets/svg/save.svg" width="14px" alt="" class="save">Save ({{saveCount}})</span></ion-segment-button>
+
+</div>
+
+
+    </div> -->
+
+
+
+        <div class="table-header ">
+            <table class="desktop-table">
+                
+            </table>
+        </div>
+        <div class="main-table-1 tbClient desktop-visibility">
+            <!-- <table style="width: 100%" class="mobile-table"> -->
+            <div class="table-block table-fixed-header">
+                <table class="desktop-table" *ngIf="dataLoad">
+                    <thead class="width-100">
+                        <tr>
+                            <th [class.active]="order === 'ClientId'" class="pointer">ClientID
+                                <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="!ascending"> -->
+                            </th>
+                            <th>
+                                Branch Code
+                            </th>
+                            <th [class.active]="order === 'AGHVC'" (click)="setOrder('AGHVC')">AGHVC
+                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                            </th>
+                            <th [class.active]="order === 'ALB'" (click)="setOrder('ALB')">ALB
+                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                            </th>
+                            <th [class.active]="order === 'THV'" (click)="setOrder('THV')">THV
+                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                            </th>
+                            <th [class.active]="order === 'NetWorth'" (click)="setOrder('NetWorth')">NetWorth
+                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                            </th>
+                            <th>Hold in Block/Sell
+                                <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="!ascending"> -->
+                            </th>
+                            <th>BR Remarks</th>
+                            <th>
+                                HO Remarks
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody *ngIf="datas.length && dataLoad">
+                        <tr *ngFor="let dataObj of datas;let i = index">
+                            <td>
+                                <div class="upper-part justify-content-start" [ngStyle]="{'margin-bottom':  styleFunc(dataObj['isVisible'],detailHeight)}">
+                                    <div class="client-code-block">
+                                        <span class="client-code">{{dataObj['ClientCode']}}</span>
+                                        <span class="client-type">{{dataObj['ClientCategory']}}</span>
+                                    </div>
+                                </div>
+                                <div class="detail-part-fix" #detail *ngIf="dataObj['isVisible']">
+                                    <div class="details_pt_inside">
+                                    <div class="detail-part">
+                                        <span class="detail-heading">UnCI. Chq</span>
+                                        <span class="detail-value">{{dataObj['Unclearedcheq']}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">UnDel.</span>
+                                        <span class="detail-value">{{dataObj['Undelivered']}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Span</span>
+                                        <span class="detail-value">{{dataObj['Span']}}</span>
+                                    </div>
+                                </div>
+                                 <div class="details_pt_inside">
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Margin THV</span>
+                                        <span class="detail-value">{{dataObj['MarginTHV']}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Margin AHV</span>
+                                        <span class="detail-value">{{dataObj['MarginAHV']}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Margin GHV</span>
+                                        <span class="detail-value">{{dataObj['MarginGHV']}}</span>
+                                    </div>
+                                </div>
+
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  styleFunc(dataObj['isVisible'],detailHeight)}">
+                                    {{dataObj['ClientBranch']}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  styleFunc(dataObj['isVisible'],detailHeight)}">
+                                    {{dataObj['AGHVC']}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  styleFunc(dataObj['isVisible'],detailHeight)}">
+                                    {{dataObj['ALB']}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  styleFunc(dataObj['isVisible'],detailHeight)}">
+                                    {{dataObj['THV']}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  styleFunc(dataObj['isVisible'],detailHeight)}">
+                                    {{dataObj['NetWorth'] | number : '1.2-2'}}
+                                </div>
+                            </td>
+                            <td>
+                                <label class="switch" [ngStyle]="{'margin-bottom':  styleFunc(dataObj['isVisible'],detailHeight)}">
+                                  <input type="checkbox" id="check-{{i}}" [checked]="dataObj['HoldBlockSell']" [(ngModel)]="dataObj.toggleStatus"
+                                  (change)="toggleChange($event,dataObj)" [disabled]="dataObj['HoldBlockSell']">
+                                  <span class="slider round"></span>
+                                </label>
+                              </td>
+      
+                              <td>
+                                <ng-select [ngStyle]="{'margin-bottom':  styleFunc(dataObj['isVisible'],detailHeight)}" [disabled]="dataObj['HoldBlockSell'] ? dataObj['HoldBlockSell'] : !dataObj.toggleStatus" [items]="remarkList" bindLabel="remarkCode" bindValue="BranchRemarkID" [virtualScroll]="true" [(ngModel)]="dataObj.BranchRemarkID" placeholder="Enter a subject"
+                                >
+                                </ng-select>
+                    
+                              </td>
+                            <!-- <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                    <ion-icon class="check-icon" *ngIf="dataObj['HoldBlockSell'] == 0" src="./assets/svg/line.svg"></ion-icon> 
+                                    <ion-icon class="check-icon" *ngIf="dataObj['HoldBlockSell'] == 1"  src="./assets/svg/checkmark.svg"></ion-icon> 
+                                    
+                                </div>
+                            </td> -->
+                            <!-- <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                    <span class="remark font-black" *ngIf="dataObj['PartnerRemarks'] != '' ">{{dataObj['PartnerRemarks']}}</span> 
+                                    <span class="remark" *ngIf="dataObj['PartnerRemarks'] == '' "  > No remark added</span> 
+                                    <ion-icon class="edit-icon" src="./assets/svg/updated_pencil.svg" (click)="AddRemark(i, dataObj['ClientCode'], dataObj['HoldBlockSell'], dataObj['PartnerRemarks'])"></ion-icon> 
+                                </div>
+                            </td> -->
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  styleFunc(dataObj['isVisible'],detailHeight)}">
+                                    {{dataObj['HoRemarks'] ? dataObj['HoRemarks'] : 'No Remark'}}
+                                </div>
+                            </td>
+                            <td (click)="dropClick(dataObj.ClientCode ,datas)">
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  styleFunc(dataObj['isVisible'],detailHeight)}">
+                                    <ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg"
+                                        *ngIf="!dataObj['isVisible']"></ion-icon>
+                                    <ion-icon *ngIf="dataObj['isVisible']" class="rotate arrow-button down-arrow-button"
+                                        src="./assets/svg/down-arrow.svg"></ion-icon>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody>
+                        <tr *ngIf="!datas.length && dataLoad">
+                            <td colspan="10" class="no-data-found cntr">No Data Found</td>
+                        </tr>
+                        <tr *ngIf="scrollLoad">
+                            <td colspan="10" class="no-data-found cntr"><img src="/assets/imgs/loader.gif" alt="" width="30px"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                
+            </div>
+            <div class="loader" *ngIf="!dataLoad">
+                <img src="/assets/imgs/loader.gif" alt="">
+            </div>
+        </div>
+    </div>
+    <ion-infinite-scroll *ngIf="enableNext" threshold="100px" (ionInfinite)="loadData($event)">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+        </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    <!-- <div class="file-loader" *ngIf="fileLoad">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div> -->
+

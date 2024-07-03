@@ -1,0 +1,497 @@
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title *ngIf="!isMegaMenuRpt"  class="title">Share Report</ion-title>
+				<ion-title *ngIf="isMegaMenuRpt" class="heading">{{ reportTitle?.shareType ? reportTitle?.shareType : 'Realised PnL' }}</ion-title>
+			</div>
+			<div class="search-block">
+				<ion-buttons class="header-icon-block">
+					<ion-icon class="iconsize first-icon" src="assets/svg/white-home-icon.svg" (click)="goToDashboard()"></ion-icon>
+					<ion-icon class="iconsize first-icon" (click)="goToNotification()" src="./assets/svg/notification.svg"></ion-icon>
+					<ion-icon class="iconsize" style="margin-left: 15px;" src="./assets/svg/search.svg" (click)="goToSearch()"></ion-icon>
+				</ion-buttons>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>	
+<ion-content>
+<div>
+	
+	<div class="container">
+	<ion-toolbar class="">
+		
+			<div class="shareReportHeader">
+				<div class="heading-part report-header desktop-visibility">
+					<!-- <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon> -->
+					<ng-container *ngIf="isMegaMenuRpt; else shrRpt">
+						<span class="heading">{{ reportTitle?.shareType ? reportTitle?.shareType : 'Realised PnL' }}</span>
+					</ng-container>
+					<ng-template #shrRpt>
+						<!-- <span class="heading">Share Report ({{clientCode}})</span> -->
+						<span class="heading">Share Report </span>
+					</ng-template>
+				</div>
+				<div 
+				class="serachReprots"
+				>
+				<div class="reportToggle" *ngIf="isAMCReport">
+					
+				<ion-segment [(ngModel)]="typeOfClient" mode="md">
+					<ion-segment-button (click)="onIIFLTabClick()" class="ion-segment ion-segment-button segment-button-checked"
+						value="iiflClients">IIFL
+						Clients</ion-segment-button>
+					<ion-segment-button (click)="onIIFLTabClick()" class="ion-segment ion-segment-button"
+						value="offlineClients">Offline
+						Clients</ion-segment-button>
+				</ion-segment>
+			</div>
+			<ng-container *ngIf="typeOfClient === 'offlineClients'; else iiflCl">
+				<div class="offline_cli">
+					<ion-toolbar >
+						<div>
+							<ion-searchbar class="ion-searchbar m-t-0" [(ngModel)]="panSearchValue"
+							class="serachReprotsInput" placeholder="Search PAN No." (ionFocus)="showPanDropDown()"
+								(ionBlur)="hidePanDropDown()"></ion-searchbar>
+						</div>
+					</ion-toolbar>
+				</div>
+			</ng-container>
+			<ng-template #iiflCl>
+				<small class="desktop-visibility" style="margin-top: 15px;">
+					Note: 'Please Enter at least 4 characters to fetch the client list'
+				</small>
+				<ion-toolbar>
+					<ion-searchbar (ionBlur)="hideDropDown()" (ngModelChange)="searchText($event)"
+					class="serachReprotsInput" [debounce]="1000" [(ngModel)]="clientSearchValue"
+						placeholder="Search Client Code">
+					</ion-searchbar>
+				</ion-toolbar>
+			</ng-template>
+				</div>
+			</div>
+	
+		
+	</ion-toolbar>
+	<small class="mobile-visibility" style="padding: 10px; text-align: center;">
+		Note: 'Please Enter at least 4 characters to fetch the client list'
+	</small>
+	<ion-toolbar class="drop-down-toolbar" *ngIf="isDropDownVisible">
+		<div class="drop-down thin-scroll" *ngIf="allClients.length && dtLoad">
+			<div class="item" *ngFor="let data of allClients" (click)="displayClientDetails(data)">
+				<span class="name">{{data.ClientCode}}</span>
+			</div>
+		</div>
+		<div class="drop-down thin-scroll" *ngIf="allClients.length==0 && dtLoad">
+			<span>No Data Found</span>
+		</div>
+		<div class="loader" *ngIf="!dtLoad">
+			<img src="/assets/imgs/loader.gif" alt="">
+		</div>
+	</ion-toolbar>
+	<ion-toolbar class="drop-down-toolbar" *ngIf="isPanDropDownVisible">
+		<div class="drop-down thin-scroll" *ngIf="dtLoad">
+			
+			<!-- review. removed filter -->
+			<!-- <div class="item" *ngFor="let c of cliList | filter:panSearchValue" (click)="onPANSearchBarClick(c)"> -->
+			<div class="item" *ngFor="let c of cliList | filter:panSearchValue" (click)="onPANSearchBarClick(c)">
+				<span class="name">{{c.clientpan}}</span>
+				<span class="first">{{c.clientname}}</span>
+			</div>
+		</div>
+		<div class="loader" *ngIf="!dtLoad">
+			<img src="/assets/imgs/loader.gif" alt="">
+		</div>
+	</ion-toolbar> 
+	<div class="toolbar-content-block">
+		<div class="container report-block shr_report" [ngClass]="{'realised-block': selectedShareType  === 'realised', 
+        'simplified-block': selectedShareType  === 'simplified', 'unrealised-block': selectedShareType  === 'unrealised',
+        'dp-transaction-block': selectedShareType  === 'dpTransaction', 'trade-block': selectedShareType  === 'tradeListing',
+        'client-block': selectedShareType  === '360Client', 'mf-capital-block': selectedShareType  === 'mfCapital',
+        'mf-account-block': selectedShareType  === 'mfAccount', 'stt-certificate-block': selectedShareType  === 'sttCertificate',
+        'daily-bills-block': selectedShareType  === 'dailyBills', 'digital-contract-block': selectedShareType  === 'digitalContract'
+    
+    }">
+			<div class="section shr_sec_box mobile-visibility " *ngIf="!isMegaMenuRpt">
+				<div class="share_report-title">
+					<div class="label">Client Name</div>
+					<div class="clientname">{{clientName}} ({{clientCode}})</div>
+				</div>
+				</div>
+				<div class="section shr_sec_box" *ngIf="!isMegaMenuRpt">
+				<div  class="label">Select Report</div>
+		
+				<ng-select  [items]="shareReportTypeList" bindLabel="shareType" bindValue="value" [loading]="Loadvalue" [clearable]="false" [searchable] ="false"  [(ngModel)]="selectedShareType" (change)="changeShareReportType()">
+				</ng-select>
+				
+			</div>
+
+			<div class="section report-type shr_sec_box" *ngIf="selectedShareType  === 'realised' || selectedShareType  === 'unrealised' 
+			|| selectedShareType  === 'digitalContract' || selectedShareType === 'dailyBills'||  selectedShareType  === 'tradeListing'">
+				<div class="label" *ngIf="selectedShareType  !== 'tradeListing'">Product</div>
+				<div class="label" *ngIf="selectedShareType  === 'tradeListing'">Report Type</div>
+			
+				<ng-select [items]="productTypeList" bindLabel="option" bindValue="value" [loading]="Loadvalue" 
+					[clearable]="false" [searchable]="false" [(ngModel)]="productValue" (change)="onProductChange()"
+					*ngIf="selectedShareType  == 'realised' || selectedShareType  == 'unrealised'">
+				</ng-select>
+
+
+				<ng-select [items]="digitalProductTypeList" bindLabel="option" bindValue="value" [loading]="Loadvalue" [clearable]="false" [searchable] ="false"  [(ngModel)]="digitalProductValue" (change)="changeDigitalConProduct($event.value)"
+				*ngIf="selectedShareType  === 'digitalContract'" >
+				</ng-select>
+
+
+				<ng-select [items]="dailyBillsProductTypeList" bindLabel="option" bindValue="value" [loading]="Loadvalue"
+					[clearable]="false" [searchable]="false" [(ngModel)]="dailyBillsProductValue"
+					*ngIf="selectedShareType  === 'dailyBills'">
+				</ng-select>
+
+
+				<ng-select [items]="tradeTradeList" bindLabel="name" bindValue="value" [clearable]="false" [searchable] ="false"  [(ngModel)]="tradeListValue"
+					*ngIf="selectedShareType  == 'tradeListing'">
+				</ng-select> 
+				
+
+			</div>
+
+			<div class="section date-range shr_sec_box" *ngIf="selectedShareType !== 'dpholding' && selectedShareType !== 'dpTransaction' && selectedShareType !== 'interestOnDelayedPayment' && selectedShareType !=='amcStmt' && selectedShareType !=='crtr' && selectedShareType !== 'simplified' &&
+			selectedShareType !== '360Client' && selectedShareType !== 'sttCertificate' && selectedShareType !== 'dailyBills' && selectedShareType !== null">
+				<div class="label" *ngIf="selectedShareType !== 'digitalContract'">Type of Report</div>
+				<div class="label" *ngIf="selectedShareType === 'digitalContract'">Report Format</div>
+				<ion-segment class="calculator-segment" *ngIf="selectedShareType === 'simplified'" [(ngModel)]="timeSpanValue" (ionChange)="segmentChangedWkMonth($event.detail.value)">
+					<ion-segment-button value="1M">Last 1M</ion-segment-button>
+					<ion-segment-button value="1W">Last 1Wk</ion-segment-button>
+				</ion-segment>
+				<ion-segment class="calculator-segment" *ngIf="selectedShareType !== 'simplified' && selectedShareType !== 'digitalContract'" [(ngModel)]="yearDateOption" (ionChange)="segmentChangedYrDate($event.detail.value)">
+					<ion-segment-button value="yearWise">Year Wise</ion-segment-button>
+					<ion-segment-button value="dateWise">Date Wise</ion-segment-button>
+				</ion-segment>
+				<ion-segment class="calculator-segment" *ngIf="selectedShareType === 'digitalContract'" [(ngModel)]="detailedSummarisedValue">
+					<ion-segment-button value="Detailed">Detailed</ion-segment-button>
+					<ion-segment-button value="Summarised">Summarised</ion-segment-button>
+				</ion-segment>
+			</div>
+
+			<div class="section desktop-visibility  shr_sec_box invisible_none" *ngIf="selectedShareType == 'mfCapital' || selectedShareType == 'mfAccount'">
+			</div>
+
+			<!-- <div class="section date-range-dropdown" *ngIf="selectedShareType === 'dpTransaction'">
+				<div class="label">DP Type</div>
+			
+				<ng-select [items]="dpList" bindLabel="label" bindValue="value" [loading]="Loadvalue" [inputAttrs]="inputattr" [clearable]="false" [searchable] ="false"  [(ngModel)]="dpType" (change)="changeDpType($event)"
+				>
+				</ng-select>
+
+			</div> -->
+
+			<div class="section date-range-dropdown shr_sec_box" *ngIf="selectedShareType === 'dpTransaction' || selectedShareType === 'dpholding'">
+				<div class="label">DP ID</div>
+
+				<ng-select (change)="changeDpId()" [items]="DPIdList" bindLabel="item" bindValue="item" [loading]="Loadvalue" [clearable]="false" [searchable] ="false"  [(ngModel)]="dpId">
+				</ng-select>
+				
+			</div>
+
+			<div class="section date-section shr_sec_box" 
+				[ngClass]="{'date-position-left': datePositionLeft, 
+				'date-position-center': datePositionCenter, 
+				'date-position-right': datePositionRight}" 
+				*ngIf="selectedShareType !== 'dpholding' && selectedShareType !== 'unrealised' && yearDateOption !== 'yearWise' && selectedShareType !== null && selectedShareType !=='amcStmt' && selectedShareType !== null && selectedShareType !=='crtr'">
+				
+				<!-- review. removed datepicker 217-232 -->
+				<!-- <div class="section inner-section" (click)="dp.openCalendar()">
+					<div class="label">{{selectedShareType == 'dailyBills' || selectedShareType == 'digitalContract'  ? 'From' : 'From Date' }}</div>
+					<input class="ion-input dateField" angular-mydatepicker name="mydate" [(ngModel)]="fromDate" readonly [options]="myOptions"
+						#dp="angular-mydatepicker" (dateChanged)="onDateChanged($event)"/>
+					<img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+					
+					
+					
+				</div>
+				
+				<div class="section inner-section" (click)="dp1.openCalendar()"  *ngIf="selectedShareType !== null && selectedShareType !=='amcStmt' && selectedShareType !== null && selectedShareType !=='crtr'">
+					<div class="label">{{selectedShareType == 'dailyBills' || selectedShareType == 'digitalContract' ? 'To' : 'To Date' }}</div>
+					<input class="ion-input dateField" angular-mydatepicker name="toDate" [(ngModel)]="toDate" readonly [options]="myOptions"
+						#dp1="angular-mydatepicker" (dateChanged)="onDateChanged($event)">
+					<img class="calendar" src="assets/svg/calendar_report.svg" alt="" >
+				</div> -->
+				
+				<div class="section inner-section">
+
+					<div class="datePopover">
+						<ion-item class="date_Picker" (click)="toggleStartDatePicker()">
+							<div class="label">{{selectedShareType == 'dailyBills' || selectedShareType == 'digitalContract'  ? 'From' : 'From Date' }}</div>
+						  <ion-input placeholder="Select Date" [value]="ionFromDate | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+						  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+						</ion-item>
+						<div class="calendarBackdrop" *ngIf="showStartDatePicker" (click)="hideDatePicker('start')"></div>
+						<ion-datetime class="calendarOpen desktopDate" *ngIf="showStartDatePicker" presentation="date"
+						[(ngModel)]="ionFromDate" presentation="date" min="1973-01-01" [max]="currentDate"
+						  (ionChange)="hideDatePicker('start',$event)">
+						</ion-datetime>
+					  </div>
+			
+				</div>
+
+				  <div class="section inner-section" *ngIf="selectedShareType !== null && selectedShareType !=='amcStmt' && selectedShareType !== null && selectedShareType !=='crtr'">
+
+
+					<div class="datePopover">
+						<ion-item class="date_Picker" (click)="toggleEndDatePicker()">
+							<div class="label">{{selectedShareType == 'dailyBills' || selectedShareType == 'digitalContract' ? 'To' : 'To Date' }}</div>
+						  <ion-input placeholder="Select Date" [value]="ionToDate | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+						  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+						</ion-item>
+						<div class="calendarBackdrop" *ngIf="showEndDatePicker" (click)="hideDatePicker('end')"></div>
+						<ion-datetime class="calendarOpen desktopDate" *ngIf="showEndDatePicker" presentation="date"
+						  [(ngModel)]="ionToDate" presentation="date" min="1973-01-01" [max]="currentDate"
+						  (ionChange)="hideDatePicker('end',$event)">
+						</ion-datetime>
+					  </div>
+
+				</div>
+
+			</div>
+
+			<!-- <div class="custom_input_box" *ngIf="selectedShareType == 'dpholding'">
+				<div class="section inner-section" (click)="dp1.openCalendar()"	>
+					<div class="label">As on date</div>
+					<input class="ion-input dateField" angular-mydatepicker name="asOnDate" [(ngModel)]="asOnDate" readonly
+						[options]="myOptions" #dp1="angular-mydatepicker" (dateChanged)="onDateChanged($event)">
+					<img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+				</div>
+			</div> -->
+			<div class="section date-section shr_sec_box" *ngIf="selectedShareType == 'dpholding'">
+
+			<div class="section inner-section">
+			<div class="datePopover">
+				<ion-item class="date_Picker" (click)="toggleStartDatePicker()">
+				  <div class="label">As on date</div>
+				  <ion-input placeholder="Select Date" [value]="ionAsOnDate | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+				  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+				</ion-item>
+				<div class="calendarBackdrop" *ngIf="showStartDatePicker" (click)="hideDatePicker('asOn')"></div>
+				<ion-datetime class="calendarOpen desktopDate" *ngIf="showStartDatePicker" presentation="date"
+				  [(ngModel)]="ionAsOnDate" presentation="date" min="1973-01-01" [max]="currentDate"
+				  (ionChange)="hideDatePicker('asOn',$event)">
+				</ion-datetime>
+			  </div>
+			  </div>
+			</div>
+
+			<!-- this option will be visible for unrealised pnl only -->
+			<div class="section date-section shr_sec_box" *ngIf="selectedShareType === 'unrealised' && yearDateOption !== 'yearWise'">
+				<div class="section inner-section">
+				<!-- review. removed datepicker 239-245 -->
+				<!-- <div class="section till-date" (click)="dp3.openCalendar()">
+					<div class="label">Till Date</div>
+					<input class="ion-input dateField" angular-mydatepicker name="mydate" [(ngModel)]="tillDate" readonly [options]="myOptions"
+						#dp3="angular-mydatepicker" (dateChanged)="onDateChanged($event)"/>
+					<img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+				</div> -->
+
+					<!-- <ion-datetime class="ion-input dateField"  name="tillDate" [(ngModel)]="tillDate" displayFormat="DD/MM/YYYY">
+					</ion-datetime>
+					<img class="calendar" src="assets/svg/calendar_report.svg" alt=""> -->
+
+					<div class="datePopover">
+						<ion-item class="date_Picker" (click)="toggleStartDatePicker()">
+						  <div class="label">Till Date</div>
+						  <ion-input placeholder="Select Date" [value]="ionTillDate | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+						  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+						</ion-item>
+						<div class="calendarBackdrop" *ngIf="showStartDatePicker" (click)="hideDatePicker('till')"></div>
+						<ion-datetime class="calendarOpen desktopDate" *ngIf="showStartDatePicker" presentation="date"
+						  [(ngModel)]="ionTillDate" presentation="date" min="1973-01-01" [max]="currentDate"
+						  (ionChange)="hideDatePicker('till',$event)">
+						</ion-datetime>
+					  </div>
+					</div>
+			</div>
+
+			<!-- this option will be visible for daily bill only -->
+			<!-- <div class="section date-section shr_sec_box" *ngIf="selectedShareType === 'dailyBills'">
+				<div class="section till-date for-date" (click)="dp.openCalendar()" >
+					<div class="label">For Date</div> -->
+					<!-- <ion-datetime class="ion-input dateField"  name="fromDate" [(ngModel)]="fromDate" displayFormat="DD/MM/YYYY">
+					</ion-datetime> -->
+					<!-- <input class="ion-input dateField" angular-mydatepicker name="mydate" readonly [(ngModel)]="fromDate" [options]="myOptions"
+						#dp="angular-mydatepicker" (dateChanged)="onDateChanged($event)"/>
+					<img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+				</div>
+			</div> -->
+
+			<!-- drop down option for year wise selection -->
+			<div class="section date-range-dropdown shr_sec_box" *ngIf="yearDateOption === 'yearWise'">
+				<div class="label">Date Range</div>
+				
+				<ng-select class="date_select_drop" [items]="financialYrList" bindLabel="item" bindValue="value"   [loading]="Loadvalue" [clearable]="false" [searchable] ="false"  [(ngModel)]="yearRangeValue" (change)="selectYrFromList($event)">
+				</ng-select>
+
+			</div>
+
+			<!-- drop down option for exchange -->
+			<div class="section date-range-dropdown exchange-dropdown shr_sec_box" *ngIf="selectedShareType === 'dailyBills'">
+				<div class="label">Exchange</div>
+			
+				<ng-select [items]="exchangeDailyBillsList" (change)="dailyBillExchChange()" bindLabel="option" bindValue="option"
+					[loading]="Loadvalue" [clearable]="false" [searchable]="false"
+					[(ngModel)]="exchangeDailyBillsValue">
+				</ng-select>
+
+			</div>
+
+			<div class="section date-range-dropdown exchange-dropdown shr_sec_box" *ngIf="selectedShareType === 'digitalContract'">
+				<div class="label">Exchange</div>
+			
+				<ng-select [items]="digitalContractExchList" bindLabel="option" bindValue="option" [loading]="Loadvalue" [clearable]="false" [searchable] ="false"  [(ngModel)]="digitalContactExchValue">
+				</ng-select>
+
+			</div>
+
+			<div class="section exchange-dropdown shr_sec_box" *ngIf="selectedShareType === 'tradeListing'">
+				<div class="label">Exchange</div>
+
+				<ng-select [items]="tradeListExch" (change)="tradeExchChange()" bindLabel="option" bindValue="value"
+					[loading]="Loadvalue" [clearable]="false" [searchable]="false"
+					[(ngModel)]="tradeListingExchValue">
+				</ng-select>
+
+			</div>
+
+			
+
+			<!-- <div class="section desktop-visibility email-section" (click)="emailToClient()"> -->
+				<div *ngIf="selectedShareType == 'dpholding' || selectedShareType == 'simplified' || selectedShareType == 'unrealised' ||  selectedShareType == 'realised' || selectedShareType == 'dpTransaction' ||  selectedShareType == '360Client' || selectedShareType == 'sttCertificate'|| selectedShareType == 'tradeListing'" class="section desktop-visibility email-section" (click)="downLoadSharedReport('email')">
+
+				<ion-button class="mail-button">
+					<div class="mail-block">
+						<div class="email-title-block">
+							<img src="assets/svg/email.svg" alt="">
+							<span class="title">Email to Client</span>
+						</div>
+						<div class="email">{{email}}</div>
+					</div>
+				</ion-button>
+			</div>
+
+			<div *ngIf="selectedShareType !== 'interestOnDelayedPayment' || selectedShareType !== 'digitalContract' || selectedShareType !== 'dailyBills'" class="section desktop-visibility button-section btn-pdf-section">
+				<ion-button *ngIf="selectedShareType !=='amcStmt' && selectedShareType !=='crtr' && selectedShareType !== 'interestOnDelayedPayment'" class="w-150" (click)="viewReport()" [disabled]="selectedShareType == undefined"> {{ selectedShareType === 'digitalContract' || selectedShareType === 'dailyBills' ? 'View' :'View Report' }}
+				</ion-button>
+				<ion-button *ngIf="selectedShareType ==='amcStmt'" class="w-150" (click)="searchAMCReport()" [disabled]="selectedShareType == undefined">View Report</ion-button>
+				<ion-button *ngIf="selectedShareType ==='crtr'" class="w-150" (click)="searchCrtrReport()" [disabled]="selectedShareType == undefined">Search</ion-button>
+				
+				<div class="option-type" *ngIf="(selectedShareType != undefined && selectedShareType != 'mfCapital' && selectedShareType !== 'digitalContract' && selectedShareType !== 'dailyBills' )" (click)="downLoadSharedReport('download')">
+					<img *ngIf="selectedShareType !== 'interestOnDelayedPayment' && selectedShareType !=='amcStmt' && selectedShareType !=='crtr'" src="assets/svg/pdf.svg" alt="">
+					<span class="tooltiptext">
+						<span>Download Report</span>
+					</span>
+				</div>
+				<div class="option-type" *ngIf="selectedShareType != undefined && (selectedShareType == 'dpholding' || selectedShareType == 'realised' || selectedShareType == 'simplified' || selectedShareType == 'unrealised'|| selectedShareType == 'dpTransaction' || selectedShareType == 'tradeListing')" (click)="downloadExcelReport()">
+					<img src="assets/svg/download_excel.svg" alt="">            
+					<span class="tooltiptext">
+						<span>Download Report</span>
+					</span>
+				</div>
+			</div>
+		</div>
+		<!-- <div class="footer-button upper-footer mobile-visibility ion-no-border z-index-0" *ngIf="selectedShareType === 'digitalContract'"> -->
+		<!-- code already there -->
+		<div class="footer-button upper-footer mobile-visibility ion-no-border z-index-0" *ngIf="false">
+			<ion-button (click)="viewReportMobile()" [disabled]="selectedShareType == undefined" *ngIf="selectedShareType == 'simplified' || selectedShareType == 'unrealised' ||  selectedShareType == 'realised' || selectedShareType == 'dpTransaction' ">View Report</ion-button>
+			<ion-button (click)="comingSoon($event)" *ngIf="selectedShareType == '360Client' || selectedShareType == 'mfCapital' || selectedShareType == 'mfAccount' || selectedShareType == 'sttCertificate' || selectedShareType == 'dailyBills' || selectedShareType == 'tradeListing'">Soon Download Report</ion-button>
+			<div class="section mobile-visibility email-section" href="mailto:prashanjeet@iifl.com">
+				<ion-button class="mail-button"  *ngIf="selectedShareType == 'simplified' || selectedShareType == 'unrealised' ||  selectedShareType == 'realised' || selectedShareType == 'dpTransaction' ||  selectedShareType == '360Client' || selectedShareType == 'sttCertificate'|| selectedShareType == 'tradeListing'|| selectedShareType == 'dailyBills' ">
+					<div class="mail-block" (click)="downLoadSharedReport('email')">
+						<div class="email-title-block">
+							<img src="assets/svg/email_mobile.svg" alt="">
+							<span class="title">Email to Client</span>
+						</div>
+						<div class="email">{{email}}</div>
+					</div>
+				</ion-button>
+			</div>
+		</div>
+
+	</div>
+	
+	<ion-toolbar class="desktop-visibility" *ngIf="displayonSubmit">
+		<!-- <div class="container" *ngIf="displayonSubmit"> -->
+	
+			<hr class="hrline">
+		
+	
+		
+	</ion-toolbar>
+	</div>
+</div>
+
+
+<div class="desktop-visibility">
+	<div class="container">
+	<div [ngClass]="{'overlay': !dataLoad}"></div>
+	<app-realised-pnl [realizedParams]="realizedPlObj" [callFromDesktop]="true" *ngIf="selectedShareType === 'realised' && realizedPlObj != undefined"></app-realised-pnl>
+	
+	<app-simplified-ledger [simpLedgerParams]="simpLedgerObj" [callFromDesktop]="true" *ngIf="selectedShareType === 'simplified' && simpLedgerObj != undefined"></app-simplified-ledger>
+
+	<app-unrealized-pnl [unrealizedParams]="unRealizedPlObj" [callFromDesktop]="true" *ngIf="selectedShareType === 'unrealised' && unRealizedPlObj != undefined"></app-unrealized-pnl>
+
+	<app-dp-transaction [dpTransObj]="dpTransObj" [callFromDesktop]="true" *ngIf="selectedShareType === 'dpTransaction' && dpTransObj != undefined"></app-dp-transaction>
+
+	<app-trade-listing [tradeListObj]="tradeListObj" *ngIf="selectedShareType === 'tradeListing' && tradeListObj != undefined"></app-trade-listing>
+	<div *ngIf="!dataLoad" style="z-index: 100;position: absolute;left: 0; right: 0; top: 0; bottom: 0; margin: 0 auto;text-align: center;">
+		<img src="/assets/imgs/loader.gif" alt="">
+	</div>
+	<app-dpc-working (downloadDPC)="downloadDPCReport($event)" *ngIf="selectedShareType == 'interestOnDelayedPayment'">
+	</app-dpc-working>
+	<app-digital-contract-notes (downloadPdf)="displayValidationforDownload($event)" (emailToClient)="displayValidationforDownload($event)" [dailyBillsParams]="dailyBillsObj" *ngIf="selectedShareType === 'dailyBills' && dailyBillsObj != undefined"></app-digital-contract-notes>
+	<app-digital-contract-notes (downloadPdf)="displayValidationforDownload($event)" (emailToClient)="displayValidationforDownload($event)" [digitalContractParams]="digitalContractObj" *ngIf="selectedShareType === 'digitalContract' && digitalContractObj != undefined"></app-digital-contract-notes>
+	<app-amc-report *ngIf="showAMCReport && selectedShareType === 'amcStmt'" [searchValue]="searchValue" [typeOfClient]="typeOfClient"></app-amc-report>
+	<app-commodity-real-time-report *ngIf="showCrtrReport && selectedShareType === 'crtr'" [callFromDesktop]="true" [cCode]="clientCode"></app-commodity-real-time-report>
+	<app-dp-holding-reports [dpHoldingObj]="dpHoldingObj" [callFromDesktop]="true" *ngIf="selectedShareType === 'dpholding' && dpHoldingObj != undefined"></app-dp-holding-reports>
+</div>
+</div>
+
+<div class="mobile-visibility">
+	<app-dpc-working-mobile *ngIf="selectedShareType == 'interestOnDelayedPayment'"
+		(downloadDPC)="downloadDPCReport($event)">
+	</app-dpc-working-mobile>
+	<app-amc-report *ngIf="showAMCReport && isMobileAMC && selectedShareType === 'amcStmt'" [searchValue]="searchValue" [typeOfClient]="typeOfClient"></app-amc-report>
+	<!-- <app-commodity-real-time-report *ngIf="showCrtrReport && isMobileRealtime && selectedShareType === 'crtr'" [cCode]="clientCode"></app-commodity-real-time-report> -->
+	
+	<div *ngIf="!dataLoad && (selectedShareType  === 'tradeListing' || selectedShareType  === 'sttCertificate'
+		|| selectedShareType  === 'mfAccount' || selectedShareType == 'interestOnDelayedPayment')">
+		<div style="position:absolute;top:48%; left:48%" *ngIf="!dataLoad">
+		  <img style="width:30px" src="/assets/imgs/loader.gif" alt="">
+		</div>
+	</div>
+</div>
+
+<div class="mobile-visibility ion-no-border z-index-0" [ngClass]="{'dp_delayed_no_footer': selectedShareType == 'interestOnDelayedPayment'}" *ngIf="selectedShareType !== 'amcStmt'">
+	<ion-toolbar class="footer-button">
+		<ion-button (click)="viewReportMobile()" [disabled]="selectedShareType == undefined" *ngIf="selectedShareType == 'dpholding' || selectedShareType == 'simplified' || selectedShareType == 'unrealised' ||  selectedShareType == 'realised' || selectedShareType == 'dpTransaction' || selectedShareType === 'digitalContract' || selectedShareType === 'dailyBills'"> {{ selectedShareType === 'digitalContract' || selectedShareType === 'dailyBills' ? 'View' :'View Report' }}</ion-button>
+		<ion-button *ngIf="selectedShareType ==='crtr'" class="w-150" (click)="viewReportMobile()" [disabled]="selectedShareType == undefined">Search</ion-button>
+		<ion-button (click)="displayValidationforDownload('download')" *ngIf="selectedShareType == '360Client' || selectedShareType == 'mfCapital' || selectedShareType == 'mfAccount' || selectedShareType == 'sttCertificate'|| selectedShareType == 'tradeListing' || selectedShareType == 'interestOnDelayedPayment'">Download Report</ion-button>
+        <div class="section mobile-visibility email-section" href="mailto:prashanjeet@iifl.com">
+			<ion-button class="mail-button" *ngIf="selectedShareType == 'dpholding' || selectedShareType == 'simplified' || selectedShareType == 'unrealised' ||  selectedShareType == 'realised' || selectedShareType == 'dpTransaction' ||  selectedShareType == '360Client' || selectedShareType == 'sttCertificate'|| selectedShareType == 'tradeListing'">
+                <div class="mail-block" (click)="displayValidationforDownload('email')">
+                    <div class="email-title-block">
+                        <img src="assets/svg/email_mobile.svg" alt="">
+                        <span class="title">Email to Client</span>
+                    </div>
+                    <div class="email">{{email}}</div>
+                </div>
+            </ion-button>
+        </div>
+	</ion-toolbar>
+    
+
+
+	<!-- <ion-toolbar class="footer-button" *ngIf="reportType == 'NFDC Report' || reportType == 'RAA Debit Client'">
+		<ion-button >Download Report</ion-button>
+	</ion-toolbar> -->
+
+</div>
+</ion-content>

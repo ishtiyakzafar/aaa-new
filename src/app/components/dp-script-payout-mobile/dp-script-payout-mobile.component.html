@@ -1,0 +1,60 @@
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="commonService.goBack()"></ion-icon>
+				<ion-title class="title">DP Scrip Payout</ion-title>
+			</div>
+		</div>
+
+	</ion-toolbar>
+  <div class="download_file">
+    <div (click)="onPdfExcelDownload('pdf')">
+      <img src="assets/svg/pdf.svg" alt="">            
+    </div>
+    <div (click)="onPdfExcelDownload('excel')">
+      <img src="assets/svg/download_excel.svg" alt="">            
+    </div>
+    </div>
+  </ion-header>
+  <ion-content>
+  <div class="mobile-visibility dp_script_payout_mobile_view">
+   <div class="main_card" *ngFor="let obj of dpScripData">
+    <div class="card_top">
+      <div>Slip No. <span>{{obj.SlipNo}}</span></div>
+      <div>
+        <div class="upper-part">
+          <ion-icon *ngIf="obj && !obj.onClick" class="arrow-button" src="./assets/svg/down-arrow.svg" (click)="iconClick(obj)"
+            ></ion-icon>
+          <ion-icon *ngIf="obj && obj.onClick" class="rotate arrow-button down-arrow-button"
+            src="./assets/svg/down-arrow.svg" (click)="iconClick(obj)"></ion-icon>
+        </div>
+      </div>
+    </div>
+<ul class="repo_list">
+  <li><label>Partner Code</label><span>{{obj.PartnerCode}}</span></li>
+  <li><label>Client Code</label><span>{{obj.ClientCode}}</span></li>
+  <li class="three"><div><label>Status</label><span>{{obj.Status}}</span></div>
+  <div><label>Qty.</label><span>{{obj.Qty}}</span></div>
+  </li>
+  <li><label>Script Name</label><span>{{obj.ScriptName}}</span></li>
+  <li><label>Cl. Price</label><span>&#8377; {{obj.ClsPrice}}</span></li>
+  <li><label>App Dt</label><span>{{obj.AppDt}}</span></li>
+</ul>
+
+<div *ngIf="obj && obj.onClick" class="details_grid">
+  <div><label>Dispute</label><span>{{obj.Dispute}}</span></div>
+  <div><label>Risk Remark</label><span>{{obj.RiskRemark}}</span></div>
+  <div><label>Entry Date</label><span>{{obj.EntryDate}}</span></div>
+  <div><label>DP Remark</label><span>{{obj.DpRemark}}</span></div>
+</div>
+
+   </div>
+  </div>
+  <div class="loader" *ngIf="dataLoad">
+    <img src="/assets/imgs/loader.gif" alt="">
+  </div>
+  <div class="item text-center" *ngIf="dpScripData.length < 1">
+    <span>No Data Found</span>
+  </div>
+</ion-content>

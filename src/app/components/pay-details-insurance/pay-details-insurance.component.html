@@ -1,0 +1,255 @@
+<ion-header  class="mobile-visibility">
+	<ion-toolbar color="tertiary">
+		<div class="title-block title-block-custom aum-title">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">
+					<div class="title-time-block">
+                        <span class="insurance-title">Insurance Pay Details</span>
+                    </div>
+					<div class="total-clients-block">
+						<div class="item-block">
+							<div class="top">Total Payout ({{bodyObj.PayoutMonth}})</div>
+							<div class="lower" style="display: flex;">(₹)
+                                <span *ngIf="payoutValue != 0">{{payoutValue | formatNumberUnit}}</span>
+                                <span *ngIf="payoutValue == 0 ">0.00</span>
+                                
+                            </div>
+						</div>
+						<!-- <div class="item-block">
+							<div class="top">Renewal</div>
+							<div class="lower">(₹)12.23L</div>
+						</div> -->
+					</div>
+				</ion-title>
+				<ion-icon class="search-icon" name="search" (click)="goToSearch()"></ion-icon>
+			</div>
+		</div>
+		<!-- <app-pay-details-search-header (passSearchText)="EnterSearchText($event)" (passDropDownData)="dropDownList($event)" class="mobile-visibility"></app-pay-details-search-header> -->
+	</ion-toolbar>
+	<ion-toolbar class="header-table-parent-toolbar">
+		<div class="web-equity detail-part-dashboard detail-part-aum-inner mobile-visibility">
+           <div class="container">
+            <div class="download_file ">
+                <div (click)="onPdfExcelDownload()">
+                    <img src="assets/svg/download_excel.svg" alt="">
+                </div>
+            </div></div> 
+			<div class="header-table">
+				<table style="width: 100%" class="desktop-header-table">
+					<thead>
+						<tr>
+							<th class="pointer" [class.active]="order === 'clientName'" (click)="setOrder('clientName')">
+								<!-- <div class="head-block"> -->
+									<span>Client Name</span> 
+									<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+								<!-- </div> -->
+							</th>
+							<th class="pointer" [class.active]="order === 'New'" (click)="setOrder('New')">
+								<div class="head-block">
+									<span>New Policy(₹)</span> 
+                                    <span *ngIf="sortNew">
+                                        <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                        <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                        <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                                    </span> 
+								</div>
+							</th>
+							<th class="pointer" [class.active]="order === 'Renew'" (click)="setOrder('Renew')">
+								<div class="head-block">
+									<span>Renewal(₹)</span> 
+                                    <span>
+                                        <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                        <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                        <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                                    </span>
+								</div>
+							</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+<app-pay-details-search-header class="desktop-visibility" [searchPlaceholer]="placeholderText" (passSearchText)="EnterSearchText($event)" (passDropDownData)="dropDownList($event)"></app-pay-details-search-header>
+<div class="desktop-visibility">
+    <div class="container">
+        <div class="download_file ">
+        <div (click)="onPdfExcelDownload()">
+            <img src="assets/svg/download_excel.svg" alt="">
+        </div>
+    </div>
+</div>
+    <div class="web-equity thin-scroll detail-table">
+        <div class="header-table">
+            <table style="width: 100%" class="desktop-header-table">
+                <thead>
+                    <tr>
+                        <!-- <th>
+							Client ID
+                        </th> -->
+                        <th [class.active]="order === 'clientname'" class="pointer" (click)="setOrder('clientname')">Client Name
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                        </th>
+                        <!-- <th class="pointer" [class.active]="order === 'clientname'" (click)="setOrder('clientname')">
+                            Client Name <img class="sorting-img" src="/assets/svg/sorting.svg" alt="">
+                        </th> -->
+                        <th>
+                            Scheme
+                        </th>
+                        <th [class.active]="order === 'New'" class="pointer" (click)="setOrder('New')"> New Policy(₹) 
+                           <span *ngIf="sortNew">
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                           </span> 
+	
+                           
+                        </th>
+                    
+                        <th [class.active]="order === 'Renew'" class="pointer" (click)="setOrder('Renew')"> Renewal(₹)
+                          <span *ngIf="sortRenew">
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                          </span> 
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="main-table thin-scroll" (scroll)="divScroll($event)">
+            <div class="table-block">
+                <table class="desktop-table" *ngIf="dataLoad">
+                    <tbody *ngIf="payDetailsList.length > 0">
+                        <tr *ngFor="let dataObj of payDetailsList; let i = index" (click)="dropClick(i , payDetailsList)">
+                            <td>
+                                <div class="upper-part  justify-content-start" [class.m-b-86]="dataObj['isVisible']">
+                                    <div class="id-block">
+                                        <!-- <span class="id">{{dataObj['clientId']}}</span> -->
+                                        <span class="name">{{dataObj['ClientName']}}</span>
+                                    </div>
+                                </div>
+                                <div class="detail-part-fix" #detail *ngIf="dataObj['isVisible']">
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Month</span>
+                                        <span class="detail-value">{{dataObj.PayoutDetails[0].Month}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Policy Number</span>
+                                        <span class="detail-value" *ngIf="dataObj.PayoutDetails[0].PolicyNumber != '' ">{{dataObj.PayoutDetails[0].PolicyNumber}}</span>
+                                        <span class="detail-value" *ngIf="dataObj.PayoutDetails[0].PolicyNumber == '' "> - </span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Issue Date</span>
+                                        <span class="detail-value">{{dataObj.PayoutDetails[0].IssueDate}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Premium</span>
+                                        <span class="detail-value">{{dataObj.PayoutDetails[0].Premium | formatNumerDecimal}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Referral Sharing (IO)</span>
+                                        <span class="detail-value">{{dataObj.PayoutDetails[0].ReferralSharing | formatNumerDecimal}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Recovery</span>
+                                        <span class="detail-value">{{dataObj.PayoutDetails[0].Recovery | formatNumerDecimal}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Final Referral Sharing (IO)</span>
+                                        <span class="detail-value">{{dataObj.PayoutDetails[0].FinalReferralSharing | formatNumerDecimal}}</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [class.m-b-86]="dataObj['isVisible']">{{dataObj.PayoutDetails[0].ProductName}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [class.m-b-86]="dataObj['isVisible']">
+                                    <span *ngIf="dataObj['type'] == 'New' ">{{dataObj['PolicyPremium'] | formatNumerDecimal}}</span>
+                                    <span *ngIf="dataObj['type'] == 'Renew' ">-</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [class.m-b-86]="dataObj['isVisible']">
+                                    <span *ngIf="dataObj['type'] == 'New' ">-</span>
+                                    <span *ngIf="dataObj['type'] == 'Renew' ">{{dataObj['PolicyPremium'] | formatNumerDecimal}}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [class.m-b-86]="dataObj['isVisible']">
+                                    <ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg"
+                                        *ngIf="!dataObj['isVisible']"></ion-icon>
+                                    <ion-icon *ngIf="dataObj['isVisible']" class="rotate arrow-button down-arrow-button"
+                                        src="./assets/svg/down-arrow.svg"></ion-icon>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="payDetailsList.length == 0">
+                        <tr>
+                            <td class="no-data-found">No Data Found</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="loader" *ngIf="!dataLoad" style="min-height: 100px">
+                    <img src="/assets/imgs/loader.gif" alt="">
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="loader" *ngIf="loadFile" style="min-height: 100px">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+</div>
+<ion-content class="mobile-visibility">
+	<div class="web-equity detail-part-dashboard detail-part-aum-inner">
+		<div class="main-table">
+			<table style="width: 100%" class="mobile-table" *ngIf="dataLoad">
+				<tbody *ngIf="payDetailsList.length > 0">
+					<tr *ngFor="let dataObj of payDetailsList" (click)="goToDescription(dataObj.details)">
+						<td>
+							<div class="code-block">
+								<!-- <span class="code">{{dataObj['clientId']}}</span> -->
+								<span class="name">{{dataObj['ClientName']}}</span>
+							</div>
+						</td>
+						<td>
+                            <span *ngIf="dataObj['type'] == 'New' ">{{dataObj['PolicyPremium'] | formatNumerDecimal }}</span>
+                            <span *ngIf="dataObj['type'] == 'Renew' ">-</span>
+						</td>
+						<td>
+                            <span *ngIf="dataObj['type'] == 'New' ">-</span>
+                            <span *ngIf="dataObj['type'] == 'Renew' ">{{dataObj['PolicyPremium'] | formatNumerDecimal}}</span>
+                            <ion-icon class="right-arrow" src="/assets/svg/down-arrow.svg"></ion-icon>
+						</td>
+					</tr>
+				</tbody>
+		
+				<div class="loader" *ngIf="dataLoad && !payDetailsList.length" style="height: calc(100vh - 215px);">
+					<h4>No records found.</h4>
+				</div>
+            </table>
+            <div class="loader" *ngIf="!dataLoad" style="height: calc(100vh - 215px);">
+                <img src="/assets/imgs/loader.gif" alt="">
+            </div>
+		</div>
+        <div class="loader" *ngIf="loadFile" style="min-height: 100px">
+            <img src="/assets/imgs/loader.gif" alt="">
+        </div>
+	</div>
+	<ion-infinite-scroll *ngIf="!spinnerstop && dataLoad" threshold="100px" (ionInfinite)="loadData($event)">
+		<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+</ion-content>

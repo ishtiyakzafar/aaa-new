@@ -1,0 +1,56 @@
+<!-- <div class="wrapper">
+    <div class="block" *ngFor="let dataObj of displayHeaderDetails" (click)="details(dataObj)" style="cursor: pointer;">
+        <span class="type">{{dataObj['Symbol']}}</span>
+        <span class="value">{{dataObj['LastRate'] | formatNumerDecimal}}</span>
+        <span class="changes" [ngStyle]="{'color':(dataObj.PerChange == 0) ? '#656565' : (dataObj.PerChange > 0 ? '#17C257' : '#F55858')}">{{dataObj['Change'] | formatNumerDecimal}}({{dataObj['PerChange'] | formatNumerDecimal}}%)</span>
+    </div>
+    <div class=" desktop-visibility">
+        <ion-button class="open-account" (click)="openAccount()">
+            Open Account
+        </ion-button>   
+        <ion-button class="btn-help" (click)="onHelpClick()">
+            <img src="assets/svg/help-btn-icon.svg" alt="">
+            Help
+        </ion-button> 
+    </div>
+   
+</div> -->
+
+<div class="open-account-main d-flex desktop-visibility">
+    <div class="d-flex iy-aum">
+       <img src="assets/svg/increase-aum.svg" alt="increase-aum">
+       <span>Increase your AUM</span>
+       </div>
+       <div class="open-account-btn" (click)="openAccount()">Open Account</div>
+   
+
+   </div>
+   <div class="market-updates-box right-gr-mb">
+    <swiper-container [autoplay]="check"  direction="vertical" loop="true" >
+        <swiper-slide>
+   <div class="market-updates-grid">
+        <div>
+        <span class="market-type-value d-flex ion-justify-content-start"><strong>{{displayHeaderDetails[0]?.Symbol}}</strong> {{displayHeaderDetails[0]?.LastRate | number: '1.2-2'}}</span>
+        <span *ngIf="displayHeaderDetails[0]?.Change > 0" [ngClass]="{'positive': displayHeaderDetails[0]?.Change > 0}" class="market-position d-flex ion-align-items-center ion-justify-content-start">{{displayHeaderDetails[0]?.Change | number: '1.2-2'}} ({{displayHeaderDetails[0]?.PerChange | number: '1.2-2'}}%) <img src="assets/svg/positive-arrow.svg" alt="positive-arrow"></span>
+        <span *ngIf="displayHeaderDetails[0]?.Change < 0" [ngClass]="{'negative': displayHeaderDetails[0]?.Change < 0}" class="market-position d-flex ion-align-items-center ion-justify-content-start">{{displayHeaderDetails[0]?.Change | number: '1.2-2'}} ({{displayHeaderDetails[0]?.PerChange | number: '1.2-2'}}%) <img src="assets/svg/negative-arrow.svg" alt="negative-arrow"></span>
+        </div>
+        <div>
+            <span class="market-type-value d-flex"><strong>{{displayHeaderDetails[1]?.Symbol}}</strong> {{displayHeaderDetails[1]?.LastRate | number: '1.2-2'}}</span>
+        <span *ngIf="displayHeaderDetails[1]?.Change > 0" [ngClass]="{'positive': displayHeaderDetails[1]?.Change > 0}" class="market-position d-flex ion-align-items-center"><img src="assets/svg/positive-arrow.svg" alt="positive-arrow">{{displayHeaderDetails[1]?.Change | number: '1.2-2'}} ({{displayHeaderDetails[1]?.PerChange | number: '1.2-2'}}%)</span>
+        <span *ngIf="displayHeaderDetails[1]?.Change < 0" [ngClass]="{'negative': displayHeaderDetails[1]?.Change < 0}" class="market-position d-flex ion-align-items-center"><img src="assets/svg/negative-arrow.svg" alt="negative-arrow">{{displayHeaderDetails[1]?.Change | number: '1.2-2'}} ({{displayHeaderDetails[1]?.PerChange | number: '1.2-2'}}%)</span>
+            </div>
+    
+        </div>
+    </swiper-slide>
+    <swiper-slide>
+        <div class="market-updates-grid">
+            <div>
+                <span class="market-type-value d-flex ion-justify-content-start"><strong>{{displayHeaderDetails[2]?.Symbol}}</strong> {{displayHeaderDetails[2]?.LastRate | number: '1.2-2'}}</span>
+        <span *ngIf="displayHeaderDetails[2]?.Change > 0" [ngClass]="{'positive': displayHeaderDetails[2]?.Change > 0}" class="market-position d-flex ion-align-items-center ion-justify-content-start">{{displayHeaderDetails[2]?.Change | number: '1.2-2'}} ({{displayHeaderDetails[2]?.PerChange | number: '1.2-2'}}%) <img src="assets/svg/positive-arrow.svg" alt="positive-arrow"></span>
+        <span *ngIf="displayHeaderDetails[2]?.Change < 0" [ngClass]="{'negative': displayHeaderDetails[2]?.Change < 0}" class="market-position d-flex ion-align-items-center ion-justify-content-start">{{displayHeaderDetails[2]?.Change | number: '1.2-2'}} ({{displayHeaderDetails[2]?.PerChange | number: '1.2-2'}}%) <img src="assets/svg/negative-arrow.svg" alt="negative-arrow"></span>
+                </div>
+         
+             </div>
+         </swiper-slide>
+    </swiper-container>
+    </div>

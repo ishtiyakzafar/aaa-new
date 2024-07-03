@@ -1,0 +1,48 @@
+{
+    "RM": {
+     "Premia": [
+            {
+                "imgUrl":"https://images.indiainfoline.com/AAA_banner/images/ncd_tranche2_aaa.png",
+                "imgHref":"https://oneup.indiainfoline.com/ncd_details/IIFLS2"
+                
+            },
+            {
+                "imgUrl":"https://images.indiainfoline.com/AAA_banner/images/refer_earb_small_ban.png",
+                "imgHref":"https://www.indiainfoline.com/business-partners/refer-a-partner/fan/?utm_source=Organic&utm_medium=AAA&utm_campaign=Carouselbanner"
+            }
+       ],
+        "Franchise": [
+            {
+                "imgUrl":"https://images.indiainfoline.com/AAA_banner/images/54ec_bonds_aaa.png",
+                "imgHref":"https://www.indiainfoline.com/franchise-campaign/"
+            },
+            {
+                "imgUrl":"https://images.indiainfoline.com/AAA_banner/images/refer_earb_small_ban.png",
+                "imgHref":"https://www.indiainfoline.com/business-partners/refer-a-partner/fan/?utm_source=Organic&utm_medium=AAA&utm_campaign=Carouselbanner"
+            }
+       ]
+     },
+     "FAN":[
+          {
+            "imgUrl":"https://images.indiainfoline.com/AAA_banner/images/FD-AAA-1.png",
+            "imgHref":"https://www.indiainfoline.com/franchise-campaign/"
+            },
+            {
+                "imgUrl":"https://images.indiainfoline.com/AAA_banner/images/refer_earb_small_ban.png",
+                "imgHref":"https://www.indiainfoline.com/business-partners/refer-a-partner/fan/?utm_source=Organic&utm_medium=AAA&utm_campaign=Carouselbanner"
+            }
+         
+     ],
+     "SubBorker":[
+        {
+            "imgUrl":"https://images.indiainfoline.com/AAA_banner/images/FD_AAA-2.png",
+            "imgHref":"https://affiliate.shriramfinance.in/affiliate/cos_schemedetails.aspx?Affiliatecode=DEBMUM054&SubAffiliatecode=C189301"
+        },
+            {
+                "imgUrl":"https://images.indiainfoline.com/AAA_banner/images/refer_earb_small_ban.png",
+                "imgHref":"https://www.indiainfoline.com/business-partners/refer-a-partner/fan/?utm_source=Organic&utm_medium=AAA&utm_campaign=Carouselbanner"
+            }
+         
+     ]
+    }
+    

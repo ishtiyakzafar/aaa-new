@@ -1,0 +1,8 @@
+.pop_close{position: absolute; right: 15px; width: 12px; top: 15px;}
+.card_details_pop{padding: 16px;}
+.break_down_grid_main{width:100%;align-items: flex-start;}
+.break_down_grid_main label{color:#6E6E6E;font-size: 12px;display: block;margin-bottom: 4px;}
+.break_down_grid span{color:#010101;font-size: 13px;display: block; text-align: left;}
+.break_down_grid{display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 25px;width:100%; padding-left: 10px;}
+.break_down_grid span:nth-last-child(2n+1){ text-align: right !important;}
+.mt-40{margin-top: 40px;}

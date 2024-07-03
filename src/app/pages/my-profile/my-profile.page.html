@@ -1,0 +1,250 @@
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">My Profile</ion-title>
+			</div>
+			<div class="icons">
+              
+                <ion-icon name="power" class="logout-icon" (click)="confirmLogout()"></ion-icon>
+            </div>
+		</div>
+	</ion-toolbar>
+
+	<ion-toolbar>
+		<div class="container">
+			<div class="desktop-visibility heading">My Profile</div>
+			<div class="head-section">
+				<div class="profile-circle">
+					<img src="assets/svg/profile-pic.svg" alt="">
+				</div>
+				<div class="profile-name">
+					<span class="name">{{profileDetails['Name']}}</span>
+					<span class="code">{{userID}}</span>
+				</div>
+			</div>
+		</div>
+
+	</ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+	<!-- <div (click)="openMobileEmailInputModel('Mobile Number')">Click Me</div> -->
+	<div class="container">
+		<div class="details-container">
+			<div class="info-section">
+				<div class="section-title" *ngIf="device == 'desktop'">Profile Information</div>
+				<div class="section-details">
+					<div class="mobile-title" *ngIf="device == 'mobile'" style="display: flex;flex-direction: row;">
+						<div style="width:80%">Profile Information</div>
+					</div>
+					<div class="info-row">
+						<div class="col-info">
+							<span class="prof-label">Mobile No.:</span>
+							<span class="prof-value">{{profileDetails['MobileNo']}}</span>
+							<span class="prof-icon" (click)="openMobileEmailInputModel('Mobile Number', profileDetails['MobileNo'])">
+								<!-- <img src="assets/svg/edit-icon.svg" alt=""> -->
+							</span>
+						</div>
+
+						<div class="col-info">
+							<span class="prof-label">Email:</span>
+							<span class="prof-value">{{profileDetails['Email']}}</span>
+							<span class="prof-icon" (click)="openMobileEmailInputModel('Email', profileDetails['Email'])">
+								<!-- <img src="assets/svg/edit-icon.svg" alt=""> -->
+							</span>
+						</div>
+
+						<!-- <div class="col-info">
+							<span class="prof-label">PAN:</span>
+							<span class="prof-value">{{profileDetails['PanNo']}}</span>
+
+						</div> -->
+
+						<div class="col-info">
+							<span class="prof-label">Address:</span>
+							<span class="prof-value">{{profileDetails['Address']}}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="info-section margin-l">
+				<div class="section-title" *ngIf="device == 'desktop'">RM Details</div>
+					<div class="section-details" [class.m-b-72]="cards[1]['isVisible']"  (click)="dropClick(1,cards)">
+						<div *ngIf="device == 'mobile'" style="display: flex;flex-direction: row;">
+							<div class="mobile-title">RM Details</div>
+							<div >
+								<ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg" *ngIf="!cards[1]['isVisible']"></ion-icon>
+								<ion-icon *ngIf="cards[1]['isVisible']" class="rotate arrow-button down-arrow-button"
+								  src="./assets/svg/down-arrow.svg"></ion-icon>
+							</div>
+						</div>
+						<div class="info-row" *ngIf="cards[1]['isVisible'] || device == 'desktop'">
+							<div class="col-info">
+								<span class="prof-label">Name:</span>
+								<span class="prof-value">{{profileDetails['RMName']}}</span>
+							</div>
+
+							<div class="col-info">
+								<span class="prof-label">Mobile No.:</span>
+								<span class="prof-value">{{profileDetails['RMMobileNo']}}</span>
+							</div>
+
+							<div class="col-info">
+								<span class="prof-label">Email:</span>
+								<span class="prof-value">{{profileDetails['RMEmail']}}</span>
+							</div>
+
+							<!-- <div class="col-info">
+								<span class="prof-label">Address:</span>
+								<span class="prof-value">{{profileDetails['RMAddress']}}</span>
+							</div> -->
+
+						</div>
+
+					</div>
+			</div>
+		</div>
+
+		<div class="details-container" [ngClass]="{'isSubBroker': userType === 'SUB BROKER'}">
+			<div class="info-section">
+				<div class="section-title" *ngIf="device == 'desktop'">Bank Details</div>
+				<div class="section-details" [class.m-b-72]="cards[2]['isVisible']" (click)="dropClick(2,cards)">
+					<div *ngIf="device == 'mobile'" style="display: flex;flex-direction: row;">
+						<div  class="mobile-title">Bank Details</div>
+						<div>
+							<ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg" *ngIf="!cards[2]['isVisible']"></ion-icon>
+							<ion-icon *ngIf="cards[2]['isVisible']" class="rotate arrow-button down-arrow-button"
+							  src="./assets/svg/down-arrow.svg"></ion-icon>
+						</div>
+					</div>
+					<div class="info-row" *ngIf="cards[2]['isVisible'] || device == 'desktop'">
+						<div class="col-info">
+							<span class="prof-label width-i">Bank Name:</span>
+							<span class="prof-value">{{profileDetails['BankName'] === undefined || profileDetails['BankName'] === '' ? '-':profileDetails['BankName'] }}</span>
+						</div>
+
+						<div class="col-info">
+							<span class="prof-label width-i">Account No.:</span>
+							<span class="prof-value">{{profileDetails['AccountNo']}}</span>
+						</div>
+
+						<div class="col-info">
+							<span class="prof-label width-i">IFSC:</span>
+							<span class="prof-value">{{profileDetails['BankIFSC'] == '' || profileDetails['BankIFSC'] === undefined  ? '-' : profileDetails['BankIFSC'] }}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="terminal-box">
+		<div class="section-title" style="margin-top: 10px;" *ngIf="(device == 'desktop') && (userType === 'RM' || userType === 'FAN')"> 
+			Terminal Details
+		</div>		 
+		<ion-button class="btn-edit" *ngIf="(device == 'desktop') && (!isFanChild && userType === 'FAN')" (click)="editIPDetails()">
+			View and Edit IP Details
+        </ion-button>
+		</div>
+		<div class="table-block-parent" *ngIf="(device == 'desktop') && (userType === 'RM' || userType === 'FAN')">
+			<div class="table-width">
+				<div class="web-equity">
+					<div class="header-table">
+						<table style="width: 100%" class="desktop-header-table">
+							<thead>
+								<tr>
+									<th>
+										Manager ID
+									</th>
+									<th>
+										Segment
+									</th>
+									<th>
+										Holder Name
+									</th>
+									<th>
+										Address
+									</th>
+								</tr>
+							</thead>
+							<tbody style="border: 1px solid #CBCBCB;">
+								<tr>
+									<td>
+										<div class="scrip value-block">
+											<div class="upper">{{profileDetails['TTManagerID']}}</div>
+										</div>
+									</td>
+									<td> 
+										<div class="upper">{{profileDetails && profileDetails['FANActiveSegments'] ? getTransformedData(profileDetails['FANActiveSegments']) : profileDetails['Segments']}}</div>
+									</td>
+									<td>
+										<div class="value-block">
+											<div class="upper">{{profileDetails['Name']}}</div>
+										</div>
+									</td>
+									<td>
+										<div class="value-block">
+											<div class="upper">{{profileDetails['Address']}}</div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="details-container" *ngIf="(device == 'mobile') && (userType === 'RM' || userType === 'FAN')" style="margin-bottom: 10px;">
+			<div class="info-section">
+				<div class="section-details" [class.m-b-72]="cards[3]['isVisible']" (click)="dropClick(3,cards)">
+					<div style="display: flex;flex-direction: row;" >
+						<div  class="mobile-title">Terminal Details
+						<ion-button class="btn-edit" *ngIf="!isFanChild && userType === 'FAN'" (click)="editIPDetails()">
+						    View and Edit<br> IP Details
+						</ion-button>
+						</div>
+						<div>
+							<ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg" *ngIf="!cards[3]['isVisible']"></ion-icon>
+							<ion-icon *ngIf="cards[3]['isVisible']" class="rotate arrow-button down-arrow-button"
+							  src="./assets/svg/down-arrow.svg"></ion-icon>
+						</div>
+					</div>
+					<div class="info-row" *ngIf="cards[3]['isVisible']">
+						<div>
+							<div class="col-info">
+								<span class="prof-label1">Manager ID:</span>
+								<span class="prof-value1">{{profileDetails['TTManagerID']}}</span>
+							</div>
+	
+							<div class="col-info">
+								<span class="prof-label1">Segment:</span>
+								<span class="prof-value1">{{profileDetails && profileDetails['FANActiveSegments'] ? getTransformedData(profileDetails['FANActiveSegments']) : profileDetails['Segments']}}</span>
+							</div>
+	
+							<div class="col-info">
+								<span class="prof-label1">Holder Name:</span>
+								<span class="prof-value1">&nbsp;{{profileDetails['Name']}}</span>
+							</div>
+
+							<div class="col-info">
+								<span class="prof-label1">Address:</span>
+								<span class="prof-value1">{{profileDetails['Address']}}</span>
+							</div>
+
+						</div>
+
+					
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</ion-content>
+
+<!-- <ion-content class="mobile-visibility">
+
+</ion-content> -->

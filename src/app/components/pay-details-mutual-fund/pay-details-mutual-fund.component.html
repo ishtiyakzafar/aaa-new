@@ -1,0 +1,145 @@
+<ion-header class="mobile-visibility">
+	<ion-toolbar color="tertiary">
+		<div class="title-block title-block-custom aum-title">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">
+					<span>{{headerTitle}} Pay Details</span>
+					<div class="total-clients-block">
+						<div class="item-block">
+							<div class="top">Total Payout ({{PayoutMonth}})</div>
+							<div class="lower" style="display: flex;">₹
+                                <span *ngIf="payoutValue != 0">{{payoutValue | formatNumberUnit}}</span>
+                                <span *ngIf="payoutValue == 0 ">0.00</span>
+                            </div>
+						</div>
+					</div>
+				</ion-title>
+				<ion-icon class="search-icon" name="search" (click)="goToSearch()"></ion-icon>
+			</div>
+		</div>
+        <!-- <app-pay-details-search-header (passSearchText)="EnterSearchText($event)" (passDropDownData)="dropDownList($event)" class="mobile-visibility"></app-pay-details-search-header> -->
+        <div class="detail-part-dashboard detail-part-aum-inner mobile-visibility">
+           <div class="container"> <div class="download_file ">
+                <div (click)="onPdfExcelDownload()">
+                    <img src="assets/svg/download_excel.svg" alt="">
+                </div>
+            </div></div>
+			<div class="header-part">
+				<div class="heading">
+                    <span [class.active]="order === 'clientcode'" class="pointer" (click)="setOrder('clientcode')">Client ID
+                        <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                        <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                        <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                    </span>
+					<span>Total Brkg.(₹)
+                        <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                    </span>
+				</div>
+			</div>
+            <div class="loader" *ngIf="loadFile" style="min-height: 100px">
+                <img src="/assets/imgs/loader.gif" alt="">
+            </div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+<app-pay-details-search-header [searchPlaceholer]="placeholderText" (passSearchText)="EnterSearchText($event)" (passDropDownData)="dropDownList($event)" class="desktop-visibility"></app-pay-details-search-header>
+<div class="desktop-visibility">
+    <div class="container"><div class="download_file ">
+        <div (click)="onPdfExcelDownload()">
+            <img src="assets/svg/download_excel.svg" alt="">
+        </div>
+    </div></div>
+    <div class="web-equity thin-scroll">
+        <div class="header-table">
+            <table style="width: 100%" class="desktop-header-table">
+                <thead>
+                    <tr>
+                        <th [class.active]="order === 'clientcode'" class="pointer" (click)="setOrder('clientcode')">Client ID / PAN
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                        </th>
+                     
+                        <th class="pointer" style="text-align: center;">
+                            Total Brkg.(₹)
+                        </th>
+                        <th class="pointer">
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div  class="main-table thin-scroll" (scroll)="divScroll($event)" *ngIf="!displayArnMessage">
+            <table style="width: 100%" class="mobile-table" *ngIf="dataLoad"> 
+                <tbody *ngIf="payDetailsMfList.length > 0">
+                    <tr *ngFor="let dataObj of payDetailsMfList">
+                        <td>
+                            <div class="name-block">
+                                <span class="id">{{dataObj['ClientCode']}}</span>
+                                <span class="name">{{dataObj['ClientName']}}</span>
+                            </div>
+                        </td>
+                      
+                        <td style="text-align: center;"> 
+                            {{dataObj['Total_Brokerage'] | formatNumerDecimal}}
+                        </td>
+                        <td (click)="viewDetailsModel(dataObj.details)">
+                            View Details 
+                        </td>
+                    </tr>
+                  
+                </tbody>
+                <tbody *ngIf="payDetailsMfList.length == 0">
+					<tr>
+						<td class="no-data-found">No Data Found</td>
+					</tr>
+				</tbody>
+            </table>
+            <div class="loader" *ngIf="!dataLoad" style="min-height: 100px">
+				<img src="/assets/imgs/loader.gif" alt="">
+			</div>
+        </div>
+        <div  class="main-table" *ngIf="displayArnMessage">
+            <div class="no-data-found alignValidity-text">{{validityMsg}}</div>
+        </div>
+        <div class="loader" *ngIf="loadFile" style="min-height: 100px">
+            <img src="/assets/imgs/loader.gif" alt="">
+        </div>
+    </div>
+</div>
+
+
+<ion-content #scrollArea scrollEvents="true" class="mobile-visibility">
+	<div class="detail-part-dashboard detail-part-aum-inner" *ngIf="!displayArnMessage">
+		<div class="listing-part" *ngIf="payDetailsMfList.length > 0 && dataLoad">
+				<div class="items" *ngFor="let data of payDetailsMfList" (click)="goToDescription(data.details)">
+				<div class="upper-section left-part">
+					<div class="type code">{{data['ClientCode']}}</div>
+					<div class="change-value name">{{data['clientName']}}</div>
+				</div>
+				<div class="lower-section right-part">
+					<span>{{data['Total_Brokerage'] | formatNumerDecimal}}</span>
+                    <ion-icon class="right-arrow" src="/assets/svg/down-arrow.svg"></ion-icon>
+				</div>
+			</div>
+		</div>
+		<div class="listing-part loader" *ngIf="payDetailsMfList.length == 0 && dataLoad">
+			<div style="font-weight: bold;margin-top:40px">No Records Found</div>
+		</div>
+		<div class="loader" *ngIf="!dataLoad" style="min-height: 370px;">
+			<img src="/assets/imgs/loader.gif" alt="">
+		</div>
+    </div>
+    
+    <div class="detail-part-dashboard detail-part-aum-inner" *ngIf="displayArnMessage">
+		<div class="alignValidity-text" >
+			<span>{{validityMsg}}</span>
+		</div>
+    </div>
+    
+	<ion-infinite-scroll *ngIf="enableNext && dataLoad" threshold="100px" (ionInfinite)="loadData($event)">
+		<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+</ion-content>

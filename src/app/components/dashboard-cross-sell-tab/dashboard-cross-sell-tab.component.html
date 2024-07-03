@@ -1,0 +1,93 @@
+<div class="overview">
+    <div class="overview-main-card">
+   <div class="aum-card" (click)="onAumClick()">
+    <div class="d-flex ion-justify-content-between ion-align-items-start">
+        <div class="d-flex aum-ti">
+            <img src="assets/svg/aum-icon.svg" alt="aum-icon" width="45px">
+            <span>AUM <img src="assets/svg/next-arrow-purple.svg" alt="next-arrow" width="9px"></span>
+        </div>
+        <!-- <div class="d-flex stats ion-align-items-center">
+            <img src="assets/svg/stats-purple.svg" alt="stats">
+        <span>Stats</span>
+        </div> -->
+    </div>
+    <div *ngIf="!showHideDashboardValue" class="aum-amt"><span class="rupees">₹</span> {{crossDashboardData[0]?.CrossSellAUM ? convertFormat(crossDashboardData[0]?.CrossSellAUM) : '0'}} </div>
+    <span class="showstar" *ngIf="showHideDashboardValue"><span class="rupees">₹</span>xxxx</span>
+    <!-- <div class="growth-map-msg d-flex ion-align-items-baseline">
+        <img src="assets/svg/growth-path.svg" alt="growth-path" width="22px">
+        <span class="positive percentage"> {{crossDashboardData[0]?.AUMIncDecPercentage ? crossDashboardData[0]?.AUMIncDecPercentage : '0'}}% <label>Higher AUM generated from last month</label></span>
+    </div> -->
+   </div>
+   <div class="overview-right-card d-flex">
+    <div class="overview-small-card" (click)="onPayoutClick()" *ngIf="showBrokerage">
+        <div class="d-flex ion-justify-content-between ion-align-items-start">
+        <span class="overview-small-card-amt-ti">Payout (YTD) <img src="assets/svg/next-arrow-orange.svg" alt="next-arrow" width="8px"></span>
+        <!-- <div class="d-flex stats ion-align-items-center">
+            <img src="assets/svg/stats-orange.svg" alt="stats">
+            <span>Stats</span>
+        </div> -->
+    </div>
+
+    <div class="growth-map-msg d-flex ion-align-items-baseline">
+        <div *ngIf="!showHideDashboardValue" class="overview-small-card-amt"><span class="rupees">₹</span> {{crossDashboardData[0]?.CrossSellPayout ? convertFormat(crossDashboardData[0]?.CrossSellPayout) : '0'}}</div>
+        <span class="showstar" *ngIf="showHideDashboardValue"><span class="rupees">₹</span>xxxx</span>
+        <!-- <img src="assets/svg/growth-path.svg" alt="growth-path" width="20px">
+        <span class="positive percentage"> {{crossDashboardData[0]?.CrossSellPayoutIncDecPercentage ? crossDashboardData[0]?.CrossSellPayoutIncDecPercentage : '0'}}% <label>Higher from last month</label></span> -->
+    </div>
+
+    </div>
+
+    <div class="overview-small-card" (click)="onClientsClick()">
+        <div class="d-flex ion-justify-content-between ion-align-items-start">
+        <span class="overview-small-card-amt-ti">Clients <img src="assets/svg/next-arrow-orange.svg" alt="next-arrow" width="8px">
+            <span class="active-client-main"><img src="assets/svg/client-info-icon.svg"  alt="info" width="13px" (mouseenter)="dashClientinfomsg = !dashClientinfomsg" (mouseleave)="dashClientinfomsg = !dashClientinfomsg"><div class="active-client-msg client-msg-L20" *ngIf="dashClientinfomsg">Clients with Cross Sell AUM greater than 0.</div></span>
+  
+        </span>
+        <!-- <div class="d-flex stats ion-align-items-center">
+            <img src="assets/svg/stats-orange.svg" alt="stats">
+            <span>Stats</span>
+        </div> -->
+    </div>
+
+    <div class="growth-map-msg d-flex ion-align-items-baseline">
+        <div *ngIf="!showHideDashboardValue" class="overview-small-card-amt"> {{crossDashboardData[0]?.TotalClients ? convertFormat(crossDashboardData[0]?.TotalClients) : '0'}}</div>
+        <span class="showstar" *ngIf="showHideDashboardValue">xxxx</span>
+        <!-- <img src="assets/svg/growth-path.svg" alt="growth-path" width="20px">
+        <span class="positive percentage"> {{crossDashboardData[0]?.ClientIncDecPercentage ? convertFormat(crossDashboardData[0]?.ClientIncDecPercentage) : '0'}} <label>Added from last month</label></span> -->
+    </div>
+
+    </div>
+   </div>
+    </div>
+    <div class="overview-child-card cross-sell-child-card">
+        <div class="ov-ch-card" (click)="onDashClients('FD')">
+            <label>FD/Bonds/NCDs</label>
+            <div *ngIf="!showHideDashboardValue" class="amt d-flex ion-align-items-center"><span class="rupees">₹</span>  {{crossDashboardData[0]?.FDBondNCDAum ? convertFormat(crossDashboardData[0]?.FDBondNCDAum) : '0'}}</div>
+            <!-- <label> {{crossDashboardData[0]?.TotalMFAUM}} Clients</label> -->
+            <span class="showstar" *ngIf="showHideDashboardValue"><span class="rupees">₹</span>xxxx</span>
+        </div>
+        <div class="ov-ch-card" (click)="onDashClients('PMS')">
+            <label>PMS/AIF</label>
+            <div *ngIf="!showHideDashboardValue" class="amt d-flex ion-align-items-center"><span class="rupees">₹</span>  {{crossDashboardData[0]?.PMSAIFAUM ? convertFormat(crossDashboardData[0]?.PMSAIFAUM) : '0'}}</div>
+            <!-- <label>{{crossDashboardData[0]?.TotalMFAUM}} Clients</label> -->
+            <span class="showstar" *ngIf="showHideDashboardValue"><span class="rupees">₹</span>xxxx</span>
+        </div>
+        <div class="ov-ch-card" (click)="onDashClients('MLD')">
+            <label>MLDs/Gold</label>
+            <div *ngIf="!showHideDashboardValue" class="amt d-flex ion-align-items-center"><span class="rupees">₹</span>  {{crossDashboardData[0]?.MLDGOLDAUM ? convertFormat(crossDashboardData[0]?.MLDGOLDAUM) : '0'}}</div>
+            <!-- <label>{{crossDashboardData[0]?.TotalMFAUM}} Clients</label> -->
+            <span class="showstar" *ngIf="showHideDashboardValue"><span class="rupees">₹</span>xxxx</span>
+        </div>
+        <!-- <div class="ov-ch-card">
+            <label>Insurance</label>
+            <div class="amt d-flex ion-align-items-center"><span class="rupees">₹</span>  {{convertFormat(crossDashboardData[0]?.TotalMFAUM)}}</div>
+            <label>{{crossDashboardData[0]?.TotalMFAUM}} Clients</label>
+        </div> -->
+    </div>
+</div>
+
+<div class="loader-backdrop" *ngIf="loader">
+    <div class="loader">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+</div>

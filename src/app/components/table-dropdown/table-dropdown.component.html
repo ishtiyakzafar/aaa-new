@@ -1,0 +1,14 @@
+<ion-list lines="none">
+  <ion-item *ngIf="items[0].displayBreakDown">
+    <ion-label text-wrap (click)="breakDown()">
+      <img src="./assets/imgs/breakdown.png">
+      <span>Breakdown</span>
+    </ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label text-wrap (click)="stockDetail()">
+      <img src="./assets/imgs/stockDetail.png">
+      <span>Stock Details</span>
+    </ion-label>
+  </ion-item>
+</ion-list>

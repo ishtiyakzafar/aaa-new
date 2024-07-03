@@ -1,0 +1,28 @@
+.card_details_pop{border-radius: 25px;}
+.pop_close img{width: 20px; cursor: pointer;}
+.modal_head{padding:15px; background: #F8F8FF;}
+.modal_title{display: flex; justify-content: space-between;  align-items:flex-start;}
+.modal_title span{font-size: 18px; font-weight: 700; color: #212121; padding-bottom: 4px;}
+.modal_title p{margin: 0; padding: 0; font-size: 14px; color: #212121; font-weight: 500;}
+.master_user{display: flex; justify-content: space-between; align-items: center; gap: 15px; margin-top: 20px;}
+.master_user_details{display: flex; align-items: center; gap: 15px;}
+.client_name{font-size: 15px; color: #000; font-weight: 400;}
+.client_grid span{display: block; font-size: 14px; color: #707070; font-weight: 400;}
+.cli_right{font-size: 16px; color: #212121; font-weight: 700;}
+.card_details_inner{padding: 15px; }
+#BrokeragePanel ion-label{width: 30%; font-size: 14px;}
+
+.web-equity .main-table td, .web-equity .header-table th { padding: 8px !important; text-align: right; font-size: 13px; width: 20%; max-width: inherit ;word-break: break-word;}
+.web-equity th:first-child, .web-equity td:first-child{width: 25% !important; max-width: inherit !important;}
+.web-equity td:nth-child(2),  .web-equity th:nth-child(2){width: 40% !important; text-align: left !important; }
+.web-equity th:last-child, .web-equity td:last-child{width: 25% !important; max-width: inherit !important; text-align: center !important;}
+.web-equity th:last-child input[type='checkbox']{margin-right: 8px !important;}
+.main-table { max-height: 165px;    overflow: auto;}
+.web-equity .main-table td input[type='checkbox'], .web-equity .header-table th input[type='checkbox']{transform: scale(1.15,1.15);accent-color: #593CC7;}
+.child_count_grid{display: flex; justify-content: space-between; align-items: center;}
+.child_count_grid span{color: #848484; font-size: 16px; font-weight: 400;}
+.chl_cuont{font-size: 16px; font-weight: 700 !important; color: #000 !important;}
+.primary_btn{ text-align: center; padding: 0.5rem 1.5rem; border-radius: 20px; color: #fff !important; font-size: 16px; font-weight: 400; display: inline-block; line-height: 1.1; background: #F37921; text-decoration: none !important; outline: none !important; }
+.web-equity .main-table{margin-bottom: 15px !important;}
+.raise-image{width: 110px;}
+

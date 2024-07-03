@@ -1,0 +1,65 @@
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="back-title-block">
+			<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+			<span>Fixed Deposit</span>
+		</div>
+	</ion-toolbar>
+    <!-- updated -->
+    <ion-toolbar class="desktop-visibility">
+        <div class="container">
+            <div class="heading-part">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <span class="heading">Fixed Deposit</span>
+            </div>
+        </div>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="container">
+        <!-- previous -->
+		<div class="title desktop-visibility hide">
+			Fixed Deposit
+		</div>
+        <!-- updated -->
+        <div class="paragraph">
+            We offer a range of Corporate Fixed Deposits of varying tenures, interest rates & institutions to suit your investment needs.
+            The deposit schemes have been specially chosen from high-safety options to ensure that you enjoy the twin benefits of 
+            returns and protection.
+        </div>
+        <!-- updated -->
+        <div class="block-heading">
+            Choose One Of The Fixed Deposits From Below To Start Investing Online
+        </div>
+		<div class="deposit-type-block">
+			<div class="type-section" (click)="openFD('icici')">
+				<div class="type-name">
+					ICICI FD
+				</div>
+				<div class="type-img">
+					<img src="assets/imgs/icici_home_finance.png" alt="">
+				</div>
+			</div>
+			<div class="devider"></div>
+			<!-- <div class="type-section" (click)="openFD('bajaj')">
+				<div class="type-name">
+					Bajaj FD
+				</div>
+				<div class="type-img">
+					<img src="assets/imgs/bajaj_home_finance.png" alt="">
+				</div>
+			</div> -->
+			<div class="devider"></div>
+			<div class="type-section" (click)="openFD('shriram')">
+				<div class="type-name">
+					Shriram FD
+				</div>
+				<div class="type-img">
+					<img src="assets/imgs/shriram_transport_finance.png" alt="">
+				</div>
+			</div>
+		</div>
+        <!-- updated -->
+      </div>
+</ion-content>

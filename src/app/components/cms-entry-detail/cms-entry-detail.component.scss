@@ -1,0 +1,62 @@
+@import '../../../app/components/acc-statement/acc-statement.component.scss';
+
+.search-section-changed-revamped {
+    border: none;
+    padding: 0;
+    margin-top: 0px;
+    justify-content: space-between;
+    flex-direction: column-reverse;
+    padding-top: 8px;
+    ion-segment {
+        width: unset;
+        margin: 0;
+        margin-top: 16px;
+        ion-segment-button {
+            --color-checked: #586A7A;
+            border: 1px solid transparent;
+            border-radius: 20px;
+            --border-radius: 20px;
+            --background-checked: #2D197F;
+            --color-checked: #fff;
+        }
+        .segment-button-checked {
+            border: none;
+        }
+    }
+    .custom-searchbar {
+        width: 320px !important;
+        margin: unset;
+        border-bottom: 2px solid #CBCBCB !important;
+    }
+}
+
+.edit-icon {
+    background-color: rgba(38, 128, 235,0.2);
+    border-radius: 50%;
+    width: 14px;
+    height: 14px;
+    display: flex;
+    padding: 10px;
+    min-width: 14px;
+    margin-left: 4px;
+    cursor: pointer;
+}
+
+.loader-height {
+    height:200px;
+}
+
+
+
+@media screen and (max-width: 500px) {
+    .main-table {
+        .section-header-mob {
+            flex-direction: row;
+            justify-content: space-between;
+            .title-mob {
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+}

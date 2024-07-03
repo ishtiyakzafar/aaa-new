@@ -1,0 +1,123 @@
+<!-- <div class="mutual-fund-holding-block">
+    <div class="holding-block">
+        <div class="title">Mutual Fund Holdings</div>
+        <div class="equity-block">
+            <div class="part">
+                <div class="section">
+                    <div class="name equity">Equity</div>
+                    <div class="value">33.33%</div>
+                </div>
+                <div class="line"></div>
+                <div class="section">
+                    <div class="name debt">Debt</div>
+                    <div class="value">33.33%</div>
+                </div>
+            </div>
+            <div class="part">
+                <div class="section">
+                    <div class="name hybrid">Hybrid</div>
+                    <div class="value">33.33%</div>
+                </div>
+                <div class="line"></div>
+                <div class="section">
+                    <div class="name others">Others</div>
+                    <div class="value">33.33%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="total-value-block">
+        <div class="block">
+            <span class="block-title mlds">Total Value</span>
+            <div class="block-value">
+                <span class="rupees">₹ </span>
+                <span>75,25,000.00</span>
+            </div>
+        </div>
+        <div class="block">
+            <span class="block-title mlds">Total Investment</span>
+            <div class="block-value">
+                <span class="rupees">₹ </span>
+                <span>75,25,000.00</span>
+            </div>
+        </div>
+        <div class="block">
+            <span class="block-title mlds">Total P&L</span>
+            <div class="block-value total-pl">
+                <span class="rupees">₹ </span>
+                <span>20,34,999.00</span>
+                <span class="percentage">(20.12%)</span>
+            </div>
+        </div>
+    </div>
+</div> -->
+<ion-header class="mobile-visibility">
+	<ion-toolbar color="tertiary">
+		<div class="select-search-block">
+			<div class="title-block title-block-custom">
+				<div class="icon-title">
+					<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+					<ion-title class="title">{{passClientID}}</ion-title>
+				</div>
+				<!-- <div class="icons">
+					<ion-icon class="refresh" src="assets/svg/refresh.svg" (click)="doRefresh()" *ngIf="holdingsBlockTabValue === 'livePL'"></ion-icon>
+					<ion-icon name="search" class="search-icon" (click)="goToAddScript()" *ngIf="holdingsBlockTabValue === 'holdings' || holdingsBlockTabValue === 'livePL'"></ion-icon>
+				</div> -->
+			</div>
+			<div class="Equity">
+                Mutual Fund
+			</div>
+			<div class="container mobile-visibility">
+				<ion-row class="m-b-20">
+					<ion-segment scrollable class="header-segment-top" mode="md" [(ngModel)]="holdingsBlockTabValue">
+						<ion-segment-button value="{{data['value']}}" *ngFor="let data of segmentObj">
+							{{data['name']}}
+						</ion-segment-button>
+					</ion-segment>
+				</ion-row>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+<div class="desktop-visibility">
+    <ion-segment scrollable class="header-segment-top desktop-segment-top holding-block-segment" [(ngModel)]="holdingsBlockTabValue" (ionChange)="mfSegmentChange($event.detail.value)">
+        <ion-segment-button value="{{data['value']}}" *ngFor="let data of segmentObj">
+            {{data['name']}}
+        </ion-segment-button>
+    </ion-segment>
+</div>
+
+
+<div class="desktop-visibility" >
+    <div class="tab-details-block" [ngSwitch]="holdingsBlockTabValue">
+        <div class="detail" *ngSwitchCase = "'holdings'">
+            <app-mutual-fund-holdings></app-mutual-fund-holdings>
+        </div>
+        <div (click)="mutual_fund_tab('sipRegisBook')" class="detail" *ngSwitchCase = "'sipRegisBook'">
+            <app-sip-registration-book></app-sip-registration-book>
+        </div>
+        <div (click)="mutual_fund_tab('orderBook')" class="detail" *ngSwitchCase = "'orderBook'">
+           <app-mf-orderbook></app-mf-orderbook>
+        </div>
+        <div (click)="mutual_fund_tab('accountStatement')" class="detail" *ngSwitchCase = "'accountStatement'">
+            <app-acc-statement></app-acc-statement>
+        </div>
+    </div>
+</div>
+
+<ion-content class="mobile-visibility">
+    <div class="tab-details-block" [ngSwitch]="holdingsBlockTabValue">
+        <div class="detail" *ngSwitchCase = "'holdings'">
+            <app-mutual-fund-holdings></app-mutual-fund-holdings>
+        </div>
+        <div class="detail" *ngSwitchCase = "'sipRegisBook'">
+            <app-sip-registration-book></app-sip-registration-book>
+        </div>
+        <div class="detail" *ngSwitchCase = "'orderBook'">
+            <app-mf-orderbook></app-mf-orderbook>
+        </div>
+        <div class="detail" *ngSwitchCase = "'accountStatement'">
+            <app-acc-statement></app-acc-statement>
+        </div>
+    </div>
+</ion-content>

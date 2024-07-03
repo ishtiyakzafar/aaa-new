@@ -1,0 +1,30 @@
+<ion-header>
+    <div class="close" (click)="dismiss()">x</div>
+    <div class="title">
+        Call for Support
+    </div>
+</ion-header>
+<ion-content>
+    <div class="table-wrapper thin-scroll">
+        <table class="body-table">
+            <tbody *ngIf="datas.length > 0">
+                <tr *ngFor="let dataObj of datas" class="support-align">
+                    <td>
+                        <div class="block">
+                            <span class="type">{{dataObj['type']}}</span>
+                            <span class="detail">{{dataObj['detail']}}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="mobile-listing">
+                            <span class="numbers" *ngFor="let numbers of dataObj['mobileNumbers']" (click)="goToDial(numbers)">{{numbers}}</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="datas.length == 0" style="text-align: center;">
+                <span style="font-size: 12px;margin-top: 20px;">No Data Found</span>
+            </tbody>
+        </table>
+    </div>
+</ion-content>

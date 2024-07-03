@@ -1,0 +1,333 @@
+<ion-header [ngStyle]="{'z-index':isDropDownVisible ? 999 : 999 }">
+	<div class="overlay-div mobile-visibility" (click)="overlayVisible = !overlayVisible" [ngClass]="{'visible': overlayVisible}">
+		<div class="bg-img select-search-block">
+			<div class="text-left">
+				<div class="back-title-block">
+					<!-- <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon> -->
+					<span (click)="titleClick($event)">Clients & Trades
+						<img class="arrow-down-white" src="assets/svg/arrow-down-white.svg" alt="arrow">
+					</span>
+					<ion-icon class="iconsize first-icon" src="./assets/svg/white-home-icon.svg" (click)="goToDashboard()"></ion-icon>
+					<!-- <ion-icon class="iconsize first-icon" (click)="goToNotification()" src="./assets/svg/notification.svg"></ion-icon> -->
+				</div>
+			</div>
+			<div class="sensex-parent-block">
+				<div class="item-block" *ngFor="let dataObj of displayHeader" (click)="headerClick($event, dataObj)">
+					<h6>{{dataObj['Symbol']}}</h6>
+					<label class="lbl" for="">{{dataObj['LastRate'] | formatNumerDecimal}}</label>
+					<label class="lbl2" for="" [ngStyle]="{'color':(dataObj.PerChange == 0) ? '#656565' : (dataObj.PerChange > 0 ? '#17C257' : '#F55858')}">
+					<img class="arrow-green-up" *ngIf="dataObj.PerChange > 0" src="assets/imgs/arrow-green-up.png" alt="arrow">
+					<img class="arrow-red-down" *ngIf="dataObj.PerChange < 0" src="assets/imgs/arrow-red-down.png" alt="arrow">
+						{{dataObj['Change'] | formatNumerDecimal}} ({{dataObj['PerChange'] | formatNumerDecimal}}%)</label>
+				</div>
+				</div>
+			<div class="text-center view-details">
+				<span>Tap on the index to view details</span>
+			</div>
+		</div>
+	</div>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="select-search-block">
+			<div class="back-title-block">
+				<!-- <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon> -->
+				<span (click)="overlayVisible = !overlayVisible">Clients & Trades
+					<img class="arrow-down-white" src="assets/svg/arrow-down-white.svg" alt="arrow">
+				</span>
+				<ion-icon class="iconsize first-icon" src="./assets/svg/white-home-icon.svg" (click)="goToDashboard()"></ion-icon>
+				<!-- <ion-icon class="iconsize first-icon" (click)="goToNotification()" src="./assets/svg/notification.svg"></ion-icon> -->
+			</div>
+
+			<div class="container mobile-visibility">
+				<ion-row class="m-b-20">
+					<ion-segment scrollable class="header-segment-top" mode="md" [(ngModel)]="clientBlockTabValue">
+						<ion-segment-button mode="md" value="clients">
+							Clients
+						</ion-segment-button>
+						<ion-segment-button value="orderbook">
+							Consolidated Orderbook
+						</ion-segment-button>
+						<ion-segment-button value="tradebook">
+							Consolidated Tradebook
+						</ion-segment-button>
+						<ion-segment-button value="holdings">
+							Consolidated Holdings (BOD)
+						</ion-segment-button>
+						<ion-segment-button value="fundPayinOut">
+							Fund Payin Payout
+						</ion-segment-button>
+					</ion-segment>
+				</ion-row>
+			</div>
+		</div>
+	</ion-toolbar>
+    <!-- <common-header [displayHeaderDetails]="displayHeader"></common-header> -->
+	<div class="container">
+
+		<ion-toolbar class="desktop-visibility">
+			<div class="seg-one m-t-6">
+				<ion-segment scrollable class="header-segment-bottom" [(ngModel)]="clientBlockTabValue" (ionChange)="clientTradeSegChanged($event.detail.value)">
+					<ion-segment-button value="clients" (click)="clientTab('clients')">
+						Clients
+					</ion-segment-button>
+					<ion-segment-button value="orderbook" (click)="clientTab('orderbook')">
+						 Consolidated Orderbook
+					</ion-segment-button>
+					<ion-segment-button value="tradebook" (click)="clientTab('tradebook')">
+						 Consolidated Tradebook
+					</ion-segment-button>
+					<ion-segment-button value="holdings" (click)="clientTab('holdings')">
+						Consolidated Holdings (BOD)
+					</ion-segment-button>
+					<ion-segment-button value="fundPayinOut" (click)="clientTab('fundPayinOut')">
+						Fund Payin Payout
+				   </ion-segment-button>
+				</ion-segment>
+			</div>
+		</ion-toolbar>
+		
+<div *ngIf="clientBlockTabValue === 'clients'" >
+	<!-- <div class="search-section search-section-changed search-section-changed-revamped pr-20 amc_search">
+		<ion-label>Search by : </ion-label>
+		<ion-segment [(ngModel)]="typeOfClient" mode="md">
+			<ion-segment-button (click)="onIIFLTabClick('iiflClients')" class="ion-segment ion-segment-button segment-button-checked" value="iiflClients">IIFL
+				Clients</ion-segment-button>
+			<ion-segment-button (click)="onIIFLTabClick('offlineClients')" class="ion-segment ion-segment-button" value="offlineClients">Offline
+				Clients</ion-segment-button>
+		</ion-segment>
+
+		<ng-container *ngIf="typeOfClient === 'offlineClients'; else iiflCl">
+			<div class="offline_cli">
+			<ion-toolbar class="search-toolbar">
+					<div>
+					<ion-searchbar search-icon="false" class="ion-searchbar m-t-0" [(ngModel)]="panSearchValue"
+						placeholder="Type PAN No." (ionFocus)="showPanDropDown()" (ionBlur)="hidePanDropDown()"></ion-searchbar>
+ 					</div>
+				</ion-toolbar>
+			 
+		</div>
+		</ng-container>
+		<ng-template #iiflCl>
+			<ion-toolbar>
+				<ion-searchbar search-icon="false" class="ion-searchbar m-t-0" [(ngModel)]="clientSearchValue"
+					(ionFocus)="showDropDown()" (ionBlur)="hideDropDown()"
+					placeholder="Type Client Code"></ion-searchbar>
+			</ion-toolbar>
+		</ng-template>
+	 
+
+		 
+	</div>	 -->
+</div>
+		<ion-toolbar *ngIf="!isClientDetailsWebVisible && clientBlockTabValue === 'clients' && typeOfClient != 'offlineClients'">
+			<div class="heading">
+				Recently Searched Clients 
+			</div>
+		</ion-toolbar>
+		<!-- header table -->
+		<ion-toolbar mode="md" *ngIf="!isClientDetailsWebVisible && clientBlockTabValue === 'clients' && typeOfClient != 'offlineClients'" class="desktop-header-table  desktop-search-table-header"> 
+			 <div class="container">
+				<table class="desktop-header-table width-100">
+					<thead class="fontT">
+						<tr>
+							<th class="text-left desktop-visibility-data">
+								<div class="td-block">
+									<span>Client Code</span>
+								</div>
+							</th>
+							<th class="text-left desktop-visibility-data">
+								<div class="td-block">
+									<span>Client Name</span>
+								</div>
+							</th>
+							<th class="text-left mobile-visibility-data width-40">
+								<div class="td-block">
+									<span>Client</span>
+								</div>
+							</th>
+							<th>
+								<div class="td-block">
+									<span>Holding Value</span>
+								</div>
+							</th>
+							<th>
+								<div class="td-block">
+									<span>Margin</span>
+								</div>
+							</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		 </ion-toolbar>
+		<ion-toolbar class="drop-down-toolbar" *ngIf="isDropDownVisible">
+			<div class="drop-down thin-scroll" *ngIf="dataLoad">
+				<!-- <div class="item" *ngFor="let data of clientList | filter:clientSearchValue" (click)="displayClientDetails(data)"> -->
+				
+					<!-- review. removed filter fix this -->
+					<div class="item" *ngFor="let data of clientList | filter:clientSearchValue" (click)="displayClientDetails(data)">
+					<span class="name">{{data.ClientCode}}</span>
+					<span class="first">{{data.ClientName}}</span>
+				</div>
+			</div>
+			<div class="loader" *ngIf="!dataLoad">
+				<img src="/assets/imgs/loader.gif" alt="">
+			  </div>
+			<!-- <div class="drop-down thin-scroll" *ngIf="clientList.length == 0">
+				<span>No Data Found</span>
+			</div> -->
+		</ion-toolbar>
+		<ion-toolbar class="drop-down-toolbar panumber" *ngIf="isPanDropDownVisible">
+			<div class="drop-down thin-scroll" *ngIf="dataLoad">
+				
+				<!-- <div class="item" *ngFor="let c of cliList | filter:panSearchValue" (click)="onSearchBtnClick(c)"> -->
+				
+				<!-- review. removed filter fix this -->
+				<div class="item" *ngFor="let c of cliList | filter:panSearchValue" (click)="onSearchBtnClick(c)">
+					<span class="name">{{c.clientpan}}</span>
+					<span class="first">{{c.clientname}}</span>
+				</div>
+			</div>
+			<div class="loader" *ngIf="!dataLoad">
+				<img src="/assets/imgs/loader.gif" alt="">
+			</div>
+		</ion-toolbar>
+	</div>
+</ion-header>
+
+<ion-content>
+	<div class="parent-scroll thin-scroll">
+		<div class="container">
+			
+			<app-amc-report [searchValue]="searchValue" [typeOfClient]="typeOfClient"
+				*ngIf="searchValue && typeOfClient === 'offlineClients' && showAMCForm">
+			</app-amc-report>
+
+			<!-- for mobile visibility -->
+			<div class="table-block mobile-visibility" *ngIf="clientBlockTabValue === 'clients' && typeOfClient != 'offlineClients'">
+				<table class="desktop-table container desktop-search-table width-100">
+					<tbody>
+						<tr class="tablebot" *ngFor="let data of recentListUniqueCode.slice(0, 20)" (click)="showClientDetailsWeb(data)">
+						
+							<td class="scrip-data text-left mobile-visibility-data width-40">
+								<div class="code-name-block">
+									<span>{{data['ClientCode']}}</span>
+									<span class="name">{{data['ClientName']}}</span>
+								</div>
+							</td>
+							<td>
+								<img class="rupee" src="/assets/svg/rupee.svg" alt="">
+								{{data['Holding'] | formatNumberUnit}}
+							</td>
+							<td>
+								<img class="rupee" src="/assets/svg/rupee.svg" alt="">
+								{{data['Margin'] | formatNumberUnit}}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- for desktop visibility -->
+
+			<div class="table-block custom-table thin-scroll desktop-visibility" *ngIf="!isClientDetailsWebVisible && clientBlockTabValue === 'clients' && dataLoad && typeOfClient != 'offlineClients'">
+
+				<table class="desktop-table container desktop-search-table width-100">
+					<tbody>
+						<tr class="tablebot" *ngFor="let data of recentListUniqueCode.slice(0, 20)" (click)="showClientDetailsWeb(data)">
+							<td class="scrip-data text-left desktop-visibility-data">
+								{{data['ClientCode']}}
+							</td>
+							<td class="scrip-data text-left desktop-visibility-data">
+								{{data['ClientName']}}
+							</td>
+							<td>
+								<img class="rupee" src="/assets/svg/rupee.svg" alt="">
+								{{data['Holding'] | formatNumberUnit}}
+							</td>
+							<td>
+								<img class="rupee" src="/assets/svg/rupee.svg" alt="">
+								{{data['Margin'] | formatNumberUnit}}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				</div>	
+			<!-- show loader -->
+			
+			<app-client-portfolio [changeDetPage]="changeRmView" *ngIf="selectedClientTab == 'portfolio' && clientBlockTabValue === 'clients' && isClientDetailsWebVisible && typeOfClient != 'offlineClients'"></app-client-portfolio>
+
+			<div class="loader" *ngIf="!isClientDetailsWebVisible && clientBlockTabValue === 'clients' && !dataLoad">
+                <img src="/assets/imgs/loader.gif" alt="">
+            </div>
+
+			<div class="new-user-block" *ngIf="!isClientDetailsWebVisible && clientBlockTabValue === 'clients' && typeOfClient != 'offlineClients'">
+				<div class="desktop-visibility open-demat">Open a Demat or Mutual Fund account for your Client</div>
+				<div class="add-user-btn">
+					<ion-button fill="outline" (click)="addUser()">
+						<ion-icon slot="start" name="add-outline"></ion-icon>
+						Add New User
+					</ion-button>
+				</div>
+			</div>
+			<!-- desktop client details -->
+			<div class="clientBlockTabContent mg-t-100" [ngSwitch]="clientBlockTabValue">
+				<div *ngSwitchCase="'clients'">
+					<!-- <div class="desktop-client-details desktop-visibility" *ngIf="isClientDetailsWebVisible && typeOfClient != 'offlineClients' && selectedClientTab == 'rmView'">
+						
+						
+						<app-client-details-web *ngIf="dataLoad" [clientDetails]="clientDetails" [clientName]="clientName" [isResponseReady]="isResponseReady" [marginTabClient]="marginTabDetails"
+							[clientLedger]="LedgerTabDetails" [isLedgerResReady]="isLedgerResponseReady" [ladgerId] ="ladgerId" [tradeBook]="tradeBookDetails" [orderBook]="orderBookDetails" [holdingsData]="clientHoldingDetails"
+                        [netPosition]= "netPositionDetails" [HoldingPLData]="consHoldingPlData"></app-client-details-web> -->
+
+                        <!-- show loader -->
+                        <!-- <div class="loader" *ngIf="!dataLoad">
+                            <img src="/assets/imgs/loader.gif" alt="">
+                          </div>
+					</div> -->
+				</div>
+				<div *ngSwitchCase="'orderbook'">
+					<!-- <app-consolidated-orderbook [userID] ="passUserID"></app-consolidated-orderbook> -->
+		
+					<div class="center-block d-flex justify-content-center align-items-center">
+					   <div>
+						   <h4>This feature is not available for you. Click below to become a partner and gain access</h4>
+						   <ion-button class="w-150 become-ptr-btn" (click)="redirectTo('register')">Continue Onboarding</ion-button>
+					   </div>
+					</div>
+					
+				</div>
+				<div *ngSwitchCase="'tradebook'">
+					<!-- <app-consolidated-tradebook [userID] ="passUserID"></app-consolidated-tradebook> -->
+					<div class="center-block d-flex justify-content-center align-items-center">
+					   <div>
+						   <h4>This feature is not available for you. Click below to become a partner and gain access</h4>
+						   <ion-button class="w-150 become-ptr-btn" (click)="redirectTo('register')">Continue Onboarding</ion-button>
+					   </div>
+					</div>
+
+				</div>
+				<div *ngSwitchCase="'holdings'">
+					<!-- <app-consolidated-holdings [userID] ="passUserID" ></app-consolidated-holdings> -->
+
+					<div class="center-block d-flex justify-content-center align-items-center">
+					   <div>
+						   <h4>This feature is not available for you. Click below to become a partner and gain access</h4>
+						   <ion-button class="w-150 become-ptr-btn" (click)="redirectTo('register')">Continue Onboarding</ion-button>
+					   </div>
+					</div>
+					
+				</div>
+				<div *ngSwitchCase="'fundPayinOut'">
+					<!-- <app-payin-payout></app-payin-payout> -->
+
+					<div class="center-block d-flex justify-content-center align-items-center">
+					   <div>
+						   <h4>This feature is not available for you. Click below to become a partner and gain access</h4>
+						   <ion-button class="w-150 become-ptr-btn" (click)="redirectTo('register')">Continue Onboarding</ion-button>
+					   </div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</ion-content>

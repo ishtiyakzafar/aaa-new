@@ -1,0 +1,52 @@
+.card_details_pop{border-radius: 25px;}
+.pop_close img{width: 22px; cursor: pointer;}
+.modal_title{display: flex; justify-content: space-between; padding: 25px 20px; background: #F6F6F6; align-items: center;}
+.modal_title span{font-size: 20px; font-weight: 700; color: #212121;}
+.card_details_inner{padding:20px 30px; }
+.chartLables{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 22px;
+    flex-wrap: wrap;
+    gap:5;
+    div{
+        width:200px;background: #FFFFFF;height: 85px;
+    border: 1px solid #ebebeb;
+    border-radius: 10px;padding:10px 20px;position: relative;
+     &::before{
+        content: '';
+        display: block;
+        position: absolute;
+        top:0;
+        left: 0;
+        border-radius: 10px 0 0 10px;
+        width: 5px;
+        height: 100%;
+        background: linear-gradient(180deg, #7CC8D3 0%, #C0E3E8 100%);
+        }
+        &:nth-child(2){
+            &::before{
+                background:  linear-gradient(180deg, #7C94D3 0%, #96C1E9 100%);
+            } 
+        }
+        &:nth-child(3){
+            &::before{
+                background: linear-gradient(180deg, #F37921 0%, #F7C190 100%);
+            } 
+        }
+        label{
+        font-size: 14px;
+        font-weight: normal;
+        color:#7F7F7F;
+        }
+        p{font-size:16px;color:#282828;font-weight:700;margin:2px 0 0;}
+    }
+    
+}
+.lead_gen{
+    font-size: 12px;
+}
+
+.month_lead{font-size: 13px; text-align: right;     margin: -10px 0 10px ;}
+.month_lead sup{color: #F37921;}

@@ -1,0 +1,20 @@
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Terms & Conditions</ion-title>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="scroll" scrollX="true">
+		<div *ngIf="dataLoad" [innerHtml]="transformYourHtml(termsCondtionHtml)"></div>
+	</div>
+
+	<div class="loader loader-height" *ngIf="!dataLoad" style="min-height: calc(100vh - 439px)">
+		<img src="/assets/imgs/loader.gif" alt="">
+	</div>
+</ion-content>

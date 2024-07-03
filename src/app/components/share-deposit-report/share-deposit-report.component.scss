@@ -1,0 +1,241 @@
+.shared-report-container {
+    // width: 750px;
+    // margin: 0 auto;
+    .jv-header {
+        .heading {
+            font-family: "nunitoBold";
+            font-size: 20px;
+            padding-left: 5px !important;
+            color: #212121;
+        }
+    }
+    .share-deposit-head-content {
+       
+        .box-container {
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+            padding: 20px;
+            background-color: #f4f3f9;
+            text-align: center;
+            .items {
+                display: flex;
+                flex-direction: column;
+                .itemtitle {
+                    color: #716a90;
+                    font-size: 15px;
+                    margin: 5px;
+                    font-family: "nunitoRegular";
+                }
+                .itemvalue {
+                    color: #212121;
+                    font-size: 16px;
+                    font-family: "nunitoSemiBold";
+                }
+            }
+        }
+        .download-report {
+            padding: 16px 0 16px 20px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            span {
+                font-size: 14px;
+                font-family: "nunitoSemiBold";
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.card-container {
+    //border:1px solid #3d3131;
+    border: 1px solid #cbcbcb;
+    border-radius: 10px;
+
+    &.thin-scroll{
+        // max-height: calc(100vh - 422px);
+        max-height: 468px;
+        margin-bottom: 24px;
+        overflow: auto;
+    }
+    .card {
+        padding: 15px;
+        border-bottom: 1px solid #cbcbcb;
+        .card-header {
+            width:45%;
+            display: flex;
+            flex-direction: row;
+            // justify-content: space-between;
+            .title{
+                font-size: 15px;
+                font-family: 'nunito';
+                color:#000000;
+                font-family: "nunitoSemiBold";
+                margin-right: 12px;
+            }
+            .discription{
+                font-size: 14px;
+                font-family: 'nunito';
+                color:#9C9C9C;
+                font-family: "nunitoRegular";
+            }
+        }
+
+        .card-content {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+            .items {
+                display: flex;
+                flex-direction: column;
+                text-align: center;
+                width: 15%;
+                .content-title{
+                    color:#716A90;
+                    font-size: 14px;
+                }
+                .content-value{
+                    color:#212121;
+                    font-size: 15px;
+                    font-family: "nunitoSemiBold";
+                    margin-top: 10px;
+                }
+            }
+        }
+    }
+}
+
+.noDataContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50%;    
+}
+
+
+@media (max-width: 768px) {
+    .shared-report-container {
+        .share-deposit-head-content {
+            width: 100%;
+
+            .box-container {
+                display: flex;
+                justify-content: space-around;
+                margin: 15px 10px;
+                padding: 15px 15px;
+                background-color: #f4f3f9;
+                .items {
+                    display: flex;
+                    flex-direction: column;
+                    
+                    .itemtitle {
+                        font-size: 12px;
+                    }
+                    .itemvalue {
+                        font-size: 14px;
+                    }
+                }    
+            }
+            .download-report {
+                padding:15px 15px 15px 0px;
+                border-bottom: 1px solid #9C9C9C;
+                justify-content: flex-end;
+                align-items: flex-end;
+                span {
+                    color: #f37921;
+                    font-size: 12px;
+                    margin-left:15px;
+                }
+            }
+        }
+    }
+
+    .card-container {
+        width:100%;
+        border: none;
+        &.thin-scroll{
+            max-height: 100%;
+            overflow: auto;
+        }
+        .card {
+            padding: 15px;
+            border-bottom: 1px solid #cbcbcb;
+            .card-header {
+                width:100%;
+                display: flex;
+                flex-direction: column;
+                .title{
+                    font-size: 17px;
+                }
+                .discription{
+                    font-size: 13px;
+                }
+            }
+    
+            .card-content {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
+                margin-top: 15px;
+                .items {
+                    display: flex;
+                    width:30%;
+                    margin-top: 10px;
+
+                    flex-direction: column;
+                    text-align: center;
+                    .content-title{
+                        color:#716A90;
+                        font-size: 14px;
+                    }
+                    .content-value{
+                        color:#212121;
+                        font-size: 15px;
+                        font-family: "nunitoSemiBold";
+                        margin-top: 10px;
+                    }
+                }
+            }
+        }
+    } 
+
+    
+        
+
+
+}
+
+
+@media screen and (min-width: 501px) and (max-width: 800px) {
+    .shared-report-container {
+        .share-deposit-head-content {
+            .download-report {
+                padding: 15px 0 15px 0px;
+                border-bottom: none;
+                justify-content: flex-end;
+            }
+            .box-container {
+                margin: 10px;
+            }
+        }
+    }
+    .card-container.thin-scroll {
+        // max-height: calc(100vh - 448px);
+        max-height: 468px;
+        margin-bottom: 24px;
+        overflow: auto;
+        border: 1px solid #cbcbcb;
+    }
+}
+.download_file{display: flex;justify-content: flex-end; gap: 10px; margin-top: 10px; }
+.download_file > div{cursor: pointer;}
+.download_file img{width: 16px;}
+@media screen and (min-width: 768px) and (max-width: 1199px)  {
+.card .card-header {width:60% !important;}
+}
+
+@media screen and (max-width: 768px){
+.download_file{padding: 10px;}
+}

@@ -1,0 +1,89 @@
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Reports</ion-title>
+			</div>
+		</div>
+
+	</ion-toolbar>
+	<div class="search_bar client_summary_mb_search">
+	<ion-searchbar (ngModelChange)="searchText($event)" search-icon="false" class="custom-searchbar" [debounce]="1000" [(ngModel)]="searchValue" placeholder='Client ID'>
+	</ion-searchbar>
+	  </div>
+	  <div class="download_file">
+		  <div (click)="onPdfExcelDownload('pdf')">
+			  <img src="assets/svg/pdf.svg" alt="">
+		  </div>
+		  <div (click)="onPdfExcelDownload('excel')">
+			  <img src="assets/svg/download_excel.svg" alt="">
+		  </div>
+	  </div>
+	  
+  </ion-header>
+
+<ion-content>
+	<div class="mobile-visibility client_summary_mob">
+		<div id="mobileTableContainer"  *ngIf="!dataLoad">
+		<div class="client_mb_grid_box" *ngFor="let dataObj of summaryDetails | filterSearch: searchValue : 'ClientCode'| slice: 0:endIndex;let i = index">
+			<div class="list_main d-flex justify-content-between" (click)="displyPopupText(dataObj)">
+		<div class="cl_mb_list">
+		<span>{{dataObj.ClientCode}}</span>
+		<label>{{dataObj.ClientCategory}}</label>
+		</div>
+		<div class="cl_mb_list">
+			<span>{{dataObj.ClientBranch}}</span>
+			<label>Branch Code</label>
+			</div>
+		<div class="cl_mb_list">
+			<label>AGHVC (%)</label>
+			<span>{{dataObj.AGHVC}}</span>
+			</div>
+	
+			<div class="cl_mb_list">
+				<label>ALB (₹)</label>
+				<span [ngClass]="{'nagative': classCheck(dataObj.ALB)}">{{dataObj.ALB}}</span>
+				</div>
+	
+				<div class="cl_mb_list">
+					<label>THV</label>
+					<span>{{dataObj.THV}}</span>
+					</div>
+				</div>
+		<div class="hold_and_block d-flex justify-content-between">
+			<label class="switch">
+				<input type="checkbox" [(ngModel)]="dataObj.toggleStatus" [checked]="dataObj['HoldBlockSell']" [disabled]="dataObj['HoldBlockSell'] ? true : false" (change)="onChange($event,dataObj)">
+				<span class="slider round"></span>
+			</label>
+			<span class="hold_block">Hold in  Block/Sell</span>
+		</div>
+		<div class="cl_mb_list ho_mark">
+			<label>HO Remarks</label>
+		<span>{{dataObj['HoRemarks'] ? dataObj['HoRemarks'] : 'No Remark'}}</span>
+			</div>
+		<div class="d-flex remark">
+			<div class="cl_mb_list">
+				<label>BR Remarks</label>
+				<span>{{dataObj.PartnerRemarks == '' ? dataObj.RemarkCode : dataObj.PartnerRemarks}}</span>
+				</div>
+				<div *ngIf="!dataObj.PartnerRemarks"  class="cl_mb_list remark_change" (click)="displyPopupText2(dataObj)">
+					Change
+				</div>
+	
+		</div>
+		</div>
+		<div class="d-flex div_fix_bt" *ngIf="!dataLoad">
+			<ion-segment-button class="btn_orange_outline btn" (click)="cancel()">Cancel</ion-segment-button>
+			<ion-segment-button class="btn_orange btn" (click)="save()"><span>Save ({{saveCount}})</span></ion-segment-button>
+		</div>
+	</div>
+	</div>
+	<ion-infinite-scroll *ngIf="enableNextMobile" threshold="100px" (ionInfinite)="loadDataMobile($event)">
+		<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data">
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+	<div class="loader" *ngIf="dataLoad">
+		<img src="/assets/imgs/loader.gif" alt="">
+	</div>
+</ion-content>

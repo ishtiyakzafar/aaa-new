@@ -1,0 +1,15 @@
+.card_details_pop{padding: 16px;}
+.confirm_changes h2{font-size: 16px; margin-bottom: 5px; margin-top: 10px;color: #212121;}
+.confirm_changes p{color: #212121; font-size: 13px; margin: 0px 0px 20px 0; color: #6E6E6E;}
+.confirm_changes_grid{grid-template-columns: 1fr;overflow: auto;height: 268px;}
+.confirm_changes_grid .cl_mb_list{text-align: left;padding-bottom: 15px;}
+.confirm_changes_grid .cl_mb_list label{font-size: 13px; font-weight: 700; color: #3F3D56; display: block;}
+.confirm_changes_grid .cl_mb_list span{font-size: 12px; font-weight: 400; color: #6E6E6E;  display: block;} 
+.pop_close{position: absolute; right: 15px; width: 12px; top: 15px;}
+.btn_orange, .btn_orange:hover{background: #F37921 !important; font-size: 12px; padding: 8px 0px !important; color: #fff !important; border-radius: 20px; text-align: center;  min-height: inherit; border: 1px solid #F37921; text-transform: capitalize;display: flex;justify-content: center; align-items: center; margin: 0px; }
+.btn_orange_outline, .btn_orange_outline:hover{background: #fff !important; border: 1px solid #F37921; font-size: 12px; padding: 8px 0px !important; color: #F37921; border-radius: 20px; text-align: center;  min-height: inherit; text-transform: capitalize;--padding-end: 0px; }
+.btn_grp .btn_orange_outline{border: 0px !important;}
+.btn_orange span img, .btn_orange_outline span img{vertical-align: middle; margin-right: 5px;}
+.btn_orange span{vertical-align: middle; color: #fff;}
+.confirm_btn{margin-top: 15px;}
+

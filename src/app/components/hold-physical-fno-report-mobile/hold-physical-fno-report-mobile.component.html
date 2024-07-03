@@ -1,0 +1,88 @@
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Reports</ion-title>
+			</div>
+		</div>
+
+	</ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <div class="mobile-visibility Physical_fno_mobile_view">
+
+      <p>Select Contract</p>
+      
+      <div *ngIf="!monthinclude" class="hold_message_box ">
+        <div> <img src="assets/svg/info.svg" width="20px" alt="info"></div>
+        <ul class="hold_list">
+          <li>Hold allowed only on expiry before 1:30pm</li>
+          <li>All open positions will be held from RMS liquidation for hold client case</li>
+        </ul>
+        <a ><img src="assets/svg/close_black.svg"  class="hold_msg_close_btn" alt="" (click)="onClosePopup()"></a>
+      </div>
+<div class="Physical_fno_card_main">
+      <div class="search_bar">
+        <ion-searchbar class="custom-searchbar custom_sr_client" [(ngModel)]="searchValue" placeholder='Client ID'>
+      </ion-searchbar>
+      </div>
+      <div class="download_file">
+        <div style="margin-right: 15px;" class="option-type" (click)="onPdfExcelDownload('pdf')">
+          <img src="assets/svg/pdf.svg" alt="">
+        </div>
+        <div class="option-type" (click)="onPdfExcelDownload('excel')">
+          <img src="assets/svg/download_excel.svg" alt="">
+        </div>
+      </div>
+
+      <div class="Physical_fno_card" *ngFor="let dataObj of clientHolddata | filterSearch: searchValue : 'ClientCode';let i = index">
+        <div class="phy_fno_ti">
+          <h2>{{dataObj.ClientCode}}</h2>
+
+          <div class="checkbox_main">
+            <input [disabled] ="dataObj.HOLD === '1' ? true : false" type="checkbox" [checked]="isChecked[i]" [(ngModel)]="dataObj.isChecked" (change)="selectclient($event,dataObj)" id="myCheckbox-{{i}}">
+            <label for="myCheckbox-{{i}}">&nbsp;</label>
+            <span></span> </div>
+
+
+        <!-- <input type="checkbox" [(ngModel)]="dataObj.toggleStatus" (change)="onChange($event,dataObj)" id="myCheckbox1" type="checkbox"> -->
+        
+        
+        <span class="hold_btn d-none">Contract Held</span>
+        </div>
+        <ul class="Physical_fno_card_list">
+          <li>
+          <label>Contract Name</label>
+          <span>{{dataObj.ContractName}}</span></li>
+          <li>
+          <label>LTP (&#8377;)</label>
+          
+          <span [ngClass]="{'nagative': classCheck(dataObj.LTP)}">{{dataObj.LTP}}</span></li>
+          <li>
+          <label>BOD Quantity</label>
+          <span [ngClass]="{'nagative': classCheck(dataObj.BODQuantity)}">{{dataObj.BODQuantity}}</span></li>
+          <li >
+          <label>Total Net Quantity</label>
+
+          <span [ngClass]="{'nagative': classCheck(dataObj.TotalNetQuantity)}">{{dataObj.TotalNetQuantity}}</span></li>
+          <li >
+          <label>Product Type</label>
+          <span>{{dataObj.ProductType}}</span></li>
+          
+        </ul>
+        </div>
+
+        <div class="d-flex div_fix_bt" >
+        <ion-segment-button class="btn_orange_outline btn" (click)="cancel()">Cancel</ion-segment-button>
+        <ion-segment-button [ngClass]="{'btn_disable': groupList.length < 1 ? true : false}" class="btn_orange btn" (click)="onHoldClick()"><span>Hold Contract ({{groupList.length}})
+        </span></ion-segment-button>
+        </div>
+
+    </div>
+    <div class="loader" *ngIf="dataLoad">
+      <img src="/assets/imgs/loader.gif" alt=""/>
+    </div>
+  </div>
+  </ion-content>

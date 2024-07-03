@@ -1,0 +1,55 @@
+<ion-header>
+
+	<div class="close" (click)="dismiss()">x</div>
+	<div class="title desktop-visibility">
+		<span>Edit</span>
+  </div>
+  
+  <div class="title-hold-sell">
+    <span><ion-checkbox [(ngModel)]="isChecked" class="checkbox" (ionChange)="checkValue($event.detail.checked)"></ion-checkbox></span>
+    <span class="title">Hold in Block/Sell</span>
+  </div>
+
+  <hr class="hrLine">
+
+  <div class="subtitle-summary">
+		<span>Select a remark</span>
+  </div>
+
+   
+
+	
+</ion-header>
+
+<ion-content>
+  <ion-segment class="segment-remark-list" [(ngModel)]="selectSegment" (ionChange)="segmentChanged($event.detail.value)">
+    <ion-segment-button value="Cheque collected- CMS updated" (click)="segmentSelect('1')">
+      <ion-label>Cheque collected - CMS updated</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="Cheque on way - CMS will be updated by 11:00 am" (click)="segmentSelect('2')">
+      <ion-label>Cheque on way - CMS will be updated by 11:00 am</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="Shares received as additional margin" (click)="segmentSelect('3')">
+      <ion-label>Shares received as additional margin</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="Client done Net transfer" (click)="segmentSelect('4')">
+      <ion-label value="Client done Net transfer">Client done Net transfer</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="BTST(Buy Today Sell Tomorrow)Customer by 10 am" (click)="segmentSelect('5')">
+      <ion-label>BTST(Buy Today Sell Tomorrow)Customer by 10 am</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="Cheque Cleared but credit not given" (click)="segmentSelect('6')"> 
+      <ion-label>Cheque Cleared but credit not given</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="Liquid fund sold" (click)="segmentSelect('7')">
+      <ion-label>Liquid fund sold</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <div style="position:absolute;top:50%; left:50%" *ngIf="!dataLoad">
+    <img style="width:40px" src="/assets/imgs/loader.gif" alt="">
+  </div>
+</ion-content>
+
+<ion-footer class="submit-btn ion-no-border">
+    <ion-button [disabled]="!btnEnable" (click)="submitRemark()">Save</ion-button>
+</ion-footer>

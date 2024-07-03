@@ -1,0 +1,207 @@
+<ion-header>
+    <ion-toolbar color="tertiary" class="mobile-visibility">
+        <div class="title-block title-block-custom">
+            <div class="icon-title">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <ion-title class="title">Help</ion-title>
+            </div>
+            <div class="icon-title">
+            <!-- <ion-title (click)="gotoHelp()" class="title">IIFL Help
+          </ion-title> -->
+      </div>
+        </div>
+    </ion-toolbar>
+    <ion-toolbar class=" desktop-visibility">
+        <div class="container">
+            <div class="heading-part notificationheader raise-query-heading">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <span class="heading">Help</span>
+            </div>
+            <div>
+              <!-- <span (click)="gotoHelp()" class="heading">IIFL Help
+              </span> -->
+            </div>
+        </div>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content>
+      <!-- <div class="help_banner">
+          <div class="container">
+              <div class="banner_main">
+                  <div>
+                      <h2>Hi, How can we help you?</h2>
+              <div class="label">Looking Solution for </div>
+                <ion-segment class="calculator-segment" >
+                  <ion-segment-button class="ion-active" value="Self">Self</ion-segment-button>          
+                  <ion-segment-button value="Client">Client</ion-segment-button>
+                  </ion-segment>
+          
+                  <div class="serch_box">
+                      <h3>Search for a question</h3>
+                      <div class="search-section search-section-changed search-section-changed-revamped serchbar_help_main_box">
+          
+                     
+                          <ion-searchbar (ionInput)="inputClientId($event)" search-icon="false" class="serchbar_help" placeholder="Eg: When will I receive my funds after requesting withdraw?"
+                              >
+                          </ion-searchbar>
+                          
+                         
+          
+                      </div>
+                     
+                  </div>
+          
+                 
+                 
+          
+                  </div>
+          
+          
+                 
+          
+              </div>
+          </div>
+          
+      </div> -->
+  
+      <div class="container">
+          <div class="bed_crum">
+              <a href="javascript:void(0)" (click)="onBradcrum()">Home</a>
+              <a href="javascript:void(0)" (click)="gotoHelp()">FAQs</a>
+          </div>
+  
+  
+  <div class="order_details_main">
+  <div class="order_details_left">
+  <div class="odl_content">
+      <h2>{{searchTitle}}</h2>
+      <p *ngIf="!showLoader" [innerHTML]="apiData">{{apiData}}</p>
+      <img *ngIf="showLoader" class="loader-center" src="/assets/imgs/loader.gif" alt="">
+     <!-- <div class="time">Updated: <span>1 month ago</span></div> -->
+  
+     <!-- <div class="help_ful_box">
+      <div class="help_left">
+        <span class="font-bold">Helpful?</span>
+        <span><a href="#"><img src="assets/svg/like.svg" width="15px" alt=""></a>  2</span>  
+        <span class="unlike"> <a href="#"><img src="assets/svg/like.svg" width="15px" alt=""></a>6</span>
+      </div>
+      <div class="help_right">
+          <a href="#"><img src="assets/svg/facebook.svg" width="22px" alt="facebook"></a>
+          <a href="#"><img src="assets/svg/twitter.svg" width="22px" alt="twitter"></a>
+              <a href="#"><img src="assets/svg/linkedin.svg" width="22px" alt="linkedin"> </a> 
+      </div>
+     </div> -->
+  </div>
+  
+  
+  
+  <!-- <div class="sub_section">
+      <div>
+          <h2>Still can’t find an answer? </h2>
+          <p>Raise a query and we will get back to you.</p>
+      </div>
+      <div class="raise_btn_bottom">
+          <div class="section section-button">
+              <ion-button type="submit" (click)="raiseQueryClick()">Raise a Query </ion-button>
+            </div>
+      </div>
+  </div> -->
+  
+  </div>
+  <div class="order_details_right">
+      <!-- <div class="faq_grid_box">
+          <div class="grid_top">
+              <img src="assets/svg/faq-icon.svg" alt="">
+              <div>
+                  <h2>Order Related</h2>
+              </div> 
+          </div>
+  
+          <ul class="recent_topic_list">
+              <li>
+                  <div><img src="assets/svg/book-icon.svg"  alt="topics"></div>
+                  <a>Can I cancel all my pending orders at once?</a>
+              </li>
+              <li>
+                  <div><img src="assets/svg/book-icon.svg"  alt="topics"></div>
+                  <a>What if I don't pledge my BNPL trades?</a>
+              </li>
+              <li>
+                  <div><img src="assets/svg/book-icon.svg"  alt="topics"></div>
+                  <a>How do I pay up my funding for the BNPL service?</a>
+              </li>
+              <li>
+                  <div><img src="assets/svg/book-icon.svg"  alt="topics"></div>
+                  <a>How do I pledge my BNPL trades?</a>
+              </li>
+              <li>
+                  <div><img src="assets/svg/book-icon.svg"  alt="topics"></div>
+                  <a>What are the charges for BNPL order?</a>
+              </li>
+              </ul>
+  
+              <a href="#" class="more">More <img src="assets/svg/more-arrow.svg" width="14px"  alt="more"></a>
+  
+  
+      </div>    -->
+  
+      <!-- <div class="faq_grid_box">
+          <div class="grid_top">
+              <img src="assets/svg/faq-icon.svg" alt="">
+              <div>
+                  <h2>Related Articles</h2>
+              </div> 
+          </div>
+  
+          <ul class="recent_topic_list">
+              <li>
+                  <div><img src="assets/svg/book-icon.svg"  alt="topics"></div>
+                  <a>Can I cancel all my pending orders at once?</a>
+              </li>
+              <li>
+                  <div><img src="assets/svg/book-icon.svg"  alt="topics"></div>
+                  <a>What if I don't pledge my BNPL trades?</a>
+              </li>
+              <li>
+                  <div><img src="assets/svg/book-icon.svg"  alt="topics"></div>
+                  <a>How do I pay up my funding for the BNPL service?</a>
+              </li>
+              <li>
+                  <div><img src="assets/svg/book-icon.svg"  alt="topics"></div>
+                  <a>How do I pledge my BNPL trades?</a>
+              </li>
+              <li>
+                  <div><img src="assets/svg/book-icon.svg"  alt="topics"></div>
+                  <a>What are the charges for BNPL order?</a>
+              </li>
+              </ul>
+  
+              <a href="#" class="more">More <img src="assets/svg/more-arrow.svg" width="14px"  alt="more"></a>
+  
+  
+      </div> -->
+  </div>
+  </div>
+  
+  
+  
+      </div>
+      <div class="raise-query-submit-box">
+          <div class="container">
+      <div class="sub_section">
+          <div>
+              <h2>Still can’t find an answer? </h2>
+              <p>Raise a query and we will get back to you.</p>
+          </div>
+          <div class="raise_btn_bottom">
+              <div class="section section-button">
+                  <ion-button type="submit" (click)="raiseQueryClick()">Raise a Query </ion-button>
+                </div>
+          </div>
+  
+          <a class="mobile-visibility" (click)="goHome()">Go to home</a>
+      </div>
+          </div>
+      </div>
+  </ion-content>

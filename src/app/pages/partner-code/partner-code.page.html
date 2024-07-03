@@ -1,0 +1,73 @@
+<ion-header class="main-header">
+    <ion-toolbar color="tertiary" class="mobile-visibility">
+        <div class="title-block title-block-custom">
+            <div class="icon-title">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <ion-title class="title">Partner Code</ion-title>
+            </div>
+        </div>
+    </ion-toolbar>
+
+ 
+    <!-- <ion-toolbar class="desktop-visibility">
+		<div class="container">
+			<div class="heading-part report-header">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<span class="heading">Partner Code</span>
+			</div>
+		</div>
+	</ion-toolbar> -->
+</ion-header>
+
+<ion-content>
+    <div class="container">
+        <div class="desktop-visibility">
+			<div class="heading-part report-header">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<span class="heading">Partner Code</span>
+			</div>
+		</div>
+        <div class="search-part" style="position: relative;">
+            <ion-searchbar search-icon="false" class="custom-searchbar" [(ngModel)]="clientSearchValue" (ionFocus)="showDropDown()" (ionBlur)="hideDropDown()"  placeholder="Search Partner Code"></ion-searchbar>
+            <!-- <ion-button class="search-button" mode="md" (click)="searchFilter()">
+                <span class="desktop-visibility">Search</span>
+                <img class="mobile-visibility" src="assets/svg/search.svg" alt="">
+            </ion-button> -->
+            <div class="drop-down-toolbar" *ngIf="isDropDownVisible">
+                <div class="drop-down thin-scroll">
+
+                    <!-- review. removed filter -->
+                    <!-- <div class="item" *ngFor="let data of clientList | filter:clientSearchValue" (click)="displayClientDetails(data)"> -->
+                    <div class="item" *ngFor="let data of clientList | filter:clientSearchValue" (click)="displayClientDetails(data)">
+                        <span class="name">{{data.ClientCode}}</span>
+                        <span class="first">{{data.ClientName}}</span>
+                    </div>
+                </div>
+            </div>
+      
+        </div>
+        <div class="detail-part" *ngIf="showDetails && dataLoad">
+            <div class="header">
+                <div class="upper">{{partnerCode}}</div>
+                <div class="lower desktop-visibility">{{partnerName}}</div>
+            </div>
+          
+            <div class="body-part">
+                <div class="listing mobile-visibility">
+                    <div class="upper" >Partner Name</div>
+                    <div class="lower">{{partnerName}}</div>
+                </div>
+                <div class="listing" *ngFor="let dataObj of details">
+                    <div class="upper" >{{dataObj['title']}}</div>
+                    <div class="lower">{{dataObj['value']}}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-part" *ngIf="!dataLoad">
+            <div class="loader" style="min-height: 200px;">
+                <img src="/assets/imgs/loader.gif" alt="">
+            </div>
+        </div>
+    </div>
+</ion-content>

@@ -1,0 +1,68 @@
+<ion-header class="mobile-visibility">
+  <ion-toolbar>
+    <div class="total-value-block">
+      <div class="block">
+        <span class="block-title"></span>
+        <span class="block-value">Avl. Margin</span>
+      </div>
+      <div class="block">
+        <span class="block-title m-b-4">Equity & Commodity</span>
+        <span class="block-value"><span class="rupees">₹</span>{{totalAvailBalance | formatNumberUnit}}</span>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="mobile-visibility">
+  <div class="data-block-parent">
+    <div class="data-block" *ngFor="let dataObj of datas">
+      <div class="left-section">
+        <div class="data">
+          <span class="data-title">{{dataObj['marginType']}}</span>
+        </div>
+      </div>
+      <div class="right-section">
+        <div class="data">
+          <span class="data-value">{{dataObj['marginValue']}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<div class="desktop-visibility">
+  <div class="web-equity thin-scroll">
+    <div class="header-part">
+      <div class="section-1">
+        <span class="title">Total available margin (Equity & Commodity)</span>
+        <div class="below-part">
+          <span class="rupees">₹</span> 
+          <span class="value">{{totalAvailBalance | formatNumberUnit}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="main-table">
+      <table class="width-100">
+        <tbody *ngIf="datas.length > 0">
+            <tr *ngFor="let dataObj of datas">
+                <td> 
+                  {{dataObj['name1']}}
+                </td>
+                <td>
+                  {{dataObj['value1']}}
+                </td>
+                <td>
+                  {{dataObj['name2']}}
+                </td>
+                <td>
+                  {{dataObj['value2']}}
+                </td>
+            </tr>
+        </tbody>
+        <tbody *ngIf="datas.length == 0">
+          <tr>
+            <td class="no-data-found">No Records Found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

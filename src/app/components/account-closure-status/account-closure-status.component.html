@@ -1,0 +1,130 @@
+<div class="desktop-visibility">
+  <br>
+  <div class="container">
+    <div class="search-section-reports search-section scriptwise">
+      <div class="d-flex w-500">
+        <ion-searchbar class="custom-searchbar" placeholder="Search Client Code/Demat ID" [debounce]="1000"
+          (ngModelChange)="searchText($event)" [(ngModel)]="searchValue">
+        </ion-searchbar>
+      </div>
+      <div class="section download_file ">
+        <div class="option-type-dp-modification" (click)="onPdfExcelDownload('excel')">
+          <img src="assets/svg/download_excel.svg" alt="">
+          <span class="tooltiptext">
+            <span>Download Report</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="web-dp-modification-details">
+      <table>
+        <thead>
+          <tr>
+            <th>
+              Client Code
+            </th>
+            <th>
+              DP ID
+            </th>
+            <th [class.active]="order === 'LetterRecvDate'" class="pointer" (click)="setOrder('LetterRecvDate')">
+              Letter Receive Date
+              <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+              <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+              <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+            </th>
+            <th>
+              Closure For
+            </th>
+            <th>
+              Customer Care
+            </th>
+            <th>
+              Customer Care Remark
+            </th>
+            <th>
+              Back Office Status
+            </th>
+            <th>
+              BO Remark
+            </th>
+            <th>
+              DP Status
+            </th>
+            <th>
+              DP Remark
+            </th>
+            <th>
+              Accounts Status
+            </th>
+            <th>
+              Account Closure Date
+            </th>
+          </tr>
+        </thead>
+
+        <tbody *ngFor="let dataObj of accountClosureStatusList | orderBy: order:val; let i = index">
+          <tr>
+            <td>
+              {{dataObj.ClientCode}}
+            </td>
+            <td>
+              {{dataObj.DpId}}
+            </td>
+            <td>
+              {{dataObj.LetterRecvDate | date : 'dd/MM/yyyy'}}
+            </td>
+            <td>
+              {{dataObj.ClosureFor}}
+            </td>
+            <td>
+              {{dataObj.CustomerCare}}
+            </td>
+            <td>
+              <div style="max-width: 150px; word-wrap: break-word;">
+                {{dataObj.RemarkCC}}
+              </div>
+            </td>
+            <td>
+              {{dataObj.BackOfficeStatus}}
+            </td>
+            <td>
+              {{dataObj.RemarkBO}}
+            </td>
+            <td>
+              {{dataObj.DpStatus}}
+            </td>
+            <td>
+              {{dataObj.RemarkDp}}
+            </td>
+            <td>
+              {{dataObj.AccountStatus}}
+            </td>
+            <td>
+              {{dataObj.AccountClosureDate}}
+            </td>
+          </tr>
+        </tbody>
+
+        <tbody *ngIf="accountClosureStatusList.length === 0 && !dataLoad">
+          <tr>
+            <td class="no-data-found text-center" colspan="12">No Records Found</td>
+          </tr>
+        </tbody>
+
+        <tbody *ngIf="dataLoad">
+          <tr>
+            <td class="no-data-found text-center" colspan="12" style="border: 0px!important; height: 200px;"><img
+                style="width:30px" src="/assets/imgs/loader.gif" alt="loader"></td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+<div class="mobile-visibility">
+  <div style="position:absolute;top:30%; left:50%">
+    <span>This feature is currently not available in mobile</span>
+  </div>
+</div>

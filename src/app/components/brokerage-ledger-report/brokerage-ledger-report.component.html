@@ -1,0 +1,136 @@
+<ion-header class="equity-deposit-container z-index-0">
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">FAN Brokerage Ledger</ion-title>
+			</div>
+		</div>
+	</ion-toolbar>
+
+	<ion-toolbar class="equity-deposit-head-content">
+		<div class="download_file">
+			<div (click)="onPdfExcelDownload('pdf')">
+				<img src="assets/svg/pdf.svg" alt="">            
+			</div>
+			<div (click)="onPdfExcelDownload('excel')">
+				<img src="assets/svg/download_excel.svg" alt="">            
+			</div>
+			</div>
+		<div class="box-container">
+			<div class="items">
+				<span class="itemtitle">Opening Balance</span>
+				<span class="itemvalue"><span class="ruppee">₹</span> {{openingBal ? openingBal : 0}}</span>
+			</div>
+			<div class="items">
+				<span class="itemtitle">Cleared Balance</span>
+				<span class="itemvalue"><span class="ruppee">₹</span> {{closingBal ? closingBal : 0}}</span>
+			</div>
+			<div class="items">
+				<span class="itemtitle">Uncleared Balance</span>
+				<span class="itemvalue"><span class="ruppee">₹</span> {{unClearedBal ? unClearedBal : 0}}</span>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+<div class="table-header desktop-visibility">
+	<table class="desktop-table">
+		<thead class="raatableHeader" style="width: 100%;" >
+			<tr>
+				<th  class="pointer">Date</th>
+				<th  class="pointer">Voucher</th>
+				<th  class="pointer">Particular</th>
+				<th  class="pointer">Credit</th>
+				<th  class="pointer">Debit</th>
+				<th  class="pointer">Balance</th>
+				<th  class="pointer">Invoice no.</th>
+				</tr>
+		</thead>
+	</table>
+</div>
+<div class="main-table thin-scroll desktop-table desktop-visibility">
+	<div class="table-block" >
+		<table class="desktop-table">
+			<tbody >
+				<tr *ngFor="let data of reportData">
+					<td>{{data['closureDate']}}</td>
+					<td>{{data['voucher']}}</td>
+					<td>{{data['description']}}</td>
+					<td class="card-amount" [ngClass]="{'positive': data.Credit != 0}">
+						<span class="ruppee">₹</span> {{data['Credit']}}</td>
+
+						<td class="card-amount" [ngClass]="{'negative': data.Debit != 0}">
+							<span class="ruppee">₹</span> {{data['Debit']}}</td>
+
+						<td class="card-balance-amount" [ngClass]="{'positive': data['Debit'] === 0, 'negative': data['Credit'] === 0}">
+						<span class="ruppee">₹</span> {{data['balance']}}</td>
+						<td>{{data['invoiceNo']}}</td>
+					</tr>
+		</tbody>
+			<tr>
+				<td colspan="7">
+					<div class="loader" [ngClass]="{'mobileScreen': commonService.isApp()}" *ngIf="reportData.length == 0 && !dataLoad">
+						<h4>No records found.</h4>
+					</div>
+				</td>
+			</tr>
+			
+			
+		</table>
+	</div>
+</div>
+<ion-content  class="mobile-visibility">
+	<div class="data-block-parent card_mobile_view" *ngFor="let data of reportData">
+		<div class="data-block bod_card">
+			<div class="upper-section" >
+                <div class="qty-block">
+					<span class="status">
+						<span class="item-title item-value">
+                            <span class="font-weight-normal">Particular</span> 
+                            {{data['description']}}</span>
+					</span>
+					
+				</div>
+            </div>
+			<ul class="bod_card_list">
+				<li>
+					<label>Date</label>
+					<span>{{data['closureDate']}}</span>
+				</li>
+				<li>
+					<label>Voucher</label>
+					<span>{{data['voucher']}}</span>
+				</li>
+				<li>
+					<label>Credit</label>
+					<span class="card-amount" [ngClass]="{'positive': data.Credit != 0}">
+						<span class="ruppee">₹</span> {{data['Credit']}}</span>
+				</li>
+				<li>
+					<label>Debit</label>
+					<span class="card-amount" [ngClass]="{'negative': data.Debit != 0}">
+						<span class="ruppee">₹</span> {{data['Debit']}}</span>
+				</li>
+				<li>
+					<label>Balance</label>
+					<span [ngClass]="{'positive': data['Debit'] === 0, 'negative': data['Credit'] === 0}">
+						<span class="ruppee">₹</span> {{data['balance']}}</span>
+				</li>
+				<li>
+					<label>Invoice no.</label>
+					<span>{{data['invoiceNo']}}</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<div  [ngClass]="{'mobileScreen': commonService.isApp()}" *ngIf="reportData.length == 0 && !dataLoad">
+		<div class="data-block-parent card_mobile_view">
+			<div class="data-block bod_card"><h5>No records found.</h5></div>
+		</div>
+	</div>
+</ion-content>	
+<div class="loader" *ngIf="dataLoad" style="position:absolute;top:50%; left:50%">
+	<img src="/assets/imgs/loader.gif" alt="">
+</div>

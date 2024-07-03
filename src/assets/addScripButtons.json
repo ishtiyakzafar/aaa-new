@@ -1,0 +1,5 @@
+[
+    {"Name":"Equity","Value":"equity", "active": 1},
+    {"Name":"Currency","Value":"currency", "active": 0},
+    {"Name":"Commodity","Value":"commodity", "active": 0}
+]

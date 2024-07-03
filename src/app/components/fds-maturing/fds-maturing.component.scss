@@ -1,0 +1,74 @@
+.sip-book {
+    ion-segment {
+        justify-content: flex-start;
+        ion-segment-button:nth-child(2) {
+            margin-left: 150px;
+        }
+    }
+}
+
+.search-section {
+    display: flex;
+    align-items: center;
+    // padding: 14px 24px;
+    flex-direction: column;
+    background: transparent;
+    padding-bottom: 0;
+    .custom-searchbar {
+        width: 84%;
+        height: 40px;
+        margin: unset;
+    }
+    .section-1 {
+        width: 100%;
+        background: #f2f4f4;
+        border-radius: 8px;
+    }
+    .section-2 {
+        align-self: flex-end;
+        margin-top: 16px;
+    }
+}
+
+.segment-block {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.last-duration-segment {
+    width: 250px;
+    justify-content: space-between;
+    margin-right: 50px;
+    ion-segment-button {
+        font-family: nunitoLight;
+        --color: #586A7A;
+        --color-checked: #fff;
+        --background-checked: #2D197F;
+        text-transform: capitalize;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+        --indicator-height: 0;
+        height: 26px;
+        min-height: 26px;
+        border-radius: 20px;
+        max-width: 100px;
+    }
+}
+
+
+.changeBtnBg{
+    ion-segment-button{
+        --background-checked: unset;
+        --color: #586A7A;
+        --color-checked: #586A7A;
+    }
+}
+.datePopover .calendar { position: absolute; right: 0px; bottom: 9px; }
+::ng-deep .datePositionRight{
+    @media (min-width:769px) {
+        right: 0 !important;
+        left: inherit !important;
+        transform: translate(-50px, 0px) !important;
+    }
+}

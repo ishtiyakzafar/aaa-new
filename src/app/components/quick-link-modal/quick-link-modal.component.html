@@ -1,0 +1,59 @@
+<div class="card_details_pop">
+    <div *ngIf="isDropDownVisible" class="overlay-div" (click)="overlayClicked($event)"></div>
+    <div class="modal_title">
+        <span>Quick Links</span>
+        <div class="pop_close" (click)="dismiss()"><img src="assets/svg/close_black.svg" width="18" alt="close"></div>
+    </div>
+    <div class="quick-madal-inner">
+        <div style="z-index: 1060" class="search-link ion-justify-content-between">
+            <div class="search-box">
+                <div class="search-left">
+                <ion-searchbar style="z-index: 1060" search-icon="false" [debounce]="1000" (ngModelChange)="searchText($event)"
+                    [(ngModel)]="searchValue" class="quick-searchbar-input m-t-0" placeholder="Search quick link"
+                    (ionFocus)="showDropDown()" (ionBlur)="hideDropDown()"></ion-searchbar>
+                </div>
+                <!-- *ngIf="isDropDownVisible" -->
+                <div class="drop-down-toolbar add-link-dropdown" *ngIf="isDropDownVisible">
+                    <!-- *ngIf="dataLoad" -->
+                    <div *ngIf="allLinks && allLinks.length>0" class="drop-down thin-scroll">
+                        <div class="quick-search-value-grid">
+                            <div *ngFor="let link of allLinks"
+                                class="d-flex ion-justify-content-between ion-align-items-center">
+                                <span>{{link.LinkName}} </span>
+                                <input type="checkbox" [disabled]="link.disable" [name]="link.LinkName" [(ngModel)]="link.Checked"
+                                    id="check-{{link.ID}}" (change)="onCheck($event,link)">
+                            </div>
+                        </div>
+                        <div class="loader" *ngIf="!listLoad">
+                            <img src="/assets/imgs/loader.gif" alt="">
+                        </div>
+                    </div>
+                    <div *ngIf="allLinks && allLinks.length == 0">
+                        <p>No data found</p>
+                    </div>
+                </div>
+            </div>
+            <div style="z-index: 1060" class="add-link-btn" (click)="addRemoveLink('ADD')">
+                <img src="assets/svg/add-plus-icon.svg" width="18" alt="add">
+                Add Quick Link
+            </div>
+        </div>
+        <div *ngIf="addedLinks.length>6" class="add-link-msg">
+            Please remove one of the existing Quick links to add more
+        </div>
+        <div class="add-link-box-grid">
+            <div *ngFor="let item of addedLinks" class="after-add-link">
+                {{item.LinkName}}
+                <img src="assets/svg/link-remove.svg" width="20" alt="remove" class="remove-link"
+                    (click)="addRemoveLink('DELETE',item)">
+            </div>
+            <div *ngFor="let _ of [].constructor(addNum - addedLinks.length); let i = index"> - </div>
+        </div>
+        <div class="loader" *ngIf="!dataLoad">
+            <img src="/assets/imgs/loader.gif" alt="">
+        </div>
+        <div class="btn-main d-flex ion-justify-content-center">
+            <div class="submit-btn" (click)="dismiss()">Done</div>
+        </div>
+    </div>
+</div>

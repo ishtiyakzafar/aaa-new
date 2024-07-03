@@ -1,0 +1,104 @@
+<ion-header>
+    <ion-toolbar color="tertiary" class="mobile-visibility">
+        <div class="title-block title-block-custom">
+            <div class="icon-title">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <ion-title class="title">Research Reports</ion-title>
+            </div>
+            <div class="search-block">
+                <ion-buttons class="header-icon-block">
+                    <ion-icon class="iconsize first-icon m-r-5" src="./assets/svg/white-home-icon.svg" (click)="goToDashboard()"></ion-icon>
+                    <ion-icon class="iconsize first-icon m-r-5" (click)="goToNotification()" src="./assets/svg/notification.svg"></ion-icon>
+                    <ion-icon class="iconsize" src="./assets/svg/search.svg" (click)="goToSearch()"></ion-icon>
+                </ion-buttons>
+            </div>
+        </div>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="container">
+        <div class="desktop-visibility">
+            <div class="res-rep-container">
+                <div class="cards" (click)="openLink('iiflBuzz')">
+                    <div class="card-detail">
+                        <img src="assets/svg/iiflbuzz.svg" alt="">
+                        <span class="card-name">IIFL BUZZ</span>
+                    </div>
+                </div>
+                <div class="cards" (click)="openLink('ipo')">
+                    <div class="card-detail">
+                        <img src="assets/svg/ipo_more.svg" alt="">
+                        <span class="card-name">IPO</span>
+                    </div>
+                </div>
+                <div class="cards" (click)="openLink('topNews')">
+                    <div class="card-detail">
+                        <img src="assets/svg/interview.svg" alt="">
+                        <span class="card-name">Top News</span>
+                    </div>
+                </div>
+            </div>
+            <div class="res-rep-container">
+                <div class="cards" (click)="openLink('mutualFundNews')">
+                    <div class="card-detail">
+                        <img src="assets/svg/newspaper.svg" alt="">
+                        <span class="card-name">Mutual Funds News</span>
+                    </div>
+                </div>
+                <div class="cards" (click)="openLink('blogs')">
+                    <div class="card-detail">
+                        <img src="assets/svg/blog_more.svg" alt="">
+                        <span class="card-name">Blogs</span>
+                    </div>
+                </div>
+                <div class="cards" (click)="mantra()">
+                    <div class="card-detail mantra-card-detail">
+                        <img src="assets/svg/morning_mantra_updated.svg" alt="">
+                        <span class="card-name">Morning Mantra</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mobile-visibility">
+            <div class="res-rep-container">
+                <div class="cards" (click)="openLink('iiflBuzz')">
+                    <div class="card-detail">
+                        <img src="assets/svg/iiflbuzz.svg" alt="">
+                        <span class="card-name">IIFL BUZZ</span>
+                    </div>
+                </div>
+                <div class="cards" (click)="openLink('ipo')">
+                    <div class="card-detail">
+                        <img src="assets/svg/ipo_more.svg" alt="">
+                        <span class="card-name">IPO</span>
+                    </div>
+                </div>
+                <div class="cards" (click)="openLink('topNews')">
+                    <div class="card-detail">
+                        <img src="assets/svg/interview.svg" alt="">
+                        <span class="card-name">Top News</span>
+                    </div>
+                </div>
+                <div class="cards" (click)="openLink('mutualFundNews')">
+                    <div class="card-detail">
+                        <img src="assets/svg/newspaper.svg" alt="">
+                        <span class="card-name">Mutual Funds News</span>
+                    </div>
+                </div>
+                <div class="cards" (click)="openLink('blogs')">
+                    <div class="card-detail">
+                        <img src="assets/svg/blog_more.svg" alt="">
+                        <span class="card-name">Blogs</span>
+                    </div>
+                </div>
+                <div class="cards">
+                    <div class="card-detail" (click)="mantra()">
+                        <img src="assets/svg/morning_mantra_updated.svg" alt="">
+                        <span class="card-name">Morning Mantra</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-content>

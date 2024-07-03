@@ -1,0 +1,30 @@
+@import 'src/app/pages/wire-requests/wire-requests.page.scss';
+
+.corner {
+    grid-column-start: 3;
+}
+
+.checkbox {
+    --background: transparent;
+    --background-checked: transparent;
+    --border-color: #cbcbcb;
+    --border-color-checked: #17c257;
+    --checkmark-color: #17c257;
+    --size: 12px;
+}
+
+.message {
+    color: #212121;
+    font-size: 14px;
+    font-family: 'nunitoBold';
+    margin-left: 8px;
+}
+
+.m-b-20 {
+    margin-bottom: 20px !important;
+}
+
+.checkbox-block {
+    display: flex;
+    align-items: center;
+}

@@ -1,0 +1,51 @@
+.sip-book {
+    ion-segment {
+        .items {
+            .upper-section {
+                flex-direction: row;
+                align-items: center;
+                min-height: unset;
+                .icon {
+                    margin-right: 10px;
+                }
+            }
+            .lower-section {
+                padding: 0 24px;
+            }
+        }
+    }
+}
+
+.search-section-changed ion-segment{
+    width: 20%;
+}
+
+.header-part {
+    .heading {
+        padding-left: 0;
+        span:first-child {
+            width: 56%;
+            padding-left: 26px;
+        }
+        span:nth-child(2), span:nth-child(3) {
+            width: 22%;
+            text-align: right;
+        }
+    }
+}
+
+.listing-part {
+    .items {
+        .left-part {
+            width: 56%;
+            .type {
+                flex: 0 0 auto;
+            }
+        }
+        .right-part {
+            width: 22%;
+            text-align: right;
+            font-size: 14px;
+        }
+    }
+}

@@ -1,0 +1,303 @@
+.common-header-all {
+    height: 255px;
+    height: unset;
+    .header-bg {
+        position: absolute;
+        background: #F7F7F7;
+        height: 243px;
+        width: 100vw;
+    }
+}
+
+.noRecord{
+    text-align: center;
+}
+
+.loader{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.21);
+    opacity: 0.7;
+    position: fixed;
+    top:0; 
+    width: 100%; left: 0; right: 0; z-index: 1060;
+}
+.common-content-section {
+    .card-type-segment {
+        // flex-wrap: wrap;
+        // justify-content: flex-start;
+        ion-segment-button {
+            min-width: 15%;
+            --padding-start: 8px;
+            --padding-end: 8px;
+            min-width: 188px;
+        }
+    }
+}
+
+@media screen and (max-width: 1100px) {
+    .card-type-segment {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        ion-segment-button {
+            min-width: 15%;
+            --padding-start: 8px;
+            --padding-end: 8px;
+        }
+    }
+}
+
+@media screen and (max-width: 1024px) and (min-width: 500px) {
+    .tab-block {
+        ion-segment {
+            .items {
+                .upper-section {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    .icon {
+                        width: 30px;
+                    }
+                }
+                .lower-section {
+                    text-align: center;
+                    display: inline-block;
+                    padding-left: 0;
+                }
+            }
+        }
+    }
+
+    
+}
+
+.custom_wrap {
+    .custom-searchbar {
+        width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    // .hierarchy-wrapper {
+    //     width: 100vw;
+    //     left: -60px;
+    //     top: 0;
+    // }
+    // .add-hierarchy-height {
+    //     // height: calc(100vh - 191px);
+    //     // max-height: calc(100vh - 191px);
+    //     padding-right: 20px;
+    //     padding-top: 20px !important;
+    // }
+    .custom-searchbar{
+        --icon-color:transparent;
+      
+    }
+    .search-button{
+        --background: transparent;
+        --color:#ffffff;
+        --box-shadow: none;
+        --padding-start:0;
+       
+    }
+    .space-around{
+        justify-content: space-around !important;
+    }
+}
+
+@media screen and (max-width: 768px) and (min-width: 500px) {
+    .tab-block {
+        ion-segment {
+            flex-wrap: wrap;
+            ion-segment-button {
+                margin-bottom: 8px;
+            }
+            
+        }
+    }
+    .aum_mb_search_btn{display: none !important;}
+    .search-section-changed{justify-content: flex-start !important;flex-wrap: wrap;}
+        .sm_none{display: none;}
+    }
+.search_flex{display: flex; justify-content: space-between; width: 100%; margin: 5px 0 0 0;}
+.search-Hierarchy{
+    border: 1px solid #d8d4d4;
+    padding-right: 40px !important;
+    z-index: 1;
+ }
+ .cross-btn{
+    position: absolute;
+    right: 10px;
+    top: 14px;
+    z-index: 2;
+    cursor: pointer;
+ }
+ .input-name-list{
+    position: relative;
+    width: 95%;
+    margin-bottom: 5px;
+ }
+ .info-drop-aum{
+    height: 100%;
+    width: calc(100% - 20px);
+    position: fixed;
+    background: transparent;
+    z-index: 1060;
+    top: 0px;
+}
+ .info_AUM{
+    position: relative;
+    margin: 0 20px 0 0;
+    width:34px;display: flex;
+    .info_tooltip{
+        
+        cursor: pointer;
+     }
+     .info_details{width:300px;padding:15px; position: absolute; right:100%;background: #FFFFFF;
+        border: 1px solid rgba(0, 0, 0, 0.04); box-shadow: 0px 3px 18px rgba(150, 150, 150, 0.24);
+        border-radius: 10px; bottom:0%; z-index: 1060;
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(33, 33, 33, 0.75);
+       &::before{content: ""; position: absolute; bottom: 15%; right: -3px; width: 10px; height: 10px; 
+        background: #fff; border-right: 1.5px solid #fff; border-bottom: 1.5px solid #fff; -webkit-transform: rotate(45deg); -ms-transform: rotate(315deg); transform: rotate(315deg); margin-top: -3px px ; z-index: 1060 !important;}
+        ul{
+            margin: 0;
+            padding: 0 20px;
+            li + li{
+                margin-top:3px;
+            }
+        }
+    }
+    
+ }
+
+ .web-equity {
+    .header-table {
+        th {
+            width: 25%;
+        }
+        th:nth-child(2) {
+            text-align: left;
+        }
+    }
+    .main-table {
+        // max-height: 260px;
+        max-height: 468px;
+        overflow: auto;
+        td {
+            width: 25%;
+        }
+        td:nth-child(2) {
+            text-align: left;
+            font-family: 'nunitoBold';
+        }
+    }
+}
+.aum-mf{
+    .web-equity {
+        .header-table {
+            th {
+                width: 15%;
+            }
+            th:nth-child(2) {
+                text-align: left;
+            }
+        }
+        .main-table {
+            // max-height: 260px;
+            max-height: 468px;
+            overflow: auto;
+            td {
+                width: 15%;
+            }
+            td:nth-child(2) {
+                text-align: left;
+                font-family: 'nunitoBold';
+            }
+        }
+    }
+}
+
+.sip-live{
+    .web-equity {
+        .header-table {
+            th {
+                width: 25%;
+            }
+            th:nth-child(2) {
+                text-align: left;
+            }
+        }
+        .main-table {
+            max-height: 380px;
+            overflow: auto;
+            td {
+                width: 25%;
+            }
+            td:nth-child(2) {
+                text-align: left;
+                font-family: 'nunitoBold';
+            }
+        }
+        td:nth-child(3), th:nth-child(3) {
+            text-align: center !important;
+        }
+    }
+    
+       
+}
+.aum-fd{
+    .web-equity {
+        .header-table {
+            th {
+                width: 20%;
+            }
+            th:nth-child(2) {
+                text-align: left;
+            }
+        }
+        .main-table {
+            // max-height: 260px;
+            max-height: 468px;
+            overflow: auto;
+            td {
+                width: 20%;
+            }
+            td:nth-child(2) {
+                text-align: left;
+                font-family: 'nunitoBold';
+            }
+        }
+    }       
+}
+
+.aum-pms{
+    .web-equity {
+        .header-table {
+            th {
+                width: 25%;
+            }
+            th:nth-child(2) {
+                text-align: left;
+            }
+        }
+        .main-table {
+            max-height: 260px;
+            max-height: 468px;
+            overflow: auto;
+            td {
+                width: 25%;
+            }
+            td:nth-child(2) {
+                text-align: left;
+                font-family: 'nunitoBold';
+            }
+        }
+    }
+    
+       
+}
+

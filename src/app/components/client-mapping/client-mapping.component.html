@@ -1,0 +1,102 @@
+<ion-header class="mobile-visibility">
+  <ion-toolbar color="tertiary">
+      <div class="title-block title-block-custom">
+          <div class="icon-title">
+              <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+              <ion-title class="title">Mapping Details</ion-title>
+          </div>
+      </div>
+</ion-toolbar>
+</ion-header>
+<form name="form" #productAct="ngForm" class="limit-change-block">
+  <div class="heading desktop-visibility">Mapping Details</div>
+  <div class="field-block">
+    <div class="section">
+      <div class="label">Select Mapping</div>
+      <ng-select (change)="changeMap($event)" class="ng-select ng-select-single" [items]="clientMapDetails" bindLabel="clientName" bindValue="clientValue" [clearable]="false" name="clientLis" [(ngModel)]="clientEntry.clientName"  #clientLis="ngModel" required>
+      </ng-select>  
+          <div *ngIf="mapSelect.length > 0" class="invalid-feedback">
+              <span>{{mapSelect}}</span>
+          </div>
+    </div>
+          <div class="section">
+      <div class="label">Mapping Type</div>
+      <ion-segment class="calculator-segment" name="fileBlockValue" [(ngModel)]="fileBlockValue" (ionChange)="mapSegmentChanged($event.detail.value)">
+        <ion-segment-button value="singleClient">Single Client</ion-segment-button>          
+        <ion-segment-button value="fileUpload">File Upload</ion-segment-button>
+        </ion-segment>
+        </div>
+          
+      <div *ngIf="clientEntry?.clientName =='algo' || clientEntry?.clientName =='algocdc'" class="section">
+      <div class="label">Algo/XTS</div>
+        <ion-segment class="client-mapping-Algo calculator-segment" name="activateBlockValue"  [(ngModel)]="activateBlockValue" (ionChange)="actionSegmentChanged($event.detail.value)">
+                    <ion-segment-button value="A" [disabled]="isClientCodeDisable">Online</ion-segment-button>
+                    <ion-segment-button value="D">Offline</ion-segment-button>
+        </ion-segment>
+
+        <div class="msg_main" (mouseenter)="onHover = !onHover" (mouseleave)="onHover = !onHover">
+          <div style="cursor: pointer;">
+            <img src="assets/svg/info.svg" width="18px" alt="info" class="info_img">
+          </div>
+          <div class="box_msg" *ngIf="onHover">
+            Online client mapping refers to Individual client mapping and Offline Client mapping refers to Client - Dealer mapping
+          </div>
+        </div>
+    </div>
+
+      <div class="section  desktop-visibility" *ngIf="isOffline">
+        <div class="label">Dealer ID</div>
+        <ion-input [disabled]="disableDealer" [ngModelOptions]="{standalone: true}" type="text" class="ion-input" [(ngModel)]="dealerListObjInput" (keyup)="typeDealerText($event)"></ion-input>
+      </div>
+
+      <div class="section  desktop-visibility" *ngIf="!isClientCodeDisable && isOffline">
+        <div class="label">Client Code</div>
+        <ion-input [ngModelOptions]="{standalone: true}" type="text" class="ion-input" [(ngModel)]="clientListObjInput" (keyup)="typeClientText($event)"></ion-input>
+      </div>
+
+    <div class="section  desktop-visibility" *ngIf="!isOffline">
+      <div class="label">Dealer ID</div>
+      <ng-select (change)="changeDealerId($event)" class="ng-select ng-select-single" [disabled]="disableDealer" [clearable]="false" [items]="dealerList" bindLabel="EmployeeCode" bindValue="EmployeeCode" name="dealerListIn" [(ngModel)]="dealerListObj"  #dealerListIn="ngModel" required>
+      </ng-select> 
+      <div *ngIf="dealerIdErr.length > 0" class="invalid-feedback">
+        <span>{{dealerIdErr}}</span>
+      </div>
+          </div>
+
+          <div class="section" *ngIf="!isClientCodeDisable && !isOffline">
+            <div class="label">Client Code</div>
+            <ng-select (change)="changeClientId($event)" class="ng-select ng-select-single" [disabled]="disableClientCode" [clearable]="false" [items]="clientCodeList" bindLabel="ClientCode" bindValue="ClientCode" name="clientList" [(ngModel)]="clientListObj"  #clientList="ngModel" required>
+                    </ng-select> 
+                    <div *ngIf="clientCodeErr.length > 0" class="invalid-feedback">
+                      <span>{{clientCodeErr}}</span>
+                    </div>
+            </div>
+
+            <div class="section file-upload" *ngIf="fileBlockValue === 'fileUpload'">
+              <div class="label">Upload File</div>
+                  <input type="file" #uploadFile (change)="handleFileInput($event)" id="file-2" class="inputfile inputfile-2">
+              <label for="file-2">
+                  <span style="width:230px;overflow: hidden;">{{fileName}}</span>
+                  <img class="svg" src="assets/svg/upload.svg" alt="">
+              </label>
+              <div class="format-message">
+                Upload .txt/.csv file for client mapping by entering client codes and corresponding dealer ids in two separate columns
+              </div>
+             <span class="invalid-feedback" *ngIf="fileNotFound.length > 0">{{fileNotFound}}</span> 
+          </div>
+          
+          <div *ngIf="clientEntry.clientName =='algo' || clientEntry.clientName =='algocdc'" class="section algo-message">
+            <p>*Note: NSE Cash and BSE Cash will not be activated for clients with no POA.</p>
+          </div>
+        
+    <div class="section section-button d-flex">
+      <button *ngIf="clientEntry?.clientName == 'NOW'" class="download_partner_cat" (click)="onViewTTMapping()">
+        View TT Mapping Status
+      </button>
+      <ion-button type="submit" (click)="onSubmit()" >Submit Request</ion-button>
+    </div>
+      </div>
+      <div class="loader-position" *ngIf="dataLoad">
+    <img src="/assets/imgs/loader.gif" alt="">
+  </div>
+</form>

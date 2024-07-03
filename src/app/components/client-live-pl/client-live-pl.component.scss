@@ -1,0 +1,146 @@
+
+
+ion-content {
+    height: calc(100vh - 219px);
+}
+
+
+
+
+.scrip-name {
+    color:#2D197F;
+    font-family: nunitoBold;
+    font-size: 17px;
+    max-width: 40vw;;
+}
+
+.loader-height-210 {
+    min-height: calc(100vh - 210px) !important;
+}
+
+.loader-height-120 {
+    min-height: 120px !important;
+}
+
+.data-block-parent {
+    // padding: 16px;
+    color: #9C9C9C;
+    font-size: 13px;padding-bottom: 58px;
+}
+
+.data-block {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    border-bottom: 1px solid #cbcbcb;
+}
+
+.data-section {
+    display: flex;
+    justify-content: space-between;
+    .item {
+        width: 32%;
+    }
+}
+
+.detail-section {
+    display: flex;
+    justify-content: space-between;
+    background: #F4F3F9;
+    padding: 12px;
+    text-align: center;
+    margin: 12px 0 0;
+}
+
+.font-14 {
+    font-size: 14px !important;
+}
+
+.qty-block {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+    .qty-value {
+        font-size: 17px;
+        color: #212121;
+        margin-left: 6px;
+    }
+}
+
+.rupees {
+    font-size: 10px;
+    padding-right: 2px;
+}
+
+.font-green {
+    font-size: 15px;
+}
+
+.detail-upper {
+    font-size: 12px;
+    color: #716A90;
+}
+
+.detail-lower {
+    font-size: 14px;
+    color: #212121;
+}
+
+// web part
+.web-equity {
+    .header-part {
+        justify-content: center;
+    }
+    .header-table {
+        th {
+            width: 12%;
+        }
+    }
+    .main-table {
+        // max-height: 184.2px;
+        max-height: 468px;
+        min-height: 184.2px;
+        overflow-y: auto;
+        td {
+            width: 12%;
+            max-width: 124px;
+        }
+    }
+    th:first-child, td:first-child {
+        width: 20% !important;
+        max-width: 260px;
+    }
+    .first-span{
+        color:#2D197F;
+        cursor: pointer;
+    }
+}
+
+.web-equity {
+    .no-data-found {
+        text-align: center !important;
+        height: 183.2px;
+    }
+}
+.refresh-block {
+    display: flex;
+    align-items: center;
+    color: #F37921;
+    margin-left: 64px;
+    ion-icon {
+        margin-right: 10px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    ion-content {
+        height: calc(100vh - 250px);
+        .no-data-found {
+            height: calc(100vh - 210px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+    }
+}

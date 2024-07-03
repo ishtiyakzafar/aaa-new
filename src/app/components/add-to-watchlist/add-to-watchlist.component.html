@@ -1,0 +1,60 @@
+<ion-header>
+  <div class="close" (click)="dismiss()">x</div>
+  <div class="title"> 
+    <span>Add to Watchlist</span>  
+  </div>
+  <table class="header-table">
+    <thead>
+      <tr>
+        <th>
+          <div class="parent-header">
+            <div class="upper-part">
+              <span class="name">{{watchListname}} </span><span class="option">{{addWatchScripCode.exchcode}},{{addWatchScripCode.exchtypecode}} 
+                <br><span style="font-size: 10px;">{{addWatchScripCode.futurevalue}}{{addWatchScripCode.strikePriceValue}}&nbsp;{{addWatchScripCode.btnName}}</span></span>
+            </div>
+            <div class="lower-part">
+              <!-- <span class="date">2 July </span><span> | </span><span>9550.00 CE</span> -->
+            </div>
+          </div>
+        </th>
+        <th>
+          <div class="parent-header">
+            <div class="upper-part" [ngStyle]="{'color':(watchPClose == 0 ||  watchLTP == watchPClose) ? '#656565' : (watchLTP > watchPClose ? '#17C257' : '#F55858')}">
+              <span>{{changeNumerAfterDecimal(watchLTP)}}</span>
+            </div>
+            <div [ngStyle]="{'color':(watchPClose == 0 || watchLTP == watchPClose) ? '#656565' : (watchLTP > watchPClose ? '#17C257' : '#F55858')}">
+              <!-- <span class="light-font">62.30(5.69%)</span> -->
+                <span *ngIf="watchPClose != 0">{{changeNumerAfterDecimal(watchLTP - watchPClose)}}&nbsp;({{changeNumerAfterDecimal((watchLTP - watchPClose)/watchPClose *100)}}%)</span>
+                <span *ngIf="watchPClose == 0">{{changeNumerAfterDecimal(watchLTP - watchPClose)}}&nbsp;(0.00%)</span>
+             </div>
+          </div>
+        </th>
+      </tr>
+    </thead>
+  </table>
+</ion-header>
+<ion-content>
+  <div class="table-wrapper thin-scroll">
+    <table class="body-table">
+      <tbody>
+        <tr *ngFor="let dataObj of marketList let i = index">
+          <td>
+            <div class="checkbox-block">
+              <ion-checkbox class="custom-checkbox" slot="start" [(ngModel)]="dataObj['isChecked']" (click)="toggle(dataObj)"></ion-checkbox>
+              <span>{{dataObj.MwatchName}}</span>
+            </div>
+          </td>
+          <td>{{dataObj.ScripCount}}/50</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- <div *ngIf="modalTitle.length == 0" class="table-wrapper no_data">
+    <span>No Data Found</span>
+  </div> -->
+</ion-content>
+<ion-footer>
+  <div class="add-btn">
+    <ion-button type="submit"  class="submit-button" shape="round"  expand="full" (click)="addStrip()">Add</ion-button>
+  </div>
+</ion-footer>

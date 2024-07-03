@@ -1,0 +1,184 @@
+<ion-header class="main-header">
+  <ion-toolbar color="tertiary" class="mobile-visibility">
+    <div class="title-block title-block-custom">
+      <div class="icon-title">
+        <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+        <ion-title class="title">Consolidated Trade Listing</ion-title>
+      </div>
+    </div>
+    <!-- <div class="change-option-mobile">
+      <img src="assets/svg/download_excel.svg" alt="">
+      <div class="change-option" (click)="onExcelDownload()">Download Report</div>
+    </div> -->
+  </ion-toolbar>
+</ion-header>
+
+
+<section class="desktop-visibility">
+   
+  <div class="container">
+
+  <div class="search-section-reports search-section scriptwise">
+    <div class="d-flex">
+        <ion-searchbar class="custom-searchbar" placeholder="Search Client Code" [debounce]="1000"
+        (ngModelChange)="searchText($event)" [(ngModel)]="searchValue">
+        </ion-searchbar>
+    </div>
+    <div class="d-flex">
+    <ion-button (click)="onExcelDownload()" class="orange-btn">
+      Export
+    </ion-button>
+  </div>
+  </div>
+  
+            <div class="web-equity thin-scroll detail-table desktop-visibility" style="margin-top:10px">
+              <div class="header-table">
+                <table style="width: 100%" class="desktop-header-table ">
+                  <thead>
+                      <tr>
+                          <th>ClientCd</th>
+                          <th>Symbol</th>
+                          <th>td_date
+                          </th>
+                          <th>Buy Qty
+                          </th>
+                          <th>Buy Rate
+                          </th>
+                          <th>Sell Qty
+                          </th>
+                          <th>Sell Rate
+                          </th>
+                          <th>RM Code
+                          </th>
+                          <th>RM Name
+                          </th>
+                          <th>RM Branch
+                          </th>
+                          <th>Trade Type
+                          </th>
+                      </tr>
+                  </thead>
+                </table>
+              </div>
+              <div class="main-table thin-scroll real_time_tbl">
+                <div class="table-block">
+                  <table class="desktop-table thin-scroll ">
+                      <tbody *ngIf="datas && datas.length > 0">
+                          <tr *ngFor="let dataObj of datas; let i = index">
+                              <td> {{dataObj['ClientCode']}}</td>
+                              <td> {{dataObj['Symbol']}}</td>
+                              <td>{{dataObj['AsOnDate']}}</td>
+                              <td>{{dataObj['BuyQty']}}</td>
+                              <td>{{dataObj['BuyRate']}}</td>
+                              <td>{{dataObj['SellQty']}}</td>
+                              <td> {{dataObj['SellRate']}}</td>
+                              <td>{{dataObj['RMCode']}}</td>
+                              <td>{{dataObj['RMName']}}</td>
+                              <td>{{dataObj['RMBranch']}}</td>
+                              <td>{{dataObj['TradeType']}}</td>
+                     </tr>
+                      </tbody>
+                      <tbody *ngIf="!dataLoad && !datas.length">
+                          <tr>
+                              <td colspan="5" class="no-data-found cntr center" style="width: 100% !important; text-align: center !important;">No Data Found</td>
+                          </tr>
+                      </tbody>
+        
+                  </table>
+                  <div class="loader" *ngIf="dataLoad">
+                    <img src="/assets/imgs/loader.gif" alt="">
+                </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+</section>
+
+<ion-content>
+<section class="mobile-visibility">
+  <div class="search-section-reports search-section scriptwise padding10px" *ngIf="!dataLoad">
+    <div class="d-flex  mb-search-w-p">
+        <ion-searchbar class="custom-searchbar" placeholder="Search Client Code" [debounce]="1000"
+        (ngModelChange)="searchText($event)" [(ngModel)]="searchValue">
+        </ion-searchbar> 
+      <ion-button (click)="onExcelDownload()" class="orange-btn">
+          Export
+      </ion-button>
+    </div>
+  </div>
+
+  <div class="grid_main" *ngIf="datas.length > 0 && !dataLoad">
+    <div class="table_grid_box" *ngFor="let dataObj of datas; let i = index">
+    <div class="table_grid">
+      <label>ClientCd</label>
+      <span>{{dataObj['ClientCode']}}</span>
+    </div>
+    
+    <div class="table_grid">
+      <label>Symbol</label>
+      <span> {{dataObj['Symbol']}}</span>
+    </div>
+    
+    <div class="table_grid">
+      <label>td_date</label>
+      <span>{{dataObj['AsOnDate']}}</span>
+    </div>
+    
+    <div class="table_grid">
+      <label>Buy Qty</label>
+      <span>{{dataObj['BuyQty']}}</span>
+    </div>
+    
+    <div class="table_grid">
+      <label>Buy Rate</label>
+      <span>{{dataObj['BuyRate']}}</span>
+    </div> 
+    
+    <div class="table_grid">
+      <label>Sell Qty</label>
+      <span>{{dataObj['SellQty']}}</span>
+    </div>
+    
+    <div class="table_grid">
+      <label>Sell Rate</label>
+      <span> {{dataObj['SellRate']}}</span>
+    </div>
+
+    <div class="table_grid">
+      <label>RM Code</label>
+      <span>{{dataObj['RMCode']}}</span>
+    </div>
+
+    <div class="table_grid">
+      <label>RM Name</label>
+      <span>{{dataObj['RMName']}}</span>
+    </div>
+
+    <div class="table_grid">
+      <label>RM Branch</label>
+      <span>{{dataObj['RMBranch']}}</span>
+    </div>
+
+    <div class="table_grid">
+      <label>Trade Type</label>
+      <span>{{dataObj['TradeType']}}</span>    </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="dataLoad" class="overlay-div">
+    <div style="position:absolute;top:30%; left:50%" *ngIf="dataLoad">
+      <img style="width:30px" src="/assets/imgs/loader.gif" alt="">
+    </div>
+  </div>
+
+  <div *ngIf="datas.length == 0 && !dataLoad" style="margin-top: 150px;">
+    <div class="text-center tableLoader"> <img class="raise-image" src="assets/svg/not_raised.svg" alt="">
+      <div class="raise-message">No Data</div>
+    </div>
+  </div>
+
+</section>
+</ion-content>
+  

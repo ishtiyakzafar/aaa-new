@@ -1,0 +1,550 @@
+
+.common-header-all {
+    height: 255px;
+    height: unset;
+    .header-bg {
+        position: absolute;
+        background: #F7F7F7;
+        height: 243px;
+        width: 100vw;
+    }
+}
+
+.noRecord{
+    text-align: center;
+}
+
+.loader{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.21);
+    opacity: 0.7;
+    position: fixed;
+    top:0; 
+    width: 100%; left: 0; right: 0; z-index: 1060;
+}
+
+.sip-book {
+    ion-segment {
+        .items {
+            .upper-section {
+                flex-direction: row;
+                align-items: center;
+                min-height: unset;
+                .icon {
+                    margin-right: 10px;
+                }
+            }
+            .lower-section {
+                padding: 0 24px;
+            }
+        }
+    }
+}
+
+.header-part {
+    .heading {
+        padding-left: 0;
+        span:first-child {
+            width: 56%;
+            padding-left: 26px;
+        }
+        span:nth-child(2), span:nth-child(3) {
+            width: 22%;
+            text-align: right;
+        }
+    }
+}
+
+.listing-part {
+    .items {
+        .left-part {
+            width: 56%;
+            .type {
+                flex: 0 0 auto;
+            }
+        }
+        .right-part {
+            width: 22%;
+            text-align: right;
+            font-size: 14px;
+        }
+    }
+}
+
+.common-content-section {
+    .card-type-segment {
+        margin-bottom: 12px;
+        justify-content: flex-start;
+    }
+}
+
+section.toggle-graph-section {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+    .toggle-section {
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+    }
+    .toggle-section-mtd {
+        justify-content: flex-end;
+        height: 30px !important;
+        align-items: center;
+    }
+}
+
+.graphCss{
+    display: block; 
+    height: 350px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 65px;
+    height: 21px;
+    .slider:before {
+        left: 9px;
+    }
+    .on {
+        top: 51%;
+        left: 34%;
+    }
+    .off {
+        top: 51%;
+        right: -11%;
+    }
+}
+
+
+
+.sip-value-block {
+    min-width: 306px;
+    display: flex;
+    padding: 12px;
+    margin-right: 16px;
+    justify-content: space-between;
+    .block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        // width: 50%;
+        .upper {
+            font-size: 13.5px;
+            color: #6E6E6E;
+            font-family: 'nunitoSemiBold';
+        }
+        .lower {
+            color: #212121;
+            font-family: 'nunitoBold';
+            font-size: 15px;
+            margin-top: 6px;
+        }
+    }
+    
+}
+
+// .visibility-hidden.sip-value-block{
+//     min-width: 0;
+//     margin-right: 0;
+// }
+
+.gross.brokerage{
+    background: #fff3eb;
+    border: 1px solid #FDAA6E;
+    padding: 3px 10px;
+    border-radius: 5px;
+    color: #BC7A4A;
+    max-width: 76%;
+    margin-right: 3%
+}
+
+
+.sip-book {
+    ion-segment {
+        .items {
+            .upper-section {
+                justify-content: flex-start;
+            }
+            .lower-section {
+                .part {
+                    span {
+                        text-align: left;
+                    }
+                }
+                .inception {
+                    margin-left: 25px;
+                    span {
+                        text-align: left;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.chart-section {
+    flex-direction: column;
+    align-items: center;
+    .note {
+        color: #E03131;
+        font-size: 14px;
+        background: #FFEBEB;
+        padding: 8px;
+        border: 1px solid #E7A2A2;
+        margin-top: 16px;
+        border-radius: 3px;
+    }
+}
+
+// .hierarchy-wrapper {
+//     // overflow: auto;
+//     // max-height: 400px;
+//     height: 0;
+//     // max-height: calc(100vh - 291px);
+//     box-shadow: 0px 4px 20px #00000029;
+//     -webkit-transition: height .5s ease;  
+//     -moz-transition: height .5s ease;  
+//     -o-transition: height .5s ease;  
+//     -ms-transition: height .5s ease;  
+//     transition: height .5s ease;
+//     position: absolute;
+//     width: 100%;
+//     background: #fff;
+//     overflow: hidden;
+//     padding-top: 0;
+// }
+
+// .hierarchy-wrapper > div{
+//     // max-height: calc(100vh - 405px);
+//     max-height: calc(100vh - 370px);
+//     overflow: auto;
+//     background: #fff;
+// }
+
+// .add-hierarchy-height {
+//     height: calc(100vh - 291px);
+//     max-height: calc(100vh - 291px);
+//     padding-top: 8px;
+// }
+
+.specificHeight{
+    height: calc(100vh - 480px);min-height: 165px !important;
+}
+
+.overlay-div{
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+    z-index: 99;
+    top: 0;
+}
+
+@media screen and (max-width: 500px) {
+    section.toggle-graph-section {
+        .toggle-section {
+            align-items: center;
+        }
+    }
+    .chart-section {
+        flex-direction: column-reverse;
+        .note {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+    }
+    .sip-value-block {
+        min-width: calc(100vw - 102px);
+    }
+    .common-content-section {
+        .card-type-segment {
+            ion-segment-button {
+                flex: 0 1 auto;
+                width: unset;
+                // min-width: 45vw !important;
+                min-width: 201px !important;
+                width: auto;
+                // min-width: unset !important;
+            }
+        }
+    }
+
+    .graphCss{
+        height: 200px; padding-top: 25px;
+    }
+
+    .custom-searchbar{
+        --icon-color:transparent;
+      
+    }
+    .search-button{
+        --background: transparent;
+        --color:#ffffff;
+        --box-shadow: none;
+        --padding-start:0;
+       
+    }
+
+    .barchart-container{
+        border:1px solid #DFE0E3;
+        padding:20px;
+        #myChart{
+            height:150px !important;
+        }
+        // canvas{
+        //     height:35vh !important;
+        // }
+    }
+   
+    // canvas{
+    //     width:1000px !important;
+    //     height:600px !important;
+    // }
+
+    @media screen and (max-width: 500px) {
+        .barchart-container{
+            padding:10px;
+            #myChart{
+                height:200px !important;
+            }
+        }
+        // canvas{
+        //     height:200px !important;
+        // }
+    }
+}
+@media screen and (max-width: 768px) and (min-width: 500px) {
+    .tab-block {
+        ion-segment {
+            flex-wrap: wrap;
+            ion-segment-button {
+                margin-bottom: 8px;
+            }
+            
+        }
+    }
+    .aum_mb_search_btn{display: none !important;}
+    .search-section-changed{justify-content: flex-start !important;flex-wrap: wrap;}
+    .sm_none{display: none;}
+}
+.search_flex{display: flex; width: 100%; margin: 5px 0 0 0;}
+
+.custom-date-block{padding: 5px 10px;  border-radius: 10px; cursor: pointer;}
+.amc_non_client .md-drppicker{margin-top: 10px !important;}
+
+
+.calculator-segment {    border: 1px solid #CBCBCB;    border-radius: 30px;    width:260px;
+    ion-segment-button {  --indicator-height: 36px;  --color: #212121;
+    font-size: 16px;--indicator-color: #f37921;--color-checked: #fff;text-transform: capitalize;
+    min-height: 36px;}
+    ion-segment-button:first-child{border-right:1px solid #00083959;}
+}
+.amc_non_client input{border: 1px solid #999999;border-radius: 6px; padding: 5px;    width: 230px;}
+.arrow-button{position: absolute; right: 5px !important; bottom: 8px; width: 12px;}
+.brokerage_tab_main{margin-bottom: 15px;}
+.search-section-changed-revamped{overflow: inherit !important;}
+
+.search-Hierarchy{
+    border: 1px solid #d8d4d4;
+    padding-right: 40px !important;
+    z-index: 1;
+ }
+ .cross-btn{
+    position: absolute;
+    right: 10px;
+    top: 14px;
+    z-index: 2;
+    cursor: pointer;
+ }
+ .input-name-list{
+    position: relative;
+    width: 95%;
+    margin-bottom: 5px;
+ }
+ .info-drop-aum{
+    height: 100%;
+    width: calc(100% - 20px);
+    position: fixed;
+    background: transparent;
+    z-index: 1060;
+    top: 0px;
+}
+ .info_AUM{
+    position: relative;
+    margin: 0 0 0 -10px; 
+    width:34px;display: flex;
+    @media (min-width:992px) {
+        margin: 0 20px 0 10px; 
+    }
+    .info_tooltip{
+        
+        cursor: pointer;
+     }
+     .info_details{width:300px;padding:15px; position: absolute; right:100%;background: #FFFFFF;
+        border: 1px solid rgba(0, 0, 0, 0.04); box-shadow: 0px 3px 18px rgba(150, 150, 150, 0.24);
+        border-radius: 10px; bottom:0%; z-index: 1060;
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(33, 33, 33, 0.75);
+       &::before{content: ""; position: absolute; bottom: 15%; right: -3px; width: 10px; height: 10px; 
+        background: #fff; border-right: 1.5px solid #fff; border-bottom: 1.5px solid #fff; -webkit-transform: rotate(45deg); -ms-transform: rotate(315deg); transform: rotate(315deg); margin-top: -3px px ; z-index: 1060 !important;}
+        ul{
+            margin: 0;
+            padding: 0 20px;
+            li + li{
+                margin-top:3px;
+            }
+        }
+    }
+    
+ }
+ .mobile-info_details{
+   
+    width:300px;padding:15px; position: absolute; left:7%;background: #FFFFFF;
+        border: 1px solid rgba(0, 0, 0, 0.04); box-shadow: 0px 3px 18px rgba(150, 150, 150, 0.24);
+        border-radius: 10px; top:42px; z-index: 1060;
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(33, 33, 33, 0.75);
+       &::before{content: ""; position: absolute; top: -5%; right: 36%; width: 10px; height: 10px; 
+        @media (max-width:500px) {
+            right: 29%; 
+        }
+        background: #fff; border-right: 1.5px solid #fff; border-bottom: 1.5px solid #fff; -webkit-transform: rotate(45deg); -ms-transform: rotate(315deg); transform: rotate(315deg); margin-top: -3px px ; z-index: 1060 !important;}
+        ul{
+            margin: 0;
+            padding: 0 20px;
+            li + li{
+                margin-top:3px;
+            }}
+ }
+
+ .brokerage-equity-table{
+    .web-equity {
+        .header-table {
+            th {
+                width: 20% !important;
+            }
+            th:nth-child(2) {
+                text-align: left;
+            }
+        }
+        .main-table {
+            // max-height: 175px;
+            max-height: 468px;
+            overflow: auto;
+            td {
+                width: 20% !important;
+            }
+            td:nth-child(2) {
+                text-align: left;
+                font-family: 'nunitoBold';
+            }
+        }
+    }
+    
+    @media screen and (max-width: 500px) {
+        .inner-content {
+            // height: calc(100vh - 550px);
+        }
+        .web-equity {
+            .header-table {
+                th {
+                    width: 23% !important;
+                }
+                th:nth-child(1) {
+                    width: 30% !important;
+                }
+                th:nth-child(2) {
+                    text-align: center;
+                }
+                th:nth-child(3) {
+                    text-align: center;
+                }
+            }
+            .main-table {
+                // max-height: 175px;
+                max-height: unset;
+                overflow: auto;
+                td {
+                    width: 23% !important;
+                }
+                td:nth-child(1) {
+                    width: 30% !important;
+                }
+                td:nth-child(2) {
+                    text-align: center;
+                    font-family: 'nunitoRegular';
+                }
+                td:nth-child(3) {
+                    text-align: center;
+                }
+            }
+        }
+        .detail-part-aum-inner {
+            .code-block {
+                .name {
+                    max-width: 28vw;
+                }
+            }
+        }
+    }
+    .desktop-visibility th { font-size: 13px; font-weight: 400; }
+    .brokerage_tbl th span{display: block; color: #000;font-weight: 600;
+        font-size: 14px;}
+    
+    .download_file{display: flex;justify-content: flex-end; gap: 10px; margin: 15px 0;}
+    .download_file > div{cursor: pointer;}
+    .download_file img{width: 16px;}
+    
+    @media screen and (max-width: 768px) {
+    .download_file{padding-right: 10px;}
+    }
+ }
+
+ .brokerage-mutual-fund-table{
+    .web-equity {
+        .header-table {
+            th {
+                width: 20%;
+            }
+            th:nth-child(2) {
+                text-align: left;
+            }
+        }
+        .main-table {
+            // max-height: 175px;
+            max-height: 468px;
+            overflow: auto;
+            td {
+                width: 20%;
+            }
+            td:nth-child(2) {
+                text-align: left;
+                font-family: 'nunitoBold';
+            }
+        }
+    }
+    
+    @media screen and (max-width: 500px){
+        .web-equity {
+            .header-table {
+                th:first-child {
+                    width:35% !important;
+                }
+            }
+            .main-table {
+                td:first-child {
+                    width:35% !important;
+                }
+            }
+        }
+    
+    }
+    
+     
+ }

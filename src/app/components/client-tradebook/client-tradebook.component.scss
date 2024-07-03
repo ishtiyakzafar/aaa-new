@@ -1,0 +1,240 @@
+
+
+ion-content {
+    height: calc(100vh - 219px);
+}
+
+
+
+
+.scrip-name {
+    color: #2D197F;
+    font-family: nunitoBold;
+    font-size: 17px;
+    max-width: 40vw;;
+}
+
+.data-block-parent {
+    // padding: 16px;
+    color: #9C9C9C;
+    font-size: 13px;padding-bottom: 58px;
+}
+
+.data-block {
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    border-bottom: 1px solid #cbcbcb;
+}
+
+.data-section {
+    display: flex;
+    justify-content: space-between;
+}
+
+.detail-section {
+    display: flex;
+    justify-content: space-between;
+    background: #F4F3F9;
+    padding: 12px;
+    text-align: center;
+    margin: 12px 0 0;
+}
+
+.font-14 {
+    font-size: 14px !important;
+}
+
+.qty-block {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+    justify-content: space-between;
+    .qty-value {
+        font-size: 17px;
+        color: #212121;
+        margin-left: 6px;
+    }
+}
+
+.rupees {
+    font-size: 14px;
+    padding-right: 2px;
+    color: #212121;
+}
+
+.font-green {
+    font-size: 15px;
+}
+
+.detail-upper {
+    font-size: 12px;
+    color: #716A90;
+}
+
+.detail-lower {
+    font-size: 14px;
+    color: #212121;
+    font-family: nunitoSemiBold;
+}
+
+// .buy {
+//     font-size: 10px;
+//     color: #17C257;
+//     background: #E5FBEE;
+//     border-radius: 8px;
+//     margin-right: 8px;
+//     height: 20px;
+//     display: flex;
+//     align-items: center;
+//     padding: 0 10px;
+//     font-family: nunitoSemiBold;
+// }
+
+.reject {
+    color: #EB2B2B;
+    font-size: 11px;
+    font-family: nunitoSemiBold;
+}
+
+.gray-block {
+    color: #9C9C9C;
+    font-size: 13px;
+}
+
+.value {
+    font-family: nunitoLight;
+    color: #212121;
+    font-size: 18px;
+}
+
+.m-r-8 {
+    margin-right: 8px;
+}
+
+.buy-block {
+    display: flex;
+    align-items: center;
+}
+
+.intraday {
+    color: #0077FF;
+    // background: #9ECAFB;
+    background: #cddff4;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+.first-span{
+    color:#2D197F;
+    cursor: pointer;
+}
+// web part
+
+.web-equity {
+    th:first-child, td:first-child {
+        width: 13.5% !important;
+    }
+    .header-table th {
+        // padding: 10px;
+        background: #F2F4F4;
+        width: 13.5%;
+        color: #6E6E6E;
+        text-align: right;
+        max-width: 156px;
+        .lower-heading {
+            color: #9C9C9C;
+            font-size: 10px;
+            font-family: nunitoLight;
+        }
+    }
+    th:nth-child(3) {
+        text-align: center !important;
+    }
+    th:nth-child(4) {
+        width: 19% !important;
+        text-align: left !important;
+        padding-left: 8px;
+    }
+    .main-table {
+        // max-height: 184.2px;
+        max-height: 468px;
+        min-height: 184.2px;
+        overflow-y: auto;
+        td {
+            // padding: 10px;
+            width: 13.5%;
+            color: #212121;
+            text-align: right;
+            max-width: 140px;
+        }
+        td:nth-child(4) {
+            width: 19% !important;
+            text-align: left;
+            padding-left: 8px;
+        }
+    }
+    // th:nth-child(6), td:nth-child(6) {
+    //     text-align: center !important;
+    //     width: 8% !important;
+    // }
+    // th:nth-child(7), td:nth-child(7) {
+    //     width: 11% !important;
+    // }
+
+    .type-data {
+        // color: #17C257;
+        font-size: 14px;
+        font-family: nunitoSemiBold;
+        // background: #E5FBEE;
+        border-radius: 5px;
+        padding: 4px 8px;
+        text-align: center;
+        max-width: 60px;
+        margin: auto;
+    }
+
+    .buy {
+        color: #17C257;  
+        background: #E5FBEE;
+    }
+
+    .sell {
+        color: #EB2B2B;
+        background: #FFE5E5;
+    }
+    
+
+    .no-data-found {
+        text-align: center !important;
+        height: 183.2px;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    ion-content {
+        height: calc(100vh - 250px);
+        .no-data-found {
+            height: calc(100vh - 210px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+    }
+}
+.refreshBtn{
+    display: flex;
+    margin: -30px 0 15px;
+    .refresh-block {
+        display: flex;
+        align-items: center;
+        color: #f37921;
+        margin-left: 10px;
+        ion-icon{
+            margin-right: 5px;
+        }
+    }
+}

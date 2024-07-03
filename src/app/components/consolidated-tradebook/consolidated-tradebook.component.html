@@ -1,0 +1,291 @@
+<ion-header>
+  <ion-toolbar class="desktop-visibility">
+    <div class="filter-part">
+      <div class="filter-option">
+        <ion-select class="filter-select" placeholder="Select One" [(ngModel)]="filterOption" (ngModelChange)="selectFilterOption($event)">
+          <ion-select-option value="client_code">Client Code</ion-select-option>
+          <ion-select-option value="scrip_name">Scrip Name</ion-select-option>
+          <ion-select-option value="product">Product</ion-select-option>
+        </ion-select>
+      </div>
+      <div class="filter-block" [ngSwitch]="filterOption">
+        <div *ngSwitchCase="'client_code'">
+          <ion-searchbar [(ngModel)]="searchTerm" placeholder="Search by Client Code" (ngModelChange)="searchType($event,'1')"></ion-searchbar>
+        </div>
+        <div *ngSwitchCase="'scrip_name'">
+          <ion-searchbar [(ngModel)]="searchTerm" placeholder="Search by Scrip Name" (ngModelChange)="searchType($event,'2')"></ion-searchbar>
+        </div>
+        <div *ngSwitchCase="'product'" class="status-block product-block">
+          <ion-segment [(ngModel)]="statusSegmentValue" class="status-segment">
+            <ion-segment-button *ngFor="let dataObj of productSegmentButton" value="{{dataObj['value']}}" (click)="changeStatus(dataObj.value)">
+              <div class="button-block">
+                <span>{{dataObj['button']}}</span>
+              </div>
+            </ion-segment-button>
+          </ion-segment>
+          <div class="refresh-block m-r-6">
+            <div class="a-z-sorting" [class.active]="order === 'DelvIntra'" [class.a-z-selected]="isAtoZSorting" (click)="sortByStatus()">
+              Sort by<span><span class="sort-by"> Products (A - Z)</span>
+              <!-- <img  class="sorting-img" src="/assets/svg/sorting.svg" alt=""> -->
+              <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+              <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+              <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+            </span>
+            </div>
+            <div class="refresh-reset" (click)="resetData('2')">
+                <img src="assets/svg/refresh_colored.svg" alt="">
+                <span class="reset">Reset</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="table-header">
+      <table class="desktop-table">
+        <thead class="width-100">
+          <tr>
+            <th>Time</th>
+            <th>Trade ID </th>
+            <th [class.active]="order === 'ClientCode'" class="pointer" (click)="setOrder('ClientCode')">Client Code
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+            </th>
+            <th>Type</th>
+            <th [class.active]="order === 'ScripName'" class="pointer" (click)="setOrder('ScripName')">Scrip 
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+            </th>
+            <th>Rate</th>
+            <th [class.active]="order === 'Qty'" class="pointer" (click)="setOrder('Qty')">Quantity 
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+            </th>
+            <th>Product</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </ion-toolbar>
+  <ion-toolbar class="search-toolbar mobile-visibility">
+    <!-- <div class="search-block">
+
+      <img class="filter-icon" src="assets/svg/filter.svg" alt="" (click)="filterPopup()">
+    </div> -->
+    <div class="filter-block" [ngSwitch]="mobilefilterOption">
+      <div *ngSwitchCase="'client_code'">
+        <div class="search-block">
+          <ion-searchbar [(ngModel)]="searchTerm" class="ion-searchbar" placeholder={{SearchPlaceHolder}}  (ngModelChange)="searchType($event,'1')"></ion-searchbar>
+          <img class="filter-icon" src="assets/svg/filter.svg" alt="" (click)="filterPopup()" *ngIf="!colorFilterIcon">
+          <img class="filter-icon" src="assets/svg/filter_colored.svg" alt="" (click)="filterPopup()" *ngIf="colorFilterIcon">
+        </div>
+      </div>
+      <div *ngSwitchCase="'scrip_name'">
+        <div class="search-block">
+          <ion-searchbar [(ngModel)]="searchTerm" class="ion-searchbar" placeholder={{SearchPlaceHolder}}  (ngModelChange)="searchType($event,'2')"></ion-searchbar>
+          <img class="filter-icon" src="assets/svg/filter.svg" alt="" (click)="filterPopup()" *ngIf="!colorFilterIcon">
+          <img class="filter-icon" src="assets/svg/filter_colored.svg" alt="" (click)="filterPopup()" *ngIf="colorFilterIcon">
+        </div>
+      </div>
+      <div *ngSwitchCase="'product'" class="status-block quantity-block">
+        <div class="segment-block">
+          <ion-segment [(ngModel)]="statusSegmentValue" class="status-segment-mobile">
+            <ion-segment-button *ngFor="let dataObj of productSegmentButton" value="{{dataObj['value']}}" (click)="changeStatus(dataObj.value)">
+              <div class="button-block">
+                <span>{{dataObj['button']}}</span>
+                <!-- <img src="/assets/svg/sorting.svg" alt="" class="sorting-img"> -->
+              </div>
+            </ion-segment-button>
+          </ion-segment>
+          <img class="filter-icon" src="assets/svg/filter.svg" alt="" (click)="filterPopup()" *ngIf="!colorFilterIcon">
+          <img class="filter-icon" src="assets/svg/filter_colored.svg" alt="" (click)="filterPopup()" *ngIf="colorFilterIcon">
+        </div>
+        <div class="refresh-parent-block">
+          <div class="a-z-sorting" [class.a-z-selected]="isAtoZSorting" [class.active]="order === 'DelvIntra'" (click)="sortByStatus()"> Sort by<span><span class="sort-by"> Products (A - Z)</span>
+            <!-- <img  class="sorting-img" src="/assets/svg/sorting.svg" alt=""> -->
+            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+          </span></div>
+          <div class="refresh-block">
+            <img src="assets/svg/refresh_colored.svg" alt="">
+            <span class="reset" (click)="resetData('2')">Reset</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+  <div class="desktop-visibility">
+  <div class="main-table thin-scroll table-block" id="desktopTableContainer" (scroll)="tableScroll($event)">
+    <!-- <table style="width: 100%" class="mobile-table"> -->
+  
+      <table  class="desktop-table" *ngIf="!isRefresh">
+
+        <!-- review. removed filter and orderBy -->
+        <!-- <tbody *ngIf="(consTradeBookData|filter:searchTerm).length > 0">
+          <tr *ngFor="let dataObj of consTradeBookData | orderBy: order:reverse | filter:searchTerm; let i = index"> -->
+        <tbody *ngIf="consTradeBookData.length > 0">
+            <tr *ngFor="let dataObj of consTradeBookData | orderBy: order:val  | slice: 0:endIndex |filter:searchTerm; let i = index">
+                <td>
+                  <div class="upper-part justify-content-start">{{dataObj.ExchangeTradeTime | formatTime}}</div>
+                  <!-- <div class="detail-part" *ngIf="dataObj['isVisible']"></div> -->
+                </td>
+                <td>
+                  <div class="upper-part">
+                    {{dataObj.ExchangeTradeID}}
+                  </div>
+                  <!-- <div class="detail-part" *ngIf="dataObj['isVisible']"></div> -->
+                </td>
+                <td>
+                  <div class="upper-part">
+                    {{dataObj.ClientCode}}
+                  </div>
+                </td>
+                <td>
+                  <div class="upper-part">
+                    <div class="type-data buy" [ngClass]="{'buy': dataObj['BuySell'] == 'B', 'sell': dataObj['BuySell'] == 'S'}">
+                      <span *ngIf="dataObj.BuySell == 'B'">BUY</span>
+                      <span *ngIf="dataObj.BuySell == 'S'">SELL</span>
+                    </div>
+                  </div>
+                  <!-- <div class="detail-part" *ngIf="dataObj['isVisible']"></div> -->
+                </td>
+                <td> 
+                  <div class="upper-part justify-content-start">
+                    <div class="td-heading first-column">
+                      <span class="first-span-block">
+                        <span class="first-span pointer" (click)="goToClientDetails(dataObj)">{{dataObj.ScripName | splitNameDate: "name"}}</span> 
+                        <span class="spanStyle">&nbsp;{{dataObj.Exch}},{{dataObj.ExchType}}</span>
+                      </span>
+                      <span class="date">{{dataObj.ScripName | splitNameDate: "date"}}</span>
+                    </div>
+                  </div>
+                  <!-- <div class="detail-part detail-part-position" *ngIf="dataObj['isVisible']">
+                    <span class="detail-heading">Requester ID</span>
+                    <span class="detail-value">S0002</span>
+                  </div> -->
+                </td>
+                <td>
+                  <div class="upper-part"><span class="rupees">₹</span>{{dataObj.Rate | formatNumerDecimal: dataObj.ExchType}}</div>
+                  <!-- <div class="detail-part detail-part-position" *ngIf="dataObj['isVisible']">
+                    <span class="detail-heading">Requester ID</span>
+                    <span class="detail-value">S0002</span>
+                  </div> -->
+                </td>
+                <td>
+                  <div class="upper-part">{{dataObj.Qty}}</div>
+                  <!-- <div class="detail-part" *ngIf="dataObj['isVisible']"></div> -->
+                </td>
+                <td>
+                  <div class="upper-part">
+                    <span *ngIf="dataObj.DelvIntra == 'D'">Delivery</span>
+                    <span *ngIf="dataObj.DelvIntra == 'I'">Intraday</span>
+                    <span *ngIf="dataObj.DelvIntra == 'S' || dataObj.DelvIntra == 'BO'">BO</span>
+                    <span *ngIf="dataObj.DelvIntra == 'C'">CO</span>
+                  </div>
+                  <!-- <div class="detail-part detail-part-position" *ngIf="dataObj['isVisible']">
+                    <span class="detail-heading">Requester ID</span>
+                    <span class="detail-value">S0002</span>
+                  </div> -->
+                </td>
+            </tr>
+        </tbody>
+
+        <!-- review. removed filter  -->
+        <!-- <tbody *ngIf="(consTradeBookData|filter:searchTerm).length == 0"> -->
+        <tbody *ngIf="(consTradeBookData|filter:searchTerm).length == 0">
+          <tr>
+            <td class="no-data-found">No Data Found</td>
+          </tr>
+        </tbody>
+      </table>
+
+    <div class="loader" *ngIf="isRefresh">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+  </div>  
+</div>
+  <ion-content class="mobile-visibility">
+  <!-- review. removed filter and orderBy -->
+  <!-- <div class="data-block-parent mobile-visibility" *ngIf="((consTradeBookData|filter:searchTerm).length > 0) && !isRefresh">
+    <div class="data-block" *ngFor="let dataObj of consTradeBookData |  orderBy: order:reverse | filter:searchTerm; let i = index"> -->
+  <div class="data-block-parent mobile-visibility"  id="mobileTableContainer" *ngIf="consTradeBookData.length > 0 && !isRefresh">
+    <div class="data-block" *ngFor="let dataObj of consTradeBookData | filter:searchTerm; let i = index">
+      <div class="upper-section" (click)="dropClick(dataObj.srNo, consTradeBookData)">
+        <div class="qty-block">
+          <div class="buy-block">
+            <div class="client-code">
+              <span class="option">Client</span>
+              <span class="client-value">{{dataObj.ClientCode}}</span>
+            </div> |
+            <span class="status" [ngClass]="{'buy': dataObj['BuySell'] == 'B', 'sell': dataObj['BuySell'] == 'S'}">
+              <span *ngIf="dataObj.BuySell == 'B'">BUY</span>
+              <span *ngIf="dataObj.BuySell == 'S'">SELL</span>
+            </span>
+          </div>
+          <!-- <span class="reject">Rejected By IIFL</span> -->
+          <span class="buy intraday">
+            <span *ngIf="dataObj.DelvIntra == 'D'">Delivery</span>
+            <span *ngIf="dataObj.DelvIntra == 'I'">Intraday</span>
+            <span *ngIf="dataObj.DelvIntra == 'S' || dataObj.DelvIntra == 'BO'">BO</span>
+            <span *ngIf="dataObj.DelvIntra == 'C'">CO</span>
+          </span>
+        </div>
+        <div class="data-section">
+          <div class="item">
+            <div class="upper scrip-name" (click)="goToClientDetails(dataObj)">{{dataObj.ScripName | splitNameDate: "name"}} <span class="gray-block">&nbsp;{{dataObj.Exch}}{{dataObj.ExchType}}</span></div>
+            <div class="lower">{{dataObj.ScripName | splitNameDate: "date"}}</div>
+          </div>
+          <div class="item">
+            <div class="upper text-right">
+              <span class="option m-r-8">Rate:</span><span class="rupees">₹</span><span class="value">{{dataObj.Rate | formatNumerDecimal: dataObj.ExchType}}</span>
+            </div>
+            <div class="upper text-right">
+              <span class="option m-r-8">Quantity:</span><span class="value">{{dataObj.Qty}}</span>
+            </div>
+        </div>
+      </div>
+      </div>
+      <div class="detail-section" *ngIf="dataObj['isVisible']">
+        <div class="detail-item">
+          <div class="detail-upper">Trade ID</div>
+          <div class="detail-lower">{{dataObj.ExchangeTradeID}}</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-upper">Trade Time</div>
+          <div class="detail-lower">{{dataObj.ExchangeTradeTime | formatTime}}</div>
+        </div>
+        <!-- <div class="detail-item">
+          <div class="detail-upper">Broker ID</div>
+          <div class="detail-lower">{{dataObj['vtd']}}</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-upper">VTD</div>
+          <div class="detail-lower">{{dataObj['validity']}}</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-upper">Validity</div>
+          <div class="detail-lower">{{dataObj['validity']}}</div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <ion-infinite-scroll *ngIf="enableNextMobile" threshold="100px" (ionInfinite)="loadDataMobile($event)">
+		<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data">
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+  <div class="mobile-visibility">
+    <div class="loader" *ngIf="isRefresh">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+  </div>
+
+  <!-- review. removed filter  -->
+  <!-- <div class="data-block-parent mobile-visibility" *ngIf="((consTradeBookData|filter:searchTerm).length == 0) && !isRefresh"> -->
+  <div class="data-block-parent mobile-visibility" *ngIf="consTradeBookData.length == 0 && !isRefresh">
+    <span class="no-data-found added-no-data-found">No Data Found</span>
+  </div>
+</ion-content>

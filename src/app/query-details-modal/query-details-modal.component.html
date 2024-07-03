@@ -1,0 +1,39 @@
+<div class="card_details_pop" >
+<div class="modal_title">
+<span>Query Details</span>
+<div class="pop_close" (click)="dismiss()"><img src="assets/svg/close_black.svg" width="18" alt="close"></div>
+</div>
+ <div class="card_details_inner">
+  <table class="query_dt_table">
+    <tr>
+      <td>Subject of query:</td>
+      <td>{{clientData['Subject'] ? clientData['Subject'] : '-'}}</td>
+    </tr>
+    <tr>
+      <td>Status:</td>
+      <td class="status close">{{clientData['StatusLabel'] ? clientData['StatusLabel'] : '-'}}</td>
+    </tr>
+    <tr>
+      <td>Ticket Raise Date:</td>
+      <td>{{clientData['Created_Time'] ? clientData['Created_Time'].slice(0,10) : '-'}}</td>
+    </tr>
+    <tr>
+      <td>Ticket Close Date:</td>
+      <td>{{clientData['Closed_Date'] ? clientData['Closed_Date'].slice(0,10) : '-'}}</td>
+    </tr>
+    <tr>
+      <td>Description by client:</td>
+      <td>{{clientData['Details'] ? clientData['Details'] : '-'}}</td>
+    </tr>
+    <tr>
+      <td>Description by support:</td>
+      <td>{{clientData['Resolution'] ? clientData['Resolution'] : '-'}}</td>
+    </tr>
+   
+    
+  </table>
+ </div> 
+
+
+</div>
+

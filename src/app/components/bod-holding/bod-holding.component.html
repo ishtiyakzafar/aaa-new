@@ -1,0 +1,891 @@
+<section>
+    <div *ngIf="isClientMapped">
+        <div *ngIf="isDiv" class="info-drop" (click)="close()">  </div>
+        
+        <div class="desktop-table overflow-hidden">
+            <div class="download_file" style="width: 100%;">
+                <div style="margin-right: 15px;" class="option-type" (click)="onPdfExcelDownload('pdf')">
+                    <img src="assets/svg/pdf.svg" alt="">            
+                </div>
+                <div class="option-type" (click)="onExcelDownload()">
+                    <img src="assets/svg/download_excel.svg" alt="">            
+                </div>
+            </div>
+        <div id="dv_Bohold">
+            <div class="top_1">
+            <div class="p_name">
+                {{passClientIdValue}}
+            </div>
+            <div class="list_view">
+                <ul class="list-none d-flex bod_list">
+                    <li>
+                        <label>Client Category</label>
+                        <span>{{headerDetailsData && headerDetailsData['ClientCategory'] ? headerDetailsData['ClientCategory'] : ''}}</span>
+                    </li>
+                    <li>
+                        <label>Cash</label>
+                        <span>{{headerDetailsData && headerDetailsData['Cash'] ? headerDetailsData['Cash'] : ''}}</span>
+                    </li>
+                    <li>
+                        <label>F&O</label>
+                        <span>{{headerDetailsData && headerDetailsData['FNO'] ? headerDetailsData['FNO'] : ''}}</span>
+                    </li>
+                    <li>
+                        <label>Wire code</label>
+                        <span>{{headerDetailsData && headerDetailsData['WireCode'] ? headerDetailsData['WireCode'] : ''}}</span>
+                    </li>
+                    <li>
+                        <label>POA.</label>
+                        <span>{{headerDetailsData && headerDetailsData['POA'] ? headerDetailsData['POA'] : ''}}</span>
+                    </li>
+                    <li>
+                        <label>Activation Date</label>
+                        <span>{{headerDetailsData && headerDetailsData['ActivationDate'] ? formatChange(headerDetailsData['ActivationDate']) : ''}}</span>
+                    </li>
+                    <li (click)="displayAdditionalHeaders = !displayAdditionalHeaders">
+                        <div class="upper-part">
+                            <ion-icon class="arrow-button bod-header-mr-10" src="./assets/svg/down-arrow.svg"
+                                *ngIf="!displayAdditionalHeaders"></ion-icon>
+                            <ion-icon *ngIf="displayAdditionalHeaders" class="rotate arrow-button down-arrow-button bod-header-mr-10"
+                                src="./assets/svg/down-arrow.svg"></ion-icon>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="list-none d-flex bod_list" *ngIf="displayAdditionalHeaders">
+                    <li>
+                        <label>Dormant</label>
+                        <span>{{headerDetailsData && headerDetailsData['IsDormant'] ? headerDetailsData['IsDormant'] : ''}}</span>
+                    </li>
+                    <li>
+                        <label>Freeze</label>
+                        <span>{{headerDetailsData && headerDetailsData['IsFreeze'] ? headerDetailsData['IsFreeze'] : ''}}</span>
+                    </li>
+                    <li>
+                        <label>Product Plan</label>
+                        <span>{{headerDetailsData && headerDetailsData['ProductPlan'] ? headerDetailsData['ProductPlan'] : ''}}</span>
+                    </li>
+                    <li>
+                        <label>BMFD</label>
+                        <span>{{headerDetailsData && headerDetailsData['BMFD'] ? headerDetailsData['BMFD'] : ''}}</span>
+                    </li>
+                </ul>
+            </div>
+            </div>
+       
+            <div class="three_block">
+                <div class="three_grid_box">   
+                    <h3 class="h_size font-weight-700">Ledger Balance</h3>
+                    <div class="d-flex">
+                    <ul class="list-none">
+                        <li>
+                            <label>ALB</label>
+                            <span [ngClass]="{'alb-color': headerDetailsData && headerDetailsData['ALB'] && convertFunc(headerDetailsData['ALB']) < 0}">{{headerDetailsData && headerDetailsData['ALB'] ? convertFunc(headerDetailsData['ALB']) : ''}}</span>
+                        </li>
+                        <li>
+                            <label>Uncl. Cheque</label>
+                            <span>{{headerDetailsData && headerDetailsData['UnclCheque'] ? convertFunc(headerDetailsData['UnclCheque']) : ''}}</span>
+                        </li>
+                        <li>
+                            <label>MtoM Dr/ Cr</label>
+                            <span>{{headerDetailsData && headerDetailsData['MtoMDrCr'] ? convertFunc(headerDetailsData['MtoMDrCr']) : ''}}</span>
+                        </li>
+                        
+                            <li>
+                                <label>Led. Bal. (T2)</label>
+                                <span>{{headerDetailsData && headerDetailsData['LedBalT2'] ? convertFunc(headerDetailsData['LedBalT2']) : ''}}</span>
+                            </li>
+                            <li>
+                                <label>FDR</label>
+                                <span>{{headerDetailsData && headerDetailsData['FDR'] ? convertFunc(headerDetailsData['FDR']) : ''}}</span>
+                            </li>
+                            <li>
+                                <label>BMFD / BNPL Ledger Balance</label>
+                                <span>{{headerDetailsData && headerDetailsData['BMFDBNPLLedgerBalance'] ? convertFunc(headerDetailsData['BMFDBNPLLedgerBalance']) : ''}}</span>
+                            </li>
+                        </ul>
+                    </div>
+                       
+                </div>
+                <div class="three_grid_box">
+                    <h3 class="h_size font-weight-700">Holdings</h3>
+                    <div class="d-flex">
+                        <ul class="list-none">
+                            <li>
+                                <label>Networth</label>
+                                <span>{{headerDetailsData && headerDetailsData['NetWorth'] ? convertFunc(headerDetailsData['NetWorth']) : ''}}</span>
+                            </li>
+                            <li class="info_main">
+                                <label>Span+ Exposure margin </label>
+                                <span class="d-flex">{{headerDetailsData && headerDetailsData['SpanExposureMargin'] ? convertFunc(headerDetailsData['SpanExposureMargin']) : ''}}
+                                    <img src="assets/svg/info.svg" width="18px" alt="info" class="info_img" (click)="toggleFlag()">
+                                    <div class="info_details" *ngIf="isShow">
+                                        <div (click)="close()">
+                                        <h2>Breakdown</h2>
+                                        
+                                        <div class="d-flex break_down_grid_main">
+                                        <label>NSE</label>
+                                        <div class="break_down_grid">
+                                            <span>Derivative Span</span>
+                                            <span>{{headerDetailsData && headerDetailsData['NSEDerivativeSpan'] ? convertFunc(headerDetailsData['NSEDerivativeSpan']) : ''}}</span>
+                                            <span>Derivative Exposure</span>
+                                            <span>{{headerDetailsData && headerDetailsData['NSEDerivativeExposure'] ? convertFunc(headerDetailsData['NSEDerivativeExposure']) : ''}}</span>
+                                            <span>Currency Span</span>
+                                            <span>{{headerDetailsData && headerDetailsData['NSECurrencySpan'] ? convertFunc(headerDetailsData['NSECurrencySpan']) : ''}}</span>
+                                            <span>Currency Exposure</span>
+                                            <span>{{headerDetailsData && headerDetailsData['NSECurrencyExposure'] ? convertFunc(headerDetailsData['NSECurrencyExposure']) : ''}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex break_down_grid_main">
+                                        <label>BSE</label>
+                                        <div class="break_down_grid">
+                                            <span>Derivative Span</span>
+                                            <span>{{headerDetailsData && headerDetailsData['BSEDerivativeSpan'] ? convertFunc(headerDetailsData['BSEDerivativeSpan']) : ''}}</span>
+                                            <span>Derivative Exposure</span>
+                                            <span>{{headerDetailsData && headerDetailsData['BSEDerivativeExposure'] ? convertFunc(headerDetailsData['BSEDerivativeExposure']) : ''}}</span>
+                                        </div>
+                                        </div>
+                                        <div class="d-flex break_down_grid_main">
+                                        <label>MCX</label>
+                                        <div class="break_down_grid">
+                                            <span>Currency Span</span>
+                                            <span>{{headerDetailsData && headerDetailsData['MCXCurrencySpan'] ? convertFunc(headerDetailsData['MCXCurrencySpan']) : ''}}</span>
+                                            <span>Currency Exposure</span>
+                                            <span>{{headerDetailsData && headerDetailsData['MCXCurrencyExposure'] ? convertFunc(headerDetailsData['MCXCurrencyExposure']) : ''}}</span>
+                                            <span>Commodity Span</span>
+                                            <span>{{headerDetailsData && headerDetailsData['CommoditySpan'] ? convertFunc(headerDetailsData['CommoditySpan']) : ''}}</span>
+                                        </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                            </span>
+                            </li>
+                            <li>
+                                <label>Margin THV</label>
+                                <span>{{headerDetailsData && headerDetailsData['MarginTHV'] ? convertFunc(headerDetailsData['MarginTHV']) : ''}}</span>
+                            </li>
+                        
+                        <li>
+                            <label>Margin AGHV</label>
+                            <span>{{headerDetailsData && headerDetailsData['MarginGHV'] ? convertFunc(headerDetailsData['MarginGHV']) : ''}}</span>
+                        </li>
+                        <li>
+                            <label>Margin AHV</label>
+                            <span>{{headerDetailsData && headerDetailsData['MarginAHV'] ? convertFunc(headerDetailsData['MarginAHV']) : ''}}</span>
+                        </li>
+                        <li>
+                            <label>AHV Cover</label>
+                            <span>{{headerDetailsData && headerDetailsData['AHVCover'] ? headerDetailsData['AHVCover'] : ''}}</span>
+                        </li>
+                        <li>
+                            <label>AGHV Cover</label>
+                            <span>{{headerDetailsData && headerDetailsData['GHVCover'] ? headerDetailsData['GHVCover'] : ''}}</span>
+                        </li>
+                    </ul>
+                    </div>
+                </div>
+                <!-- <div class="three_grid_box">
+                    <h3 class="h_size font-weight-700">Covers</h3>
+                <div class="d-flex">
+                    <ul class="list-none">
+                        <li>
+                            <label>AGHV cover</label>
+                            <span>{{headerDetailsData && headerDetailsData['GHVCover'] ? headerDetailsData['GHVCover'] : ''}}</span>
+                        </li>
+                        <li>
+                            <label>AHV cover</label>
+                            <span>{{headerDetailsData && headerDetailsData['AHVCover'] ? headerDetailsData['AHVCover'] : ''}}</span>
+                        </li>
+                   
+                   
+                    </ul>
+                </div>
+                </div> -->
+            </div>
+        </div>
+
+        <div class="client_name_block_main">
+            <div class="icon-block pointer" (click)="clientDetailsPopup()">
+              <img src="assets/svg/client_details_person.svg" alt="" class="width-14">
+              <span>Clients Details</span>
+            </div>
+            <div class="icon-block pointer" (click)="goToShareReport()">
+              <img src="assets/svg/client_details_share.svg" alt="">
+              <span>Share Report</span>
+            </div>
+            <div class="icon-block pointer"  (click)="goToBrokeragePlan()">
+              <img src="assets/imgs/search_detail.png" alt="">
+              <span>Brokerage & DP Charges</span>
+            </div>
+          <div *ngIf="isOnlyRM == 'RM'" class="icon-block pointer"  (click)="goToClientInteractions()">
+              <img src="assets/imgs/client_interactions.svg" alt="">
+              <span>Client Interactions</span>
+            </div>
+        
+            <div class="icon-block pointer" (click)="displyPopupClientProfile()">
+              <img src="assets/imgs/client_profile_icon.svg" alt="">
+              <span>Client Profile</span>
+            </div>
+          </div>
+
+
+        <div class="search-section segment-section">
+            <!-- <ion-searchbar class="custom-searchbar" debounce="2000" placeholder="Search for client name or client code">
+            </ion-searchbar> -->
+            <div class="seg-one">          
+                <ion-segment class="header-segment-bottom d-flex" [(ngModel)]="equityBlockTabValue"
+                    (ionChange)="equityBlockSegmentChanged(equityBlockTabValue)">
+                    <div *ngFor="let data of equityBlockButton; let i = index">
+                        <ion-segment-button value={{data.Value}}>
+                            {{data.Name}}
+                        </ion-segment-button>
+                    </div>                   
+                </ion-segment>
+               
+            </div>
+
+            <div class="download_file" style="width: 100%;">
+                <div style="margin-right: 15px;" class="option-type" (click)="onDownloadReport('pdf')">
+                    <img src="assets/svg/pdf.svg" alt="">            
+                </div>
+            </div>
+           
+        </div>
+
+        
+        </div>
+
+<div class="container desktop-table desktop-overflow">
+        <div class="segment-parent-block" [ngSwitch]="equityBlockTabValue">
+            <div class="segment-block-child" *ngSwitchCase="'equity'">
+                <div class="box-container">
+                    <div class="items">
+                        <span class="itemtitle">Total</span>
+                        <span class="itemvalue value-bold">{{bodHoldingList && bodHoldingList.Total && convertFunc(bodHoldingList.Total)}}</span>
+                    </div>
+                    <div class="items">
+                        <span class="itemtitle">ZHV</span>
+                        <span class="itemvalue value-bold">{{bodHoldingList && bodHoldingList.Zhv && convertFunc(bodHoldingList.Zhv)}}</span>
+                    </div>
+                    <div class="items">
+                        <span class="itemtitle">AGHV</span>
+                        <span class="itemvalue value-bold">{{bodHoldingList && bodHoldingList.Aghv && convertFunc(bodHoldingList.Aghv)}}</span>
+                    </div>
+                </div>
+               
+                <div class="main-table-1 ">
+                    <!-- <table style="width: 100%" class="mobile-table"> -->
+                    <div class="table-block"  *ngIf="dataLoad">
+                        <table class="desktop-table">
+                            <thead style="width: 100%">
+                                <tr>
+                                    <th [class.active]="order === 'ClientId'" class="pointer">Seg.
+                                        <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                        <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                            *ngIf="ascending">
+                                        <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                            *ngIf="!ascending"> -->
+                                    </th>
+                                    <th [class.active]="order === 'ScripName'" class="pointer" (click)="setOrder('ScripName')">Scrip Name
+                                        <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                        <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                            *ngIf="ascending">
+                                        <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                            *ngIf="!ascending"> -->
+                                    </th>
+                                    <th [class.active]="order === 'Closingprice'" class="pointer" (click)="setOrder('Closingprice')">Cl. Price
+                                        <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                        <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                            *ngIf="ascending">
+                                        <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                            *ngIf="!ascending"> -->
+                                    </th>
+                                    <th [class.active]="order === 'TotalVal'" class="pointer" (click)="setOrder('TotalVal')">Total Value
+                                        <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                        <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                            *ngIf="ascending">
+                                        <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                            *ngIf="!ascending"> -->
+                                    </th>
+                                    <th [class.active]="order === 'HaircutPer'" class="pointer" (click)="setOrder('HaircutPer')">H/C %
+                                        <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                        <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                            *ngIf="ascending">
+                                        <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                            *ngIf="!ascending"> -->
+                                    </th>
+                                    <th [class.active]="order === 'AdjHold'" class="pointer" (click)="setOrder('AdjHold')">AdjHold
+                                        <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                        <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                            *ngIf="ascending">
+                                        <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                            *ngIf="!ascending"> -->
+                                    </th>
+                                    <th [class.active]="order === 'TotalSum'" class="pointer text-right" (click)="setOrder('TotalSum')">TotalQty
+                                        <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                        <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                            *ngIf="ascending">
+                                        <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                            *ngIf="!ascending"> -->
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody *ngIf="bodHoldingList && bodHoldingList.BODHolding && bodHoldingList.BODHolding.length > 0">
+
+                                <tr *ngFor="let dataObj of bodHoldingList.BODHolding | orderBy: order:val; let i = index" >
+                                    <td>
+                                        <div class="upper-part justify-content-start"
+                                            [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                            {{dataObj['Segment']}}
+                                        </div>
+                                        <div class="detail-part-fix" #detail *ngIf="dataObj['isVisible']">
+                                            <div class="detail-part">
+                                                <span class="detail-heading">BMFD Funded</span>
+                                                <span class="detail-value">{{dataObj['BMFDFunded']}}</span>
+                                            </div>
+                                            <div class="detail-part">
+                                                <span class="detail-heading">BMFD Ear Mark</span>
+                                                <span class="detail-value">{{dataObj['BMFDEarmark']}}</span>
+                                            </div>
+                                            <div class="detail-part">
+                                                <span class="detail-heading">BMFD Funded Pledge</span>
+                                                <span class="detail-value">{{dataObj['BMFDFundedPledge']}}</span>
+                                            </div>
+                                            <div class="detail-part">
+                                                <span class="detail-heading">BMFD Earmarked Pledge</span>
+                                                <span class="detail-value">{{dataObj['BMFDEarmarkedPledge']}}</span>
+                                            </div>
+                                            <div class="detail-part">
+                                                <span class="detail-heading">NSDL Pledge Margin</span>
+                                                <span class="detail-value">{{dataObj['NSDLPledgeMargin']}}</span>
+                                            </div>
+                                            <div class="detail-part">
+                                                <span class="detail-heading">CDSL Pledge Margin</span>
+                                                <span class="detail-value">{{dataObj['CDSLPledgeMargin']}}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="upper-part"
+                                            [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                            {{dataObj['ScripName']}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="upper-part"
+                                            [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                            {{dataObj['Closingprice']}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="upper-part"
+                                            [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                            {{dataObj['TotalVal']}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="upper-part"
+                                            [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                            {{dataObj['HaircutPer']}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="upper-part"
+                                            [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                            {{dataObj['AdjHold']}}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="upper-part upper-quantity"
+                                            [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                            {{dataObj['TotalSum']}}
+                                            <span class="info" (click)="tableToggle(dataObj,bodHoldingList.BODHolding,dataObj.srNo)"><img  src="assets/svg/info.svg" width="18px" alt="info" class="info_img"></span>
+                                            <div class="info_details info-breakdown" *ngIf="dataObj.onShow">
+                                                <div (click)="close()">
+                                                <h2>Breakdown</h2>
+                                                <ul class="breakdown-list">
+                                                    <li>
+                                                    <span>CDSL</span>
+                                                    <span>{{dataObj['CDSL']}}</span>
+                                                </li>
+                                                <li>
+                                                    <span>NSDL</span>
+                                                    <span>{{dataObj['NSDL']}}</span>
+                                                </li>
+                                            <li>
+                                                    <span>Pool</span>
+                                                    <span>{{dataObj['Pool']}}</span>
+                                                </li>
+                                            
+                                            <li>
+                                                    <span>MF</span>
+                                                    <span>{{dataObj['MF']}}</span>
+                                                </li>
+                                            <li>
+                                                    <span>Exp.</span>
+                                                    <span>{{dataObj['Exp']}}</span>
+                                                </li>
+                                            <li>
+                                                    <span>Coll</span>
+                                                    <span>{{dataObj['Coll']}}</span>
+                                                </li>
+                                            <li>
+                                                    <span>BSE</span>
+                                                    <span>{{dataObj['BSE']}}</span>
+                                                </li>
+                                            <li class="lastrow">
+                                                <span></span>
+                                                <span></span>
+                                            </li>    
+                                            <li>
+                                                <label>Total Qty</label>
+                                                <span>{{dataObj['TotalSum']}}</span>
+                                            </li>
+                                            </ul>
+                                        </div>
+                                            </div>
+                                        </div>
+                                    
+                                
+                                    </td>
+                                    <td (click)="dropClick(dataObj.srNo ,bodHoldingList.BODHolding)">
+                                        <div class="upper-part"
+                                            [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                            <ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg"
+                                                *ngIf="!dataObj['isVisible']"></ion-icon>
+                                            <ion-icon *ngIf="dataObj['isVisible']" class="rotate arrow-button down-arrow-button"
+                                                src="./assets/svg/down-arrow.svg"></ion-icon>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody *ngIf="bodHoldingList && bodHoldingList.BODHolding && bodHoldingList.BODHolding.length == 0">
+                                <tr>
+                                    <td colspan=7 class="no-data-found text-center">No Data Found</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="segment-block-child" *ngSwitchCase="'fo'">
+                <div class="box-container">
+                    <div class="items">
+                        <span class="itemtitle">Total</span>
+                        <span class="itemvalue value-bold">{{bodHoldingList && bodHoldingList.Total && convertFunc(bodHoldingList.Total)}}</span>
+                    </div>
+                </div>
+                <div class="main-table-1 desktop-visibility">
+                    <!-- <table style="width: 100%" class="mobile-table"> -->
+                        <div class="table-block">
+                            <table class="desktop-table">
+                                <thead style="width: 100%">
+                                    <tr>
+                                        <th>Exchange
+                                        </th>
+                                        <th>Exchange Type
+                                        </th>
+                                        <th [class.active]="order === 'Symbol'" class="pointer" (click)="setOrder('Symbol')">Symbol
+                                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                                *ngIf="ascending">
+                                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                                *ngIf="!ascending">
+                                        </th>
+                                        <th>Product</th>
+                                      
+                                        <th [class.active]="order === 'Expiry'" class="pointer" (click)="setOrder('Expiry')">FO_ExpiryDt
+                                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                                *ngIf="ascending">
+                                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                                *ngIf="!ascending">
+                                        </th>
+                                        <th [class.active]="order === 'CallPut'" class="pointer" (click)="setOrder('CallPut')">CallPut
+                                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                                *ngIf="ascending">
+                                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                                *ngIf="!ascending">
+                                        </th>
+                                        <th [class.active]="order === 'StkPrice'" class="pointer" (click)="setOrder('StkPrice')">StkPrice
+                                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                                *ngIf="ascending">
+                                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                                *ngIf="!ascending">
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="bodHoldingList && bodHoldingList.FNOHolding && bodHoldingList.FNOHolding.length > 0">
+                       
+                                    <tr *ngFor="let dataObj of bodHoldingList.FNOHolding | orderBy: order:val; let i = index" (click)="dropClick(dataObj.srNo ,bodHoldingList.FNOHolding)">
+                                        <td>
+                                            <div class="upper-part justify-content-start"
+                                                [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                                {{dataObj['Exchange']}}
+                                            </div>
+                                            <div class="detail-part-fix" #detail *ngIf="dataObj['isVisible']">
+                                                <div class="detail-part">
+                                                    <span class="detail-heading">Buy</span>
+                                                    <span class="detail-value">{{dataObj['Buy']}}</span>
+                                                </div>
+                                                <div class="detail-part">
+                                                    <span class="detail-heading">Sell</span>
+                                                    <span class="detail-value">{{dataObj['Sell']}}</span>
+                                                </div>
+                                                <div class="detail-part">
+                                                    <span class="detail-heading">Net</span>
+                                                    <span class="detail-value">{{dataObj['Net']}}</span>
+                                                </div>
+                                                <div class="detail-part">
+                                                    <span class="detail-heading">AvgRate</span>
+                                                    <span class="detail-value">{{dataObj['AvgRate']}}</span>
+                                                </div>
+                                                <div class="detail-part">
+                                                    <span class="detail-heading">LastPrice</span>
+                                                    <span class="detail-value">{{dataObj['LastPrice']}}</span>
+                                                </div>
+                                                <div class="detail-part">
+                                                    <span class="detail-heading">Margin</span>
+                                                    <span class="detail-value">{{dataObj['Margin']}}</span>
+                                                </div>
+                                                <div class="detail-part">
+                                                    <span class="detail-heading">Value</span>
+                                                    <span class="detail-value">{{dataObj['Value']}}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part"
+                                                [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                                {{dataObj['ExchangeType']}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part"
+                                                [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                                {{dataObj['Symbol']}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part"
+                                                [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                                {{dataObj['Product']}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part"
+                                                [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                                {{dataObj['Expiry']}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part"
+                                                [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                                {{dataObj['CallPut'] == " " ? '-' : dataObj['CallPut'] }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part"
+                                                [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                                {{dataObj['StkPrice']}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part"
+                                                [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                                <ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg"
+                                                    *ngIf="!dataObj['isVisible']"></ion-icon>
+                                                <ion-icon *ngIf="dataObj['isVisible']" class="rotate arrow-button down-arrow-button"
+                                                    src="./assets/svg/down-arrow.svg"></ion-icon>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="bodHoldingList && bodHoldingList.FNOHolding && bodHoldingList.FNOHolding.length == 0">
+                                    <tr>
+                                        <td colspan=7 class="no-data-found text-center">No Data Found</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                </div>
+            </div>
+            <div class="segment-block-child" *ngSwitchCase="'slbm'">
+                <div class="box-container">
+                    <div class="items">
+                        <span class="itemtitle">Total</span>
+                        <span class="itemvalue value-bold">{{bodHoldingList && bodHoldingList.Total && convertFunc(bodHoldingList.Total)}}</span>
+                    </div>
+                </div>
+                <div class="main-table-1 thin-scroll desktop-visibility">
+                    <!-- <table style="width: 100%" class="mobile-table"> -->
+                    <div class="table-block">
+                        <div class="table-block">
+                            <table class="desktop-table">
+                                <thead style="width: 100%">
+                                    <tr>
+                                        <th>Exch
+                                        </th>
+                                        <th>ExchType
+                                        </th>
+                                        <th>Date</th>
+                                        <th [class.active]="order === 'Symbol'" class="pointer" (click)="setOrder('Symbol')">Symbol
+                                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                                *ngIf="ascending">
+                                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                                *ngIf="!ascending">
+                                        </th>
+                                        <th>Series
+                                        </th>
+                                        <th>BLFlag
+                                        </th>
+                                        <th [class.active]="order === 'ExpDate'" class="pointer" (click)="setOrder('ExpDate')">ExpDate
+                                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                                *ngIf="ascending">
+                                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                                *ngIf="!ascending">
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="bodHoldingList && bodHoldingList.SLBMHolding && bodHoldingList.SLBMHolding.length > 0">
+             
+                                    <tr *ngFor="let dataObj of bodHoldingList.SLBMHolding | orderBy: order:val; let i = index" (click)="dropClick(dataObj.srNo ,bodHoldingList.SLBMHolding)">
+                                        <td>
+                                            <div class="upper-part justify-content-start"
+                                                [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                                {{dataObj['Exchange']}}
+                                            </div>
+                                            <div class="detail-part-fix" #detail *ngIf="dataObj['isVisible']">
+                                                <div class="detail-part">
+                                                    <span class="detail-heading">Price</span>
+                                                    <span class="detail-value">{{dataObj['Price']}}</span>
+                                                </div>
+                                                <div class="detail-part">
+                                                    <span class="detail-heading">Buy Qty</span>
+                                                    <span class="detail-value">{{dataObj['BuyQty']}}</span>
+                                                </div>
+                                                <div class="detail-part">
+                                                    <span class="detail-heading">Sell Qty</span>
+                                                    <span class="detail-value">{{dataObj['SellQty']}}</span>
+                                                </div>
+                                                <div class="detail-part">
+                                                    <span class="detail-heading">Net Qty</span>
+                                                    <span class="detail-value">{{dataObj['SellQty']}}</span>
+                                                </div>
+                                                <div class="detail-part">
+                                                    <span class="detail-heading">Value</span>
+                                                    <span class="detail-value">{{dataObj['Values']}}</span>
+                                                </div>
+                                                <!-- <div class="detail-part">
+                                                    <span class="detail-heading">CDSL Pledge Margin</span>
+                                                    <span class="detail-value">{{dataObj['moreDetails'][0]['csdlPledgeMargin']}}</span>
+                                                </div> -->
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part"
+                                                [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                                {{dataObj['ExchangeType']}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part"
+                                                [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                                {{dataObj['Date']}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part"
+                                                [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                                {{dataObj['Symbol']}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part"
+                                                [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                                {{dataObj['Series']}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part"
+                                                [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                                {{dataObj['BLFlag']}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part"
+                                                [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                                {{dataObj['ExpDate']}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part"
+                                                [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                                <ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg"
+                                                    *ngIf="!dataObj['isVisible']"></ion-icon>
+                                                <ion-icon *ngIf="dataObj['isVisible']" class="rotate arrow-button down-arrow-button"
+                                                    src="./assets/svg/down-arrow.svg"></ion-icon>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="bodHoldingList && bodHoldingList.SLBMHolding && bodHoldingList.SLBMHolding.length == 0">
+                                    <tr>
+                                        <td colspan=7 class="no-data-found text-center">No Data Found</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="segment-block-child" *ngSwitchCase="'col'">
+                    <div class="detail-part-fix-2 grd_inhrit" #detail>
+                       
+                            <ul class="Collateral_Benefit">
+                                <li>
+                                    <label class="detail-heading head-change">Total</label>
+                                    <span class="detail-value value-bold">{{bodHoldingList && bodHoldingList.Total ? convertFunc(bodHoldingList.Total) : '0.00'}}</span>
+                                </li>
+                                <li>
+                                    <label class="detail-heading">Collateral Benefit</label>
+                                    <span class="detail-value value-bold">{{bodHoldingList && bodHoldingList.Collateral_Benefit ? convertFunc(bodHoldingList.Collateral_Benefit) : '00'}}</span>
+                                </li>
+                        
+                                <li>
+                                    <label class="detail-heading">Cash Collateral</label>
+                                    <span class="detail-value value-bold">{{bodHoldingList && bodHoldingList.Cash_Collateral ? convertFunc(bodHoldingList.Cash_Collateral) : '00'}}</span>
+                                </li>
+                                </ul>
+                                <ul class="Collateral_Benefit">
+                                <li>
+                                    <label class="detail-heading">Eligible Amount</label>
+                                    <span class="detail-value value-bold">{{bodHoldingList && bodHoldingList.Eligible_amount ? convertFunc(bodHoldingList.Eligible_amount) : '00'}}</span>
+                                </li>
+                        
+                                <li>
+                                    <label class="detail-heading">Non Cash Collateral</label>
+                                    <span class="detail-value value-bold">{{bodHoldingList && bodHoldingList.Non_Cash_Collateral ? convertFunc(bodHoldingList.Non_Cash_Collateral) : '00'}}</span>
+                                </li>
+                                <li>
+                                    <label class="detail-heading">Applicable non Cash</label>
+                                    <span class="detail-value value-bold"> {{bodHoldingList && bodHoldingList.Applicable_Non_Cash ? convertFunc(bodHoldingList.Applicable_Non_Cash) : '00'}} </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                
+                <div class="main-table-1 thin-scroll desktop-visibility">
+                    <!-- <table style="width: 100%" class="mobile-table"> -->
+                        <div class="table-block">
+                            <table class="desktop-table">
+                                <thead style="width: 100%">
+                                    <tr>
+                                        <th>Symbol
+                                        </th>
+                                        <th>Qty
+                                        </th>
+                                        <th>Cl. Price</th>
+                                        <th>Haircut</th>
+                                        <th>Value(With HC)</th>
+                                        <th>Value(Without HC)</th>
+                                        <th>Is Cash Component</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="bodHoldingList && bodHoldingList.CollateralPosition && bodHoldingList.CollateralPosition.length > 0">
+
+                                    <tr *ngFor="let dataObj of bodHoldingList.CollateralPosition | orderBy: order:val; let i = index" (click)="dropClick(dataObj.srNo ,bodHoldingList.CollateralPosition)">
+                                        <!-- <td>
+                                            <div class="upper-part justify-content-start"
+                                                [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                                {{dataObj['Exchange']}}
+                                            </div>
+                                            <div class="detail-part-fix" #detail *ngIf="dataObj['isVisible']">
+                                                <div class="detail-part">
+                                                    <span class="detail-heading">Price</span>
+                                                    <span class="detail-value">{{dataObj['Price']}}</span>
+                                                </div>
+                                                <div class="detail-part">
+                                                    <span class="detail-heading">Buy Qty</span>
+                                                    <span class="detail-value">{{dataObj['BuyQty']}}</span>
+                                                </div>
+                                                <div class="detail-part">
+                                                    <span class="detail-heading">Sell Qty</span>
+                                                    <span class="detail-value">{{dataObj['SellQty']}}</span>
+                                                </div>
+                                                <div class="detail-part">
+                                                    <span class="detail-heading">Net Qty</span>
+                                                    <span class="detail-value">{{dataObj['SellQty']}}</span>
+                                                </div>
+                                                <div class="detail-part">
+                                                    <span class="detail-heading">Value</span>
+                                                    <span class="detail-value">{{dataObj['Values']}}</span>
+                                                </div>
+                                                
+                                            </div>
+                                        </td> -->
+                                        <td>
+                                            <div class="upper-part">
+                                                {{dataObj['Symbol']}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part">
+                                                {{dataObj['Qty']}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part">
+                                                {{convertFunc(dataObj['Price'])}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part">
+                                                {{convertFunc(dataObj['Haircut'])}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part">
+                                                {{convertFunc(dataObj['Value_WithHC'])}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part">
+                                                {{convertFunc(dataObj['Value_WithoutHC'])}}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="upper-part">
+                                                {{dataObj['IsCashComponent']}}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody >
+                                    <tr *ngIf="bodHoldingList && bodHoldingList.CollateralPosition && bodHoldingList.CollateralPosition.length == 0">
+                                        <td colspan=7 class="no-data-found text-center">No Data Found</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="loader" *ngIf="!dataLoad" style="position:absolute;top:25%;left:50%;">
+            <img src="/assets/imgs/loader.gif" alt="">
+        </div>
+
+
+
+
+
+
+     </div>
+</section>

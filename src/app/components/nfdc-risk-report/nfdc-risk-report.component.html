@@ -1,0 +1,416 @@
+<ion-header class="mobile-visibility">
+	<ion-toolbar color="tertiary">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Risk Report</ion-title>
+			</div>
+		</div>
+	</ion-toolbar>
+
+
+	<ion-toolbar class="search-section">
+		<ion-searchbar class="custom-searchbar" placeholder="Search for Client code or Branch code"
+			[(ngModel)]="searchClientCode">
+		</ion-searchbar>
+	</ion-toolbar>
+	<!-- <ion-toolbar> -->
+		<div class="download_file">
+		<div style="margin-right: 15px;" class="option-type" (click)="onPdfExcelDownload('pdf')">
+			<img src="assets/svg/pdf.svg" alt="">            
+		</div>
+		<div class="option-type" (click)="onPdfExcelDownload('excel')">
+			<img src="assets/svg/download_excel.svg" alt="">            
+		</div>
+	</div>
+		<!-- <span (click)="comingOption($event)"><img class="excel-icon" src="assets/svg/download_excel.svg">Detailed Report</span> -->
+	<!-- </ion-toolbar> -->
+
+
+</ion-header>
+
+
+
+
+<section class="desktop-visibility" *ngIf="isViewClick">
+	<div class="desktop-table overflow-hidden">
+		<div class="filterbar">
+			<div class="filter-serach filter-serach-nfdc-risk">
+			<ion-searchbar class="custom-searchbar" placeholder="Search for Client code or Branch code"
+				[(ngModel)]="searchClientCode">
+			</ion-searchbar>
+			</div>
+			<div class="download_file" >
+				<!-- <img src="assets/svg/download_excel.svg" alt="" class="downloadIcon">
+				<span>Detailed Report</span> -->
+				<div class="option-type" (click)="onPdfExcelDownload('pdf')">
+					<img src="assets/svg/pdf.svg" alt="">            
+				</div>
+				<div class="option-type" (click)="onPdfExcelDownload('excel')">
+					<img src="assets/svg/download_excel.svg" alt="">            
+				</div>
+			</div>
+		</div>
+		<!-- <div class="table-header">
+			<table class="desktop-table">
+				
+			</table>
+		</div> -->
+		<div class="">
+			<!-- <table style="width: 100%" class="mobile-table"> -->
+			<div class="table-block table-fixed-header" *ngIf="dataLoad">
+				<table class="desktop-table">
+					<thead style="width: 100%" *ngIf="nfdcHeader">
+						<tr>
+							<th [class.active]="order === 'Loginid'" class="pointer" (click)="setOrder('Loginid')">Client<br>Code
+								<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+								<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="ascending">
+								<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="!ascending">
+							</th>
+						<th>Branch<br>Code</th>
+							<th [class.active]="order === 'LedBalance'" class="pointer" (click)="setOrder('LedBalance')">Ledger
+								Bal.<br>(₹)
+								<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+								<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="ascending">
+								<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="!ascending">
+							</th>
+							<th>Buy<br>Value(₹)</th>
+							<th>SPAN<br>Exposure</th>
+							<th [class.active]="order === 'NewLB'" class="pointer" (click)="setOrder('NewLB')">OD<br>Amount(₹)
+								<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+								<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="ascending">
+								<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="!ascending">
+							</th>
+							<!-- <th>New LB(₹)</th> -->
+							<th [class.active]="order === 'GHV'" class="pointer" (click)="setOrder('GHV')">GHV
+								<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+								<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="ascending">
+								<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="!ascending">
+							</th>
+							<th [class.active]="order === 'THV'" class="pointer" (click)="setOrder('THV')">THV
+								<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+								<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="ascending">
+								<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="!ascending">
+							</th>
+							<th [class.active]="order === 'Networth'" class="pointer" (click)="setOrder('Networth')">Net<br>Worth
+								<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+								<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="ascending">
+								<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="!ascending">
+							</th>
+							<th class="pointer">Status</th>						
+						</tr>
+					</thead>
+	
+					<thead class="raatableHeader" style="width: 100%" *ngIf="raaHeader">
+						<tr>
+							<th [class.active]="order === 'Loginid'" class="pointer" (click)="setOrder('Loginid')">Client
+								Code
+								<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+								<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="ascending">
+								<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="!ascending">
+							</th>
+	
+							<th [class.active]="order === 'Branch'" class="pointer" (click)="setOrder('Branch')">
+								Branch code
+								<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+								<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="ascending">
+								<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="!ascending">
+							</th>
+							<th>SPAN</th>
+							<th>Adj. Led Bal</th>
+							<th [class.active]="order === 'GHV'" class="pointer" (click)="setOrder('GHV')">GHV
+								<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+								<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="ascending">
+								<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="!ascending">
+							</th>
+							<th [class.active]="order === 'THV'" class="pointer" (click)="setOrder('THV')">THV
+								<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+								<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="ascending">
+								<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="!ascending">
+							</th>
+							<th [class.active]="order === 'Networth'" class="pointer" (click)="setOrder('Networth')">Net
+								Worth
+								<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+								<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="ascending">
+								<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="!ascending">
+							</th>
+							<th>Maker Date</th>
+						</tr>
+					</thead>
+					<tbody *ngIf="riskDataList && riskDataList.length > 0">
+
+						<!-- review. removed filter and orderBy -->
+						<!-- <tr *ngFor="let dataObj of riskDataList | orderBy: order:reverse | filter: searchClientCode; let i = index"> -->
+						<tr *ngFor="let dataObj of riskDataList| orderBy: order:val  | filter: searchClientCode; let i = index">
+							<td>
+								<div class="upper-part justify-content-start"
+									[ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+									{{dataObj['Loginid']}}
+								</div>
+								<!-- <div class="detail-part-fix" #detail *ngIf="dataObj['isVisible']">
+                                    <div class="detail-part">
+                                        <span class="detail-heading">New LB</span>
+                                        <span class="detail-value">{{dataObj['LedBalance']}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Unclear Cheque</span>
+                                        <span class="detail-value">{{dataObj['Unclrchq']}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Status</span>
+                                        <span class="detail-value">{{dataObj['Status']}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Type</span>
+                                        <span class="detail-value">{{dataObj['TYP']}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Mkr Date</span>
+                                        <span class="detail-value">{{dataObj['Mkrdt']}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Span</span>
+                                        <span class="detail-value">{{dataObj['SPAN']}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Collateral Value</span>
+                                        <span class="detail-value">{{dataObj['Collval']}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Brokerage</span>
+                                        <span class="detail-value">{{dataObj['Brokerage']}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Intraday Amt</span>
+                                        <span class="detail-value">{{dataObj['Intradayamt']}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">JV Debit</span>
+                                        <span class="detail-value">{{dataObj['JVDebit']}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">FAO Bill</span>
+                                        <span class="detail-value">{{dataObj['FAOBill']}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Gr_MisArea</span>
+                                        <span class="detail-value">{{dataObj['Gr_MisArea']}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Gr_MisZone</span>
+                                        <span class="detail-value">{{dataObj['Gr_MisZone']}}</span>
+                                    </div>
+                                    <div class="detail-part">
+                                        <span class="detail-heading">Partner Code</span>
+                                        <span class="detail-value">{{dataObj['Branch']}}</span>
+                                    </div>
+                                </div> -->
+							</td>
+							<td *ngIf="nfdcHeader">
+								<div class="upper-part"
+									[ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+									{{dataObj['Branch']}}
+								</div>
+							</td>
+							<td>
+								<div *ngIf="nfdcHeader" class="upper-part"
+									[ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+									{{dataObj['LedBalance']}}
+								</div>
+								<div *ngIf="raaHeader" class="upper-part"
+									[ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+									{{dataObj['Branch']}}
+								</div>
+							</td>
+							<td>
+								<div *ngIf="nfdcHeader" class="upper-part"
+									[ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+									{{dataObj['BuyVal']}}
+								</div>
+								<div *ngIf="raaHeader" class="upper-part"
+									[ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+									{{dataObj['SPAN']}}
+								</div>
+							</td>
+
+							<td>
+								<div *ngIf="nfdcHeader" class="upper-part"
+								[ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+								{{dataObj['SpanExp']}}
+								</div>
+								
+								<div class="upper-part" *ngIf="raaHeader"
+									[ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+									{{dataObj['ALB']}}
+								</div>
+							</td>
+
+							<td *ngIf="nfdcHeader">
+								<div class="upper-part"
+									[ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+									{{dataObj['NewLB']}}
+								</div>
+							</td>
+
+							<td>
+								<div class="upper-part"
+									[ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+									{{dataObj['GHV']}}
+								</div>
+							</td>
+							<td>
+								<div class="upper-part"
+									[ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+									{{dataObj['THV']}}
+								</div>
+							</td>
+							<td>
+								<div class="upper-part"
+									[ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+									{{dataObj['Networth']}}
+								</div>
+							</td>
+							<td *ngIf="nfdcHeader">
+								<div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+									{{dataObj['Status']}}
+								</div>
+							</td>
+							
+							<td *ngIf="raaHeader">
+								<div class="upper-part"
+									[ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+									{{moment(dataObj['Mkrdt']).format('DD/MM/YYYY')}}
+								</div>
+							</td>
+							<!-- <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                    <ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg"
+                                        *ngIf="!dataObj['isVisible']"></ion-icon>
+                                    <ion-icon *ngIf="dataObj['isVisible']" class="rotate arrow-button down-arrow-button"
+                                        src="./assets/svg/down-arrow.svg"></ion-icon>
+                                </div>
+                            </td> -->
+						</tr>
+					</tbody>
+					<tbody *ngIf="riskDataList && riskDataList.length == 0">
+						<tr>
+							<td class="no-data-found">No Data Found</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="loader" *ngIf="!dataLoad">
+				<img src="/assets/imgs/loader.gif" alt="">
+			</div>
+		</div>
+	</div>
+</section>
+
+
+
+<ion-content class="mobile-visibility" *ngIf="isViewClick">
+	<div class="data-block-parent" *ngIf="riskDataList && riskDataList.length > 0 && dataLoad">
+
+		<!-- review. removed filter  -->
+		<!-- <div class="data-block"
+			*ngFor="let dataObj of riskDataList | filter: searchClientCode; let i = index"> -->
+		<div class="data-block"
+			*ngFor="let dataObj of riskDataList | filter: searchClientCode; let i = index">
+			<div class="upper-section" (click)="dropClick(dataObj.Loginid, riskDataList)">
+				<div class="qty-block">
+					<span class="status">
+						<span class="item-title">Client Code</span>
+						<span class="item-value">{{dataObj.Loginid}}</span>
+					</span>
+					<span>
+						<div class="align-arrow"
+							[ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+							<ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg"
+								*ngIf="!dataObj['isVisible']"></ion-icon>
+							<ion-icon *ngIf="dataObj['isVisible']" class="rotate arrow-button down-arrow-button"
+								src="./assets/svg/down-arrow.svg"></ion-icon>
+						</div>
+					</span>
+				</div>
+			</div>
+			
+			<div *ngIf="dataObj['isVisible']">
+				<div class="upper-detail-section">
+					<div class="detail-item" *ngIf="raaHeader">
+						<div class="detail-upper">Branch Code</div>
+						<div class="detail-lower">{{dataObj['Branch']}}</div>
+					</div>
+					<div class="detail-item" *ngIf="raaHeader">
+						<div class="detail-upper">SPAN</div>
+						<div class="detail-lower">{{dataObj['SPAN']}}</div>
+					</div>
+					<div class="detail-item" *ngIf="nfdcHeader">
+						<div class="detail-upper">Led Bal(₹)</div>
+						<div class="detail-lower">{{dataObj['LedBalance']}}</div>
+					</div>
+					<div class="detail-item" *ngIf="nfdcHeader">
+						<div class="detail-upper">Buy Value (₹)</div>
+						<div class="detail-lower">{{dataObj['BuyVal']}}</div>
+					</div>
+					<div class="detail-item" *ngIf="nfdcHeader">
+						<div class="detail-upper">Span Exposure</div>
+						<div class="detail-lower">{{dataObj['SpanExp']}}</div>
+					</div>
+					<div class="detail-item" *ngIf="raaHeader">
+						<div class="detail-upper">Adj. Led Bal(₹)</div>
+						<div class="detail-lower">{{dataObj['ALB']}}</div>
+					</div>
+					<div class="detail-item">
+						<div class="detail-upper">Maker Date</div>
+						<div class="detail-lower">{{moment(dataObj['Mkrdt']).format('DD/MM/YYYY')}}</div>
+					</div>
+				</div>
+
+				<div class="detail-section">
+					<div class="detail-item">
+						<div class="detail-upper">GHV (₹)</div>
+						<div class="detail-lower">{{dataObj['GHV']}}</div>
+					</div>
+					<div class="detail-item">
+						<div class="detail-upper">THV (₹)</div>
+						<div class="detail-lower">{{dataObj['THV']}}</div>
+					</div>
+					<div class="detail-item">
+						<div class="detail-upper">Net Worth (₹)</div>
+						<div class="detail-lower">{{dataObj['Networth']}}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="data-block-parent" *ngIf="riskDataList && riskDataList.length == 0 && dataLoad">
+		<span class="no-data-found">No Records Found</span>
+	</div>
+
+	<div class="loader" *ngIf="!dataLoad">
+		<img src="/assets/imgs/loader.gif" alt="">
+	</div>
+</ion-content>

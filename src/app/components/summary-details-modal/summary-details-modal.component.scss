@@ -1,0 +1,10 @@
+.card_details_pop{padding: 16px;}
+.card_details_pop h2{font-size: 16px; margin-bottom: 20px; margin-top: 10px; color: #212121;}
+.pop_grid .cl_mb_list span{font-size: 14px; font-weight: 700; color: #3F3D56; display: block;}
+.pop_grid .cl_mb_list label{font-size: 12px; font-weight: 400; color: #6E6E6E; text-transform: uppercase; display: block;}
+.pop_grid{display: grid;grid-template-columns: 1fr 1fr;}
+.pop_grid .cl_mb_list{text-align: left;}
+.pop_grid .cl_mb_list{padding-bottom: 15px; }
+.pop_grid .cl_mb_list:first-child{width: 100%; grid-column: 1 / -1; text-align: left;}
+.pop_close{position: absolute; right: 15px; width: 12px; top: 15px;}
+.pop_content{height:400px; overflow: auto;}

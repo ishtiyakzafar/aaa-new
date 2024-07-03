@@ -1,0 +1,191 @@
+<ion-header>
+	<ion-toolbar class="mobile-header mobile-visibility">
+		<div class="select-search-block">
+			<div class="header-flex">
+				<div class="title-flex">
+					<span class="element-flex">
+						<span (click)="goBackMarkets()">
+							<ion-icon name="arrow-back" class="backbutton"></ion-icon>
+						</span>
+						<span class="p_b0">{{ShortName}}</span>
+					</span>
+					<span class="p_t0" style="padding-left: 40px;">Client List</span>
+				</div>
+				<div class="title-flex" style="align-items: flex-end;">
+					<span class="p_b0">{{lastRate | formatNumerDecimal: ExchType}}</span>
+					<span *ngIf="pClose != 0"
+						class="p_t0">{{(lastRate - pClose) | formatNumerDecimal: ExchType}}({{((lastRate - pClose)/pClose *100) | formatNumerDecimal: ExchType}}%)</span>
+					<!-- <span *ngIf="pClose != 0 &&  ExchType == 'U'"
+						class="p_t0">{{lastRate - pClose | number: '1.2-2'}}00({{((lastRate - pClose)/pClose *100)  | number:'1.2-4'}}%)</span> -->
+					<span *ngIf="pClose == 0"
+						class="p_t0">{{(lastRate - pClose) | formatNumerDecimal: ExchType}}(0.00%)</span>
+				</div>
+				<!-- <span>{{lastRate| number: '1.2-2'}}</span>  -->
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+<ion-content [scrollEvents]="false">
+	<!--Section for date selector abd toogle button -->
+	<div class="container-clientlist">
+		<div class="pagetitlehead desktop-visibility">
+			<div class="title-block">
+				<span class="title">{{ShortName}}</span>
+				<!-- <label class="switch">
+					<input type="checkbox" id="togBtn">
+					<div class="slider round">
+						<span class="on">BSE</span><span class="off">NSE</span>
+						
+					</div>
+				</label> -->
+			</div>
+			<span class="subtitle" [ngClass]="{'ltp-greater': lastRate > pClose && pClose != 0, 'ltp-smaller': lastRate < pClose && pClose != 0}">{{lastRate | formatNumerDecimal: ExchType}}
+				<span style="font-size: 12px; margin-left: 10px;"><span
+						*ngIf="pClose != 0">{{(lastRate - pClose) | formatNumerDecimal: ExchType}} ({{((lastRate - pClose)/pClose *100) | formatNumerDecimal: ExchType}}%)</span>
+						<!-- <span
+						*ngIf="pClose != 0 && ExchType == 'U'">{{lastRate - pClose | number: '1.2-2'}}00 ({{((lastRate - pClose)/pClose *100)  | number:'1.2-4'}}%)</span> -->
+					<span
+						*ngIf="pClose == 0">{{(lastRate - pClose) | formatNumerDecimal: ExchType}} (0.00%)</span>
+				</span>
+			</span>
+		</div>
+		<div class="date_selector mobile-visibility">
+			<div *ngIf="ExchType !== 'C'">
+				<h5 class="datetitle p0_m0 expiry-title">Expiry Date</h5>
+				<ion-select [(ngModel)]="selectdate" (ngModelChange)="expiryDateChange($event)">
+					<ion-select-option *ngFor="let obj of expiryDates" [value]="obj['Expiry']">{{obj['Expiry']}}
+					</ion-select-option>
+				</ion-select>
+				<!-- <ion-icon name="chevron-down-outline" class="downiconalingment"></ion-icon> -->
+			</div>
+		</div>
+		<div class="mobile-visibility">
+			<label class="switch putCallbtn" *ngIf="optionType === 'CE' || optionType === 'PE'">
+				<input type="checkbox" id="togBtn" name="scripOptionToggle" [(ngModel)]="scripOptionToggle"
+					(ngModelChange)="optionCheckValue($event)">
+				<div class="slider round">
+					<span class="on">PUT</span><span class="off">Call</span>
+				</div>
+			</label>
+			<label class="switch buysellbtn buy-sell-switch" *ngIf="ExchType =='C'">
+				<input type="checkbox" (change)="checkValue($event)" id="togBtn" [checked]="scripToggle">
+				<div class="slider sell round">
+					<span class="on">Buy</span><span class="off">Sell</span>
+				</div>
+			</label>
+		</div>
+		<div class="date_selector mobile-visibility">
+			<div *ngIf="optionType === 'CE' || optionType === 'PE' ">
+				<h5 class="datetitle p0_m0 strike-title">Strike Price</h5>
+				<ion-select class="strike-select" [(ngModel)]="strikeprice" (ngModelChange)="strikeRateChange($event)">
+					<ion-select-option *ngFor="let obj of strikeRateData" [value]="obj['StrikeRate']">{{obj['StrikeRate']}}
+					</ion-select-option>
+					<!-- <ion-select-option value="1">206000</ion-select-option>
+					<ion-select-option value="2">207000</ion-select-option> -->
+				</ion-select>
+				<!-- <ion-icon name="chevron-down-outline" class="downiconalingment strike-dropdown"></ion-icon> -->
+			</div>
+			<label class="switch buysellbtn buy-sell-switch" *ngIf="ExchType !== 'C' && !optionType" style="margin-right: 8px;">
+				<input type="checkbox" id="togBtn" (change)="checkValue($event)" [checked]="scripToggle">
+				<div class="slider sell buy round switchlabel">
+					<span class="on">Buy</span><span class="off">Sell</span>
+				</div>
+			</label>
+		</div>
+
+		<div class="pagetitle desktop-visibility">
+			<div class="date_selectfield custom-select" *ngIf="ExchType !== 'C' ">
+				<h5 class="datetitle p0_m0">Expiry Date</h5>
+				<ion-select [(ngModel)]="selectdate" (ngModelChange)="expiryDateChange($event)">
+					<ion-select-option *ngFor="let obj of expiryDates" [value]="obj['Expiry']">{{obj['Expiry']}}
+					</ion-select-option>
+				</ion-select>
+				<!-- <ion-icon name="chevron-down-outline" class="downiconalingment"></ion-icon> -->
+			</div>
+
+			<div class="date_selectfield custom-select" *ngIf="optionType == 'CE' || optionType === 'PE' ">
+				<h5 class="datetitle p0_m0">Strike Price</h5>
+				<ion-select [(ngModel)]="strikeprice" (ngModelChange)="strikeRateChange($event)">
+					<ion-select-option *ngFor="let obj of strikeRateData" [value]="obj['StrikeRate']">{{obj['StrikeRate']}}
+					</ion-select-option>
+					<!-- <ion-select-option value="1">206000</ion-select-option>
+					<ion-select-option value="2">207000</ion-select-option> -->
+				</ion-select>
+				<!-- <ion-icon name="chevron-down-outline" class="downiconalingment"></ion-icon> -->
+			</div>
+
+			<div class="title-block">
+				<span *ngIf="optionType === 'CE' || optionType === 'PE'" class="p_r10" style="margin-right: 7px;">Option
+					Type:</span>
+				<!-- <ion-toggle mode="ios"></ion-toggle> -->
+				<label class="switch putCallbtn" *ngIf="optionType === 'CE' || optionType === 'PE'">
+					<input type="checkbox" id="togBtn" name="scripOptionToggle" [(ngModel)]="scripOptionToggle"
+						(ngModelChange)="optionCheckValue($event)">
+					<div class="slider round">
+						<!--ADDED HTML --><span class="on">PUT</span><span class="off">Call</span>
+						<!--END-->
+					</div>
+				</label>
+				<label class="switch buysellbtn buy-sell-switch" *ngIf="!optionType">
+					<input type="checkbox" id="togBtn" (change)="checkValue($event)" [checked]="scripToggle">
+					<div class="slider sell round">
+						<span class="on">Buy</span><span class="off">Sell</span>
+					</div>
+				</label>
+			</div>
+		</div>
+	</div>
+	<!--Section for Search input field -->
+	<div class="search-toolbar container-clientlist search_sec">
+		<ion-searchbar class="ion-searchbar" [(ngModel)]="searchTerm" placeholder="Search by Client Code">
+		</ion-searchbar>
+	</div>
+	
+	<!--Section for data table -->
+	<table class="tablelist">
+		<thead>
+			<tr>
+				<th [class.active]="order === 'cuid'" class="pointer" (click)="setOrder('cuid')">CUID
+					<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+					<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+					<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+				</th>
+
+				<th [class.active]="order === 'quantity'" class="pointer" (click)="setOrder('quantity')">Quantity
+					<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+					<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+					<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+				</th>
+
+				<th [class.active]="order === 'value'" class="pointer" (click)="setOrder('value')">Value(Approx)
+					<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+					<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+					<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+				</th>
+			</tr>
+		</thead>
+
+		<!-- review. removed filter and orderBy -->
+		<!-- <tbody class="tbodywithborder" *ngIf="(clientList|filter:searchTerm).length > 0 && dataLoad">
+			<tr *ngFor="let data of clientList | orderBy: order:reverse | filter:searchTerm" class="scrolltable"> -->
+
+		<tbody class="tbodywithborder" *ngIf="(clientList|filter:searchTerm).length > 0 && dataLoad">
+			<tr *ngFor="let data of clientList | filter:searchTerm" class="scrolltable">
+				<td class="cuidcol"><span style="cursor:pointer;">{{data.cuid}}</span></td>
+				<td>{{data.quantity}}</td>
+				<td class="valuecolumn"><span>{{data.value | formatNumberUnit}}</span></td>
+				<!-- <td class="valuecolumn"><span>{{data.quantity * lastRate / 100000 | number: '1.2-2'}}L</span></td> -->
+			</tr>
+		</tbody>
+
+		<!-- review. removed filter -->
+		<!-- <tbody class="tbodywithoutborder" *ngIf="(clientList|filter:searchTerm).length == 0 && dataLoad"> -->
+
+		<tbody class="tbodywithoutborder" *ngIf="(clientList|filter:searchTerm).length == 0 && dataLoad">
+			<div style="font-weight: bold;margin-top:40px">No Records Found</div>
+		</tbody>
+		<div class="loader" *ngIf="!dataLoad" style="min-height: 370px;">
+			<img src="/assets/imgs/loader.gif" alt="">
+		</div>
+	</table>
+</ion-content>

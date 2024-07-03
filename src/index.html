@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>IIFL AAA</title>
+
+  <base href="/" />
+
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#21175E"/> 
+  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+
+  <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
+
+  <!-- <link rel="stylesheet" href="https://images.indiainfoline.com/AAA_banner/aaa_banner.css"/> -->
+
+  <!-- add to homescreen for ios -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&family=Noto+Sans+Vithkuqi&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <app-root></app-root>
+</body>
+
+<script type="text/javascript">
+    var clevertap = { event:[], profile:[], account:[], onUserLogin:[], notifications:[], privacy:[] };
+    // replace with the CLEVERTAP_ACCOUNT_ID with the actual ACCOUNT ID value from your Dashboard -> Settings page
+    // clevertap.account.push({"id": "TEST-K59-K79-6W6Z"});
+    if(window.location.hostname.includes('aaauat.indiainfoline.com')){
+      clevertap.account.push({"id": "TEST-K59-K79-6W6Z"});
+    }
+    else{
+      clevertap.account.push({"id": "R59-K79-6W6Z"});
+    }
+    // clevertap.account.push({"id": MY_JS().getEnv().clevertap_Key});
+    clevertap.privacy.push({optOut: false}); //set the flag to true, if the user of the device opts out of sharing their data
+    clevertap.privacy.push({useIP: false}); //set the flag to true, if the user agrees to share their IP data
+    (function () {
+           var wzrk = document.createElement('script');
+           wzrk.type = 'text/javascript';
+           wzrk.async = true;
+           wzrk.src = ('https:' == document.location.protocol ? 'https://d2r1yp2w7bby2u.cloudfront.net' : 'http://static.clevertap.com') + '/js/clevertap.min.js';
+           var s = document.getElementsByTagName('script')[0];
+           s.parentNode.insertBefore(wzrk, s);
+    })();
+</script>
+
+
+<script src="https://images.indiainfoline.com/AAA_banner/uatAAABannerData.js"></script> 
+
+<!-- <script type="text/javascript" charset="UTF-8"
+		src="https://toolassets.haptikapi.com/platform/javascript-xdk/production/loader.js"></script> -->
+  <script src="https://s3-eu-west-1.amazonaws.com/static.wizrocket.com/js/sw_webpush.js"></script>
+  <script type="text/javascript">
+    (function(w,d,s,r,k,h,m){
+      if(w.performance && w.performance.timing && w.performance.navigation) {
+        w[r] = w[r] || function(){(w[r].q = w[r].q || []).push(arguments)};
+        h=d.createElement('script');h.async=true;h.setAttribute('src',s+k);
+        d.getElementsByTagName('head')[0].appendChild(h);
+        (m = window.onerror),(window.onerror = function (b, c, d, f, g) {
+        m && m(b, c, d, f, g),g || (g = new Error(b)),(w[r].q = w[r].q || []).push(["captureException",g]);})
+      }
+    })(window,document,'//static.site24x7rum.in/beacon/site24x7rum-min.js?appKey=','s247r','85d0bd41f5e1b89e86b6502207a64ca8');
+    </script>
+</html>

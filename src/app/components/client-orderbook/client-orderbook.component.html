@@ -1,0 +1,174 @@
+<ion-content class="mobile-visibility">
+  <div class="data-block-parent">
+    <div class="data-block" *ngFor="let dataObj of orderBookData; let i = index">
+      <div class="upper-section" (click)="dropClick(i, orderBookData)">
+        <div class="qty-block">
+          <span class="status" [ngClass]="{'buy': dataObj['BuySell'] == 'B', 'sell': dataObj['BuySell'] == 'S'}">
+            <span *ngIf="dataObj.BuySell == 'B'">BUY</span>
+            <span *ngIf="dataObj.BuySell == 'S'">SELL</span>
+          </span>
+          <span>{{displyOrderStatus(dataObj.Qty,dataObj.PendingQty,dataObj.OrderStatus,dataObj.SLTriggered)}}</span>
+          <!-- <span *ngIf="dataObj.OrderStatus != 'Rejected By 5P'">{{dataObj.OrderStatus}}</span> 
+                   <span *ngIf="dataObj.OrderStatus == 'Rejected By 5P'">Rejected By IIFL</span>  -->
+        </div>
+        <div class="data-section">
+          <div class="item">
+            <div class="upper scrip-name" (click)="goToCompanyDetails(dataObj)">{{dataObj.ScripName | splitNameDate: "name"}}<span class="gray-block">&nbsp;{{dataObj.Exch}}{{dataObj.ExchType}}</span></div>
+            <div class="lower">{{dataObj.ScripName | splitNameDate: "date"}}</div>
+          </div>
+          <div class="item">
+            <div class="upper text-right">
+              <span class="option m-r-8">Rate</span><span class="rupees">₹</span><span class="value">{{dataObj['Rate'] | formatNumerDecimal: dataObj.ExchType}}</span>
+            </div>
+            <div class="upper text-right">
+              <span class="option m-r-8">Qty.</span><span class="value">{{dataObj.TradedQty}}/{{dataObj.Qty}}</span>
+            </div>
+        </div>
+      </div>
+      </div>
+      <div class="detail-section" *ngIf="dataObj['isVisible']">
+        <div class="detail-item">
+          <div class="detail-upper">Exch. Order ID</div>
+          <div class="detail-lower">{{dataObj['ExchOrderID']}}</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-upper">Broker ID</div>
+          <div class="detail-lower">{{dataObj['BrokerOrderId']}}</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-upper">Valid Till</div>
+          <div class="detail-lower"> {{splitDate(dataObj.OrderValidUpto)}} </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-upper">Validity</div>
+          <div class="detail-lower">
+            <span *ngIf="dataObj.OrderValidity == 0">DAY</span>
+            <span *ngIf="dataObj.OrderValidity == 1">GTD</span>
+            <span *ngIf="dataObj.OrderValidity == 2">GTC</span>
+            <span *ngIf="dataObj.OrderValidity == 3">IOC</span>
+            <span *ngIf="dataObj.OrderValidity == 4">EOS</span>
+            <span *ngIf="dataObj.OrderValidity == 5">VTD</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="data-block-parent" *ngIf="orderBookData.length == 0">
+    <span class="no-data-found">No Records Found</span>
+  </div>
+</ion-content>
+<div class="desktop-visibility">
+  <div class="desktop-visibility">
+    <div class="refreshBtn">
+      <div class="refresh-block pointer" (click)="doRefresh()">
+        <ion-icon class="refresh" src="assets/svg/refresh_colored.svg"></ion-icon>
+        <span>Refresh</span>
+      </div>
+    </div>
+    <div class="web-equity thin-scroll">
+      <div class="header-table">
+        <table class="desktop-header-table width-100">
+          <thead>
+            <tr>
+              <th>
+                Type
+              </th>
+              <th>
+                Scrip
+              </th>
+              <th>
+                Rate
+              </th>
+              <th>
+                Quantity
+              </th>
+              <th>
+                Valid Till
+              </th>
+              <th>
+                Validity
+              </th>
+              <th>
+                Status
+              </th>
+              <th>
+                Product
+              </th>
+              <th>
+                Ex Order ID
+              </th>
+              <th>
+                Broker ID
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="main-table thin-scroll" *ngIf="dataLoad">
+        <table class="mobile-table width-100">
+          <tbody *ngIf="orderBookData && orderBookData.length > 0">
+              <tr *ngFor="let dataObj of orderBookData">
+                <td>
+                  <div class="type-data" [ngClass]="{'buy': dataObj['BuySell'] == 'B', 'sell': dataObj['BuySell'] == 'S'}">
+                    <span *ngIf="dataObj.BuySell == 'B'">BUY</span>
+                    <span *ngIf="dataObj.BuySell == 'S'">SELL</span>
+                  </div>
+                </td>
+                  <td> 
+                    <div class="td-heading first-column">
+                      <span class="first-span-block">
+                        <span class="first-span" (click)="goToCompanyDetails(dataObj)">{{dataObj.ScripName | splitNameDate: "name"}}</span> 
+                        <span class="spanStyle"> {{dataObj.Exch}},{{dataObj.ExchType}}</span>
+                      </span>
+                      <span class="date">{{dataObj.ScripName | splitNameDate: "date"}}</span>
+                    </div>
+                  </td>
+                  <td>
+                    {{dataObj.Rate | formatNumerDecimal: dataObj.ExchType}}
+                  </td>
+                  <td>
+                    {{dataObj.TradedQty}}/{{dataObj.Qty}}
+                  </td>
+                  <td>
+                    {{splitDate(dataObj.OrderValidUpto)}} 
+                  </td>
+                  <td>
+                   <span *ngIf="dataObj.OrderValidity == 0">DAY</span>
+                   <span *ngIf="dataObj.OrderValidity == 1">GTD</span>
+                   <span *ngIf="dataObj.OrderValidity == 2">GTC</span>
+                   <span *ngIf="dataObj.OrderValidity == 3">IOC</span>
+                   <span *ngIf="dataObj.OrderValidity == 4">EOS</span>
+                   <span *ngIf="dataObj.OrderValidity == 5">VTD</span>
+                  </td>
+                  <td class="loser-colors">
+                    <span>{{displyOrderStatus(dataObj.Qty,dataObj.PendingQty,dataObj.OrderStatus,dataObj.SLTriggered)}}</span>
+                   <!-- <span *ngIf="dataObj.OrderStatus != 'Rejected By 5P'">{{dataObj.OrderStatus}}</span> 
+                   <span *ngIf="dataObj.OrderStatus == 'Rejected By 5P'">Rejected By IIFL</span>  -->
+                  </td>
+                  <td>
+                    <span *ngIf="dataObj.DelvIntra == 'D'">Delivery</span>
+                    <span *ngIf="dataObj.DelvIntra == 'I'">Intra</span>
+                    <span *ngIf="dataObj.DelvIntra == 'S'">BO</span>
+                    <span *ngIf="dataObj.DelvIntra == 'C'">CO</span>
+                  </td>
+                  <td>
+                    {{dataObj.ExchOrderID}}
+                  </td>
+                  <td>
+                    {{dataObj.BrokerOrderId}}
+                  </td>
+              </tr>
+          </tbody>
+          <tbody *ngIf="orderBookData &&  orderBookData.length === 0">
+            <tr>
+              <td class="no-data-found text-center">No Record Found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="loader" *ngIf="!dataLoad" style="min-height: 120px">
+        <img src="/assets/imgs/loader.gif" alt="">
+      </div>
+    </div>
+  </div>
+</div>

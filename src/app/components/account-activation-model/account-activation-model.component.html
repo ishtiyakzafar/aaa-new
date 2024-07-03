@@ -1,0 +1,130 @@
+<div class="Accountactivation">
+  <div class="header">
+    <div class="pop_close" (click)="dismiss()">
+      <img src="assets/svg/close_delete.svg" width="15" alt="close">
+    </div>
+    <!-- <div class="pop_close pop_back_close mobile-visibility" (click)="dismiss()">
+      <img src="assets/svg/close_back.svg" width="24" alt="close">
+    </div> -->
+    <h2> {{dataObj.Subject}}</h2>
+  </div>
+  <div class="activation-naming">
+    <div class="t_id">
+      <div>
+        <span class="ticket_id">Ticket ID :</span>
+        <span class="value">{{dataObj.TicketID}}</span>
+      </div>
+      <div>
+        Status:
+        <span class="status value"
+          [ngClass]="{'orange_status': dataObj.Status =='Send To Department', 'red_status': dataObj.Status === 'Created' || dataObj.Status === 'Fresh Ticket', 'green_status': dataObj.Status === 'Resolved' || dataObj.Status === 'FTR' || dataObj.Status === 'Responded'}">
+          {{dataObj.Status}}
+          <ion-button *ngIf="dataObj.Status === 'Responded'" type="button" class="btnMarkClose"
+            (click)="updateTicket('Resolved')">
+            <img src="assets/svg/mark-it-closed.svg" width="14" alt="close">
+            Mark it Closed</ion-button>
+        </span>
+      </div>
+    </div>
+    <div>
+      <div class="subject-naming">
+        Department : <span class="id value">{{dataObj?.SubjectHead}}</span>
+      </div>
+      <div>Sub-Department : <span class="id value">{{dataObj?.SubSubjectHead}}</span> </div>
+    </div>
+    <div>
+      <div>
+        Third Level : <span class="id value">{{dataObj?.ThirdDrillDown}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="Accountactivation_inside vr_scroll">
+  <div class="d-flex ac_details_grid ">
+    <div *ngFor="let item of dataObj?.messageList">
+    <div *ngIf="item?.type === 'You'" class=" grid_right client-grid d-flex">
+      <p class="h2">You</p>
+      <div>
+        <p>
+          {{item.msg ? item.msg : '-' }}
+        </p>
+        <span>{{item['dt'] ? moment(item['dt']).format('DD MMM, hh:mm A') : ''}}</span>
+      </div>
+    </div>
+    <div *ngIf="item?.type === 'Response'" class="grid_right d-flex">
+      <p class="h2">Response</p>
+      <div>
+        <p>
+          {{item.msg ? item.msg : '-' }}
+        </p>
+        <span>{{item['dt'] ? moment(item['dt']).format('DD MMM, hh:mm A') : ''}}</span>
+      </div>
+    </div>
+  </div>
+  </div>
+
+ 
+  <div *ngIf="dataObj?.Remark" class="bt_notemsg">
+    <label>Remark :</label> <span>{{ dataObj?.Remark }}</span>
+  </div>
+  <div *ngIf="dataObj?.Resolution"  class="bt_notemsg">
+   <strong>Resolution : </strong> <span>{{ dataObj?.Resolution }}</span>
+  </div>
+<div *ngIf="dataObj && dataObj?.attach.length>0" class="attachment_main">
+  <span>Attachment :</span>
+  <div class="pdf_grid_main">
+    <div *ngFor="let file of dataObj?.attach" class="pdf_grid">
+      <span (click)="attachmentDown(file)"><img src="assets/svg/pdf.svg" alt=""></span>
+      <!-- <div class="naming">
+        <label class="pdfname">PDF: 333333 not working</label>
+        <label class="pdfsize">1.5 MB .PDF     </label>
+      </div> -->
+    </div>
+
+    <!-- <div class="pdf_grid">
+      <img src="assets/svg/pdf.svg" alt="">
+      <div class="naming">
+        <label class="pdfname">PDF: 333333 not working</label>
+        <label class="pdfsize">1.5 MB .PDF     </label>
+      </div>
+    </div> -->
+  </div>
+</div> 
+
+<div *ngIf="dataObj.Status === 'Responded'" class="fileUpload">
+  <div class='file file--upload'>
+    <label for='input-file'>
+      <span *ngIf="!myFiles.length" class="upload_icon"><img src="assets/svg/upload_new.svg" alt="">
+        Upload</span>
+      <span *ngIf="myFiles.length && myFiles.length <5" class="add_doc"><img src="assets/svg/plus_new.svg"
+          alt=""></span>
+    </label>
+    <div *ngFor="let value of myFiles;index as i;" class="d-flex after_upload">
+      <div *ngIf="value" class="af_left">
+        <div class="d-flex after_upload_inner">
+          <span class="fileName">{{ value && value.name.length > 25 ? filename : value?.name }}</span>
+          <span (click)="removeFile(i)" class="remove_doc"><img src="assets/svg/close_delete.svg"
+              alt=""></span>
+        </div>
+      </div>
+    </div>
+    <input multiple id='input-file' type='file' (change)="handleFileInput($event)" />
+  </div>
+  <span class="error">{{ imgError }}</span>
+  <li>
+    jpeg / png / pdf / xlsx / csv / mp3 / mp4
+  </li>
+  <li>
+    Maximum 5 files.
+  </li>
+</div>
+
+</div>
+<div *ngIf="dataObj.Status === 'Responded'" class="msger-inputarea">
+  <form>
+    <input type="text" class="msger-input" [(ngModel)]="descriptionText" [ngModelOptions]="{standalone: true}"
+      placeholder="Anything more...">
+    <button type="submit" class="msger-send-btn" (click)="updateTicket('Send To Department')">Submit</button>
+  </form>
+</div>
+<p *ngIf="dataObj.Status === 'Closed'" class="txt-Thank">Thank you for chatting with us...!</p>

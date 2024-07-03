@@ -1,0 +1,123 @@
+<ion-header class="mobile-visibility main-header">
+    <ion-toolbar color="tertiary">
+      <div class="title-block title-block-custom">
+        <div class="icon-title">
+          <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+          <ion-title class="title">DP Holding</ion-title>
+        </div>
+      </div>
+      <div class="change-option-mobile">
+        <img width="20px" src="assets/svg/pdf.svg" alt="">
+        <div class="change-option" (click)="downloadReport('PDF')">Download Report</div>
+      </div>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="mobile-visibility">
+    <div *ngIf="dpHoldingData.length > 0 && !dataLoad">
+      <div class="slide-data" *ngFor="let dataObj of dpHoldingData">
+        <div class="slide-heading">
+          <span class="scrip">{{dataObj['ISIN']}}</span>
+          <span class="transaction-date">{{dataObj.ISINName}}</span>
+          <span class="particular">{{dataObj['Qty']}}</span>
+        </div>
+        <div class="segment-data-block">
+          <div class="segment-data">
+            <span class="title">HoldingValue</span>
+            <span class="value">{{dataObj['HoldingValue'] | formatNumerDecimal}}</span>
+          </div>
+          <div class="segment-data">
+            <span class="title">ProductType</span>
+            <span class="value">{{dataObj['ProductType']}}</span>
+          </div>
+          <div class="segment-data">
+            <span class="title">BalanceType</span>
+            <span class="value">{{dataObj['BalanceType']}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="no-data-found" *ngIf="dpHoldingData.length == 0 && !dataLoad">
+      <span>No Data Found</span>
+    </div>
+    <div class="loader" *ngIf="dataLoad">
+      <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+  </ion-content>
+  <div class="container smaller-container desktop-visibility">
+    <div class="web-equity thin-scroll" *ngIf="!dataLoad">
+      <div class="header-table">
+        <table style="width: 100%" class="desktop-header-table">
+          <thead>
+            <tr>
+              <th [class.active]="order === 'ISIN'" class="pointer" (click)="setOrder('ISIN')">
+                ISIN
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+              </th>
+              <th style="text-align: left;">
+                ISIN Name
+              </th>
+              <th [class.active]="order === 'Qty'" class="pointer" (click)="setOrder('Qty')">
+                Qty
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+              </th>
+              <th>
+                Holding Value
+              </th>
+              <th [class.active]="order === 'ProductType'" class="pointer" (click)="setOrder('ProductType')">
+                Product Type
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+              </th>
+              <th [class.active]="order === 'BalanceType'" class="pointer" (click)="setOrder('BalanceType')">
+                Balance Type
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="main-table thin-scroll">
+        <!-- <table style="width: 100%" class="mobile-table"> -->
+        <table style="width: 100%">
+          <tbody *ngIf="dpHoldingData.length > 0">
+            <tr *ngFor="let dataObj of dpHoldingData | orderBy: order:reverse; let i = index">
+              <td>
+                {{dataObj.ISIN}}
+              </td>
+              <td style="text-align: left;">
+                {{dataObj.ISINName}}
+              </td>
+              <td>
+                {{dataObj.Qty}}
+              </td>
+              <td>
+                {{dataObj.HoldingValue | formatNumerDecimal}}
+              </td>
+              <td>
+                {{dataObj.ProductType}}
+              </td>
+              <td>
+                {{dataObj.BalanceType}}
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="dpHoldingData.length === 0 && !dataLoad">
+            <tr>
+              <td class="no-data-found">No Records Found</td>
+            </tr>
+            <!-- <span>No Records Found</span> -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="loader" *ngIf="dataLoad" style="min-height: 100px;">
+      <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+  </div>

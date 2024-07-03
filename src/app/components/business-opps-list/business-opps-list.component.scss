@@ -1,0 +1,131 @@
+.business-opportunities {
+    margin-top: 16px;
+    .heading {
+        color: #212121;
+        font-size: 16px;
+        font-family: 'nunitoSemiBold';
+        margin: 16px 0 14px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .opportunities-block {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        .opportunitiy {
+            border: 1px solid #EBEBEB;
+            border-radius: 0 0 0 16px;
+            overflow: hidden;
+            width: 94%;
+            display: flex;
+            margin:0 auto;
+           // justify-content: space-between;
+            margin-bottom: 24px;
+           // cursor: pointer;
+            .value-section {
+                background: #ebedff;
+                padding: 11px 8px;
+                font-size: 12px;
+                min-width: 55px;
+                text-align: center;
+                white-space: nowrap;
+                overflow: hidden;
+                .value {
+                    font-size: 12px;
+                    font-family: 'nunitoBold';
+                }
+            }
+            .description {
+                padding: 10px 8px;
+                font-size: 12px;
+                display: flex;
+                align-items: center;
+                color: #000;
+                font-family: 'nunitoSemiBold';
+                width: calc(100% - 95px);
+            }
+            .icon-section {
+                display: flex;
+                align-items: center;
+                padding: 10px 8px;
+                ion-icon {
+                    // width: 20px;
+                    font-size: 30px;
+                }
+            }
+            
+        }
+        .logged-in {
+            .value-section {
+                background: #f4f2ff ;                   
+                .value {
+                   color: #887ade;
+                }
+            }
+        }
+        .client-fo {
+            .value-section {
+                background: #EBFFF8 ;                   
+                .value {
+                   color: #53D0A6;
+                }
+            }
+        }
+        .not-invested-mutual {
+            .value-section {
+                background: #f4f2ff;                   
+                .value {
+                   color: #65b43f;
+                }
+            }
+        }
+        .not-invested-sip {
+            .value-section {
+                background: #fdf8e8;                   
+                .value {
+                   color: #dfb52d;
+                }
+            }
+        }
+        .nfo-maturing {
+            .value-section {
+                background: #f2f6ff;                   
+                .value {
+                   color: #9fb1dc;
+                }
+            }
+        }
+        .high-networth {
+            .value-section {
+                background: #f9fdff;
+                                  
+                .value {
+                   color: #87ceeb
+                   ;
+                }
+            }
+        }
+    }
+}
+
+
+// @media screen and (max-width: 500px) {
+//     .business-opportunities {
+//         margin-top: 8px;
+//         .heading {
+//             color: #212121;
+//             font-size: 16px;
+//             font-family: 'nunitoSemiBold';
+//             margin: 16px 0 14px;
+//             display: flex;
+//             justify-content: space-between;
+//         }
+//         .opportunities-block {
+//             .opportunitiy {
+//                 width: 100%;
+//             }
+//         }
+//     }
+    
+
+// }

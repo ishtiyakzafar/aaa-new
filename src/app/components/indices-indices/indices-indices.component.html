@@ -1,0 +1,70 @@
+<h3 class="indices-heading desktop-visibility">Indices</h3>
+<div class="table-part">
+    <div class="web-equity">
+        <div class="header-table">
+            <table class="desktop-header-table width-100 width-100-vw">
+                <thead>
+                    <tr>
+                        <th>
+                            Scrip
+                        </th>
+                        <th>
+                            LTP
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="web-equity thin-scroll width-100-vw">
+        <div class="main-table thin-scroll">
+            <table class="mobile-table width-100">
+                <tbody *ngIf="indicesTable.length  && dataLoad">
+                    <tr class="pointer" *ngFor="let dataObj of indicesTable; let i = index" style="cursor: pointer;" (click)="details(dataObj)">
+                        <td>
+                            <div class="scrip">
+                               {{dataObj['IndiceName']}}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="value-block" [ngStyle]="{'color':(dataObj.PClose == 0 || dataObj.LastRate == dataObj.PClose) ? '#656565' : (dataObj.LastRate > dataObj.PClose ? '#17C257' : '#F55858')}">
+                                <div class="upper">{{dataObj['LastRate'] | formatNumerDecimal}}</div>
+                                <div class="lower">
+                                    <span
+									*ngIf="dataObj.PClose != 0 ">{{dataObj.LastRate - dataObj.PClose | formatNumerDecimal: dataObj.ExchType}}({{(dataObj.LastRate - dataObj.PClose)/dataObj.PClose *100 | formatNumerDecimal: dataObj.ExchType}}%)</span>
+								<span
+									*ngIf="dataObj.PClose == 0">{{dataObj.LastRate - dataObj.PClose | formatNumerDecimal: dataObj.ExchType}}(0.00%)</span>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody *ngIf="!indicesTable.length && dataLoad">
+                    <tr>
+                        <td class="no-data-found">No Data Found</td>
+                    </tr>
+                </tbody>
+                <!-- new code for skeleton start -->
+                <tbody *ngIf="!dataLoad" class="mobile-visibility-tbody">
+                    <tr class="tablebot" *ngFor="let data of skeletonHight">
+                        <td class="v-p-5">
+                            <ion-skeleton-text animated class="height-20"></ion-skeleton-text>
+                        </td>
+                        <td class="v-p-5">
+                            <div class="skeleton-group d-flex flex-direction-column align-items-end">
+                                <ion-skeleton-text animated class="height-16"></ion-skeleton-text>
+                                <ion-skeleton-text animated></ion-skeleton-text>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <!-- end -->
+            </table>
+        </div>
+        <!-- <div class="desktop-visibility">
+            <div class="loader loader-height" *ngIf="!dataLoad">
+                <img src="/assets/imgs/loader.gif" alt="">
+            </div>
+        </div> -->
+    </div>
+</div>

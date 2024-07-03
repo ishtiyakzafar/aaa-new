@@ -1,0 +1,28 @@
+<ion-header>
+    <div class="close" (click)="dismisss()">x</div>
+    <div class="title">
+      <span>Demat Request Forms</span>
+    </div>
+  </ion-header>
+  <ion-content>
+    <div class="table-wrapper thin-scroll">
+      <div class="section">
+        <div class="label">DP Type</div>
+        <ng-select [items]="dpType" bindLabel="value" bindValue="value" [clearable]="false"
+          [searchable]="false" [placeholder]="'Select'" name="selectDpType" [(ngModel)]="selectedDpType">
+        </ng-select>
+      </div>
+      <div class="section">
+        <div class="label">Number of Forms</div>
+        <ng-select [items]="numberOfForm" bindLabel="value" bindValue="value" [clearable]="false"
+          [searchable]="false" [placeholder]="'Select'" name="selectNoOfForm" [(ngModel)]="selectedNoOfForm">
+        </ng-select>
+      </div>
+      <div class="button-section">
+        <ion-button [disabled]="!selectedDpType || !selectedNoOfForm" (click)="downloadForm()">Download</ion-button>
+      </div>
+      <div class="disclaimer">
+        *Note: Do not submit xerox copies of Demat Request Form. Kindly check the Demat Request Form (Original / Xerox / Multiple DRF with the same serial number) before sending it to the DP department. 
+      </div>
+    </div>
+  </ion-content>

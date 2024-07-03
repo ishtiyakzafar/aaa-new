@@ -1,0 +1,44 @@
+@media screen and (min-width: 1200px) {
+    .container {
+        width: 1140px;
+    }
+    
+}
+
+.digital_note_table{margin-top: 20px;border-spacing: 0px 15px; border-collapse: separate;}
+.digital_note_table th{font-size: 14px; font-weight: 600; color: #808080; padding: 1rem; text-align: center; width: 20%;}
+.digital_note_table th:first-child{border-radius: 10px 0 0 10px;}
+.digital_note_table th:last-child{border-radius: 0px 10px 10px 0px;}
+.dn_th{background: #F2F4F4; box-shadow: 0px 2px 6px rgb(0 0 0 / 25%); border-radius: 10px; 
+    width: calc(100% - 10px); margin: 0 auto;}
+
+.digital_note_table td{font-size: 16px; font-weight: 600; color: #000000; padding: 1rem; text-align: center; width: 20%; }
+.digital_note_table td:first-child{border-radius: 10px 0 0 10px;}
+.digital_note_table td:last-child{border-radius: 0px 10px 10px 0px;}
+.dn_td{background: #fff; box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.18); border-radius: 10px;  width: 100%;  vertical-align: middle; }
+.inside_table{width: 100%;border-collapse: separate; border-spacing: 0 15px; padding: 0 5px;}
+
+
+.vr_scroll{height: 250px; overflow: hidden; overflow-y: auto; margin: 0px !important; }	
+.vr_scroll::-webkit-scrollbar-track{	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+border-radius: 2px;	background-color: #F5F5F5;}	
+.vr_scroll::-webkit-scrollbar{	width: 4px;	background-color: #F5F5F5;}	
+.vr_scroll::-webkit-scrollbar-thumb{	border-radius: 10px;	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);	background-color: #555;}	
+
+
+/*********digital-code*******/
+.digital-main-section {padding:0px 16px 60px;}
+.digital-note-details {padding: 17px 20px 23px 20px; border-radius:10px;box-shadow: 0px 3px 12px 0px #9696962E;margin:20px 0px;}
+.digital-note-details .client-Code{color:#6E6E6E;font-size:12px; line-height:16.37px;padding-bottom:20px;}
+.digital-note-details .client-Code span{color:#010101;font-size:12px; line-height:16.37px;padding-left:5px;}
+.digital-note-details .client-Details table {width:100%;}
+.digital-note-details .client-Details table th{font-size: 12px; line-height: 16px;color: #6E6E6E;text-align:left;padding-bottom:5px;font-weight:400;}
+.digital-note-details .client-Details table td{font-size: 12px; line-height: 16px;color: #212121;text-align:left;}
+
+.digital-note-details .digitalnote-Reach {width:100%; display:flex; padding-top:20px;}
+.digital-note-details .digitalnote-Reach .digital-download{width:50%;font-size: 12px;line-height: 16px; color: #2680EB;text-align:center;font-weight: 700;}
+.digital-note-details .digitalnote-Reach .digital-msg{width:50%;font-size: 12px;line-height: 16px; color: #2680EB;text-align:center;font-weight: 700;}
+
+.digital-download img{vertical-align:middle;padding-right: 5px;}
+.digital-msg img{vertical-align:middle;padding-right: 5px;}
+.down-loader img {z-index:1060; position: absolute;top: 50%; bottom: 0; left: 0; right: 0;margin :0 auto;display:block;width:30px; max-width: 100%;}

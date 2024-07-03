@@ -1,0 +1,108 @@
+<ion-header class="shared-report-container" style="z-index:0 !important">
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Shares Deposit Report</ion-title>
+			</div>
+		</div>
+	</ion-toolbar>	
+	<ion-toolbar class="container smaller-container share-deposit-head-content">
+		<ion-toolbar>
+			<div class="download_file">
+			<div (click)="onPdfExcelDownload('pdf')">
+				<img src="assets/svg/pdf.svg" alt="">            
+			</div>
+			<div (click)="onPdfExcelDownload('excel')">
+				<img src="assets/svg/download_excel.svg" alt="">            
+			</div>
+		</div>
+			</ion-toolbar>
+
+		<!-- <div class="download-report">
+			<span (click)="comingOption($event)"><img src="assets/svg/download_excel.svg" alt="">
+				Download Report</span>
+		</div> -->
+		<div class="box-container">
+			<div class="items">
+				<span class="itemtitle">Total Value</span>
+				<span class="itemvalue">{{totalValue}}</span>
+			</div>
+			<div class="items">
+				<span class="itemtitle">Pledged Value</span>
+				<span class="itemvalue">{{pledgedValue}}</span>
+			</div>
+			<div class="items">
+				<span class="itemtitle">GHV Pledged Value</span>
+				<span class="itemvalue">{{gHVPledgedValue}}</span>
+			</div>
+		</div>
+
+		
+	</ion-toolbar>
+
+
+
+</ion-header>
+
+
+	<div class="container  card-container thin-scroll" *ngIf="shareDepositList.length > 0 && dataLoad">
+		<div class="card" *ngFor="let data of shareDepositList"> 
+			<div class="card-header">
+				<span class="title">{{data.ScripName}}</span>
+				<span class="discription">ISIN : {{data.ISIN}} | Category: {{data.Category}} </span>
+			</div>
+			<div class="card-content">
+
+				<div class="items">
+					<span class="content-title">Qty. </span>
+					<span class="content-value">{{data.Quantity}}</span>
+				</div>
+				<div class="items">
+					<span class="content-title">LTP </span>
+					<span class="content-value">{{data.ClosingPrice}}</span>
+				</div>
+				<div class="items">
+					<span class="content-title">Amount </span>
+					<span class="content-value">{{data.Amount}}</span>
+				</div>
+	
+				<div class="items">
+					<span class="content-title">Haircut (%) </span>
+					<span class="content-value">{{data.Haircut}}</span>
+				</div>
+	
+				<div class="items">
+					<span class="content-title">Pledge </span>
+					<span *ngIf="data.Pledge != ''" class="content-value">{{data.Pledge}}</span>
+					<span *ngIf="data.Pledge == ''" class="content-value">-</span>
+				</div>
+	
+				<div class="items">
+					<span class="content-title">Adj. Value</span>
+					<span class="content-value">{{data.AdjustedValue}}</span>
+				</div>
+			</div>
+
+
+		</div>
+
+	
+
+
+	</div>
+
+	<div class="container smaller-container noDataContainer" *ngIf="shareDepositList.length == 0 && dataLoad">
+		<span>No Data Found</span>
+	</div>
+
+	<div style="position:absolute;top:50%; left:50%" *ngIf="!dataLoad">
+		<img style="width:40px" src="/assets/imgs/loader.gif" alt="">
+	</div>
+
+
+
+
+
+	
+

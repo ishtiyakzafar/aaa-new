@@ -1,0 +1,535 @@
+<ion-header class="main-header">
+    <ion-toolbar color="tertiary" class="mobile-visibility">
+        <div class="title-block title-block-custom">
+            <div class="icon-title">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <ion-title class="title">Brokerage Plan Structure</ion-title>
+            </div>
+            <div class="client-code">
+                {{clientCode}}
+            </div>
+        </div>
+        <div class="change-option-mobile">
+            <!-- <img src="assets/svg/change_brokerage.svg" alt="change-brokerage" class="change-brokerage"> -->
+            <div class="change-option" (click)="goToBrokrModification()">Change Brokerage</div>
+        </div>
+    </ion-toolbar>
+    <ion-toolbar class="desktop-visibility">
+        <div class="container">
+            <div class="change-option-block">
+                <div class="heading-part notificationheader">
+                    <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                    <span class="heading">Brokerage & DP Charges ({{clientCode}})</span>
+                </div>
+                <ion-toolbar class="desktop-visibility">
+                    <div class="seg-one m-t-6"  >
+                        <ion-segment scrollable class="header-segment-bottom"  
+                         >
+                         
+                            <ion-segment-button  [ngClass]="{'tab1':tab1=='tab1' }"  value="clients"  (click)="clickBrokeragePlanStructure('0')"   > 
+                                Brokerage Plan Structure ({{clientCode}})
+                            </ion-segment-button>
+                            <ion-segment-button [disabled]="showdptab && !showErr"  [ngClass]="{'tab2':tab2=='tab2' }" value="clients"  (click)="clickDPCharge(clientCode,'1')" >
+                                DP Charge Scheme
+                            </ion-segment-button>
+                        
+                            
+                            
+                        </ion-segment>
+                    </div>
+                </ion-toolbar>
+                <div class="change-option" *ngIf="showBrokerageButton" (click)="goToBrokrModification()">
+                    <!-- <img src="assets/svg/change_brokerage.svg" alt="change-brokerage" class="change-brokerage"> -->
+                    <span>Change Brokerage</span>
+                </div>
+            </div>
+        </div>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="container">
+        <div class="desktop-visibility" *ngIf="dataLoad && !showErr">
+            <div class="web-equity m-t-16">
+                <div class="header-table">
+                    <table style="width: 100%" class="desktop-header-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Cash Segment
+                                </th>
+                                <th>
+                                    Min. Brokerage
+                                </th>
+                                <th>
+                                    Max Brokerage (%)
+                                </th>
+                                <th>
+                                    Per Lot
+                                </th>
+                                <th>
+                                    One/Both Side
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="main-table thin-scroll">
+                    <table style="width: 100%" class="mobile-table">
+                        <tbody *ngIf="cashSeg.length > 0">
+                            <tr *ngFor="let dataObj of cashSeg">
+                                <td>
+                                    {{dataObj['Segment']}}
+                                </td>
+                                <td>
+                                    {{dataObj['BrkMin']}}
+                                </td>
+                                <td>
+                                    {{dataObj['BrkMax']}}
+                                </td>
+                                <td>
+                                    {{dataObj['PerLot']}}
+                                </td>
+                                <td>
+                                    {{dataObj['Side']}}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="cashSeg.length == 0" style="text-align: center;">
+                            <tr>
+                                <span class="no-data-found">No Data Found</span>
+                            </tr>
+                        </tbody> 
+                    </table>
+                </div>
+            </div>
+            <div class="web-equity ">
+                <div class="header-table">
+                    <table style="width: 100%" class="desktop-header-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    FNO Segment
+                                </th>
+                                <th>
+                                    Min. Brokerage
+                                </th>
+                                <th>
+                                    Max Brokerage (%)
+                                </th>
+                                <th>
+                                    Per Lot
+                                </th>
+                                <th>
+                                    One/Both Side
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="main-table thin-scroll">
+                    <table style="width: 100%" class="mobile-table">
+                        <tbody *ngIf="fnoSeg.length > 0">
+                            <tr *ngFor="let dataObj of fnoSeg">
+                                <td>
+                                    {{dataObj['Segment']}}
+                                </td>
+                                <td>
+                                    {{dataObj['BrkMin']}}
+                                </td>
+                                <td>
+                                    {{dataObj['BrkMax']}}
+                                </td>
+                                <td>
+                                    {{dataObj['PerLot']}}
+                                </td>
+                                <td>
+                                    {{dataObj['Side']}}
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <tbody *ngIf="fnoSeg.length == 0" style="text-align: center;">
+                            <tr>
+                                <span class="no-data-found">No Data Found</span>
+                            </tr>
+                        </tbody> 
+                        
+                    </table>
+                </div>
+            </div>
+            <div class="web-equity">
+                <div class="header-table">
+                    <table style="width: 100%" class="desktop-header-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Currency Segment
+                                </th>
+                                <th>
+                                    Min. Brokerage
+                                </th>
+                                <th>
+                                    Max Brokerage (%)
+                                </th>
+                                <th>
+                                    Per Lot
+                                </th>
+                                <th>
+                                    One/Both Side
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="main-table thin-scroll">
+                    <table style="width: 100%" class="mobile-table">
+                        <tbody *ngIf="currencySeg.length > 0">
+                            <tr *ngFor="let dataObj of currencySeg">
+                                <td>
+                                    {{dataObj['Segment']}}
+                                </td>
+                                <td>
+                                    {{dataObj['BrkMin']}}
+                                </td>
+                                <td>
+                                    {{dataObj['BrkMax']}}
+                                </td>
+                                <td>
+                                    {{dataObj['PerLot']}}
+                                </td>
+                                <td>
+                                    {{dataObj['Side']}}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="currencySeg.length == 0" style="text-align: center;">
+                            <tr>
+                                <span class="no-data-found">No Data Found</span>
+                            </tr>
+                        </tbody> 
+                    </table>
+                </div>
+            </div>
+
+                <!-- Commodity Segment -->
+
+                <div class="web-equity">
+                    <div class="header-table">
+                        <table style="width: 100%" class="desktop-header-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Commodity Segment
+                                    </th>
+                                    <th>
+                                        Min. Brokerage
+                                    </th>
+                                    <th>
+                                        Max Brokerage (%)
+                                    </th>
+                                    <th>
+                                        Per Lot
+                                    </th>
+                                    <th>
+                                        One/Both Side
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    <div class="main-table thin-scroll">
+                        <table style="width: 100%" class="mobile-table">
+                            <tbody *ngIf="commSeg.length > 0">
+                                <tr *ngFor="let dataObj of commSeg">
+                                    <td>
+                                        {{dataObj['Segment']}}
+                                    </td>
+                                    <td>
+                                        {{dataObj['BrkMin']}}
+                                    </td>
+                                    <td>
+                                        {{dataObj['BrkMax']}}
+                                    </td>
+                                    <td>
+                                        {{dataObj['PerLot']}}
+                                    </td>
+                                    <td>
+                                        {{dataObj['Side']}}
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody *ngIf="commSeg.length == 0" style="text-align: center;">
+                                <tr>
+                                    <span class="no-data-found">No Data Found</span>
+                                </tr>
+                            </tbody> 
+                        </table>
+                    </div>
+                </div>
+            <div class="web-equity">
+                <div class="header-table">
+                    <table style="width: 100%" class="desktop-header-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    SLBM Segment
+                                </th>
+                                <th>
+                                    Min. Brokerage
+                                </th>
+                                <th>
+                                    Max Brokerage (%)
+                                </th>
+                                <th>
+                                    Per Lot
+                                </th>
+                                <th>
+                                    One/Both Side
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="main-table thin-scroll">
+                    <table style="width: 100%" class="mobile-table">
+                        <tbody *ngIf="slbmSeg.length > 0">
+                            <tr *ngFor="let dataObj of slbmSeg">
+                                <td>
+                                    {{dataObj['Segment']}}
+                                </td>
+                                <td>
+                                    {{dataObj['BrkMin']}}
+                                </td>
+                                <td>
+                                    {{dataObj['BrkMax']}}
+                                </td>
+                                <td>
+                                    {{dataObj['PerLot']}}
+                                </td>
+                                <td>
+                                    {{dataObj['Side']}}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="slbmSeg.length == 0" style="text-align: center;">
+                            <tr>
+                                <span class="no-data-found">No Data Found</span>
+                            </tr>
+                        </tbody> 
+                    </table>
+                </div>
+            </div>
+
+        
+            
+            <div class="web-equity">
+                <span class="vasTitle">Vas Plan Structure</span>
+                <div class="header-table" style="margin-top:15px">
+                    <table style="width: 100%" class="desktop-header-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Equity Scheme Name
+                                </th>
+                                <th>
+                                    Start Date
+                                </th>
+                                <th>
+                                    End Date
+                                </th>
+                                <th>
+                                    Amount
+                                </th>
+                                <th>
+                                    Utilised Amount
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="main-table thin-scroll">
+                    <table style="width: 100%" class="mobile-table">
+                        <tbody *ngIf="vasPlan.length > 0">
+                            <tr *ngFor="let dataObj of vasPlan">
+                                <td>
+                                    {{dataObj['SchemeName']}}
+                                </td>
+                                <td>
+                                    {{dataObj['StartDate']}}
+                                </td>
+                                <td>
+                                    {{dataObj['EndDate']}}
+                                </td>
+                                <td>
+                                    {{dataObj['Amount']}}
+                                </td>
+                                <td>
+                                    {{dataObj['UtilisedAmt']}}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="vasPlan.length == 0" style="text-align: center;">
+                            <tr>
+                                <span class="no-data-found">No Data Found</span>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="desktop-visibility" *ngIf="showErr && !dataLoad && tab2!='tab2'">
+            <p>You are not authorized to view the brokerage structure of the client.</p>
+        </div>
+        <div class="mobile-visibility">
+            <ion-segment scrollable mode="md"
+                class="destop-segment-middle wathlist-block-segment equity-block-segment d-flex"
+                [(ngModel)]="equityBlockTabValue" (ionChange)="segmentChange($event)">
+                <div *ngFor="let data of buttonData">
+                    <ion-segment-button value="{{data['value']}}">{{data['name']}}</ion-segment-button>
+                </div>
+            </ion-segment>
+
+            <!-- review. commented ion-slides -->
+            <swiper-container class="updated-slides" #slidesUpdated [options]="{ autoHeight: 'true' }" (swiperactiveindexchange)="slideChanged($event)" *ngIf="dataLoad">
+                <swiper-slide>
+                    <div class="slide-data" *ngFor="let dataObj of cashSeg">
+                        <div class="slide-heading">{{dataObj['Segment']}}</div>
+                        <div class="segment-data-block">
+                            <div class="segment-data">
+                                <span class="title">Min. Brokerage</span>
+                                <span class="value">{{dataObj['BrkMin']}}</span>
+                            </div>
+                            <div class="segment-data">
+                                <span class="title">Max. Brokerage</span>
+                                <span class="value">{{dataObj['BrkMax']}}</span>
+                            </div>
+                            <div class="segment-data">
+                                <span class="title">Per Lot</span>
+                                <span class="value">{{dataObj['PerLot']}}</span>
+                            </div>
+                            <div class="segment-data">
+                                <span class="title">One/Both Side</span>
+                                <span class="value">{{dataObj['Side']}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-data norecordClass" *ngIf="cashSeg.length == 0">
+                        <span>No Data Found</span>
+                    </div>
+                </swiper-slide>
+                <swiper-slide>
+                    <div class="slide-data" *ngFor="let dataObj of fnoSeg">
+                        <div class="slide-heading">{{dataObj['Segment']}}</div>
+                        <div class="segment-data-block">
+                            <div class="segment-data">
+                                <span class="title">Min. Brokerage</span>
+                                <span class="value">{{dataObj['BrkMin']}}</span>
+                            </div>
+                            <div class="segment-data">
+                                <span class="title">Max. Brokerage</span>
+                                <span class="value">{{dataObj['BrkMax']}}</span>
+                            </div>
+                            <div class="segment-data">
+                                <span class="title">Per Lot</span>
+                                <span class="value">{{dataObj['PerLot']}}</span>
+                            </div>
+                            <div class="segment-data">
+                                <span class="title">One/Both Side</span>
+                                <span class="value">{{dataObj['Side']}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-data norecordClass" *ngIf="fnoSeg.length == 0">
+                        <span>No Data Found</span>
+                    </div>
+                </swiper-slide>
+                <swiper-slide>
+                    <div class="slide-data" *ngFor="let dataObj of currencySeg">
+                        <div class="slide-heading">{{dataObj['Segment']}}</div>
+                        <div class="segment-data-block">
+                            <div class="segment-data">
+                                <span class="title">Min. Brokerage</span>
+                                <span class="value">{{dataObj['BrkMin']}}</span>
+                            </div>
+                            <div class="segment-data">
+                                <span class="title">Max. Brokerage</span>
+                                <span class="value">{{dataObj['BrkMax']}}</span>
+                            </div>
+                            <div class="segment-data">
+                                <span class="title">Per Lot</span>
+                                <span class="value">{{dataObj['PerLot']}}</span>
+                            </div>
+                            <div class="segment-data">
+                                <span class="title">One/Both Side</span>
+                                <span class="value">{{dataObj['Side']}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-data norecordClass" *ngIf="currencySeg.length == 0">
+                        <span>No Data Found</span>
+                    </div>
+                </swiper-slide>
+                <swiper-slide>
+                    <div class="slide-data" *ngFor="let dataObj of commSeg">
+                        <div class="slide-heading">{{dataObj['Segment']}}</div>
+                        <div class="segment-data-block">
+                            <div class="segment-data">
+                                <span class="title">Min. Brokerage</span>
+                                <span class="value">{{dataObj['BrkMin']}}</span>
+                            </div>
+                            <div class="segment-data">
+                                <span class="title">Max. Brokerage</span>
+                                <span class="value">{{dataObj['BrkMax']}}</span>
+                            </div>
+                            <div class="segment-data">
+                                <span class="title">Per Lot</span>
+                                <span class="value">{{dataObj['PerLot']}}</span>
+                            </div>
+                            <div class="segment-data">
+                                <span class="title">One/Both Side</span>
+                                <span class="value">{{dataObj['Side']}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-data norecordClass" *ngIf="commSeg.length == 0">
+                        <span>No Data Found</span>
+                    </div>
+                </swiper-slide>
+                <swiper-slide>
+                    <div class="slide-data" *ngFor="let dataObj of slbmSeg">
+                        <div class="slide-heading">{{dataObj['Segment']}}</div>
+                        <div class="segment-data-block">
+                            <div class="segment-data">
+                                <span class="title">Min. Brokerage</span>
+                                <span class="value">{{dataObj['BrkMin']}}</span>
+                            </div>
+                            <div class="segment-data">
+                                <span class="title">Max. Brokerage</span>
+                                <span class="value">{{dataObj['BrkMax']}}</span>
+                            </div>
+                            <div class="segment-data">
+                                <span class="title">Per Lot</span>
+                                <span class="value">{{dataObj['PerLot']}}</span>
+                            </div>
+                            <div class="segment-data">
+                                <span class="title">One/Both Side</span>
+                                <span class="value">{{dataObj['Side']}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slide-data norecordClass" *ngIf="slbmSeg.length == 0">
+                        <span>No Data Found</span>
+                    </div>
+                </swiper-slide>
+      
+            </swiper-container>
+        </div>
+    </div>
+    <div style="position:absolute;top:50%; left:50%" *ngIf="showLoader">
+        <img style="width:40px" src="/assets/imgs/loader.gif" alt="">
+    </div>
+    <app-dp-scheme-details *ngIf="showDP" [clientCode]="clientCode">
+
+    </app-dp-scheme-details>
+</ion-content>

@@ -1,0 +1,10 @@
+<ion-header>
+    <div class="close" (click)="dismiss()">x</div>
+    <div class="title" [ngClass]="titleClass == 'Icon'? 'title_icon' :'title_text'"> 
+      <span *ngIf="titleClass != 'Icon'">Cancel Request</span>  
+      <span *ngIf="titleClass == 'Icon'"><img  class="status-icon" src="assets/svg/{{iconType}}.svg" alt=""></span>  
+    </div>
+  </ion-header>
+  <ion-content>
+    <div class="message" [ngClass]="titleClass == 'Icon'? 'status_text':'text_msg'">{{msgContent}}</div>
+  </ion-content>

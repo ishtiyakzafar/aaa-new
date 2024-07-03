@@ -1,0 +1,366 @@
+<ion-header class="mobile-visibility">
+	<ion-toolbar color="tertiary">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Span Margin Calculator</ion-title>
+			</div>
+			<div class="reset-section-mobile">
+				<div class="reset-block" (click)="resetMarginData()">
+					<img class="reset-img" src="assets/svg/refresh.svg" alt="">
+					<span class="reset">Reset</span>
+				</div>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="calculator mobile-visibility">
+		<div class="type-product-section">
+			<div class="section">
+				<div class="label">Type</div>
+				<ion-segment class="calculator-segment" (ionChange)="typeChange()" [(ngModel)]="equityBlockValue">
+					<ion-segment-button value="equity">Equity</ion-segment-button>
+					<ion-segment-button value="currency">Currency</ion-segment-button>
+				</ion-segment>
+			</div>
+			<div class="section">
+				<div class="label">Product</div>
+				<ion-segment class="calculator-segment" (ionChange)="productChange()" [(ngModel)]="futuresBlockValue">
+					<ion-segment-button value="F">Futures</ion-segment-button>
+					<ion-segment-button value="O">Options</ion-segment-button>
+				</ion-segment>
+			</div>
+		</div>
+		<div class="search-bar">
+			<ion-searchbar placeholder="Search a Scrip" class="custom-searchbar" [(ngModel)]="search_item"
+				debounce="1000" (keyup)="getItems($event)"></ion-searchbar>
+
+			<div class="drop-down-toolbar thin-scroll" *ngIf="dataVisible">
+
+				<!-- review. removed filter -->
+				<!-- <div class="drop-down" *ngIf="(scripList|filter:search_item).length > 0">
+					<div class="item" *ngFor="let dataObj of scripList | filter:search_item"> -->
+				<div class="drop-down" *ngIf="(scripList|filter:search_item).length > 0">
+					<div class="item" *ngFor="let dataObj of scripList | filter:search_item">
+						<span class="first" (click)="getScripValue(dataObj)">{{dataObj.Name}}
+							{{dataObj.Exchange === 'N' ? '(NSE)' : '(BSE)'}}</span>
+						<!-- <span class="name">Prashanjeet Chakravarty</span> -->
+					</div>
+				</div>
+
+				<!-- <div class="drop-down" *ngIf="(scripList|filter:search_item).length == 0">
+					<div style="font-weight: bold;text-align: center;">No Records Found</div>
+				</div> -->
+			</div>
+		</div>
+		<div class="buy-equity-section">
+			<div class="section">
+				<div class="label"></div>
+				<ion-segment class="calculator-segment" [(ngModel)]="buyBlockValue">
+					<ion-segment-button value="buy">Buy</ion-segment-button>
+					<ion-segment-button value="sell">Sell</ion-segment-button>
+				</ion-segment>
+			</div>
+			<div class="section">
+				<div class="label">Expiry</div>
+				<ion-select class="ion-custom-select" [ngClass]="{'noClick': expiryDates.length === 0}"
+					[(ngModel)]="selectdate" (ngModelChange)="expiryDateChange($event)">
+					<ion-select-option *ngFor="let obj of expiryDates" [value]="obj['Expiry']">{{obj['Expiry']}}
+					</ion-select-option>
+				</ion-select>
+			</div>
+		</div>
+		<div class="buy-equity-section call-strike-section" *ngIf="futuresBlockValue === 'O'">
+			<div class="section">
+				<div class="label"></div>
+				<ion-segment class="calculator-segment" [(ngModel)]="callBlockValue" (ionChange)="callPutChange()">
+					<ion-segment-button value="CE">Call</ion-segment-button>
+					<ion-segment-button value="PE">Put</ion-segment-button>
+				</ion-segment>
+			</div>
+			<div class="section">
+				<div class="label">Strike Price</div>
+				<ion-select class="ion-custom-select" [ngClass]="{'noClick': strikeRateData.length === 0}"
+					[(ngModel)]="selectedStrikePrice" (ngModelChange)="strikeRateChange($event)">
+					<ion-select-option *ngFor="let obj of strikeRateData" [value]="obj['StrikeRate']">
+						{{obj['StrikeRate']}}
+					</ion-select-option>
+				</ion-select>
+			</div>
+		</div>
+		<div class="buy-equity-section call-strike-section">
+			<div class="section">
+				<div class="label">Price</div>
+				<ion-input type="text" readonly [value]="price" class="ion-input"></ion-input>
+			</div>
+			<div class="section">
+				<div class="label">Lot Qty.</div>
+				<ion-input type="number" [(ngModel)]="marketLot" name="marketLot" class="ion-input"></ion-input>
+			</div>
+		</div>
+		<div class="login-btn">
+			<ion-button shape="round" expand="full" (click)="addSpanMargin()">Add</ion-button>
+		</div>
+		<div class="web-equity thin-scroll">
+			<div class="header-part">
+				<div class="heading">Combined Margin Requirement</div>
+				<div class="section-block">
+					<div class="section-1">
+						<span class="title">Span</span>
+						<div class="below-part">
+							<!-- <span class="rupees">₹</span> -->
+                            <img class="rupee smaller-rupee" src="assets/svg/rupee.svg" alt="">
+							<span class="value">{{spanMargin}}</span>
+						</div>
+					</div>
+					<div class="section-1">
+						<span class="title">Exposure</span>
+						<div class="below-part">
+							<!-- <span class="rupees">₹</span> -->
+                            <img class="rupee smaller-rupee" src="assets/svg/rupee.svg" alt="">
+							<span class="value">{{exposureMargin}}</span>
+						</div>
+					</div>
+					<div class="section-1">
+						<span class="title">Total Margin</span>
+						<div class="below-part">
+							<!-- <span class="rupees">₹</span> -->
+                            <img class="rupee smaller-rupee" src="assets/svg/rupee.svg" alt="">
+							<span class="value">{{totalMargin}}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="data-block" *ngFor="let dataObj of calculatorData; let i = index">
+			<div class="type-block">
+				<div class="type-data"
+					[ngClass]="{'buy': dataObj['BuySell'] === 'B', 'sell': dataObj['BuySell'] === 'S'}">
+					{{dataObj['BuySell'] === 'B' ? 'Buy' : 'Sell'}}</div>
+				<img class="delete-img" src="assets/svg/delete.svg" alt="" (click)="delete(i, dataObj)">
+			</div>
+			<div class="scrip">
+				<!-- {{dataObj['scrip']}} -->
+				{{dataObj['Contract']}}
+			</div>
+			<div class="data-section">
+				<div class="item">
+					<div class="upper">Expiry Date</div>
+					<div class="lower">{{dataObj['SCExpiry']}}</div>
+				</div>
+				<div class="item">
+					<div class="upper">Strike Price</div>
+					<div class="lower">
+						<span class="rupees" *ngIf="dataObj['StrikeRate'] > 0">
+							<span *ngIf="dataObj['Product'] == 'PE'"> Put</span>
+							<span *ngIf="dataObj['Product'] == 'CE'"></span>
+                            <span class="space"> ₹</span> 
+                        </span>
+                            {{dataObj['StrikeRate'] > 0 ? dataObj['StrikeRate'] : 'XX'}}
+						<!-- <span *ngIf="dataObj['StrikeRate'] === 0">XX</span> -->
+					</div>
+				</div>
+				<div class="item">
+					<div class="upper">Quantity</div>
+					<div class="lower">
+						<!-- <span class="rupees">₹</span> -->
+                        {{dataObj['Qty']}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</ion-content>
+
+<div class="calculator desktop-visibility">
+	<div class="reset-section">
+		<div class="reset-block" (click)="resetMarginData()">
+			<img class="reset-img" src="assets/svg/refresh_colored.svg" alt="">
+			<span class="reset">Reset</span>
+		</div>
+	</div>
+	<div class="type-product-section">
+		<div class="section">
+			<div class="label">Type</div>
+			<ion-segment class="calculator-segment" (ionChange)="typeChange()" [(ngModel)]="equityBlockValue">
+				<ion-segment-button value="equity">Equity</ion-segment-button>
+				<ion-segment-button value="currency">Currency</ion-segment-button>
+			</ion-segment>
+		</div>
+		<div class="section">
+			<div class="label">Product</div>
+			<ion-segment class="calculator-segment" (ionChange)="productChange()" [(ngModel)]="futuresBlockValue">
+				<ion-segment-button value="F">Futures</ion-segment-button>
+				<ion-segment-button value="O">Options</ion-segment-button>
+			</ion-segment>
+		</div>
+	</div>
+	<div class="search-bar">
+		<ion-searchbar placeholder="Search a Scrip" class="custom-searchbar" [(ngModel)]="search_item" debounce="1000"
+			(keyup)="getItems($event)"></ion-searchbar>
+		<div class="drop-down-toolbar thin-scroll" *ngIf="dataVisible">
+
+			<!-- review. removed filter -->
+			<!-- <div class="drop-down" *ngIf="(scripList|filter:search_item).length > 0">
+				<div class="item" *ngFor="let dataObj of scripList | filter:search_item"> -->
+			<div class="drop-down" *ngIf="(scripList|filter:search_item).length > 0">
+				<div class="item" *ngFor="let dataObj of scripList | filter:search_item">
+					<span class="first" (click)="getScripValue(dataObj)">{{dataObj.Name}}
+						{{dataObj.Exchange === 'N' ? '(NSE)' : '(BSE)'}}</span>
+					<!-- <span class="name">Prashanjeet Chakravarty</span> -->
+				</div>
+			</div>
+
+			<!-- <div class="drop-down" *ngIf="(scripList|filter:search_item).length == 0">
+				<div style="font-weight: bold;text-align: center;">No Records Found {{dataVisible}}</div>
+			</div> -->
+		</div>
+	</div>
+	<div class="buy-equity-section">
+		<div class="section">
+			<div class="label"></div>
+			<ion-segment class="calculator-segment" [(ngModel)]="buyBlockValue">
+				<ion-segment-button value="buy">Buy</ion-segment-button>
+				<ion-segment-button value="sell">Sell</ion-segment-button>
+			</ion-segment>
+		</div>
+		<div class="section">
+			<div class="label">Expiry</div>
+			<ion-select class="ion-custom-select" [ngClass]="{'noClick': expiryDates.length === 0}"
+				[(ngModel)]="selectdate" (ngModelChange)="expiryDateChange($event)">
+				<ion-select-option *ngFor="let obj of expiryDates" [value]="obj['Expiry']">{{obj['Expiry']}}
+				</ion-select-option>
+			</ion-select>
+		</div>
+	</div>
+	<div class="buy-equity-section call-strike-section" *ngIf="futuresBlockValue === 'O'">
+		<div class="section">
+			<div class="label"></div>
+			<ion-segment class="calculator-segment" [(ngModel)]="callBlockValue" (ionChange)="callPutChange()">
+				<ion-segment-button value="CE">Call</ion-segment-button>
+				<ion-segment-button value="PE">Put</ion-segment-button>
+			</ion-segment>
+		</div>
+		<div class="section">
+			<div class="label">Strike Price</div>
+			<ion-select class="ion-custom-select" [ngClass]="{'noClick': strikeRateData.length === 0}"
+				[(ngModel)]="selectedStrikePrice" (ngModelChange)="strikeRateChange($event)">
+				<ion-select-option *ngFor="let obj of strikeRateData" [value]="obj['StrikeRate']">{{obj['StrikeRate']}}
+				</ion-select-option>
+			</ion-select>
+		</div>
+	</div>
+	<div class="buy-equity-section call-strike-section">
+		<div class="section">
+			<div class="label">Price</div>
+			<ion-input type="text" readonly [value]="price" class="ion-input"></ion-input>
+		</div>
+		<div class="section">
+			<div class="label">Lot Qty.</div>
+			<ion-input type="number" [(ngModel)]="marketLot" name="marketLot" class="ion-input"></ion-input>
+		</div>
+	</div>
+	<div class="login-btn">
+		<ion-button shape="round" expand="full" (click)="addSpanMargin()">Add</ion-button>
+	</div>
+	<div class="web-equity thin-scroll">
+		<div class="header-part" *ngIf="calculatorData.length">
+			<div class="heading">Combined Margin Requirement</div>
+			<div class="section-block">
+				<div class="section-1">
+					<span class="title">Span</span>
+					<div class="below-part">
+						<span class="rupees">₹</span>
+						<span class="value">{{spanMargin}}</span>
+					</div>
+				</div>
+				<div class="section-1">
+					<span class="title">Exposure</span>
+					<div class="below-part">
+						<span class="rupees">₹</span>
+						<span class="value">{{exposureMargin}}</span>
+					</div>
+				</div>
+				<div class="section-1">
+					<span class="title">Total Margin</span>
+					<div class="below-part">
+						<span class="rupees">₹</span>
+						<span class="value">{{totalMargin}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="header-table">
+			<table class="desktop-header-table width-100">
+				<thead>
+					<tr>
+						<th>
+							Type
+						</th>
+						<th>
+							Scrip
+						</th>
+						<th>
+							Expiry Date
+						</th>
+						<th>
+							Strike Price
+						</th>
+						<th>
+							Quantity
+						</th>
+						<th>
+						</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<div class="main-table">
+			<!-- <table style="width: 100%" class="mobile-table"> -->
+			<table class="width-100">
+				<tbody>
+					<tr *ngFor="let dataObj of calculatorData; let ind = index;">
+						<td>
+							<div class="type-data"
+								[ngClass]="{'buy': dataObj['BuySell'] === 'B', 'sell': dataObj['BuySell'] === 'S'}">
+								{{dataObj['BuySell'] === 'B' ? 'Buy' : 'Sell'}}
+							</div>
+						</td>
+						<td>
+							<div class="td-heading first-column">
+								<span class="first-span-block">
+									<span class="first-span">{{dataObj['Contract']}}</span>
+									<!-- <span class="spanStyle"> N,C</span> -->
+								</span>
+							</div>
+						</td>
+						<td>{{dataObj['SCExpiry']}}</td>
+						<td>
+							<!-- <span class="rupees">₹</span>{{dataObj['StrikeRate']}} -->
+							<span class="rupees" *ngIf="dataObj['StrikeRate'] > 0">
+								<span *ngIf="dataObj['Product'] == 'PE'"> Put</span>
+								<span *ngIf="dataObj['Product'] == 'CE'"> Call</span>
+                                <span class="space"> ₹</span>
+                            </span>
+								{{dataObj['StrikeRate'] > 0 ? dataObj['StrikeRate'] : 'XX'}}
+							<!-- <span *ngIf="dataObj['StrikeRate'] === 0">XX</span> -->
+						</td>
+						<td>
+							{{dataObj['Qty']}}
+						</td>
+						<td>
+							<img class="delete-img" src="assets/svg/delete.svg" alt="" (click)="delete(ind, dataObj)">
+						</td>
+					</tr>
+				</tbody>
+				<tbody *ngIf="calculatorData.length == 0">
+					<tr>
+						<td class="no-data-found">No Records Found</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

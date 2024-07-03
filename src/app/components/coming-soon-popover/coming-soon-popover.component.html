@@ -1,0 +1,5 @@
+<ion-list lines="none">
+  <ion-item mode="md" button *ngFor="let item of items" color="clear" (click)="onItemClick(item)">
+    <ion-label text-wrap >{{item.title}}</ion-label>
+  </ion-item>
+</ion-list>

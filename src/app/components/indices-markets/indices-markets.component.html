@@ -1,0 +1,65 @@
+<h3 class="indices-heading desktop-visibility">Global Markets</h3>
+<div class="table-part">
+    <div class="web-equity">
+        <div class="header-table">
+            <table class="desktop-header-table width-100">
+                <thead>
+                    <tr>
+                        <th>
+                            Scrip
+                        </th>
+                        <th>
+                            LTP
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="web-equity thin-scroll">
+        <div class="main-table thin-scroll">
+            <table class="mobile-table width-100">
+                <tbody *ngIf="globalMarketList.length  && dataLoad">
+                    <tr *ngFor="let dataObj of globalMarketList; let i = index">
+                        <td>
+                            <div class="scrip">
+                               {{dataObj['indices']}}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="value-block" [ngClass]="{'font-green': dataObj['change_per'] > 0, 'loser-colors': dataObj['change_per'] < 0  }">
+                                <div class="upper">{{dataObj['lprice'] | formatNumerDecimal}}</div>
+                                <div class="lower">({{dataObj['change_per'] | formatNumerDecimal}}%)</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody *ngIf="!datas.length && dataLoad">
+                    <tr>
+                        <td class="no-data-found">No Data Found</td>
+                    </tr>
+                </tbody>
+                <!-- new code for skeleton start -->
+                <tbody *ngIf="!dataLoad" class="mobile-visibility-tbody">
+                    <tr class="tablebot" *ngFor="let data of skeletonHight">
+                        <td class="v-p-5">
+                            <ion-skeleton-text animated class="height-20"></ion-skeleton-text>
+                        </td>
+                        <td class="v-p-5">
+                            <div class="skeleton-group d-flex flex-direction-column align-items-end">
+                                <ion-skeleton-text animated class="height-16"></ion-skeleton-text>
+                                <ion-skeleton-text animated></ion-skeleton-text>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+                <!-- end -->
+            </table>
+        </div>
+        <!-- <div class="desktop-visibility">
+            <div class="loader loader-height" *ngIf="!dataLoad">
+                <img src="/assets/imgs/loader.gif" alt="">
+            </div>
+        </div> -->
+    </div>
+</div>

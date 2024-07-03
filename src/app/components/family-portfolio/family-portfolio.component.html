@@ -1,0 +1,2613 @@
+<ion-content>
+	<ion-toolbar *ngIf="headerNative"  color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+		  <div class="icon-title">
+			<ion-icon
+			  name="arrow-back-outline"
+			  class="back-button"
+			  (click)="goBack()"
+			></ion-icon>
+			<ion-title class="title">Family Portfolio</ion-title>
+		  </div>
+		</div>
+	  </ion-toolbar>
+	<div class="container">
+		<div class="family_head_search">
+			<div class="heading-part desktop-visibility"><span class="heading">Family 360</span></div>
+			<div class="d-flex align-center mobileFlex">
+			<div class="search-section search-section-changed search-section-changed-revamped" *ngIf="displayClientDropDownField">
+				<ion-toolbar>
+					<ion-searchbar (ionBlur)="hideDropDown()" class="serachReprotsInput"
+						[debounce]="1000" (ngModelChange)="searchClientValue($event)" [(ngModel)]="clientSearchValue" placeholder="Search Client Code/Name">
+					</ion-searchbar>
+				</ion-toolbar>
+				<ion-toolbar class="drop-down-toolbar" *ngIf="isDropDownVisible">
+					<div class="drop-down thin-scroll" *ngIf="clientCodeList.length && dtLoad">
+						<div class="item" *ngFor="let data of clientCodeList" (click)="displayClientDetails(data)">
+							<span class="name">{{data.ClientCode.toString().split("-")[1].trim() ? 
+							data.ClientCode.toString().split("-")[0] + "-" + data.ClientCode.toString().split("-")[1].trim() 
+							: data.ClientCode.toString().split("-")[0] }}</span>
+						</div>
+					</div>
+					<div class="drop-down thin-scroll" *ngIf="clientCodeList.length==0 && dtLoad">
+						<span>No Data Found</span>
+					</div>
+					<div class="loader" *ngIf="!dtLoad">
+						<img src="/assets/imgs/loader.gif" alt="">
+					</div>
+				</ion-toolbar>
+				<span class="search_note">Enter min. 4 characters to get the client list</span>
+			</div>
+			<span *ngIf="displayClientDropDownField" class="text-center feedbackBtn" (click)="portfolioForm()"><img src="assets/svg/portfolioFeedback.svg" width="30px"></span>
+		</div>
+		</div>
+		<!-- <div class="note-msg" *ngIf="!clientMappMsg">
+			<span><img src="assets/imgs/exclam_icon.svg"></span>
+			<span>
+				If you find any data issues, please share them on this link:
+				<span class="click-here" (click)="portfolioForm()">Click Here</span>
+			</span>
+		</div> -->
+		<div class="panel-wrapper">
+		<div class="portfolio-panel fm-mt">
+			<div class="top-info-block cus_warp" *ngIf="viewData">
+				<div class="select-wrapper">
+					<div class="select_client" (mouseenter)="myClientselect($event)" (mouseleave)="removeHover($event)">
+						<div class="title-width" (click)="clientClick()">
+							<span class="clientNameCss">{{clientName}}</span>
+							<ion-icon class="family-dropdown" slot="end" name="chevron-down" *ngIf="clientName"></ion-icon>
+						</div>
+						<!-- <input type="text" value="{{clientName}}" (click)="myClientselect()" readonly> -->
+						<!-- <ion-icon class="family-dropdown" slot="end" name="chevron-down-outline"></ion-icon> -->
+						<div class="select_client_dropdown_main d-none" id="ClientMainBox" *ngIf="clientName">
+							<ul class="select_client_dropdown">
+								<li class="client_box d-flex" (click)="goToFamilyPortfolio()"
+									*ngIf="familyOptionDisplay">
+									<div class="short_name">{{getShortName(clientName)}}</div>
+									<div class="name_details">
+										<span>{{parentClientName}}</span>
+										<label>FAMILY</label>
+									</div>
+								</li>
+								<li class="client_box d-flex" *ngFor="let dataObj of familyMappList; let i = index"
+									>
+									<div class="d-flex family_inner_deta" (click)="familyDropdown(dataObj)">
+									<div class="short_name">{{getShortName(dataObj.ClientName ? dataObj.ClientName : "Name Not Available")}}</div>
+									<div class="name_details">
+										<span>{{dataObj.ClientName ? dataObj.ClientName : "Name Not Available"}}</span>
+										<label>{{dataObj.Relation && dataObj.Relation.length > 0 ? dataObj.Relation : 'SELF'}}</label>
+									</div>
+								</div>
+								<div class="remove_cross_btn" (click)="removeFamilyTable(dataObj)" *ngIf="checkIfSelf(dataObj.Relation)"><img src="assets/imgs/close_btn_red.svg" width="12px"></div>
+								</li>
+							</ul>
+							<div class="add_member d-flex align-center" (click)="addMemberForm()">
+								<img src="assets/imgs/add_member.svg">
+								<span>Add another member</span>
+							</div>
+						</div>
+					</div>
+					<div class="d-flex client_id_select align-center">
+						<label>Client ID {{displayClientCode}}</label>
+						<span class="hierarchyType">{{displayRelation}}</span>
+					</div>
+				</div>
+				
+				<!-- <div class="last-update d-flex  justify-content-center">
+					<span class="margin-t-20" *ngIf="lastUpdated">
+						<img src="assets/imgs/watch.svg">
+						Last Updated: {{moment(lastUpdated).format('YYYY-MM-DD')}}</span>
+				</div> -->
+				<div class="d-flex acc_report">
+				<div class="acc-details last-update d-flex justify-content-center" (click)="goToAccDetail()" *ngIf="isBrokingClient">
+					<span class="pointer desktop-visibility" *ngIf="displayClientDropDownField">
+						<img src="assets/imgs/client-detail-icon.svg" width="22px"> Account Summary
+					</span>
+					<span class="pointer  mobile-visibility" *ngIf="displayClientDropDownField">
+						<img src="assets/imgs/client-detail-icon.svg"  width="22px" style="margin-top:-8px;">
+					</span>
+				</div>
+				<div class="d-flex"  *ngIf="dataLoad">
+				<!-- <div class="d-flex report margin-t-20" (click)="downloadPdfReport()" -->
+					<div class="d-flex report desktop-visibility" (click)="downloadPdfReport()"
+						[ngClass]="displayReport ? '' : 'showReportBtn'">
+						<img src="assets/imgs/download_white.svg" alt="" />
+						<h4>Family360 Report</h4>
+					</div>
+					<div class=" mobile-visibility" (click)="downloadPdfReport()"
+					>
+					<img src="assets/svg/portfolioShare.svg" width="22px" alt="" />
+				
+					</div>
+				
+				
+				</div>
+			</div>
+			</div>
+		</div>
+		</div>
+		<div class="main_tabs" *ngIf="viewData">
+			<div class="tab-content-block-main table-2 responsive-scroll top_tabmain">
+				<div class="top_parent_tab_main" *ngIf="dataLoad">
+				<div class="tableFilter responsive-scroll d-flex inner-tapPanel top_parent_tab">
+					<input type="radio" id="Portfolio" name="mf-table" value="yes"  
+					[checked]="currentTab == 'Portfolio_tab' ? true : false"
+						(click)="tabTableContentMain('Portfolio_tab')">
+					<label for="Portfolio">Portfolio</label>
+					
+					<input type="radio" id="plStatement" name="mf-table" [checked]="currentTab == 'plstatement_tab' ? true : false"
+					(click)="tabTableContentMain('plstatement_tab')" value="yes">
+					<label for="plStatement">PnL Statement</label>
+
+					<input type="radio" id="Analytics" name="mf-table" (click)="tabTableContentMain('analytics_tab')"
+					[checked]="currentTab == 'analytics_tab' ? true : false" value="yes">
+					<label for="Analytics">Analytics</label>
+					
+				</div>
+			</div>
+				<div class="ac_tap Portfolio_tab set-scroll">
+					<div class="tabs_inner">
+						<div class="panel-wrapper">
+							<div class="panel-content portfolio-container mt-0">
+								<div class="portfolio portfolio-panel" *ngIf="dataLoad">
+									<!-- <div class="d-flex align-center clientMappMsg" *ngIf="clientMappMsg">
+										<img src="assets/imgs/client-mapp.svg">
+										You can view the Family Portfolio only for the clients mapped under your
+										hierarchy.
+									</div> -->
+									<div class="portfolio-info-panel" *ngIf="!clientMappMsg">
+										<div class="rmvalues d-flex align-center">
+											<ul class="d-flex rm-3grid-mb">
+												<li>
+													<h5>Current Value</h5>
+													<h3>₹{{currentValue == 0 ? 0 : (currentValue)}}</h3>
+													<div *ngIf="storeProducts.length>0" class="last-updated">
+														<p>Last Updated on/before - {{moment(productLastUpdatedDate).format('DD MMM YYYY')}}</p>
+														<img (click)="showLastUpdatedPopup()" src="assets/svg/Group 48103409.svg" alt="icon">
+													</div>
+												</li>
+												<li>
+													<h5>Invested Value</h5>
+													<h3>₹{{investedValue == 0 ? 0 : (investedValue) }}
+													</h3>
+												</li>
+												<li>
+													<h5 *ngIf="unRealisePlValue >= 0">Gain</h5>
+													<h5 *ngIf="unRealisePlValue < 0">Loss</h5>
+													<h3 class="profit"
+														[ngStyle]="{'color':unRealisePlPer == 0  ? '#212121' : unRealisePlPer > 0 ? '#17C257' : '#F55858'}">
+														₹{{displayRealisePlValue()}}
+														<span
+															[ngStyle]="{'color':unRealisePlPer == 0  ? '#212121' : unRealisePlPer > 0 ? '#17C257' : '#F55858'}">{{unRealisePlPer == 0 ? 0 : (unRealisePlPer | formatNumerDecimal)}}%</span>
+													</h3>
+												</li>
+											</ul>
+										</div>
+										<ul
+											class="report-download d-flex justify-content-center align-center flex-direction-column">
+											<!-- <li (click)="generateTablesHTML()" *ngIf="displayReport">
+										<img src="assets/imgs/download.svg" alt="" />
+										<h4>Report</h4>
+									</li> -->
+										<!-- <li class="mobile-visibility"  (click)="generateTablesHTML()"
+											[ngClass]="displayReport ? '' : 'showReportBtn'">
+											<img src="assets/imgs/download.svg" width="16px" alt="" />
+											<h4>Report</h4>
+										</li> -->
+										<!-- <li (click)="goToAnalytics()">
+											<img src="assets/imgs/analytics_icon.svg" alt="" />
+											<h4>Analytics</h4>
+										</li>  -->
+											<!-- <li (click)="downloadPdfReport()">
+											<img src="assets/img/whatapp.svg" alt=""/>
+											<h4>WhatsApp</h4>
+										</li> -->
+											<!-- <li>
+											<img src="assets/img/e-mail.svg" alt=""/>
+											<h4>E-Mail</h4>
+										</li> -->
+										</ul>
+									</div>
+								</div>
+								<div class="loader loader-height-300" *ngIf="!dataLoad">
+									<img src="/assets/imgs/loader.gif" alt="">
+								</div>
+								<div class="portfolio-info-chart">
+									<div class="chart-switch-tab d-flex mb-30" style="margin-top: 8px;" *ngIf="productSummaryData.length > 0">
+										<input type="radio" id="pieChartDonut" name="switch-one" value="yes" checked />
+										<label for="pieChartDonut" (click)="chartType('dognut')">Pie Chart</label>
+										<input type="radio" id="treemap" name="switch-one" value="no" />
+										<label for="treemap" (click)="chartType('tree')">Treemap</label>
+									</div>
+									<div class="pieChartDonut-data" *ngIf="productSummaryData.length > 0"
+										>
+										<div id="chartHide" *ngIf="!desktop">
+											<!-- review. commented IonSlides -->
+											<swiper-container class="chartDataSlider" #chartSlides [pagination]="{ clickable: true, type: 'bullets'}" [slidesPerView]="1"  (swiperactiveindexchange)="chartSlideChanged($event)" pager="true">
+												<swiper-slide class="chartContent-info">
+													<div class="chartInfo">
+														<div class="chart-size">
+															<!-- <canvas #chartJSContainer1></canvas> -->
+                                                            <canvas baseChart
+                                                                [datasets]="chart1Data"
+                                                                [labels]="chart1Labels"
+                                                                [options]="commonChartOptions"
+                                                                [type]="'doughnut'"
+                                                            ></canvas>
+														</div>
+														<div class="innerInfo">
+															<p class="innerInfo-title">
+																<span
+																	class="graph-content">0{{productAssetSummary.length}}</span>
+																<span class="graph-content">Asset
+																	<span
+																		*ngIf="productAssetSummary.length == 1">Class</span>
+																	<span
+																		*ngIf="productAssetSummary.length > 1">Classes</span>
+																</span>
+															</p>
+														</div>
+													</div>
+													<div class="chartInfoTable">
+														<ul>
+															<li
+																*ngFor="let dataObj of productAssetSummary; let i = index">
+																<span class="textinfo">
+																	{{dataObj.ASSET == 'E' ? 'Equity' : dataObj.ASSET == 'D' ? 'Debt' : dataObj.ASSET == 'H' ? 'Hybrid' : dataObj.ASSET == 'L' ? 'Liquid' : dataObj.ASSET == 'C' ? 'Commodity' : dataObj.ASSET == 'O' ? 'Others' : dataObj.ASSET}}
+																</span> <span
+																	class="valueinfo">{{dataObj.EQUITYPERCENTAGE | formatNumerDecimal }}%</span>
+															</li>
+														</ul>
+													</div>
+												</swiper-slide>
+												<swiper-slide class="chartContent-info" *ngIf="memberGraph">
+													<div class="chartInfo">
+														<div class="chart-size">
+															<!-- <canvas #chartJSContainer2 width="160px"
+																height="160px"></canvas> -->
+                                                                <canvas baseChart
+                                                                    [datasets]="chart2Data"
+                                                                    [labels]="chart2Labels"
+                                                                    [options]="commonChartOptions"
+                                                                    [type]="'doughnut'"
+                                                                ></canvas>
+														</div>
+														<div class="innerInfo">
+															<p class="innerInfo-title">
+																<span
+																	class="graph-content">0{{memberData.length}}</span>
+																<span class="graph-content">Members</span>
+															</p>
+														</div>
+													</div>
+													<div class="chartInfoTable">
+														<ul>
+															<li *ngFor="let dataObj of memberData; let i = index">
+																<div class="textinfo">
+																	<span
+																		style="color:#586A7A">{{dataObj.CLIENTCODE}}</span>
+																	<span *ngIf="dataObj.Relation != 'No'"
+																		style="color:#BCBCBC">{{dataObj.Relation}}</span>
+																</div>
+																<span
+																	class="valueinfo">{{dataObj.EQUITYPERCENTAGE | formatNumerDecimal}}%</span>
+															</li>
+														</ul>
+													</div>
+												</swiper-slide>
+												<swiper-slide class="chartContent-info">
+													<div class="chartInfo">
+														<div class="chart-size">
+															<!-- <canvas #chartJSContainer3 width="160px"
+																height="160px"></canvas> -->
+															<canvas baseChart
+                                                                [datasets]="chart3Data"
+                                                                [labels]="chart3Labels"
+                                                                [options]="commonChartOptions"
+                                                                [type]="'doughnut'"
+                                                            ></canvas>
+														</div>
+														<div class="innerInfo">
+															<p class="innerInfo-title">
+																<span
+																	class="graph-content">0{{productChartData.length}}</span>
+																<span class="graph-content">Products</span>
+															</p>
+														</div>
+													</div>
+													<div class="chartInfoTable">
+														<ul>
+															<li *ngFor="let dataObj of productChartData; let i = index">
+																<span class="textinfo">
+																	{{dataObj.PRODUCT == 'DE' ? 'Stocks' : dataObj.PRODUCT == 'BO' ? 'Bonds' : dataObj.PRODUCT == 'BD' ? 'Bonds' : dataObj.PRODUCT}}
+																</span>
+																<span class="valueinfo">
+																	{{dataObj.EQUITYPERCENTAGE | formatNumerDecimal}}%
+																</span>
+															</li>
+														</ul>
+													</div>
+												</swiper-slide>
+											</swiper-container>
+
+										</div>
+										<div id="chartHide" *ngIf="desktop">
+											<div class="chartDataSlider" [ngClass]="memberGraph ? 'between' : 'evenly'"
+												style="display: flex;">
+												<div class="chartContent-info"
+													style="justify-content: left;width: 28.33%;">
+													<div class="chartInfo">
+														<div class="chart-size">
+															<!-- <canvas #chartJSContainer1></canvas> -->
+                                                            <canvas baseChart
+                                                                [datasets]="chart1Data"
+                                                                [labels]="chart1Labels"
+                                                                [options]="commonChartOptions"
+                                                                [type]="'doughnut'"
+                                                            ></canvas>
+														</div>
+														<div class="innerInfo">
+															<p class="innerInfo-title">
+																<span
+																	class="graph-content">0{{productAssetSummary.length}}</span>
+																<span class="graph-content">Asset
+																	<span
+																		*ngIf="productAssetSummary.length == 1">Class</span>
+																	<span
+																		*ngIf="productAssetSummary.length > 1">Classes</span>
+																</span>
+															</p>
+														</div>
+													</div>
+													<div class="chartInfoTable">
+														<ul>
+															<li
+																*ngFor="let dataObj of productAssetSummary; let i = index">
+																<span class="textinfo">
+																	{{dataObj.ASSET == 'E' ? 'Equity' : dataObj.ASSET == 'D' ? 'Debt' : dataObj.ASSET == 'H' ? 'Hybrid' : dataObj.ASSET == 'L' ? 'Liquid' : dataObj.ASSET == 'C' ? 'Commodity' : dataObj.ASSET == 'O' ? 'Others' : dataObj.ASSET}}
+																</span> <span
+																	class="valueinfo">{{dataObj.EQUITYPERCENTAGE | formatNumerDecimal }}%</span>
+															</li>
+														</ul>
+													</div>
+												</div>
+											 	<img class="divider" src="/assets/imgs/divider.png">
+												<div class="chartContent-info" *ngIf="memberGraph"
+													style="justify-content: center;width: 28.33%;">
+													<div class="chartInfo">
+														<div class="chart-size">
+															<!-- <canvas #chartJSContainer2 width="160px"
+																height="160px"></canvas> -->
+                                                                <canvas baseChart
+                                                                    [datasets]="chart2Data"
+                                                                    [labels]="chart2Labels"
+                                                                    [options]="commonChartOptions"
+                                                                    [type]="'doughnut'"
+                                                                ></canvas>
+														</div>
+														<div class="innerInfo">
+															<p class="innerInfo-title">
+																<span
+																	class="graph-content">0{{memberData.length}}</span>
+																<span class="graph-content">Members</span>
+															</p>
+														</div>
+													</div>
+													<div class="chartInfoTable">
+														<ul>
+															<li *ngFor="let dataObj of memberData; let i = index">
+																<div class="textinfo">
+																	<span
+																		style="color:#586A7A">{{dataObj.CLIENTCODE}}</span>
+																	<span *ngIf="dataObj.Relation != 'No'"
+																		style="color:#BCBCBC">{{dataObj.Relation}}</span>
+																</div>
+																<span
+																	class="valueinfo">{{dataObj.EQUITYPERCENTAGE | formatNumerDecimal}}%</span>
+															</li>
+														</ul>
+													</div>
+												</div>
+												<img class="divider divider2"
+													src="/assets/imgs/divider.png" *ngIf="memberGraph">
+												<div class="chartContent-info chart-3"
+													style="justify-content: right;width: 27.33%;">
+													<div class="chartInfo">
+														<div class="chart-size">
+															<!-- <canvas #chartJSContainer3 width="160px"
+																height="160px"></canvas> -->
+                                                                <canvas baseChart
+                                                                    [datasets]="chart3Data"
+                                                                    [labels]="chart3Labels"
+                                                                    [options]="commonChartOptions"
+                                                                    [type]="'doughnut'"
+                                                                ></canvas>
+														</div>
+														<div class="innerInfo">
+															<p class="innerInfo-title">
+																<span
+																	class="graph-content">0{{productChartData.length}}</span>
+																<span class="graph-content">Products</span>
+															</p>
+														</div>
+													</div>
+													<div class="chartInfoTable">
+														<ul>
+															<li *ngFor="let dataObj of productChartData; let i = index">
+																<span class="textinfo">
+																	{{dataObj.PRODUCT == 'DE' ? 'Stocks' : dataObj.PRODUCT == 'BO' ? 'Bonds' : dataObj.PRODUCT == 'BD' ? 'Bonds' : dataObj.PRODUCT}}
+																</span>
+																<span class="valueinfo">
+																	{{dataObj.EQUITYPERCENTAGE | formatNumerDecimal}}%
+																</span>
+															</li>
+														</ul>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="treemapChart-data" id="chartHide1" *ngIf="displayTreeChart">
+											<div class="tree-selecter-tab d-flex mb-30">
+												<div *ngFor="let dataObj of treeMapOptionList">
+													<ion-radio-group [value]="dataObj.value">
+													<ion-item lines="none">
+														<label class="family-treemap-label">{{dataObj.label}}</label>
+														<ion-radio class="family-treemap-radio" slot="start" value="{{dataObj.value}}" (click)="selectTreeOption(dataObj.id)"></ion-radio>
+													</ion-item>
+													</ion-radio-group>
+												</div>
+												<!-- <input type="radio" id="treeFamily" name="tree-selecter" (click)="selectTreeOption('family')" value="no" />
+										<label for="treeFamily">Family</label>
+										<input type="radio" id="treeProduct" name="tree-selecter" (click)="selectTreeOption('product')" value="no" />
+										<label for="treeProduct">Product</label> -->
+											</div>
+											<div id="chart">
+												
+												<!-- review. commented apx chart -->
+												<apx-chart
+													[series]="chartOptions.series"
+													[chart]="chartOptions.chart"
+													[dataLabels]="chartOptions.dataLabels"
+													[plotOptions]="chartOptions.plotOptions"
+													[colors]="chartOptions.colors"
+													[stroke]="chartOptions.stroke"
+													[tooltip]="chartOptions.tooltip"
+													[states] ="chartOptions.states"
+												></apx-chart>
+
+
+											</div>
+										</div>
+									</div>
+
+									<div class="desktop-visibility" *ngIf="productSummaryData.length > 0" class="lb-row">
+										<span class="cb-text" *ngIf="isBrokingClient">Cash (Ledger Balance)</span>
+										<span class="cb-value" *ngIf="isBrokingClient"> {{LbValue | formatNumerDecimal}}</span>
+										<span *ngIf="isBrokingClient" (click)="ledgerPopover($event)" style="margin-left: 10px;cursor: pointer;"><img src="/assets/imgs/info-icon.svg" width="14px"></span>
+									</div>
+								</div>
+							</div>
+							<div class="panel-content mt-40" *ngIf="productSummaryData.length > 0">
+								<div class="tab-title-block">
+									<ul class="responsive-scroll">
+										<li class="category-panel-li"
+											*ngFor="let dataObj of cardSegments; let i = index"
+											(click)="tabTableContent(dataObj.sequence, dataObj.table, dataObj.segmentValue)">
+											<h5>{{dataObj.name}}</h5>
+											<div>
+											<h3>{{dataObj.value}}</h3>
+											<span
+												[ngStyle]="{'color':dataObj.pl > 0  ? '#17C257' : dataObj.pl < 0 ? '#F55858' : '#656565'}"
+												class="profit small">{{dataObj.pl == '-' ? '--' : (dataObj.pl | formatNumerDecimal)}}
+												<span *ngIf="dataObj.pl != '-'">%</span></span>
+											</div>
+										</li>
+									</ul>
+								</div>
+								<div class="tab-content-block table-1 responsive-scroll sortingTable equity-table equity-table-hover" (mouseover)="over()" *ngIf="isBrokingClient">
+									<table id="scriptableData">
+										<thead>
+											<tr>
+												<th style="text-align: left !important;" [class.active]="order === 'INSTRUMENTNAME'" class="pointer"
+													(click)="setOrder('INSTRUMENTNAME')">Scrip Name
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th style="width:185px;text-align: center !important" [class.active]="order === 'SectorName'" class="pointer"
+													(click)="setOrder('SectorName')">Sector
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'QUANTITY'" class="pointer"
+													(click)="setOrder('QUANTITY')">Qty
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'AVGPURCHASEPRICE'" class="pointer"
+													(click)="setOrder('AVGPURCHASEPRICE')">Purchase Price
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'HOLDINGCOST'" class="pointer"
+													(click)="setOrder('HOLDINGCOST')">Invested Value
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'PreviousClosingPrice'" class="pointer"
+													(click)="setOrder('PreviousClosingPrice')">Current Price
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'MARKETVALUE'" class="pointer"
+													(click)="setOrder('MARKETVALUE')">Current Value
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'DIVIDENT'" class="pointer"
+													(click)="setOrder('DIVIDENT')">Dividends Announced
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'Get_three_year_change'" class="pointer"
+													(click)="setOrder('Get_three_year_change')">3yr Returns
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'UNREALIEDGL'" class="pointer"
+													(click)="setOrder('UNREALIEDGL')">Net G/L
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'UNRLGAINLOSSPER'" class="pointer"
+													(click)="setOrder('UNRLGAINLOSSPER')">G/L%
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+											
+												<!-- <th>XIRR %</th> -->
+											</tr>
+										</thead>
+										<tbody *ngIf="eqTableDisplay.length > 0">
+											<tr *ngFor="let dataObj of eqTableDisplay | orderBy: order:val ; let i = index">
+												<td>
+													<div class="d-flex brekdown_more">
+														<h4 style="text-decoration: underline;"
+															(click)="showPopover($event, dataObj.ISIN, dataObj.HOLDINGCOST, 'DE', dataObj.INSTRUMENTNAME)">
+															{{dataObj.INSTRUMENTNAME}}</h4>
+														<!-- <a href="javascript:void(0)" (click)="myBreakdown('1')"><img
+															src="assets/imgs/more_dot.svg"></a> -->
+														<!-- <div class="breakdown_more_box d-none">
+													<div class="breakdown_grid d-flex align-center">
+														<img src="assets/imgs/breakdown_icon.svg">
+														<span (click)="breakdownTable()">Breakdown</span>
+													</div>
+													<div class="breakdown_grid d-flex align-center">
+														<img src="assets/imgs/stock_details_icon.svg">
+														<span>Stock Details</span>
+													</div>
+												</div> -->
+													</div>
+													<!-- <h4 *ngIf="!displayBreakdown"> {{dataObj.INSTRUMENTNAME}}</h4> -->
+													<p style="display:block"  *ngIf="dataObj.Unlisted_Delisted == '1'">
+														<span class="purple-block">Unlisted / Delisted</span>
+													</p>
+												</td>
+												<td style= "width:185px">
+													<p style="text-align: center;" *ngIf="dataObj.Unlisted_Delisted == '0'">{{dataObj.SectorName ? dataObj.SectorName : 'Others'}}</p>
+													<p style="text-align: center;" *ngIf="dataObj.Unlisted_Delisted == '1'">{{dataObj.SectorName ? dataObj.SectorName : '--'}}</p>
+												</td>
+												<td>
+													<p>{{displayQty(dataObj.QUANTITY)}}</p>
+												</td>
+												<td>
+													<p>{{dataObj.AVGPURCHASEPRICE | formatNumerDecimal}}</p>
+												</td>
+												<td>
+													<p>{{dataObj.HOLDINGCOST | formatNumerDecimal}}</p>
+												</td>
+												<td>
+													<p> {{dataObj.PreviousClosingPrice | formatNumerDecimal}} </p>
+												</td>
+												<td>
+													<p>{{dataObj.MARKETVALUE | formatNumerDecimal}}</p>
+												</td>
+
+												<td>
+													<p>{{dataObj.DIVIDENT}}</p>
+												</td>
+											<td>
+													<p
+														[ngStyle]="{'color':dataObj.Get_three_year_change == 0  ? '#656565' : dataObj.Get_three_year_change > 0 ? '#17C257' : '#F55858'}">
+														{{dataObj.Get_three_year_change | formatNumerDecimal}}%</p>
+												</td>
+												<td>
+													<p class="green-text">
+														<span
+															[ngStyle]="{'color':dataObj.UNREALIEDGL == 0  ? '#656565' : dataObj.UNREALIEDGL > 0 ? '#17C257' : '#F55858'}">
+															{{dataObj.UNREALIEDGL | formatNumerDecimal}}
+														</span>
+
+													</p>
+												</td>
+												<td>
+													<p
+														[ngStyle]="{'color':dataObj.UNRLGAINLOSSPER == 0  ? '#656565' : dataObj.UNRLGAINLOSSPER > 0 ? '#17C257' : '#F55858'}">
+														{{dataObj.UNRLGAINLOSSPER | formatNumerDecimal}}%</p>
+												</td>
+											
+											</tr>
+										</tbody>
+										<tbody *ngIf="eqTableDisplay.length == 0">
+											<tr>
+												<td colspan="11" style="text-align: center;">
+													No Records Found
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<div class="downloads-section" *ngIf="eqTableDisplay.length > 0">
+										<div class="infoTooltip option-type tooltipInvest" style="margin-right: 15px; margin-top: -10px;" (click)="onExcelDownload()"><img src="assets/imgs/invest_excel.png" alt="">
+											<span class="tooltiptext">Download the Equity Portfolio from here to upload in InvestEdge</span>
+										</div>	
+										<div style="margin-right: 15px;" class="option-type"
+											(click)="onPdfExcelDownload('pdf', 'stock')">
+											<img src="assets/svg/pdf.svg" alt="">
+										</div>
+										<div class="option-type" (click)="onPdfExcelDownload('excel', 'stock')">
+											<img src="assets/svg/excel.svg" alt="">
+										</div>
+									</div>
+									<div class="mob-data-table d-none">
+										<div class="modal-head d-flex align-center">
+											<h4>Details</h4>
+											<a href="javascript:void(0)" class="close_btn"
+												onclick="CloseForm('.mob-data-table')">
+												<img src="assets/imgs/close_btn.svg"></a>
+										</div>
+										<table>
+											<tr>
+												<th>Scrip Name</th>
+												<td>BSOFT</td>
+											</tr>
+											<tr>
+												<th>Qty</th>
+												<td>300</td>
+											</tr>
+											<tr>
+												<th>Purchase Price</th>
+												<td>520.78</td>
+											</tr>
+											<tr>
+												<th>Invested Value</th>
+												<td>30.56 K</td>
+											</tr>
+											<tr>
+												<th>Current Price</th>
+												<td>678.22</td>
+											</tr>
+											<tr>
+												<th>Current Value</th>
+												<td>6.79L</td>
+											</tr>
+											<tr>
+												<th>Net Profit/ Loss</th>
+												<td>+6,65,899.67</td>
+											</tr>
+											<tr>
+												<th>XIRR %</th>
+												<td>+3.60%</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+								<!-- Mutual Fund Tab View -->
+								<div class="tab-content-block table-2 responsive-scroll sortingTable">
+									<div class="tableFilter chart-switch-tab responsive-scroll d-flex inner-tapPanel">
+										<ion-row>
+											<ion-segment scrollable class="header-segment-bottom" mode="md"
+												[(ngModel)]="clientBlockTabValue"
+												(ionChange)="segmentChangeMf($event.detail.value)">
+												<ion-segment-button mode="md" value="EquityData">
+													Equity
+												</ion-segment-button>
+												<ion-segment-button value="elss">
+													ELSS
+												</ion-segment-button>
+												<ion-segment-button value="debt">
+													Debt
+												</ion-segment-button>
+												<ion-segment-button value="hybrid">
+													Hybrid
+												</ion-segment-button>
+												<ion-segment-button value="others">
+													Others
+												</ion-segment-button>
+											</ion-segment>
+										</ion-row>
+									</div>
+									<table id="scriptableData mf_equity">
+										<thead>
+											<tr>
+												<th style="text-align: left;" [class.active]="order === 'Scheme_Name'" class="pointer"
+													(click)="setOrder('Scheme_Name')">Scrip Name
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'Present_Units'" class="pointer"
+													(click)="setOrder('Present_Units')">Units
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'Current_Investment'" class="pointer"
+													(click)="setOrder('Current_Investment')">Invested Value
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'Present_Value'" class="pointer"
+													(click)="setOrder('Present_Value')">Current Value
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'Present_NAV'" class="pointer"
+													(click)="setOrder('Present_NAV')">NAV
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'XIRR'" class="pointer"
+													(click)="setOrder('XIRR')">XIRR
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'Unrealized_Profit'" class="pointer"
+													(click)="setOrder('Unrealized_Profit')">Net Gain/ Loss
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'pnlValue'" class="pointer"
+													(click)="setOrder('pnlValue')">G&L%
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<!-- <th>XIRR %</th> -->
+											</tr>
+										</thead>
+										<tbody *ngIf="mfTableDisplay.length > 0">
+											<tr *ngFor="let dataObj of mfTableDisplay | orderBy: order:val; let i = index">
+												<td>
+													<div class="d-flex brekdown_more" *ngIf="displayBreakdown">
+														<h4 style="text-decoration: underline;"
+															(click)="showPopover($event, dataObj.ISIN, dataObj.Current_Investment, 'MF', dataObj.Scheme_Name)">
+															{{dataObj.Scheme_Name}}</h4>
+														<!-- <h4 style="text-decoration: underline;">{{dataObj.Scheme_Name}}</h4>
+													<a href="javascript:void(0)" (click)="myBreakdown('2')"><img
+															src="assets/imgs/more_dot.svg"></a>
+													<div class="breakdown_more_box d-none" id="breakDown1">
+														<div class="breakdown_grid d-flex align-center">
+															<img src="assets/imgs/breakdown_icon.svg">
+															<span (click)="breakdownTable()">Breakdown</span>
+														</div>
+														<div class="breakdown_grid d-flex align-center">
+															<img src="assets/imgs/stock_details_icon.svg">
+															<span>Stock Details</span>
+														</div>
+													</div> -->
+													</div>
+													<h4 *ngIf="!displayBreakdown"> {{dataObj.Scheme_Name}} </h4>
+													<!-- <p><span class="green-block">Earn 3.0% in 6 days</span></p> -->
+												</td>
+												<td>
+													<p>{{dataObj.Present_Units | formatNumerDecimal}}</p>
+												</td>
+												<td>
+													<p>{{dataObj.Current_Investment | formatNumerDecimal}}</p>
+												</td>
+												<td>
+													<p>{{dataObj.Present_Value | formatNumerDecimal}}</p>
+												</td>
+												<td>
+													<p>{{dataObj.Present_NAV | formatNumerDecimal}}</p>
+												</td>
+												<td>
+													<p [ngStyle]="{'color':dataObj.XIRR == 0  ? '#656565' : dataObj.XIRR > 0 ? '#17C257' : '#F55858'}"
+														class="green-text">
+														{{dataObj.XIRR | formatNumerDecimal}}
+													</p>
+												</td>
+												<td>
+													<p [ngStyle]="{'color':dataObj.Unrealized_Profit == 0  ? '#656565' : dataObj.Unrealized_Profit > 0 ? '#17C257' : '#F55858'}"
+														class="green-text">
+														{{dataObj.Unrealized_Profit | formatNumerDecimal}}
+														<!-- <span>{{dataObj.Realized_Profit}}%</span> -->
+													</p>
+												</td>
+												<td>
+													<p [ngStyle]="{'color':dataObj.pnlValue == 0  ? '#656565' : dataObj.pnlValue > 0 ? '#17C257' : '#F55858'}"
+														class="green-text">
+														{{dataObj.pnlValue | formatNumerDecimal}}
+														<!-- <span>{{dataObj.Realized_Profit}}%</span> -->
+													</p>
+												</td>
+												<!-- <td>
+											<p class="green-text">{{dataObj.XIRR | formatNumerDecimal}}%</p>
+										</td> -->
+											</tr>
+										</tbody>
+										<tbody *ngIf="mfTableDisplay.length == 0">
+											<tr>
+												<td colspan="7" style="text-align: center;">
+													No Records Found
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<div class="downloads-section" *ngIf="mfTableDisplay.length > 0">
+										<div style="margin-right: 15px;" class="option-type"
+											(click)="onPdfExcelDownload('pdf', 'mf')">
+											<img src="assets/svg/pdf.svg" alt="">
+										</div>
+										<div class="option-type" (click)="onPdfExcelDownload('excel', 'mf')">
+											<img src="assets/svg/excel.svg" alt="">
+										</div>
+									</div>
+									<div class="mob-data-table d-none">
+										<h4>Details</h4>
+										<table>
+											<tr>
+												<th>Scrip Name</th>
+												<td>BSOFT</td>
+											</tr>
+											<tr>
+												<th>Qty 1</th>
+												<td>300</td>
+											</tr>
+											<tr>
+												<th>Purchase Price</th>
+												<td>520.78</td>
+											</tr>
+											<tr>
+												<th>Invested Value</th>
+												<td>30.56 K</td>
+											</tr>
+											<tr>
+												<th>Current Price</th>
+												<td>678.22</td>
+											</tr>
+											<tr>
+												<th>Current Value</th>
+												<td>6.79L</td>
+											</tr>
+											<tr>
+												<th>NET Profit/ Loss</th>
+												<td>+6,65,899.67</td>
+											</tr>
+											<tr>
+												<th>XIRR %</th>
+												<td>+3.60%</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+								<!-- Fixed Deposit Tab View -->
+								<div class="tab-content-block table-3 responsive-scroll sortingTable">
+									<table id="scriptableData">
+										<thead>
+											<tr>
+												<th style="text-align: left;" [class.active]="order === 'FDCompany'"
+													class="pointer" (click)="setOrder('FDCompany')">Company Name
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'Tenor'" class="pointer"
+													(click)="setOrder('Tenor')">Tenure
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'FDBookingDate'" class="pointer"
+													(click)="setOrder('FDBookingDate')">Date of Investment
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'FDBookingAmount'" class="pointer"
+													(click)="setOrder('FDBookingAmount')">Invested Value
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'RateOfInterest'" class="pointer"
+													(click)="setOrder('RateOfInterest')">ROI
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'FDMaturityDate'" class="pointer"
+													(click)="setOrder('FDMaturityDate')">Maturity Date
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<!-- <th>Mode of Interest/ IP</th> -->
+												<!-- <th>XIRR %</th> -->
+											</tr>
+										</thead>
+										<tbody *ngIf="fdTableDisplay.length > 0">
+											<tr *ngFor="let dataObj of fdTableDisplay | orderBy: order:val; let i = index">
+												<td>
+													<div style="position: relative;">
+														<h4>{{dataObj.FDCompany}}</h4>
+														<!-- <div class="breakdown_more_box" *ngIf="dataObj.breakDownOption">
+													<div class="breakdown_grid d-flex align-center">
+														<img src="assets/img/breakdown_icon.svg">
+														<span onclick="breakdownTable('.breakdownTable')">Breakdown</span>
+													</div>
+													<div class="breakdown_grid d-flex align-center">
+														<img src="assets/img/stock_details_icon.svg">
+														<span>Stock Details</span>
+													</div>
+												</div> -->
+													</div>
+													<!-- <p><span class="green-block">Earn 3.0% in 6 days</span></p> -->
+												</td>
+												<td>
+													<p>{{dataObj.Tenor}}</p>
+												</td>
+												<td>
+													<p>{{moment(dataObj.FDBookingDate).format('DD/MM/YYYY')}}</p>
+												</td>
+												<td>
+													<p>{{dataObj.FDBookingAmount | formatNumerDecimal}}</p>
+												</td>
+												<td>
+													<p>{{dataObj.RateOfInterest}}</p>
+												</td>
+												<td>
+													<p> {{moment(dataObj.FDMaturityDate).format('DD/MM/YYYY')}} </p>
+												</td>
+												<!-- <td>
+											<p>--</p>
+										</td> -->
+											</tr>
+										</tbody>
+										<tbody *ngIf="fdTableDisplay.length == 0">
+											<tr>
+												<td colspan="6" style="text-align: center;">
+													No Records Found
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<div class="downloads-section" *ngIf="fdTableDisplay.length > 0">
+										<div style="margin-right: 15px;" class="option-type"
+											(click)="onPdfExcelDownload('pdf', 'fd')">
+											<img src="assets/svg/pdf.svg" alt="">
+										</div>
+										<div class="option-type" (click)="onPdfExcelDownload('excel', 'fd')">
+											<img src="assets/svg/excel.svg" alt="">
+										</div>
+									</div>
+								</div>
+								<!-- Bonds Tab View -->
+								<div class="tab-content-block table-4 responsive-scroll sortingTable">
+									<table id="scriptableData">
+										<thead>
+											<tr>
+												<th style="text-align: left;width:30%;" [class.active]="order === 'BondCompany'"
+													class="pointer" (click)="setOrder('BondCompany')">Bond Name
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<!-- <th [class.active]="order === 'Tenor'" class="pointer"
+													(click)="setOrder('Tenor')">Tenure
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'BondBookingDate'" class="pointer"
+													(click)="setOrder('BondBookingDate')">Date of Investment
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th> -->
+												<th [class.active]="order === 'BondAmount'" class="pointer"
+													(click)="setOrder('BondAmount')">Invested Value
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'Rateofinterest'" class="pointer"
+													(click)="setOrder('Rateofinterest')">ROI
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'BondMaturityDate'" class="pointer"
+													(click)="setOrder('BondMaturityDate')">Maturity Date
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th class="isinCol">ISIN</th>
+											</tr>
+										</thead>
+										<tbody *ngIf="bondsTableDisplay.length > 0">
+											<tr *ngFor="let dataObj of bondsTableDisplay | orderBy: order:val; let i = index">
+												<td style="width:30%">
+													<div class="d-flex brekdown_more">
+														<h4>{{dataObj.BondCompany}}</h4>
+													</div>
+													<!-- <p><span class="green-block">Earn 3.0% in 6 days</span></p> -->
+												</td>
+												<!-- <td>
+													<p>{{dataObj.Tenor}}</p>
+												</td>
+												<td>
+													<p>{{moment(dataObj.BondBookingDate).format('DD/MM/YYYY')}}</p>
+												</td> -->
+												<td>
+													<p>{{dataObj.BondAmount | formatNumerDecimal}}</p>
+												</td>
+												<td>
+													<p>{{dataObj.Rateofinterest}}</p>
+												</td>
+												<td>
+													<p> {{dataObj.BondMaturityDate && dataObj.BondMaturityDate.length > 0 ? moment(dataObj.BondMaturityDate).format('DD/MM/YYYY') : '--'}} </p>
+												</td>
+												<td class="isinCol">
+													<p> {{dataObj.ISIN ? dataObj.ISIN : '--' }} </p>
+												</td>
+											</tr>
+										</tbody>
+										<tbody *ngIf="bondsTableDisplay.length == 0">
+											<tr>
+												<td colspan="6" style="text-align: center;">
+													No Records Found
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<div class="downloads-section" *ngIf="bondsTableDisplay.length > 0">
+										<div style="margin-right: 15px;" class="option-type"
+											(click)="onPdfExcelDownload('pdf', 'bonds')">
+											<img src="assets/svg/pdf.svg" alt="">
+										</div>
+										<div class="option-type" (click)="onPdfExcelDownload('excel', 'bonds')">
+											<img src="assets/svg/excel.svg" alt="">
+										</div>
+									</div>
+								</div>
+								<!-- AIF Tab View -->
+								<div class="tab-content-block table-5 responsive-scroll sortingTable">
+									<table id="scriptableData">
+										<thead>
+											<tr>
+												<th style="text-align: left;" [class.active]="order === 'SCHEMENAME'"
+													class="pointer" (click)="setOrder('SCHEMENAME')">Scheme Name
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th style="text-align: left;" [class.active]="order === 'AMCNAME'"
+													class="pointer" (click)="setOrder('AMCNAME')">AMC Name
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												
+												<th [class.active]="order === 'AUMDATE'" class="pointer"
+													(click)="setOrder('AUMDATE')">AUM Date
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'NETINVESTMENT'" class="pointer"
+													(click)="setOrder('NETINVESTMENT')">Invested Value
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'CRRENTVALUE'" class="pointer"
+													(click)="setOrder('CRRENTVALUE')">Current Value
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'COMMITMENTAMOUNT'" class="pointer"
+													(click)="setOrder('COMMITMENTAMOUNT')">Commitment Amount
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'netpl'" class="pointer"
+													(click)="setOrder('netpl')">Net G&L
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'plPer'" class="pointer"
+													(click)="setOrder('plPer')">G&L%
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+											</tr>
+										</thead>
+										<tbody *ngIf="aifTableDisplay.length > 0">
+											<tr *ngFor="let dataObj of aifTableDisplay | orderBy: order:val; let i = index">
+												<td>
+													<div class="d-flex brekdown_more" *ngIf="displayBreakdown">
+														<h4 style="text-decoration: underline;"
+															(click)="showPopover($event, dataObj.SCHEMENAME, dataObj.NETINVESTMENT, 'AIF')">
+															{{dataObj.SCHEMENAME}}</h4>
+													</div>
+													<h4 *ngIf="!displayBreakdown"> {{dataObj.SCHEMENAME}} </h4>
+													<!-- <p><span class="green-block">Earn 3.0% in 6 days</span></p> -->
+												</td>
+												<td>
+													<p style="text-align:left;">{{dataObj.AMCNAME}}</p>
+												</td>
+												<td>
+													<p>{{dataObj.AUMDATE}}</p>
+												</td>
+												<td>
+													<p>{{dataObj.NETINVESTMENT | formatNumerDecimal}}</p>
+												</td>
+												<td>
+													<p>{{dataObj.CRRENTVALUE | formatNumerDecimal}}</p>
+												</td>
+												<td>
+													<p>{{dataObj.COMMITMENTAMOUNT  | formatNumerDecimal}}</p>
+												</td>
+												<td>
+													<p
+														[ngStyle]="{'color':dataObj.netpl == 0  ? '#656565' : dataObj.netpl > 0 ? '#17C257' : '#F55858'}">
+														{{dataObj.netpl | formatNumerDecimal}}</p>
+												</td>
+												<td>
+													<p
+														[ngStyle]="{'color':dataObj.plPer == 0  ? '#656565' : dataObj.plPer > 0 ? '#17C257' : '#F55858'}">
+														{{dataObj.plPer | formatNumerDecimal }}</p>
+												</td>
+											</tr>
+										</tbody>
+										<tbody *ngIf="aifTableDisplay.length == 0">
+											<tr>
+												<td colspan="6" style="text-align: center;">
+													No Records Found
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<div class="downloads-section" *ngIf="aifTableDisplay.length > 0">
+										<div style="margin-right: 15px;" class="option-type"
+											(click)="onPdfExcelDownload('pdf', 'aif')">
+											<img src="assets/svg/pdf.svg" alt="">
+										</div>
+										<div class="option-type" (click)="onPdfExcelDownload('excel', 'aif')">
+											<img src="assets/svg/excel.svg" alt="">
+										</div>
+									</div>
+								</div>
+								<!-- PMS Tab View -->
+								<div class="tab-content-block table-6 responsive-scroll sortingTable">
+									<table id="scriptableData">
+										<thead>
+											<tr>
+												<th style="text-align: left;" [class.active]="order === 'SCHEMENAME'"
+													class="pointer" (click)="setOrder('SCHEMENAME')">Scheme Name
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th style="text-align: left;" [class.active]="order === 'AMCNAME'"
+													class="pointer" (click)="setOrder('AMCNAME')">AMC Name
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'AUMDATE'" class="pointer"
+													(click)="setOrder('AUMDATE')">AUM Date
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'NETINVESTMENT'" class="pointer"
+													(click)="setOrder('NETINVESTMENT')">Invested Value
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'CRRENTVALUE'" class="pointer"
+													(click)="setOrder('CRRENTVALUE')">Current Value
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'netpl'" class="pointer"
+													(click)="setOrder('netpl')">Net G&L
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'plPer'" class="pointer"
+													(click)="setOrder('plPer')">G&L%
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+											</tr>
+										</thead>
+										<tbody *ngIf="pmsTableDisplay.length > 0">
+											<tr *ngFor="let dataObj of pmsTableDisplay | orderBy: order:val; let i = index">
+												<td>
+													<div class="d-flex brekdown_more" *ngIf="displayBreakdown">
+														<h4 style="text-decoration: underline;"
+															(click)="showPopover($event, dataObj.SCHEMENAME, dataObj.NETINVESTMENT, 'PMS')">
+															{{dataObj.SCHEMENAME}}</h4>
+													</div>
+													<h4 *ngIf="!displayBreakdown"> {{dataObj.SCHEMENAME}} </h4>
+													<!-- <p><span class="green-block">Earn 3.0% in 6 days</span></p> -->
+												</td>
+												<td>
+													<p style="text-align:left;">{{dataObj.AMCNAME}}</p>
+												</td>
+												<td>
+													<p>{{dataObj.AUMDATE}}</p>
+												</td>
+												<td>
+													<p>{{dataObj.NETINVESTMENT | formatNumerDecimal}}</p>
+												</td>
+												<td>
+													<p>{{dataObj.CRRENTVALUE | formatNumerDecimal}}</p>
+												</td>
+												<td>
+													<p
+														[ngStyle]="{'color':dataObj.netpl == 0  ? '#656565' : dataObj.netpl > 0 ? '#17C257' : '#F55858'}">
+														{{dataObj.netpl | formatNumerDecimal}}</p>
+												</td>
+												<td>
+													<p
+														[ngStyle]="{'color':dataObj.plPer == 0  ? '#656565' : dataObj.plPer > 0 ? '#17C257' : '#F55858'}">
+														{{dataObj.plPer | formatNumerDecimal }}</p>
+												</td>
+											</tr>
+										</tbody>
+										<tbody *ngIf="pmsTableDisplay.length == 0">
+											<tr>
+												<td colspan="6" style="text-align: center;">
+													No Records Found
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<div class="downloads-section" *ngIf="pmsTableDisplay.length > 0">
+										<div style="margin-right: 15px;" class="option-type"
+											(click)="onPdfExcelDownload('pdf', 'pms')">
+											<img src="assets/svg/pdf.svg" alt="">
+										</div>
+										<div class="option-type" (click)="onPdfExcelDownload('excel', 'pms')">
+											<img src="assets/svg/excel.svg" alt="">
+										</div>
+									</div>
+								</div>
+								<!-- <div class="social-link mt-40">
+							<ul class="d-flex align-center">
+								<li><img src="assets/imgs/pdf.svg"></li>
+								<li><a href="#"><img src="assets/imgs/xls.svg"></a></li>
+									<li><a href="#"><img src="assets/imgs/message.svg"></a></li>
+									<li><a href="#"><img src="assets/imgs/whatappgreen-.svg"></a></li>
+							</ul>
+						</div> -->
+							</div>
+							
+							<div class="d-none modal-box breakdownTable">
+								<div class="modal-head d-flex align-center">
+									<div class="modal-title">{{breakDownTitle}}
+										<!-- <span class="green-block d-flex">Earn 3.0% in 6 days</span> -->
+									</div>
+									<a href="javascript:void(0)" class="close_btn" (click)="closeBreakdown()">
+										<img src="assets/imgs/close_btn.svg"></a>
+								</div>
+								<div class="modal-body">
+									<div class="modal-content responsive-scroll">
+										<table class="tab-content-bloc" id="scriptableData">
+											<thead>
+												<tr>
+													<th>Client ID</th>
+													<th *ngIf="productTypeValue == 'DE' || productTypeValue == 'MF'">Qty</th>
+													<th>Avg Cost</th>
+													<th>Market Value</th>
+													<th *ngIf="productTypeValue == 'AIF'">Commitment amount</th>
+													<th>PL</th>
+													<th>PL %</th>
+												</tr>
+											</thead>
+											<tbody *ngIf="breakDownList.length > 0">
+												<tr *ngFor="let dataObj of breakDownList">
+													<td>{{dataObj.ClientCode}}</td>
+													<td *ngIf="productTypeValue == 'DE' || productTypeValue == 'MF'">{{dataObj.Quantity ? dataObj.Quantity  : '--' }}</td>
+													<td>{{dataObj.AvgCost ? (dataObj.AvgCost | formatNumerDecimal) : '--'}}
+													</td>
+													<td>{{dataObj.MarketValue ? (dataObj.MarketValue | formatNumerDecimal) : '--'}}
+													</td>
+													<td *ngIf="productTypeValue == 'AIF'">{{dataObj.Commitment ? (dataObj.Commitment | formatNumerDecimal) : '--'}}
+													</td>
+													<td>{{dataObj.ProfitLoss ? (dataObj.ProfitLoss | formatNumerDecimal) : '--'}}
+													</td>
+													<td>
+														<span
+															*ngIf="dataObj.ProfitLossPercentage">{{dataObj.ProfitLossPercentage | formatNumerDecimal}}%</span>
+														<span *ngIf="!dataObj.ProfitLossPercentage">--</span>
+													</td>
+												</tr>
+											</tbody>
+											<tbody *ngIf="breakDownList.length == 0">
+												<tr>
+													<td colspan="6" style="text-align: center;height:100px">
+														No Records Found
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ac_tap corpusstatement_tab d-none set-scroll">
+					<div class="tabs_inner">
+						<div class="corpusstatement_tabnew">
+							<div class="table-outer-wrapper">
+								<div class="scrolling-lock-table-wrapper">
+									<table class="main_table">
+										<tbody>
+											<tr>
+												<th>FYTD
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th>Stocks</th>
+												<th>Derivatives</th>
+												<th>Mutual Funds</th>
+												<th>Bonds</th>
+												<th>Fixed Deposit</th>
+												<th>PMS</th>
+												<th>AIF</th>
+												<th>Cash</th>
+												<th>Overall</th>
+											</tr>
+											<tr>
+												<td>Opening Corpus</td>
+												<td>70,00,000.00</td>
+												<td>5,40,000.00</td>
+												<td>10,000,000.00</td>
+												<td>3,00,000.00</td>
+												<td>6,30,000.00</td>
+												<td>5,300,000.00</td>
+												<td>63,00,000.00</td>
+												<td>3,30,000.00</td>
+												<td>1234</td>
+											</tr>
+											<tr>
+												<td>Net Corpus Introduced</td>
+												<td>70,00,0</td>
+												<td>5,40,000.00</td>
+												<td>10,000.00</td>
+												<td>3,00,000.00</td>
+												<td>6,30,000.00</td>
+												<td>5,300,000.00</td>
+												<td>00.00</td>
+												<td>00.00</td>
+												<td>1234</td>
+											</tr>
+											<tr>
+												<td>Current Market Value</td>
+												<td>70,00,0</td>
+												<td>5,40,000.00</td>
+												<td>10,000.00</td>
+												<td>3,00,000.00</td>
+												<td>6,30,000.00</td>
+												<td>5,300,000.00</td>
+												<td>00.00</td>
+												<td>00.00</td>
+												<td>1234</td>
+											</tr>
+											<tr>
+												<td>Total Gain</td>
+												<td>70,00,0</td>
+												<td>5,40,000.00</td>
+												<td>10,000.00</td>
+												<td>3,00,000.00</td>
+												<td>6,30,000.00</td>
+												<td>5,300,000.00</td>
+												<td>00.00</td>
+												<td>00.00</td>
+												<td>1234</td>
+											</tr>
+											<tr>
+												<td class="empty_td">&nbsp;</td>
+												<td colspan="9">
+													<table class="total_percentage_table">
+														<tr>
+															<td>&nbsp;</td>
+															<td>XIRR</td>
+															<td>57.51%</td>
+														</tr>
+														<tr>
+															<td>&nbsp;</td>
+															<td>Benchmark (Nifty 500)</td>
+															<td>80.00%</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="table-outer-wrapper">
+								<div class="scrolling-lock-table-wrapper">
+									<table class="main_table">
+										<tbody>
+											<tr>
+												<th>Since Inception
+													<img class="sorting-img updated-sorting-img"
+														src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="ascending">
+													<img class="sorting-img-descending"
+														src="/assets/svg/sorting_ascending.svg" alt=""
+														*ngIf="!ascending">
+												</th>
+												<th>Stocks</th>
+												<th>Derivatives</th>
+												<th>Mutual Funds</th>
+												<th>Bonds</th>
+												<th>Fixed Deposit</th>
+												<th>PMS</th>
+												<th>AIF</th>
+												<th>Cash</th>
+												<th>Overall</th>
+											</tr>
+											<tr>
+												<td>Opening Corpus</td>
+												<td>70,00,000.00</td>
+												<td>5,40,000.00</td>
+												<td>10,000,000.00</td>
+												<td>3,00,000.00</td>
+												<td>6,30,000.00</td>
+												<td>5,300,000.00</td>
+												<td>63,00,000.00</td>
+												<td>3,30,000.00</td>
+												<td>1234</td>
+											</tr>
+											<tr>
+												<td>Net Corpus Introduced</td>
+												<td>70,00,0</td>
+												<td>5,40,000.00</td>
+												<td>10,000.00</td>
+												<td>3,00,000.00</td>
+												<td>6,30,000.00</td>
+												<td>5,300,000.00</td>
+												<td>00.00</td>
+												<td>00.00</td>
+												<td>1234</td>
+											</tr>
+											<tr>
+												<td>Current Market Value</td>
+												<td>70,00,0</td>
+												<td>5,40,000.00</td>
+												<td>10,000.00</td>
+												<td>3,00,000.00</td>
+												<td>6,30,000.00</td>
+												<td>5,300,000.00</td>
+												<td>00.00</td>
+												<td>00.00</td>
+												<td>1234</td>
+											</tr>
+											<tr>
+												<td>Total Gain</td>
+												<td>70,00,0</td>
+												<td>5,40,000.00</td>
+												<td>10,000.00</td>
+												<td>3,00,000.00</td>
+												<td>6,30,000.00</td>
+												<td>5,300,000.00</td>
+												<td>00.00</td>
+												<td>00.00</td>
+												<td>1234</td>
+											</tr>
+											<tr>
+												<td>&nbsp;</td>
+												<td colspan="9">
+													<table class="total_percentage_table">
+														<tr>
+															<td>&nbsp;</td>
+															<td>XIRR</td>
+															<td>57.51%</td>
+														</tr>
+														<tr>
+															<td>&nbsp;</td>
+															<td>Benchmark (Nifty 500)</td>
+															<td>80.00%</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="incomeexpense_tab">
+							<h2>Income & Expense</h2>
+							<table class="main_table">
+								<tbody>
+									<tr>
+										<th>Income & Expense</th>
+										<th>Year till Date </th>
+										<th>Since Inception</th>
+									</tr>
+									<tr>
+										<td>Realised Gain/ Loss</td>
+										<td>1,048.23</td>
+										<td>63,228.55</td>
+									</tr>
+									<tr>
+										<td>Dividend/ Interest/ Other Income</td>
+										<td>--</td>
+										<td>63,228.55</td>
+									</tr>
+									<tr>
+										<td>Expenses</td>
+										<td>--</td>
+										<td>--</td>
+									</tr>
+									<tr>
+										<td>Other Transactions</td>
+										<td>--</td>
+										<td>63,228.55</td>
+									</tr>
+									<tr>
+										<td>Net Income</td>
+										<td>--</td>
+										<td>63,228.55</td>
+									</tr>
+									<tr>
+										<td>Unrealised Gain/ Loss</td>
+										<td class="nagative">-50,074.49</td>
+										<td class="nagative">-48,074.49</td>
+									</tr>
+									<tr>
+										<td>Total Gain</td>
+										<td class="nagative">-49,026.26</td>
+										<td>11,352.91</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				
+				<div class="ac_tap plstatement_tab d-none set-scroll panel-wrapper">
+					<div class="panel-content mt-0">
+						<div class="search_filter_main">
+							<div class="search_filter_grid">
+								<div class="label">Select Family Member</div>
+								<div class="select-wrapper client_with_pnl">
+									<div class="select_client" (mouseenter)="myClientselectpnl($event)" (mouseleave)="removeHoverpnl($event)">
+										<div class="main_select_box">
+											<div><div class="short_name">{{getShortName(pnlClientName)}}</div></div>
+										<div class="title-width" (click)="clientClickpnl()">
+											<span class="clientNameCss">{{pnlClientName}}</span>
+											<span class="hierarchyType">{{pnlDisplayRelation}}</span>
+										</div>
+										<ion-icon class="family-dropdown" (click)="clientClickpnl()" slot="end" name="chevron-down" *ngIf="pnlClientName"></ion-icon>
+										
+										</div>
+										<div class="select_client_dropdown_main d-none" id="ClientMainBoxPnl" *ngIf="pnlClientName">
+											<ul class="select_client_dropdown">
+												<!-- <li class="client_box d-flex" (click)="goToFamilyPortfolio()"
+													*ngIf="familyOptionDisplay">
+													<div class="short_name">{{getShortName(clientName)}}</div>
+													<div class="name_details">
+														<span>{{parentClientName}}</span>
+														<label>FAMILY</label>
+													</div>
+												</li> -->
+												<li class="client_box d-flex" *ngFor="let dataObj of familyMappList; let i = index"
+													(click)="pnlDropdownClicked(dataObj)">
+													<div class="short_name">{{getShortName(dataObj.ClientName ? dataObj.ClientName : "Name Not Available")}}</div>
+													<div class="name_details">
+														<span>{{dataObj.ClientName ? dataObj.ClientName : "Name Not Available"}}</span>
+														<label>{{dataObj.Relation && dataObj.Relation.length > 0 ? dataObj.Relation : 'SELF'}}</label>
+													</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+							<div class="search_filter_grid">
+								<div class="label">Type of Report</div>
+								<ion-segment class="calculator-segment"  [(ngModel)]="yearDateOption" (ionChange)="segmentChangedYrDate($event.detail.value)">
+									<ion-segment-button value="yearWise">Year Wise</ion-segment-button>
+									<ion-segment-button value="dateWise">Date Wise</ion-segment-button>
+								</ion-segment>
+							</div>
+							
+							<!-- <div class="section date-section shr_sec_box" [ngClass]="{'date_section_full': selectedShareType == 'interestOnDelayedPayment'}"> -->
+							<div class="section date-section shr_sec_box" *ngIf="yearDateOption !== 'yearWise'">
+			
+								<div class="section inner-section">
+				
+									<div class="datePopover">
+										<ion-item class="date_Picker" (click)="toggleStartDatePicker(false)">
+											<div class="label">From Date</div>
+										  <ion-input placeholder="Select Date" [value]="ionFromDate | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+										  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+										</ion-item>
+										<div class="calendarBackdrop" *ngIf="showStartDatePicker && !isDownloadDatePicker" (click)="hideDatePicker('start')"></div>
+										<ion-datetime class="calendarOpen desktopDate" *ngIf="showStartDatePicker && !isDownloadDatePicker" presentation="date"
+										[(ngModel)]="ionFromDate" presentation="date" min="1973-01-01" [max]="currentDate"
+										  (ionChange)="hideDatePicker('start',$event)">
+										</ion-datetime>
+									</div>
+								</div>
+				
+								  <div class="section inner-section">
+									<div class="datePopover">
+										<ion-item class="date_Picker" (click)="toggleEndDatePicker(false)">
+											<div class="label">To Date</div>
+										  <ion-input placeholder="Select Date" [value]="ionToDate | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+										  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+										</ion-item>
+										<div class="calendarBackdrop" *ngIf="showEndDatePicker && !isDownloadDatePicker" (click)="hideDatePicker('end')"></div>
+										<ion-datetime class="calendarOpen desktopDate" *ngIf="showEndDatePicker && !isDownloadDatePicker" presentation="date"
+										  [(ngModel)]="ionToDate" presentation="date" min="1973-01-01" [max]="currentDate"
+										  (ionChange)="hideDatePicker('end',$event)">
+										</ion-datetime>
+									  </div>
+				
+								</div>
+				
+							</div>
+							
+							<!-- drop down option for year wise selection -->
+								<div class="search_filter_grid">
+								<div class="section date-range-dropdown shr_sec_box" *ngIf="yearDateOption === 'yearWise'">
+									<div class="label">Date Range</div>
+									<ng-select class="date_select_drop" [items]="financialYrList" bindLabel="item" bindValue="value"   [loading]="Loadvalue" [clearable]="false" [searchable] ="false"  [(ngModel)]="yearRangeValue" (change)="selectYrFromList($event)">
+									  </ng-select>
+								</div>
+							</div>
+							<div class="mobile-visibility search_filter_grid">
+								<div class="label">Report Type</div>
+								<ng-select style="width: 100%;" [items]="productTypeList" bindLabel="option" bindValue="value" [loading]="Loadvalue" 
+				[clearable]="false" [searchable]="false" [(ngModel)]="productValue" (change)="panelActiveMobile(productValue)"
+				>
+			</ng-select>
+							</div>
+
+						</div>
+						<!-- <ion-button  (click)="viewReport()">View Report
+						</ion-button> -->
+						<div class="tab_type desktop-visibility" *ngIf="productTypeList.length > 0">
+							<ul class="panel-content-header">
+								<li *ngFor="let dataObj of productTypeList" [ngClass]="{'activePanleHead': dataObj.selected }" (click)="panelActive(dataObj.value)" activepanel="Cash">{{dataObj.option}}</li>
+							</ul>
+						<!-- <div class="download_file">
+							<img src="assets/svg/pdf.svg" width="18px" alt="" (click)="downLoadSharedReport('download')">
+							<img src="assets/svg/download_excel.svg" width="18px" alt="" (click)="downloadExcelReport()">
+						</div> -->
+						</div>
+						<div class="main_table_deta" *ngIf="tabPanelPnlTable == 'realised' ">
+							<app-realised-pnl [callFromDesktop]="true" [realizedParams]="realizedPlObj" *ngIf="realizedPlObj && realizedPlObj?.product != undefined"></app-realised-pnl>
+						</div>
+						<div class="pnlmf-table" *ngIf="tabPanelPnlTable == 'mf' ">
+							<div class="main-table thin-scroll scroll-inner">
+								<div class="table-block header-part">
+									<table class="desktop-table" >
+										<thead style="width: 100%">
+											<tr>
+												<th></th>
+												<th  [class.active]="order === 'Scheme_Name'" (click)="setOrder('Scheme_Name')" class="pointer">Scheme Name 
+													<img class="sorting-img updated-sorting-img"
+													src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="ascending">
+													<img class="sorting-img-descending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'Transaction_Type'" (click)="setOrder('Transaction_Type')" class="pointer">Transaction Type
+													<img class="sorting-img updated-sorting-img"
+													src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="ascending">
+													<img class="sorting-img-descending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'Transaction_Date'" (click)="setOrder('Transaction_Date')" class="pointer">Transaction Date
+													<img class="sorting-img updated-sorting-img"
+													src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="ascending">
+													<img class="sorting-img-descending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'Purchase_Price'" (click)="setOrder('Purchase_Price')" class="pointer">Purchase Price
+													<img class="sorting-img updated-sorting-img"
+													src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="ascending">
+													<img class="sorting-img-descending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'Units'" (click)="setOrder('Units')" class="pointer">Units
+													<img class="sorting-img updated-sorting-img"
+													src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="ascending">
+													<img class="sorting-img-descending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'Purchase_Amount'" (click)="setOrder('Purchase_Amount')" class="pointer">Purchase Amount
+													<img class="sorting-img updated-sorting-img"
+													src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="ascending">
+													<img class="sorting-img-descending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'Sell_Date'" (click)="setOrder('Sell_Date')" class="pointer">Sell Date
+													<img class="sorting-img updated-sorting-img"
+													src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="ascending">
+													<img class="sorting-img-descending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'Sell_Type'" (click)="setOrder('Sell_Type')" class="pointer">Sell Type
+													<img class="sorting-img updated-sorting-img"
+													src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="ascending">
+													<img class="sorting-img-descending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'Sell_Rate'" (click)="setOrder('Sell_Rate')" class="pointer">Sell Rate
+													<img class="sorting-img updated-sorting-img"
+													src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="ascending">
+													<img class="sorting-img-descending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'Sell_Amount'" (click)="setOrder('Sell_Amount')" class="pointer">Sell Amount
+													<img class="sorting-img updated-sorting-img"
+													src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="ascending">
+													<img class="sorting-img-descending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'Days'" (click)="setOrder('Days')" class="pointer">Days
+													<img class="sorting-img updated-sorting-img"
+													src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="ascending">
+													<img class="sorting-img-descending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'GL_ST_Debt'" (click)="setOrder('GL_ST_Debt')" class="pointer">G/L ST(Debt)(₹)
+													<img class="sorting-img updated-sorting-img"
+													src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="ascending">
+													<img class="sorting-img-descending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'GL_ST_Equity'" (click)="setOrder('GL_ST_Equity')" class="pointer">G/L ST (Equity) (₹)
+													<img class="sorting-img updated-sorting-img"
+													src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="ascending">
+													<img class="sorting-img-descending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'GL_LT_Debt'" (click)="setOrder('GL_LT_Debt')" class="pointer">G/L LT(Debt) (₹)
+													<img class="sorting-img updated-sorting-img"
+													src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="ascending">
+													<img class="sorting-img-descending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'GL_LT_Equity'" (click)="setOrder('GL_LT_Equity')" class="pointer">G/L LT (Equity) (₹)
+													<img class="sorting-img updated-sorting-img"
+													src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="ascending">
+													<img class="sorting-img-descending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="!ascending">
+												</th>
+												<th [class.active]="order === 'STT'" (click)="setOrder('STT')" class="pointer">STT (₹)
+													<img class="sorting-img updated-sorting-img"
+													src="/assets/svg/sorting.svg" alt="">
+													<img class="sorting-img-ascending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="ascending">
+													<img class="sorting-img-descending"
+													src="/assets/svg/sorting_ascending.svg" alt=""
+													*ngIf="!ascending">
+												</th>
+											</tr>
+											<tr class="lower-header" *ngIf="consRealizedPlList.length > 0 && tabPanelPnlLoader">
+												<th></th>
+												<th>Grand Total</th>
+												<th>-</th>
+												<th>-</th>
+												<th>-</th>
+												<th>{{grandTotalMFpnl.Units | formatNumerDecimal}}</th>
+												<th>{{grandTotalMFpnl.Purchase_Amount}}</th>
+												<th>-</th>
+												<th>-</th>
+												<th>-</th>
+												<th>{{grandTotalMFpnl.Sell_Amount}}</th>
+												<th>-</th>
+												<th>{{grandTotalMFpnl.GL_ST_Debt}}</th>
+												<th>{{grandTotalMFpnl.GL_ST_Equity}}</th>
+												<th>{{grandTotalMFpnl.GL_LT_Debt}}</th>
+												<th>{{grandTotalMFpnl.GL_LT_Equity}}</th>
+												<th>-</th>
+											</tr>
+										</thead>
+										<tbody *ngIf="consRealizedPlList.length > 0 && tabPanelPnlLoader">
+											<tr *ngFor="let dataObj of consRealizedPlList | orderBy: order:reverse; let i = index"(click)="dropClick(dataObj.srNo ,consRealizedPlList)">
+												<td>
+													<div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+														<ion-icon *ngIf="!dataObj['isVisible']" class="arrow-button" src="./assets/svg/down-arrow.svg"
+															></ion-icon>
+														<ion-icon *ngIf="dataObj['isVisible']" class="rotate arrow-button down-arrow-button"
+															src="./assets/svg/down-arrow.svg"></ion-icon>
+													</div>
+													<div class="detail-part-fix" #detail *ngIf="dataObj['isVisible']">
+														<div class="table-block  detail-table-block">
+															<table class="desktop-table">
+																<tbody>
+																	<tr *ngFor="let detailDataObj of dataObj['Data']; let i = index">
+																		<td class="width-57"></td>
+																		<td></td>
+																		<td>{{detailDataObj['Transaction_Type']}}</td>
+																		<td>{{detailDataObj['Transaction_Date']}}</td>
+																		<td>{{detailDataObj['Purchase_Price'] | formatNumerDecimal}}</td>
+																		<td>{{detailDataObj['Units'] | formatNumerDecimal}}</td>
+																		<td>{{detailDataObj['Purchase_Amount'] | formatNumerDecimal}}</td>
+																		<td>{{detailDataObj['Sell_Date']}}</td>
+																		<td>{{detailDataObj['Sell_Type']}}</td>
+																		<td>{{detailDataObj['Sell_Rate'] | formatNumerDecimal}}</td>
+																		<td>{{detailDataObj['Sell_Amount'] | formatNumerDecimal}}</td>
+																		<td>{{detailDataObj['Days']}}</td>
+																		<td>{{detailDataObj['GL_ST_Debt'] | formatNumerDecimal}}</td>
+																		<td>{{detailDataObj['GL_ST_Equity'] | formatNumerDecimal}}</td>
+																		<td>{{detailDataObj['GL_LT_Debt'] | formatNumerDecimal}}</td>
+																		<td>{{detailDataObj['GL_LT_Equity'] | formatNumerDecimal}}</td>
+																		<td>{{detailDataObj['STT'] | formatNumerDecimal}}</td>
+																	</tr>
+																</tbody>
+															</table>
+														</div>
+													</div>
+												</td>
+												<td>
+													<div class="upper-part justify-content-start" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+														{{dataObj['Scheme_Name']}}
+													</div>
+												</td>
+												<td>
+													<div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+														 -
+													</div>
+												</td>
+												<td>
+													<div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+														- 
+													</div>
+												</td>
+												<td>
+													<div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+														-
+													</div>
+												</td>
+												<td>
+													<div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+														{{dataObj['Units'] | formatNumerDecimal}}
+													</div>
+												</td>
+												<td>
+													<div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+														{{dataObj['Purchase_Amount'] | formatNumerDecimal}}
+													</div>
+												</td>
+												<td>
+													<div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+														-
+													</div>
+												</td>
+												<td>
+													<div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+														-
+													</div>
+												</td>
+												<td>
+													<div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+														-
+													</div>
+												</td>
+												<td>
+													<div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+														{{dataObj['Sell_Amount'] | formatNumerDecimal}}
+													</div>
+												</td>
+												<td>
+													<div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+														-
+													</div>
+												</td>
+												<td>
+													<div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+														 {{dataObj['GL_ST_Debt'] | formatNumerDecimal}}
+													</div>
+												</td>
+												<td>
+													<div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+														{{dataObj['GL_ST_Equity'] | formatNumerDecimal}}
+													</div>
+												</td>
+												<td>
+													<div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+														{{dataObj['GL_LT_Debt'] | formatNumerDecimal}}
+													</div>
+												</td>
+												<td>
+													<div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+														{{dataObj['GL_LT_Equity'] | formatNumerDecimal}}
+													</div>
+												</td>
+												<td>
+													<div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+														-
+													</div>
+												</td>
+												
+											</tr>
+										</tbody>
+										<tbody>
+											<tr *ngIf="consRealizedPlList.length == 0 && tabPanelPnlLoader">
+												<td class="no-data-found" colspan="8" style="padding: 10px !important;">No Records Found</td>
+											</tr>
+											<tr>
+												<td colspan="8"  class="text-left-loader" *ngIf="!tabPanelPnlLoader" style="text-align: center; padding: 20px !important">
+													<img src="/assets/imgs/loader.gif" alt="" width="25px">
+												</td>
+											</tr>
+										</tbody>
+										
+									</table>
+									
+								</div>
+							</div>
+						</div>
+						<div class="pnlmf-table" *ngIf="tabPanelPnlTable == 'dividend' ">
+							<div class="main-table thin-scroll scroll-inner">
+								<div class="table-block header-part" style="width: 100%">
+									<table class="desktop-table" style="width: 100%" >
+										<thead style="width: 100%">
+											<tr class="custTd">
+												<th style="width: 89px !important;padding-left: 8px;">Scrip Name</th>
+												<th>Date</th>
+												<th>Amount</th>
+											</tr>
+											<tr class="lower-header">
+												<th style="padding-left: 8px !important;">Grand Total</th>
+												<th>-</th>
+												<th>{{dividendTableList.Total_Dividend_Amount | formatNumerDecimal}}</th>
+											</tr>
+										</thead>
+										<tbody *ngIf="dividendTableList.EquityDividend.length > 0 && dividendTableList.Total_Dividend_Amount != '' && tabPanelPnlLoader">
+											<tr *ngFor="let dataObj of dividendTableList.EquityDividend" style="height: 30px;" class="custTd">
+												<!-- <td style="padding-left: 5px !important;">{{dataObj['ClientCode']}}</td> -->
+												<td style="padding-left: 8px !important;">{{dataObj['ScripName']}}</td>
+												<td>{{moment(dataObj['ExDate']).format('DD/MM/YYYY')}}</td>
+												<td>{{dataObj['Dividend_Amount'] != "" && dataObj['Dividend_Amount'] != null && dataObj['Dividend_Amount'] != undefined ? (dataObj['Dividend_Amount'] | formatNumerDecimal) : ""}}</td>
+											</tr>
+										</tbody>
+										<tbody>
+											<tr *ngIf="dividendTableList.EquityDividend.length == 0 && tabPanelPnlLoader">
+												<td class="no-data-found" colspan="8" style="padding: 10px !important;">No Records Found</td>
+											</tr>
+											<tr>
+												<td colspan="8"  class="text-left-loader" *ngIf="!tabPanelPnlLoader" style="text-align: center; padding: 20px !important">
+													<img src="/assets/imgs/loader.gif" alt="" width="25px">
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+				</div>
+				
+			</div>
+			<div class="ac_tap analytics_tab d-none set-scroll panel-wrapper">
+				<div class="tabs_inner">
+					<div class="panel-content mt-0">
+						<app-analytics [displayAnalyticsSection] = "passDisplayAnalyticsSection"></app-analytics>
+				</div>
+				</div>
+			</div>
+
+
+			<div class="ac_tap TaxHarvesting_tab d-none set-scroll">
+				<div class="tabs_inner">
+					Coming Soon!
+				</div>
+			</div>
+		
+			<div class="tableoverlay d-none" onclick="tableDetaildclose()"></div>
+							<div class="addmemeberForm d-none modal-box">
+								<div class="modal-head d-flex">
+									<div class="modal-title">Add Family Member</div>
+									<a href="javascript:void(0)" class="close_btn" (click)="closeForm()">
+										<img src="assets/imgs/close_btn.svg"></a>
+								</div>
+								<div class="modal-body AddMemberOtpModel d-none">
+									<div class="modal-content">
+										<div class="otp_section_main" id="memberPop">
+											<h2>OTP sent to your family member’s registered
+												mobile number.</h2>
+											<form class="addmemberfrom_box" *ngIf="displayStep1">
+												<div class="form-group">
+													<label for="clientid">Family Member’s Client ID</label>
+													<input type="clientid" class="form-control" id="clientId"
+														[(ngModel)]="memberClientCode"
+														[ngModelOptions]="{standalone: true}">
+												</div>
+												<div class="form-group">
+													<label for="Relation">Family Member’s Relation</label>
+													<select class="form-control" id="Relation"
+														[(ngModel)]="selectRelation"
+														[ngModelOptions]="{standalone: true}">
+														<option value="Brother">Brother</option>
+														<option value="Son">Son</option>
+														<option value="Father">Father</option>
+														<option value="Mother">Mother</option>
+														<option value="Spouse">Spouse</option>
+														<option value="Other">Other</option>
+													</select>
+												</div>
+												<button type="submit" id="memberBtn" class="btn btn-default orange-btn"
+													(click)="addMemberFormnext()">Continue</button>
+											</form>
+											<form class="addmemberfrom_box verification-code" *ngIf="displayStep2">
+												<div class="verification_code_inputs d-flex">
+													<code-input #codeInput [isCodeHidden]="false" [codeLength]="6"
+														[code]="otpInput" [initialFocusField]="0"
+														(codeChanged)="onOtpChanged($event)"
+														(codeCompleted)="onotpFieldCompleted($event)">
+													</code-input>
+													<!-- <input type="number" id="text1" maxlength="1" />
+											<input type="number" id="text2" maxlength="1" />
+											<input type="number" id="text2" maxlength="1" />
+											<input type="number" maxlength="1" />
+											<input type="number" maxlength="1" />
+											<input type="number" maxlength="1" /> -->
+												</div>
+												<span class="error d-flex">Please enter a valid OTP</span>
+												<span class="otp_msg">Didn’t receive the OTP? <span class="resendOtp" [ngClass]="{'resend': resendTimer === null}" (click)="resetOtpClick()">Resend OTP</span> <span *ngIf="resendTimer !== null"> ({{this.resendTimer}}) </span></span>
+												<button type="submit" class="btn btn-default orange-btn"
+													[disabled]="verifyBtn" (click)="verifyMember()">Verify</button>
+											</form>
+										</div>
+										<div class="add_member_successfully" *ngIf="displayStep3">
+											<img src="assets/imgs/acc-details/img/member_success.svg">
+											<span>Your family member added successfully</span>
+											<button type="submit" class="btn btn-default orange-btn"
+												(click)="closeForm()">Done</button>
+										</div>
+									</div>
+								</div>
+								<div class="modal-body-non-broking d-none">
+									<div class="modal-content">
+										<div class="otp_section_main" id="memberPop" style="padding: 20px;">
+											<h2>This client does not have a trading account with
+												IIFL Securities.</h2>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="d-none modal-box removeFamilyTable">
+								<div class="modal-body">
+									<div class="modal-content remove-family-pop">
+										<h2>Are you sure you want to remove the family member?</h2>
+										<div class="d-flex removefam_btn">
+											<a href="javascript:void(0)" class="remove-yes" (click)="removeMember()">Yes</a>
+										<a href="javascript:void(0)" class="remove-no" (click)="closeFamilyPop()">No</a>
+										</div>
+									</div>
+								</div>
+							</div>
+		</div>
+		<div class="disclaimer-content" *ngIf="viewData">
+			<span class="title">Disclaimer</span>
+			<span class="description">
+				The report provided herein is in Beta version , and should not be considered as final report. This report has been provided based on the Depository and Trading accounts details mapped with us and the same is provided for your reference and ease. The information, data, and statistics presented in the Report are derived from various sources believed to be reliable. Holdings in the Stocks, FD, bonds section is as per T-1 date of publishing this report. Holdings in the Mutual funds are as per T-2 if the report is published before 12pm and T-1 if published after 12pm. However, we do not guarantee the accuracy, completeness, or timeliness of the information. In some instances, numerical data may be rounded for presentation purposes. Users of this Report are responsible for verifying any information before making decisions based on it. The report should not be used for the purpose of calculation of income tax liability. You are requested to take professional tax advice for the same. IIFL Securities Limited should not be held responsible for erroneous gain/loss calculations, if any. Please verify your transactions with your Depository holding & contract notes and in case of any discrepancy, you may write to us at cs&#64;iifl.com
+			</span>
+		</div>
+	</div>
+	</div>
+</ion-content>
+<div class="report-modal-overlay d-none"></div>
+<div class="downloadReport d-none new-modal-box modal-box">
+	<div class="modal-head d-flex">
+		<div class="modal-title">Family360 Report</div>
+		<a href="javascript:void(0)" class="close_btn" (click)="closeDownloadreport()">
+			<img src="assets/imgs/close_btn.svg"></a>
+	</div>
+	<div class="modal-body thin-scroll" style="max-height: 480px; overflow: auto;">
+		<div class="modal-content">
+			<div class="download_box">
+				<div class="download_box_heading">
+					<h2>Select Reports</h2>
+				</div>
+				<ul class="report_type_list">
+
+					<li *ngFor="let item of reportType">
+						<ion-checkbox [(ngModel)]="item['isChecked']" (click)="selectReportType(item)" class="custom-checkbox client-checkbox">
+						</ion-checkbox>
+						<span>{{item.title}}</span>
+					</li>
+				</ul>
+
+				<h2 *ngIf="displayDuration">Select Duration</h2>
+
+					<div class="radio-toolbar" *ngIf="displayDuration">
+						<!-- <input type="radio" id="oneMonth" name="typeprofession" value="oneMonth" checked>
+						<label for="oneMonth">1 Month</label>
+					
+						<input type="radio" id="threeMonth" name="typeprofession" value="threeMonth">
+						<label for="threeMonth">3 Months </label>
+					
+						<input type="radio" id="sixMonth" name="typeprofession" value="sixMonth">
+						<label for="sixMonth">6 Months </label> 
+									
+						<input type="radio" id="oneYear" name="typeprofession" value="oneYear">
+						<label for="oneYear">1 Year</label>
+						
+						<input type="radio" id="Custom" name="typeprofession" value="Custom">
+						<label for="Custom">Custom</label> -->
+						<div class="select_interval_type">
+							<p>Type of Report</p>
+							<div class="choose_interval">
+								<div (click)="toggleDateRange('yearWise')"
+									[ngClass]="dateRangeType==='yearWise' ? 'interval_type active':'interval_type'">Year wise</div>
+								<div (click)="toggleDateRange('dateWise')"
+									[ngClass]="dateRangeType==='dateWise' ? 'interval_type active':'interval_type'">Date wise</div>
+							</div>
+						</div>
+						<div class="section date-range-dropdown shr_sec_box fam_mem">
+							<div class="label">Family Member</div>
+							<ng-select class="date_select_drop" [items]="familyMemberList" bindLabel="item" bindValue="value" [loading]="Loadvalue"
+								[clearable]="false" [searchable]="false" [(ngModel)]="family_member_value"
+								(change)="select_FamilyMember($event)">
+							</ng-select>
+						</div>
+						<div class="section date-range-dropdown shr_sec_box" *ngIf="dateRangeType === 'yearWise'">
+							<div class="label">Date Range</div>
+							<ng-select class="date_select_drop" [items]="financialYrList" bindLabel="item" bindValue="value" [loading]="Loadvalue"
+								[clearable]="false" [searchable]="false" [(ngModel)]="yearRangeValue"
+								(change)="selectYrFromList($event)">
+							</ng-select>
+						</div>
+						<!-- review. datepicker issue fixed-->
+						
+						<div *ngIf="dateRangeType === 'dateWise'" class="section date-section shr_sec_box">
+							<div class="section inner-section">
+				
+								<div class="datePopover">
+									<ion-item class="date_Picker" (click)="toggleStartDatePicker(true)">
+										<div class="label">From Date</div>
+									  <ion-input placeholder="Select Date" [value]="ionFromDate | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+									  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+									</ion-item>
+									<div class="calendarBackdrop downloadDesktopDateBackdrop" *ngIf="showStartDatePicker && isDownloadDatePicker" (click)="hideDatePicker('start')"></div>
+									<ion-datetime class="calendarOpen downloadDesktopDate" *ngIf="showStartDatePicker && isDownloadDatePicker" presentation="date"
+									[(ngModel)]="ionFromDate" presentation="date" min="1973-01-01" [max]="currentDate"
+									  (ionChange)="hideDatePicker('start',$event)">
+									</ion-datetime>
+								  </div>
+						
+							</div>
+			
+							  <div class="section inner-section">
+								<div class="datePopover">
+									<ion-item class="date_Picker" (click)="toggleEndDatePicker(true)">
+										<div class="label">To Date</div>
+									  <ion-input placeholder="Select Date" [value]="ionToDate | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+									  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+									</ion-item>
+									<div class="calendarBackdrop downloadDesktopDateBackdrop" *ngIf="showEndDatePicker && isDownloadDatePicker" (click)="hideDatePicker('end')"></div>
+									<ion-datetime class="calendarOpen downloadDesktopDate postionLeft0" *ngIf="showEndDatePicker && isDownloadDatePicker" presentation="date"
+									  [(ngModel)]="ionToDate" presentation="date" min="1973-01-01" [max]="currentDate"
+									  (ionChange)="hideDatePicker('end',$event)">
+									</ion-datetime>
+								  </div>
+			
+							</div>
+							<!-- <div class="section inner-section" (click)="dp.openCalendar()">
+								<div class="label">From Date</div>
+								<input class="ion-input dateField" angular-mydatepicker name="mydate" [(ngModel)]="from_Date" readonly
+									[options]="my_Options" #dp="angular-mydatepicker" (dateChanged)="onDateChanges($event)" />
+								<img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+							</div>
+						
+							<div class="section inner-section" (click)="dp1.openCalendar()">
+								<div class="label">To Date</div>
+								<input class="ion-input dateField" angular-mydatepicker name="toDate" [(ngModel)]="to_Date" readonly
+									[options]="my_Options" #dp1="angular-mydatepicker" (dateChanged)="onDateChanges($event)">
+								<img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+							</div> -->
+						</div> 
+					</div>
+				<div class="date_grid_box d-none">
+					<div class="custom_date">
+						<div class="date_grid">
+							<label>From Date</label>
+							<input type="text">
+							<img src="assets/img/calendar_report.svg" alt="date">
+						</div>
+						<div class="date_grid">
+							<label>To Date</label>
+							<input type="text">
+							<img src="assets/img/calendar_report.svg" alt="date">
+						</div>
+					</div>
+				</div>
+				<button type="submit" class="btn btn-default orange-btn" [disabled]="!selectedReport.length" (click)="downloadSelectdpdf()">Download PDF</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="loader-pdf" *ngIf="!pdfLoader"></div>
+<!-- <div [innerHTML]="htmlData" id="content" style="overflow: auto;font-family: 'Inter', sans-serif"></div> -->
+<div [innerHTML]="htmlData" id="content" style="overflow: auto;	
+    position: absolute;	font-family:'Inter', sans-serif;
+    top: 0;	
+    z-index: -1;height: 0;"></div>
+
+<div style="height: 170px; width: 170px;position: absolute;	top: 0;	 z-index: -1;">
+    <canvas baseChart  #familyMemberPDFGraph id="familyMemberPDFGraph"
+        [datasets]="pdfFamilyData"
+        [labels]="pdfFamilyLabels"
+        [options]="pdfChartOptions"
+        [type]="'doughnut'"
+    ></canvas>
+</div>
+
+<div style="height: 170px; width: 170px;position: absolute;	top: 0;	 z-index: -1;">
+    <canvas baseChart  #productWise id="productWise"
+        [datasets]="pdfproductWiseData"
+        [labels]="pdfproductWiseLabels"
+        [options]="pdfChartOptions"
+        [type]="'doughnut'"
+    ></canvas>
+</div>
+<!-- <div [innerHTML]="htmlData" id="content" style="overflow: auto;" ></div> -->
+<div [ngClass]="displayPopup ? 'product-last-updated show' : 'product-last-updated'">
+	<div class="popup">
+		<img (click)="showLastUpdatedPopup()" src="assets/svg/cross_icon.svg" alt="icon">
+		<h1>Last Updated On</h1>
+		<p>The values shown here depend on the data updation date of the individual product. The last updated dates are
+			given below:</p>
+		<div class="table">
+			<tr>
+				<th>Products</th>
+				<th>Valuation Date</th>
+			</tr>
+			<tr *ngFor="let item of storeProducts">
+				<td>{{item.PRODUCT}}</td>
+				<td>{{moment(item.ASONDATE).format('DD/MM/YYYY')}}</td>
+			</tr>
+		</div>
+	</div>
+</div>

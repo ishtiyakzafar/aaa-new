@@ -1,0 +1,38 @@
+<div class="container-block">
+  <div class="close" (click)="dismiss()">x</div>
+  <div class="title">
+    <span>Edit Watchlist</span>
+  </div>
+  <!-- List of Input Items -->
+  <ion-list>
+    <ion-button class="active">
+      <div class="item-block">
+          <ion-label slot="start" *ngIf="!isEditable">{{watchListName}}</ion-label>
+          <input type="text" *ngIf="isEditable" customValidate [(ngModel)]="watchListName">
+          <a href="javascript:void(0)" *ngIf="isEditable" (click)="save()">Save</a>
+          <ion-label class="digit"></ion-label>
+          <!-- <ion-icon name="create-outline" *ngIf="!isEditable && editWatchListOption !== 'NIFTY50'" (click)="isEditable = !isEditable"></ion-icon> -->
+          <ion-icon src="assets/svg/edit.svg" style="color: #F37921;" *ngIf="!isEditable && editWatchListOption !== 'NIFTY50' && editWatchListOption !== 'RECENTVIEWED'" (click)="isEditable = !isEditable"></ion-icon>
+      </div>
+    </ion-button>
+    <span *ngIf="maxLengthMsg" style="color: rgb(245, 88, 88);font-size:12px;margin-left: 10px">{{maxLenthDisplay}}</span>
+    <ion-button *ngIf="canAddDelete && editWatchListOption !== 'RECENTVIEWED'" (click)="dismiss(!addScrip, deleteScrip, false)">
+      <div class="item-block" >
+        <ion-label slot="start">Add Scrips</ion-label>
+        <ion-label class="digit">{{scripLength}}/50</ion-label>
+      </div>
+    </ion-button>
+    <ion-button *ngIf="canAddDelete && scripLength > 0" (click)="dismiss(addScrip, !deleteScrip, false)">
+      <div class="item-block" >
+        <ion-label slot="start">Delete Scrips</ion-label>
+       <ion-label class="digit"></ion-label>
+      </div>
+    </ion-button>
+    <ion-button *ngIf="!isDefault">
+      <div class="item-block" (click)="dismiss(false,false,true)">
+        <ion-label slot="start">Set this watchlist as default</ion-label>
+        <ion-label class="digit"></ion-label>
+      </div>
+    </ion-button>
+  </ion-list>
+</div>

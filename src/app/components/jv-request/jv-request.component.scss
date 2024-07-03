@@ -1,0 +1,253 @@
+.jv-request-container {
+	width: 720px;
+	margin: 0 auto;
+	.jv-header {
+		.heading {
+			font-family: "nunitoBold";
+			font-size: 20px;
+			padding-left: 5px !important;
+			color: #212121;
+		}
+	}
+
+	.search-toolbar {
+		--padding-start: 12px;
+		--padding-end: 12px;
+		ion-searchbar {
+			text-align: center !important;
+			border-bottom: 1px solid silver;
+			--box-shadow: none;
+			padding-inline-start: 0;
+			padding-inline-start: 0;
+			font-family: "nunitoSemiBold";
+			color: #000000;
+			margin-top: 20px;
+			--background: #fff;
+		}
+	}
+
+
+}
+
+.buttons-block {
+    ion-button {
+        width: 130px;
+        --border-radius: 8px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-family: 'nunitoBold';
+    }
+    .reject {
+        --background: #EB2B2B;
+    }
+    .approve {
+        --background: #17C257;
+        margin-left: 5px;
+    }
+}
+
+.no-data-found-class{
+    display: flex;
+    height:200px;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border:1px solid #cbcbcb;
+}
+
+
+.client_Code{
+	color:#212121 !important;
+	font-family:'nunitoSemiBold';
+	font-size: 14px;
+}
+.title-name {
+	margin: 15px 0;
+	.name {
+		color: #000000;
+		font-size: 20px;
+		font-family: "nunitoSemiBold";
+	}
+}
+
+.card-container {
+	//border:1px solid #3d3131;
+	border: 1px solid #cbcbcb;
+	margin-top:10px;
+	margin-bottom: 30px;
+	&.thin-scroll{
+		// max-height: calc(100vh - 240px);
+        max-height: 468px;
+        margin-bottom: 24px;
+		overflow: auto;
+	}
+	
+
+	.card {
+		padding: 15px;
+		border-bottom: 1px solid #cbcbcb;
+		.card-row {
+			display: flex;
+			//justify-content: space-between;
+			flex-direction: column;
+			.card-first-row {
+				display: flex;
+				justify-content: space-between;
+				flex-direction: row;
+
+				.status-view {
+					display: flex;
+					flex-direction: row;
+					justify-content: flex-end;
+					align-items: center;
+					width: auto;
+					.cancel-request {
+						padding-right: 5px;
+						color: #2680eb;
+						font-family: "nunitoSemiBold";
+						cursor: pointer;
+					}
+					.status-name {
+						font-size: 14px;
+						color: #000000;
+						font-family: "nunitoSemiBold";
+					}
+					img {
+						// padding-left: 10px;
+						padding-top: 2px;
+					}
+				}
+			}
+
+			.card-description {
+				display: flex;
+				flex-direction: column;
+			}
+		}
+
+		.card-footer {
+			margin-top: 10px;
+			width: 100%;
+			background-color: #f4f3f9;
+			display: flex;
+			padding: 10px 0;
+			justify-content: flex-start;
+			flex-direction: column;
+			.footer-content {
+				margin-left: 15px;
+				color: #716a90;
+				font-size: 14px;
+			}
+		}
+		.mt10 {
+			margin-top: 10px;
+			font-family: "nunitoSemiBold";
+		}
+	}
+
+	.block-code {
+		display: block;
+		color: #6e6e6e;
+		font-size: 15px;
+		&.first {
+			font-size: 24px;
+			color: #000000;
+			font-family: "nunitoBold";
+		}
+	}
+}
+
+.empty-card-container {
+	width: 800px;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto;
+	.raise-limit-request {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		// margin-top: 100px;
+		//margin-top: 50px;
+		.raise-image {
+			width: 400px;
+		}
+		.raise-message {
+			font-size: 17px;
+			color: #586a7a;
+			margin: 35px 0 40px 0;
+			text-align: center;
+		}
+		ion-button {
+			border-radius: 8px;
+			--background: #f37921;
+			width: 320px;
+			box-shadow: 0px 2px 18px #f37921ad;
+			font-size: 14px;
+			font-family: "nunitoExtraBold";
+		}
+	}
+}
+
+@media (max-width: 500px) {
+	.jv-request-container {
+		width: 100%;
+	
+	
+	}
+
+	.card-container {
+		width: 100%;
+		margin: 0 auto;
+		border: none;
+	
+		.block-code {
+			&.first {
+				font-size: 17px;
+				color: #000000;
+				font-family: "nunitoBold";
+			}
+		}
+	}
+	.empty-card-container {
+		width: 100%;
+		.raise-limit-request {
+			width: auto;
+			ion-button {
+				border-radius: 8px;
+				--background: #f37921;
+				width: 250px !important;
+				height: 60px;
+				line-height: 40px;
+				box-shadow: 0px 2px 18px #f37921ad;
+				font-size: 14px;
+				font-family: "nunitoExtraBold";
+			}
+		}
+	}
+
+	.title-name {
+		margin-top: 15px;
+		--background: #f6f7f7;
+		--min-height: 40px;
+		.name {
+			color: #000000;
+			font-size: 16px;
+			padding: 0 15px;
+			font-family: "nunitoSemiBold";
+		}
+	}
+	.no-data-found-class{
+		border:0px solid #cbcbcb;	
+	}	
+	.client_Code{
+		font-size: 12px;
+	}
+}
+
+.mt00{
+	margin-top:0;
+}

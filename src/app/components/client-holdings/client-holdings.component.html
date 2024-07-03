@@ -1,0 +1,173 @@
+<ion-header class="mobile-visibility">
+  <ion-toolbar>
+    <div class="total-value-block">
+      <div class="block">
+        <span class="block-title">Total Value</span>
+        <span class="block-value"><span class="rupees">₹</span>{{totalHolding | formatNumerDecimal}}</span>
+      </div>
+      <div class="block h-p-16">
+        <!-- <span class="block-title">Total Investment</span>
+        <span class="block-value"><span class="rupees">₹</span>75,25,000.00</span> -->
+      </div>
+      <div class="block">
+        <span class="block-title">Total P&L</span>
+        <span class="block-value" [ngStyle]="{'color':(totalPL == 0) ? '#656565' : (totalPL > 0 ? '#17C257' : '#F55858')}"><span class="rupees">₹</span>{{totalPL | formatNumerDecimal}} ({{convertNanToZero(totalPL / totalHolding)*100 | formatNumerDecimal}}%)</span>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="mobile-visibility">
+
+  <!-- review. removed filter -->
+  <!-- <div class="data-block-parent" *ngIf="(holdingData|filter:searchTerm).length > 0"> -->
+  <div class="data-block-parent" *ngIf="(holdingData|filter:searchTerm).length > 0">
+    <div class="data-block" *ngFor="let dataObj of holdingData">
+      <div class="left-section">
+        <div class="data">
+          <span class="data-title">P. Close</span>
+          <span class="data-value">{{dataObj['PreviousClose'] | formatNumerDecimal: dataObj.ExchType}}</span>
+        </div>
+        <div class="data scrip scrip-date">
+          <!-- <span class="scrip-name">{{dataObj['Symbol']}}</span> -->
+          <span class="scrip-name" (click)="goToCompanyDetails(dataObj)">{{dataObj.Symbol | splitNameDate: "name"}}</span>
+          <span class="scrip-date">{{dataObj.Symbol | splitNameDate: "date"}}</span>
+        </div>
+        <div class="data">
+          <span class="data-title">LTP</span>
+          <span class="data-value">{{dataObj['CurrentPrice'] | formatNumerDecimal: dataObj.ExchType}}</span>
+        </div>
+      </div>
+      <div class="right-section">
+        <div class="data">
+          <span class="data-title">P/L</span>
+
+          <span [ngStyle]="{'color':(dataObj.CurrentPL == 0) ? '#656565 !important' : (dataObj.CurrentPL > 0 ? '#17C257' : '#F55858')}" class="data-value font-14"><span
+              class="rupees">₹</span>{{dataObj['CurrentPL'] | formatNumerDecimal: dataObj.ExchType}}({{percentChangeValue(dataObj.Quantity,dataObj.CurrentPrice,dataObj.PreviousClose,dataObj.PerChange) | formatNumerDecimal: dataObj.ExchType}}%)</span>
+        </div>
+        <div class="data">
+          <span class="data-title">Value</span>
+          <span class="data-value"><span class="rupees">₹</span>{{dataObj.Quantity * dataObj.CurrentPrice | formatNumerDecimal: dataObj.ExchType}}</span>
+        </div>
+        <div class="data">
+          <span class="data-title">Qty.</span>
+          <span class="data-value">{{dataObj['Quantity']}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- review. removed filter -->
+  <!-- <div class="data-block-parent" *ngIf="(holdingData|filter:searchTerm).length == 0"> -->
+  <div class="data-block-parent" *ngIf="(holdingData|filter:searchTerm).length == 0">
+
+    <span class="no-data-found">No Records Found</span>
+  </div>
+</ion-content>
+<div class="desktop-visibility">
+  <div class="web-equity thin-scroll">
+    <div class="header-part">
+      <div class="section-1">
+        <span class="title">Total Value</span>
+        <div class="below-part">
+          <span class="rupees">₹</span>
+          <span class="value">{{totalHolding | formatNumerDecimal}}</span>
+        </div>
+      </div>
+      <div class="section-2">
+        <span class="title">Total P&L</span>
+        <div class="below-part" [ngStyle]="{'color':(totalPL == 0) ? '#656565' : (totalPL > 0 ? '#17C257' : '#F55858')}">
+          <span class="rupees">₹</span>
+          <span class="value" >{{totalPL | formatNumerDecimal}}</span>
+          <span class="percent-value">
+            ({{convertNanToZero(totalPL / totalHolding)*100 | formatNumerDecimal}}%)
+          </span>
+        </div>
+      </div>
+      <div class="section-3">
+        <ion-searchbar [(ngModel)]="searchTerm" placeholder="Search  for a Holding"></ion-searchbar>
+      </div>
+    </div>
+    <div class="header-table">
+      <table class="desktop-header-table width-100">
+        <thead>
+          <tr>
+            <th [class.active]="order === 'Symbol'" class="pointer" (click)="setOrder('Symbol')">Scrip
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+            </th>
+            <th>
+              LTP
+            </th>
+            <th [class.active]="order === 'Quantity'" class="pointer" (click)="setOrder('Quantity')">Quantity
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+            </th>
+            <th [class.active]="order === 'holdingValue'" class="pointer" (click)="setOrder('holdingValue')">Holding Value
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+            </th>
+            <th [class.active]="order === 'CurrentPL'" class="pointer" (click)="setOrder('CurrentPL')">P&L (%)
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+            </th>
+            <th>
+              Previous Close
+            </th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="main-table thin-scroll">
+      <!-- <table style="width: 100%" class="mobile-table"> -->
+      <table class="width-100">
+
+        <!-- review. removed filter and orderBy -->
+        <!-- <tbody *ngIf="(holdingData|filter:searchTerm).length > 0">
+          <tr *ngFor="let dataObj of holdingData | orderBy: order:reverse | filter:searchTerm; let i = index"> -->
+        <tbody *ngIf="(holdingData|filter:searchTerm).length > 0">
+          <tr *ngFor="let dataObj of holdingData| filter:searchTerm; let i = index">
+            <td>
+              <div class="td-heading first-column">
+                <span class="first-span-block">
+                  <span class="first-span" (click)="goToCompanyDetails(dataObj)">{{dataObj.Symbol | splitNameDate: "name"}}</span>
+                  <span class="spanStyle"> {{dataObj.Exch}},{{dataObj.ExchType}}</span>
+                </span>
+                <span class="date">{{dataObj.Symbol | splitNameDate: "date"}}</span>
+              </div>
+            </td>
+            <td
+              [ngStyle]="{'color':(dataObj.CurrentPrice == 0) ? '#656565' : (dataObj.CurrentPrice > 0 ? '#17C257' : '#F55858')}">
+              {{dataObj.CurrentPrice | formatNumerDecimal: dataObj.ExchType}}
+            </td>
+            <td>
+              {{dataObj.Quantity}}
+            </td>
+            <td>
+              <span class="rupees">₹</span>{{dataObj.Quantity * dataObj.CurrentPrice | formatNumerDecimal: dataObj.ExchType}}
+            </td>
+            <td
+              [ngStyle]="{'color':(dataObj.CurrentPL == 0) ? '#656565' : (dataObj.CurrentPL > 0 ? '#17C257' : '#F55858')}">
+              <span
+                class="rupees">₹</span>{{dataObj.CurrentPL | formatNumerDecimal: dataObj.ExchType}}({{percentChangeValue(dataObj.Quantity,dataObj.CurrentPrice,dataObj.PreviousClose,dataObj.PerChange) | formatNumerDecimal: dataObj.ExchType}}%)
+            </td>
+            <td>
+              <span class="rupees">₹</span>{{dataObj.PreviousClose | formatNumerDecimal: dataObj.ExchType}}
+            </td>
+          </tr>
+        </tbody>
+
+        <!-- review. removed filter -->
+        <!-- <tbody *ngIf="(holdingData|filter:searchTerm) == 0"> -->
+        <tbody *ngIf="(holdingData|filter:searchTerm) == 0">
+          <tr>
+            <td class="no-data-found">No Records Found</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

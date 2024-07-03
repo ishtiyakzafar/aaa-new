@@ -1,0 +1,19 @@
+<div class="card_details_pop text-center phy_fno_confirm_changes">
+	<div class="pop_close" (click)="dismiss()"><img src="assets/svg/close_delete.svg" width="15" alt="close"></div>
+	
+	<div class="title-name">Confirm Changes</div>
+	<p>Following contracts will be added to Hold</p>
+	<div class="pop_content">
+	  <div class="confirm_changes_grid" *ngFor="let dataObj of confirmList let i = index">
+	  <div class="cl_mb_list">
+	  <label>{{dataObj.ClientCode}}</label>
+  		<span>{{dataObj.ContractName}}</span>
+	  </div>
+	</div> 
+	<ion-segment-button class="btn_orange btn confirm_proceed" (click)="onProceed()"><span>Proceed</span>
+	</ion-segment-button>
+
+  </div>
+  
+   </div>
+

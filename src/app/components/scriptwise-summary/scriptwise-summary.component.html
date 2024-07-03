@@ -1,0 +1,173 @@
+<ion-header>
+  <div *ngIf="isDiv" class="info-drop header-over" (click)="close()">  </div>
+  <ion-toolbar color="tertiary" class="mobile-visibility">
+    <div class="title-block title-block-custom">
+      <div class="icon-title">
+        <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+         <ion-title class="title">Scrip Summary Report</ion-title>
+      </div>
+    </div>
+  </ion-toolbar>
+  <ion-toolbar class=" desktop-visibility">
+    <div class="container">
+      <div class="heading-part notificationheader">
+       <span class="heading">Scrip Summary Report</span>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<section>
+  <div class="container">
+      <small class="mb-small">Note: Please enter at least 3 characters to Submit.</small>
+    <div class="search-section-reports search-section scriptwise">
+      <div class="d-flex mb_flex">
+          
+        <ion-searchbar class="ion-text-wrap custom-searchbar" placeholder="Scrip Name/Symbol/ISIN" 
+        (ngModelChange)="searchText($event)" [(ngModel)]="selectedDropType" (ionBlur)="hideDropDown()"
+          (click)="onSearchbarClick()">
+        </ion-searchbar>
+          
+        <ion-toolbar class="drop-down-toolbar" *ngIf="isListVisible">
+						<div class="drop-down thin-scroll" *ngIf="searchResult.length && !dropdownLoader">
+							<div class="item" *ngFor="let data of searchResult"
+								(click)="setSearchValue(data)">
+								<span class="name">{{data.ScripName}}</span>
+							</div>
+						</div>
+						<div class="drop-down thin-scroll" *ngIf="searchResult.length==0 && !dropdownLoader">
+              <div class="item">
+  							<span class="name">No Data Found</span>
+              </div>
+            </div>
+						<div class="loader" *ngIf="dropdownLoader">
+							<img src="/assets/imgs/loader.gif" alt="">
+						</div>
+					</ion-toolbar>
+
+         <ion-button (click)="getData()" class="orange-btn" [disabled] = "disableSubmit">
+        Submit
+      </ion-button>
+    </div>
+
+      <div class="d-flex total">
+       <span>
+        Total Count: {{totalCount}}
+       </span>
+    <div class="download_filter">
+      <a href="javascript:void(0)" (click)="downloadReport()" >
+        Download <img src="assets/svg/download_excel.svg"
+          alt="excel">
+      </a>
+    </div>
+    </div>
+    </div>
+<div class="desktop-visibility">
+      <div class="web-equity thin-scroll detail-table" style="margin-top:25px">
+          <div class="header-table">
+              <table style="width: 100%" class="desktop-header-table">
+                  <thead>
+                      <tr>
+                          <th>
+                            Login ID
+                          </th>
+                          <th>
+                            Branch
+                          </th>
+                          <th>
+                            Scrip Name
+                          </th>
+                          <th>
+                            Qty
+                          </th>
+                          <th>
+                            Rate
+                          </th>
+                      </tr>
+                  </thead>
+              </table>
+          </div>
+          <div class="main-table thin-scroll">
+              <div class="table-block">
+                  <table class="desktop-table">
+                      <tbody *ngIf="scriptSummaryData.length > 0 && !dataLoad">
+                          <tr *ngFor="let dataObj of scriptSummaryData; let i = index">
+                              <td>
+                                  {{dataObj['Loginid']}}
+                              </td>
+                              <td>
+                                  {{dataObj['Branch']}}
+                              </td>
+                              <td class="desktop-visibility-data">
+                                  {{dataObj['ScripName']}}
+                              </td>
+                              <td class="desktop-visibility-data">
+                                  {{dataObj['Qty']}}
+                              </td>
+                              <td class="desktop-visibility-data">
+                                  {{dataObj['Rate']}}
+                              </td>
+                          </tr>
+
+                      </tbody>
+                      <div class="loader" *ngIf="dataLoad" style="min-height: 100px">
+                        <img src="/assets/imgs/loader.gif" alt="">
+                      </div>
+                      <tbody *ngIf="scriptSummaryData.length == 0 && !dataLoad">
+                          <tr>
+                              <td class="no-data-found">No Data Found</td>
+                          </tr>
+                      </tbody>
+                  </table>
+
+              </div>
+          </div>
+      </div>
+    </div>
+    <div class="mobile-visibility">
+      <div class="grid_main" *ngIf="scriptSummaryData.length > 0 && !dataLoad">
+        <div class="table_grid_box" *ngFor="let dataObj of scriptSummaryData; let i = index">
+        <div class="table_grid">
+          <label>Login ID</label>
+          <span>{{dataObj['Loginid']}}</span>
+        </div>
+        
+        <div class="table_grid">
+          <label>Branch</label>
+          <span>{{dataObj['Branch']}}</span>
+        </div>
+        
+        <div class="table_grid">
+          <label>Scrip Name</label>
+          <span>{{dataObj['ScripName']}}</span>
+        </div>
+        
+         <div class="table_grid">
+          <label>Qty</label>
+          <span>{{dataObj['Qty']}}</span>
+        </div>
+    
+        <div class="table_grid">
+          <label>Rate</label>
+          <span>{{dataObj['Rate']}}</span>
+        </div>
+    
+        </div>
+        </div>
+        <div *ngIf="dataLoad">
+          <div class="text-center"> <img class="tableLoader" src="/assets/imgs/loader.gif" alt="">
+          </div>
+        </div>
+    
+        <div *ngIf="scriptSummaryData.length == 0 && !dataLoad">
+           <div class="text-center tableLoader"> <img class="raise-image" src="assets/svg/not_raised.svg" alt="">
+              <div class="raise-message">No Data</div>
+            </div>
+        </div>
+    </div>
+
+
+  </div>
+</section>
+</ion-content>

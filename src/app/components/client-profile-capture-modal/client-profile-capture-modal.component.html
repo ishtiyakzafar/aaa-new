@@ -1,0 +1,58 @@
+<div class="card_details_pop" >
+  <div class="modal_title">
+  <span>Client Profile</span>
+  <div class="pop_close" (click)="dismiss()"><img src="assets/svg/close_black.svg" width="18" alt="close"></div>
+  </div>
+   <div class="card_details_inner" *ngIf="dataLoad">
+<div class="card_head">
+    <div class="client_name">{{clientName}}</div>
+    <span>Client ID {{clientCode}}</span>
+  </div>
+  <div class="client_deta_main">
+    <div class="cli_deta_grid">
+      <label>Birthday:</label>
+      <span>{{clientBday || '-'}}</span>
+    </div>
+    <div class="cli_deta_grid">
+      <label>Onboarding Date:</label>
+      <span>{{clientOnboarddingDate || '-'}}</span>
+    </div>
+    <div class="cli_deta_grid">
+      <label>Risk Profile:</label>
+      <span>{{clientRiskProfile || '-' }}</span>
+    </div>
+    <div class="cli_deta_grid">
+      <label>Product Preference:</label>
+      <span>{{clientProdPref || '-'}}</span>
+    </div>
+    <div class="cli_deta_grid">
+      <label>Client Segment:</label>
+      <span>{{clientSegment || '-'}}</span>
+    </div>
+  </div>
+  
+  <h4 class="activity">Activity</h4>
+  <div class="client_deta_main">
+    <div class="cli_deta_grid">
+      <label>Last Trade Date:</label>
+      <span>{{LastTradeDate || '-'}}</span>
+    </div>
+    <div class="cli_deta_grid">
+      <label>Last Fund Transfer Date:</label>
+      <span>{{LastFundTransDate || '-'}}</span>
+    </div>
+    <div class="cli_deta_grid">
+      <label>Last Login Date:</label>
+      <span>{{LastLoginDate || '-'}}</span>
+    </div>
+    </div>
+  
+   
+   </div> 
+   <div class="loader" *ngIf="!dataLoad">
+		<img src="/assets/imgs/loader.gif" alt="">
+	</div>
+  
+  
+  
+  </div>

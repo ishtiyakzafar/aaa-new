@@ -1,0 +1,49 @@
+.nifty-block {
+    background: #F2F4F4;
+    padding: 8px 20%;
+    display: flex;
+    justify-content: space-between;
+    .section {
+        cursor: pointer;
+    }
+    .label {
+        font-size: 16px;
+        font-family: 'nunitoSemiBold';
+        color: #212121;
+        text-transform: uppercase;
+    }
+    .value {
+        font-size: 17px;
+        font-family: 'nunitoSemiBold';
+        color: #6E6E6E;
+        margin-right: 8px;
+    }
+    .changed-value {
+        font-size: 16px;
+        font-family: 'nunitoLight';
+       // color: #17C257;
+    }
+}
+
+.iglc-contest-block {
+    font-size: 16px;
+    font-family: 'nunitoBold';
+    background: #EDEDED;
+    color: #212121;
+    text-align: center;
+    padding: 2px;
+    .igcl {
+        color: #F37A21;
+        padding-right: 6px;
+    }
+    .total {
+        font-family: 'nunitoRegular';
+        padding-left: 3px;
+    }
+    .value {
+        font-size: 18px;
+    }
+}
+@media screen and (min-width: 767px) and (max-width: 991px)  {
+    .nifty-block {padding: 8px 10%;}
+}

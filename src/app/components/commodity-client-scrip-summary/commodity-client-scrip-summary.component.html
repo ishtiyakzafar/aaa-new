@@ -1,0 +1,218 @@
+<ion-header>
+  <div *ngIf="isDiv" class="info-drop header-over" (click)="close()">  </div>
+  <ion-toolbar color="tertiary" class="mobile-visibility">
+    <div class="title-block title-block-custom">
+      <div class="icon-title">
+        <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+        <ion-title class="title font-15">Commodity Client Scrip Summary</ion-title>
+      </div>
+    </div>
+  </ion-toolbar>
+  <ion-toolbar class=" desktop-visibility">
+    <div class="container">
+      <div class="heading-part notificationheader">
+        <span class="heading">Commodity Client Scrip Summary</span>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  <div class="container desktop-visibility">
+    <br>
+    <div class="search-section-reports search-section scriptwise">
+      <div class="d-flex">
+          <ion-searchbar class="custom-searchbar" placeholder="Search Client Code/Symbol" [debounce]="1000"
+          (ngModelChange)="searchText($event)" [(ngModel)]="searchValue">
+          </ion-searchbar>
+      </div>
+      <div class="d-flex">
+      <ion-button (click)="downloadReport()" class="orange-btn">
+        Export
+      </ion-button>
+    </div>
+    </div>
+
+      <div class="web-equity thin-scroll detail-table" style="margin-top:25px">
+          <!-- <div class="header-table">
+              <table style="width: 100%" class="desktop-header-table">
+                
+              </table>
+          </div> -->
+          <div class="main-table-1 ">
+              <div class="table-block table-fixed-header">
+                  <table class="desktop-table">
+                    <thead class="width-100">
+                      <tr>
+                          <th>
+                            ClientID
+                          </th>
+                          <th [class.active]="order === 'Symbol'" class="pointer" (click)="setOrder('Symbol')">Symbol
+                            <span class="vr_middle_1">
+                              <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="ascendingOrder">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="!ascendingOrder">
+                                  </span>
+                          </th>
+                          <th>
+                            Description
+                          </th>
+                          <th [class.active]="order === 'ExpiryDate'" class="pointer" (click)="setOrder('ExpiryDate')">Expiry Date
+                            <span class="vr_middle_1">
+                              <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="ascendingOrder">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="!ascendingOrder">
+                                  </span>
+                          </th>
+                          <th>
+                            Buy
+                          </th>
+                          <th>
+                            Sell
+                          </th>
+                          <th>
+                            Net Qty
+                          </th>
+                          <th>
+                            Average Rate
+                          </th>
+                          <th>
+                            Close Price
+                          </th>
+                      </tr>
+                  </thead>
+                      <tbody *ngIf="commodityClientScripData.length > 0 && !dataLoad">
+
+                        <tr *ngFor="let dataObj of commodityClientScripData | orderBy: order:val;let i = index">
+                              <td>
+                                  {{dataObj['ClientId']}}
+                              </td>
+                              <td>
+                                  {{dataObj['Symbol']}}
+                              </td>
+                              <td>
+                                  {{dataObj['Description']}}
+                              </td>
+                              <td class="desktop-visibility-data">
+                                  {{dataObj['ExpiryDate']}}
+                              </td>
+                              <td class="desktop-visibility-data">
+                                  {{dataObj['Buy']}}
+                              </td>
+                              <td>
+                                {{dataObj['Sell']}}
+                            </td>
+                            <td>
+                                {{dataObj['NetQty']}}
+                            </td>
+                            <td>
+                                {{dataObj['AverageRate']}}
+                            </td>
+                            <td class="desktop-visibility-data">
+                                {{dataObj['ClosePrice']}}
+                            </td>
+                          </tr>
+
+                      </tbody>
+                      <tbody *ngIf="dataLoad" >
+                      <td  colspan="9" ><div class="loader" style="min-height: 100px">
+                        <img src="/assets/imgs/loader.gif" alt="">
+                      </div></td>
+                      </tbody>
+                      <tbody *ngIf="commodityClientScripData.length == 0 && !dataLoad">
+                          <tr>
+                              <td colspan="9" class="no-data-found">No Data Found</td>
+                          </tr>
+                      </tbody>
+                  </table>
+
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="mobile-visibility">
+    <div class="search-section-reports search-section scriptwise padding10px" *ngIf=" !dataLoad">
+      <div class="d-flex">
+          <ion-searchbar class="custom-searchbar" placeholder="Search Client Code/Symbol" [debounce]="1000"
+          (ngModelChange)="searchText($event)" [(ngModel)]="searchValue">
+          </ion-searchbar>
+      </div>
+      <div class="d-flex">
+      <ion-button (click)="downloadReport()" class="orange-btn">
+        Export
+      </ion-button>
+    </div>
+    </div>
+
+    <div class="grid_main" *ngIf="commodityClientScripData.length > 0 && !dataLoad">
+      <div class="table_grid_box" *ngFor="let dataObj of commodityClientScripData; let i = index">
+      <div class="table_grid">
+        <label>ClientID</label>
+        <span> {{dataObj['ClientId']}} </span>
+      </div>
+
+      <div class="table_grid">
+        <label>Symbol</label>
+        <span> {{dataObj['Symbol']}} </span>
+      </div>
+
+      <div class="table_grid">
+        <label>Description</label>
+        <span> {{dataObj['Description']}} </span>
+      </div>
+      
+      <div class="table_grid">
+        <label>Expiry Date</label>
+        <span> {{dataObj['ExpiryDate']}} </span>
+      </div>
+
+      <div class="table_grid">
+        <label>Buy</label>
+        <span> {{dataObj['Buy']}} </span>
+      </div>
+      
+      <div class="table_grid">
+        <label>Sell</label>
+        <span> {{dataObj['Sell']}} </span>
+      </div>
+      
+      <div class="table_grid">
+        <label>Net Qty</label>
+        <span> {{dataObj['NetQty']}} </span>
+      </div> 
+      
+      <div class="table_grid">
+        <label>Average Rate</label>
+        <span> {{dataObj['AverageRate']}} </span>
+      </div>
+      
+      <div class="table_grid">
+        <label>Close Price</label>
+        <span> {{dataObj['ClosePrice']}} </span>
+      </div>
+
+    </div>
+    
+    </div>
+
+    <div *ngIf="dataLoad" class="overlay-div">
+      <div style="position:absolute;top:30%; left:50%" *ngIf="dataLoad">
+        <img style="width:30px" src="/assets/imgs/loader.gif" alt="">
+      </div>
+    </div>
+
+    <div *ngIf="commodityClientScripData.length == 0 && !dataLoad" style="margin-top: 150px;">
+      <div class="text-center tableLoader"> <img class="raise-image" src="assets/svg/not_raised.svg" alt="">
+        <div class="raise-message">No Data</div>
+      </div>
+    </div>
+
+</div>
+
+</ion-content>

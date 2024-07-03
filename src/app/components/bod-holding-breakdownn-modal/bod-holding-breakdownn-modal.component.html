@@ -1,0 +1,38 @@
+<div class="card_details_pop  bod_hold_modal" >
+  <div class="pop_close" (click)="dismiss()"><img src="assets/svg/close_delete.svg" width="18" alt="close"></div>
+  
+  <div class="d-flex break_down_grid_main mt-40">
+    <label>NSE</label>
+    <div class="break_down_grid">
+        <span>Derivative Span</span>
+        <span>{{bodBreakdownData && bodBreakdownData['NSEDerivativeSpan'] ? convertFunc(bodBreakdownData['NSEDerivativeSpan']) : ''}}</span>
+        <span>Derivative Exposure</span>
+        <span>{{bodBreakdownData && bodBreakdownData['NSEDerivativeExposure'] ? convertFunc(bodBreakdownData['NSEDerivativeExposure']) : ''}}</span>
+        <span>Currency Span</span>
+        <span>{{bodBreakdownData && bodBreakdownData['NSECurrencySpan'] ? convertFunc(bodBreakdownData['NSECurrencySpan']) : ''}}</span>
+        <span>Currency Exposure</span>
+        <span>{{bodBreakdownData && bodBreakdownData['NSECurrencyExposure'] ? convertFunc(bodBreakdownData['NSECurrencyExposure']) : ''}}</span>
+    </div>
+</div>
+<div class="d-flex break_down_grid_main">
+    <label>BSE</label>
+    <div class="break_down_grid">
+        <span>Derivative Span</span>
+        <span>{{bodBreakdownData && bodBreakdownData['BSEDerivativeSpan'] ? convertFunc(bodBreakdownData['BSEDerivativeSpan']) : ''}}</span>
+        <span>Derivative Exposure</span>
+        <span>{{bodBreakdownData && bodBreakdownData['BSEDerivativeExposure'] ? convertFunc(bodBreakdownData['BSEDerivativeExposure']) : ''}}</span>
+    </div>
+    </div>
+    <div class="d-flex break_down_grid_main">
+    <label>MCX</label>
+    <div class="break_down_grid">
+        <span>Currency Span</span>
+        <span>{{bodBreakdownData && bodBreakdownData['MCXCurrencySpan'] ? convertFunc(bodBreakdownData['MCXCurrencySpan']) : ''}}</span>
+        <span>Currency Exposure</span>
+        <span>{{bodBreakdownData && bodBreakdownData['MCXCurrencyExposure'] ? convertFunc(bodBreakdownData['MCXCurrencyExposure']) : ''}}</span>
+        <span>Commodity Span</span>
+        <span>{{bodBreakdownData && bodBreakdownData['CommoditySpan'] ? convertFunc(bodBreakdownData['CommoditySpan']) : ''}}</span>
+    </div>
+    </div>
+
+</div>

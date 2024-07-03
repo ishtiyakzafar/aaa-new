@@ -1,0 +1,32 @@
+<div class="card_details_pop  bod_hold_collatral_modal" >
+  <div class="pop_close" (click)="dismiss()"><img src="assets/svg/close_delete.svg" width="18" alt="close"></div>
+  <h2>Breakdown</h2>
+  <ul class="bod_hold_list">
+	<li>
+	<span>Cash Collateral </span>
+	<span>&#8377; {{bodCollateralData && bodCollateralData.Cash_Collateral ? convertFunc(bodCollateralData.Cash_Collateral) : ''}}</span>
+</li>
+<li>
+	<span>Non Cash Collateral</span>
+	<span>&#8377; {{bodCollateralData && bodCollateralData.Non_Cash_Collateral ? convertFunc(bodCollateralData.Non_Cash_Collateral) : ''}}</span>
+</li>
+<li>
+	<span>Collateral Benefit</span>
+	<span>&#8377; {{bodCollateralData && bodCollateralData.Collateral_Benefit ? convertFunc(bodCollateralData.Collateral_Benefit) : ''}}</span>
+</li>
+<li>
+	<span>Eligible Amount</span>
+	<span>&#8377; {{bodCollateralData && bodCollateralData.Eligible_amount ? convertFunc(bodCollateralData.Eligible_amount) : ''}}</span>
+</li>
+<li>
+	<span>Applicable non Cash</span>
+	<span>&#8377; {{bodCollateralData && bodCollateralData.Applicable_Non_Cash ? convertFunc(bodCollateralData.Applicable_Non_Cash) : ''}}</span>
+</li>
+   
+<li>
+<label>Total Qty</label>
+<span>&#8377; {{bodCollateralData && bodCollateralData.Total ? convertFunc(bodCollateralData.Total) : 0}}</span>
+</li>
+</ul>
+
+ </div>

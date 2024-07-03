@@ -1,0 +1,91 @@
+<ion-header>
+    <div class="overlay-div mobile-visibility" (click)="overlayVisible = !overlayVisible" [ngClass]="{'visible': overlayVisible}">
+        <div class="bg-img">
+            <div class="text-left">
+                <h4 (click)="titleClick($event)" class="font-bold">Markets
+                    <img class="arrow-down-white" src="assets/svg/arrow-down-white.svg" alt="arrow">
+                </h4>
+                <div class="search-block">
+                    <ion-buttons class="header-icon-block">
+                        <ion-icon class="iconsize first-icon" src="./assets/svg/white-home-icon.svg" (click)="goToDashboard()">
+
+                        </ion-icon>
+                    </ion-buttons>
+                </div>
+            </div>
+            <div class="sensex-parent-block">
+                <div class="item-block" *ngFor="let dataObj of displayHeader" (click)="headerClick($event, dataObj)">
+                    <h6>{{dataObj['Symbol']}}</h6>
+                    <label class="lbl" for="">{{dataObj['LastRate'] | formatNumerDecimal}}</label>
+                    <label class="lbl2" for="" [ngStyle]="{'color':(dataObj.PerChange == 0) ? '#656565' : (dataObj.PerChange > 0 ? '#17C257' : '#F55858')}">
+                    <img class="arrow-green-up" *ngIf="dataObj.PerChange > 0" src="assets/imgs/arrow-green-up.png" alt="arrow">
+                    <img class="arrow-red-down" *ngIf="dataObj.PerChange < 0" src="assets/imgs/arrow-red-down.png" alt="arrow">
+                        {{dataObj['Change'] | formatNumerDecimal}} ({{dataObj['PerChange'] | formatNumerDecimal}}%)</label>
+                </div>
+            
+                <!-- <div class="item-block">
+                    <h6>BANK NIFTY</h6>
+                    <label for="">10302.22</label>
+                    <label for="">11.15 (0.05%)</label>
+                </div>
+            
+                <div class="item-block">
+                    <h6>SENSEX</h6>
+                    <label for="">10302.22</label>
+                    <label for="">11.15 (0.05%)</label>
+                </div> -->
+            </div>
+            <div class="text-center view-details">
+                <span>Tap on the index to view details</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- top header select option and watchlist segment for mobile -->
+    <ion-toolbar class="mobile-header mobile-visibility">
+        <div class="select-search-block">
+            <div class="container mobile-visibility select-block">
+                <div class="select">
+                    <h4 (click)="overlayVisible = !overlayVisible" class="font-bold">Markets 
+                        <img class="arrow-down-white" src="assets/svg/arrow-down-white.svg" alt="arrow">
+                    </h4>
+                </div>
+                <!-- <ion-col size="3" class="web" justify-content-end> -->
+                <div class="search-block">
+                    <ion-buttons class="header-icon-block">
+                        <ion-icon class="iconsize first-icon" src="./assets/svg/white-home-icon.svg" (click)="goToDashboard()">
+                            
+                        </ion-icon>
+                    </ion-buttons>
+                </div>
+            </div>
+
+            <div class="container mobile-visibility">
+                <ion-row class="m-b-20">
+                    <ion-segment scrollable mode="md" class="header-segment-top d-flex"  [(ngModel)]="mobileWatchlistBlockTabValue">
+                        <div *ngFor="let data of buttonData">
+                            <ion-segment-button mode="md" value={{data.Value}}
+                                (click)="watchlistSegmentBlockMobile(data.Value, buttonData, buttonDataTwo)">
+                                {{data.Name}}
+                            </ion-segment-button>
+                        </div>
+                    </ion-segment>
+                </ion-row>
+            </div>
+        </div>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <div class="desktop-visibility center-block d-flex justify-content-center align-items-center">
+        <div>
+            <h4>Desktop: This feature is not available for you. Click below to become a partner and gain access</h4>
+            <ion-button class="w-150 become-ptr-btn" (click)="redirectTo('register')">Continue Onboarding</ion-button>
+        </div>
+    </div>
+    <div class="mobile-visibility center-block d-flex justify-content-center align-items-center">
+       <div>
+           <h4>This feature is not available for you. Click below to become a partner and gain access</h4>
+           <ion-button class="w-150 become-ptr-btn" (click)="redirectTo('register')">Continue Onboarding</ion-button>
+       </div>
+    </div>
+</ion-content>

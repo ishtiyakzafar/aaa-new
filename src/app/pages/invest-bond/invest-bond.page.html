@@ -1,0 +1,67 @@
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="back-title-block">
+			<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+			<span>Bonds</span>
+		</div>
+	</ion-toolbar>
+    <!-- updated -->
+    <ion-toolbar class="desktop-visibility">
+        <div class="container">
+            <div class="heading-part">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <span class="heading">Bonds</span>
+            </div>
+        </div>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<div class="container">
+        <!-- previous -->
+		<div class="title desktop-visibility hide">
+			Bonds
+		</div>
+        <!-- updated -->
+        <div class="paragraph">
+            Bond is a debt security, in which the authorized issuer owes the holders a debt and, depending on the terms of the bond, is obliged to pay interest (the coupon) to use and/or to repay the principal at a later date, termed maturity. A bond is a formal contract to repay borrowed money with interest at fixed intervals. Capital Gain Bonds are being issued as 'Long term specified assets' within the meaning of Sub-Section 54-EC of the Income Tax Act, 1961. Those desirous of availing exemption from capital gains tax under Section 54 EC may invest in these bonds. Capital gains arising from the transfer of Long-term capital assets can be invested in these bonds within a period of six months from the date of the asset foe getting exemption from the capital gains tax.
+        </div>
+        <!-- updated -->
+        <div class="block-heading">
+            Choose One Of The Bonds From Below To Start Investing
+        </div>
+		<div class="deposit-type-block">
+			<div class="type-section" (click)="openBond('irfc')">
+				<div class="type-name">
+					IRFC 54EC Bond
+				</div>
+				<div class="type-img">
+					<img src="assets/imgs/railway.png" alt="">
+				</div>
+			</div>
+			<div class="devider"></div>
+			<div class="type-section" (click)="openBond('rec')">
+				<div class="type-name">
+					REC 54EC Bond
+				</div>
+				<div class="type-img">
+					<img src="assets/imgs/language.png" alt="">
+				</div>
+			</div>
+			<div class="devider"></div>
+			<div class="type-section" (click)="openBond('pfc')">
+				<div class="type-name">
+					PFC 54EC Bond
+				</div>
+				<div class="type-img">
+					<img src="assets/imgs/power.png" alt="">
+				</div>
+			</div>
+		</div>
+        <!-- updated -->
+        <div class="more-block" (click)="viewMore('https://www.indiainfoline.com/business-partners/bonds.html')">
+            <span class="view-more">More About Bonds</span>
+            <span class="offline">Interest rates & downloadable forms for investments</span>
+        </div>
+	</div>
+</ion-content>

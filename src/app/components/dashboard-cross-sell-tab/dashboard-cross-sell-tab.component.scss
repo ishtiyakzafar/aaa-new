@@ -1,0 +1,16 @@
+@import "src/assets/styleaaa.scss";
+.loader-backdrop{
+    position: absolute;
+    top:0;
+    left: 0;
+    width:100%;
+    background-color:rgb(255 255 255 / 70%);
+    height: 100%;
+    .loader{
+        min-height:100%;
+    }
+}
+
+.pointing-arr{
+    cursor: default;
+}

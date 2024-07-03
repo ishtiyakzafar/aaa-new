@@ -1,0 +1,180 @@
+<ion-header class="mobile-visibility">
+	<ion-toolbar color="tertiary">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Ledger</ion-title>
+			</div>
+    </div>
+  </ion-toolbar>
+
+  <div class="change-option-mobile">
+    <img src="assets/svg/download_excel.svg" alt="">
+    <div class="change-option" (click)="downloadReport()">Download Report</div>
+  </div>
+
+ 
+  <div class="block opening-block create-border">
+      <div class="item">
+        <span class="upper">Opening Bal</span>
+        <span class="lower"><span class="rupees">₹</span>{{openingBalance }}</span>
+      </div>
+      <div class="item">
+        <span class="upper">Cleared</span>
+        <span class="lower"><span class="rupees">₹</span>{{clearedBalance }}</span>
+      </div>
+      <div class="item">
+        <span class="upper">Uncleared</span>
+        <span class="lower"><span class="rupees">₹</span>{{unClearedBalance }}</span>
+      </div>
+      <div class="item">
+        <span class="upper">Total</span>
+        <span class="lower"><span class="rupees">₹</span>{{totalBalance }}</span>
+      </div>
+    </div>
+</ion-header>
+
+<ion-content class="mobile-visibility">
+  <div  class="tab-content" *ngIf="dataLoad">
+     <div *ngIf="ledgerDetailsRecords.length > 0">
+      <div class="block simpli_mobile" *ngFor="let dataObj of ledgerDetailsRecords">
+        <div class="item item2">
+          <span class="upper interest">{{dataObj.Transaction_date | formatDate}}</span>
+          <span class="lower interest2">{{dataObj.Particular}}</span>
+        </div>
+        <div class="item item2">
+          <span class="upper">Credit</span>
+          <span *ngIf="dataObj.creditValue != 0" class="lower amt" [ngClass]="{'positive': dataObj.creditValue != 0}"><span
+              class="rupees">₹</span>{{dataObj.creditValue}}</span>
+        </div>
+        <div class="item item2">
+          <span class="upper">Debit</span>
+          <span *ngIf="dataObj.debitValue != 0" class="lower amt" [ngClass]="{'negative': dataObj.debitValue != 0}"><span
+              class="rupees">₹</span>{{dataObj.debitValue}}</span>
+        </div>
+        <div class="item item2">
+          <span class="upper">Balance</span>
+          <span class="lower"><span class="rupees">₹</span>{{dataObj.RunningBalance ? dataObj.RunningBalance : 0}}</span>
+        </div>
+      </div>
+    </div>
+     <div class="no-data-found" *ngIf="ledgerDetailsRecords.length == 0">
+      No Records Found
+    </div>
+  </div>
+
+  <div class="loader" *ngIf="!dataLoad" style="min-height: 100px;">
+    <img src="/assets/imgs/loader.gif" alt="">
+  </div>
+  
+</ion-content>
+
+  <div class="container smaller-container desktop-visibility">
+    <div class="web-equity thin-scroll" *ngIf="dataLoad">
+      <div class="header-part">
+        <div class="section-1">
+
+          <div class="opening-block">
+            <span class="text">Opening Balance</span>
+            <span class="block-value"><span class="rupees">₹</span>{{openingBalance }}</span>
+          </div>
+          <div class="opening-block">
+            <span class="text">Cleared Balance</span>
+            <span class="block-value"><span class="rupees">₹</span>{{clearedBalance }}</span>
+          </div>
+          <div class="opening-block">
+            <span class="text">Uncleared Balance</span>
+            <span class="block-value"><span class="rupees">₹</span>{{unClearedBalance }}</span>
+          </div>
+          <div class="opening-block">
+            <span class="text">Total Balance</span>
+            <span class="block-value"><span class="rupees">₹</span>{{totalBalance }}</span>
+          </div>
+        </div>
+          
+    
+      </div>
+      <div class="header-table">
+        <table style="width: 100%" class="desktop-header-table">
+          <thead>
+            <tr>
+              <th [class.active]="order === 'dateValue'" class="pointer" (click)="setOrder('dateValue')">
+                Date
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                    *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                    *ngIf="!ascending">
+              </th>
+              <th>
+                Particulars
+              </th>
+              <th [class.active]="order === 'credit'" class="pointer" (click)="setOrder('credit')">
+                Credit (₹)
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                    *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                    *ngIf="!ascending">
+              </th>
+              <th [class.active]="order === 'debit'" class="pointer" (click)="setOrder('debit')">
+                Debit (₹)
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                    *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                    *ngIf="!ascending">
+              </th>
+              <th [class.active]="order === 'balanceValue'" class="pointer" (click)="setOrder('balanceValue')">
+                Balance (₹)
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                    *ngIf="ascending">
+                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                    *ngIf="!ascending">
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="main-table thin-scroll">
+        <!-- <table style="width: 100%" class="mobile-table"> -->
+        <table style="width: 100%">
+          <tbody *ngIf="ledgerDetailsRecords.length > 0">
+ 
+            <tr *ngFor="let dataObj of ledgerDetailsRecords | orderBy: order:val; let i = index">
+              <td>
+                {{dataObj.Transaction_date? formatChange(dataObj['Transaction_date']) : '-'}}
+              </td>
+              <td>
+                {{dataObj.Particular}}
+              </td>
+              <td class="amt positive" [ngClass]="{'positive': dataObj.creditValue != 0}">
+                <span *ngIf="dataObj.creditValue != 0" ><span class="rupees">₹</span>{{dataObj.creditValue}}</span>
+              </td>
+              <td class="amt negative" [ngClass]="{'negative': dataObj.debitValue != 0}">
+                <span *ngIf="dataObj.debitValue != 0"><span class="rupees">₹</span>{{dataObj?.debitValue}}</span>
+              </td>
+              <td>
+                <span class="rupees">₹</span>{{dataObj.RunningBalance ? dataObj.RunningBalance : 0}}
+              </td>
+            </tr>
+          </tbody>
+          <tbody *ngIf="ledgerDetailsRecords.length == 0">
+            <tr>
+              <td class="no-data-found">No Records Found</td>
+            </tr>
+            <!-- <span>No Records Found</span> -->
+          </tbody>
+        </table>
+      </div>
+     
+    </div>
+    <div class="loader" *ngIf="!dataLoad" style="min-height: 100px;">
+      <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+  </div>
+
+
+
+

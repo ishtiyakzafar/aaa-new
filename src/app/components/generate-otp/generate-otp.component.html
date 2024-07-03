@@ -1,0 +1,46 @@
+<ion-header>
+  <div class="close" (click)="dismiss()">x</div>
+</ion-header>  
+
+
+<ion-content scroll-y="false">
+  <div class="otp-generate" *ngIf="displayGenerateOtpScreen">
+    <ion-label class="label">Enter New {{title}}</ion-label>
+    <ion-input [type]="title == 'Email' ? 'text' : 'number'" name="mobile" [(ngModel)]="emailMobileno" class="ion-input" (ngModelChange)="changeInput($event)"  ></ion-input>
+     <span *ngIf="displayErr" class="errorDisplay">{{inputError}}</span> 
+  </div>
+  <div class="otp-generate" *ngIf="displayEnterOtpScreen">
+    <ion-label class="label otp-label">Enter the OTP received on {{value}}</ion-label>
+    
+     <form class="form-group otp-form">
+      <ion-item-group class="ion-item-group">
+        <code-input [isCodeHidden]="false"
+          [codeLength]="6"
+          [initialFocusField] = "intialFocus"
+          (codeChanged)="onOtpChanged($event)"
+          (codeCompleted)="onotpFieldCompleted($event)">
+       </code-input>
+      </ion-item-group>
+      <!-- <div class="label otp-label">OTP send (00.30)</div> -->
+
+      <div class="otp-button">
+        <ion-button>
+          Verify OTP</ion-button>
+      </div>
+      
+
+     
+      <div class="label otp-label resend">Resend OTP</div>
+      
+  </form>
+  </div>
+</ion-content>
+
+<ion-footer class="ion-no-border" *ngIf="displayGenerateOtpScreen">
+  <ion-toolbar class="otp-button m-b-20">
+    <ion-button (click)="generateOTP()">Generate OTP</ion-button>
+
+    <!-- <ion-button [disabled]="disableBtn" (click)="generateOTP()">Generate OTP</ion-button> -->
+  </ion-toolbar>
+  
+</ion-footer>

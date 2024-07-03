@@ -1,0 +1,21 @@
+.card_details_pop{border-radius: 25px;}
+.pop_close img{width: 22px; cursor: pointer;position: absolute; right: 20px; top: 20px;}
+.modal_title{display: flex; justify-content:center; padding:20px; background: #fff; align-items: center;}
+.modal_title span{font-size: 16px; font-weight: 700; color: #212121; position: relative;}
+.modal_title span::after{content: ""; display: block; border-bottom: 3px solid #F37921; width: 100%; margin-top: 2px;}
+.card_head{display: flex; flex-direction: column;}
+.card_head .client_name{font-size: 20px; font-weight: 700; color: #000; text-transform: uppercase;}
+.card_head span{font-size: 15px; color: #9C9C9C;}
+.client_deta_main{display: grid; gap: 15px; grid-template-columns: 1fr 1fr; justify-content: flex-start; margin-top: 25px;}
+.cli_deta_grid{display: flex; }
+.cli_deta_grid label{font-size: 14px; color: #000; width: 50%;}
+.cli_deta_grid span{font-size: 14px; color: #000; font-weight: 600;}
+.activity{font-size: 16px; color: #3A15A6; border-top: 1px solid #9C9C9C;padding-top: 20px; margin-top: 25px; margin-bottom: 0px;}
+.card_details_inner{padding: 20px; overflow: auto; height: 400px;}
+
+@media screen and (max-width: 768px) {
+    .card_details_inner{overflow: auto; height: inherit;padding: 5px 20px;}
+    .cli_deta_grid label{width: inherit;}
+    .cli_deta_grid{flex-direction: column;}
+    .client_deta_main{gap: 13px;}
+}

@@ -1,0 +1,189 @@
+
+
+<div>
+  <div class="desktop-table overflow-hidden" *ngIf="dataLoad">
+      <div class="table-header">
+          <table class="desktop-table">
+              <thead style="width: 100%">
+                  <tr>
+                      <th>Exchange </th>
+                      <th [class.active]="order === 'Exchange'" class="pointer" (click)="setOrder('Exchange')">Trade Date
+                          <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                          <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                              *ngIf="ascending">
+                          <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                              *ngIf="!ascending">
+                      </th>
+                      <th [class.active]="order === 'Code'" class="pointer" (click)="setOrder('Code')">Code
+                        <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                        <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                            *ngIf="ascending">
+                        <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                            *ngIf="!ascending">
+                      </th>
+                      <th [class.active]="order === 'Name'" class="pointer" (click)="setOrder('Name')">Name
+                          <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                          <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                              *ngIf="ascending">
+                          <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                              *ngIf="!ascending">
+                      </th>
+                      <th [class.active]="order === 'ExpiryDate'" class="pointer" (click)="setOrder('ExpiryDate')">Expiry Date
+                          <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                          <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                              *ngIf="ascending">
+                          <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                              *ngIf="!ascending">
+                      </th>
+                        <th style="text-align: center;" [class.active]="order === 'StrikePrice'" class="pointer" (click)="setOrder('StrikePrice')">Strik Price
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                *ngIf="!ascending">
+                        </th>
+                        <th [class.active]="order === 'BuyQty'" class="pointer" (click)="setOrder('BuyQty')">Buy Qty
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                *ngIf="!ascending">
+                        </th>
+                      <th></th>
+                  </tr>
+              </thead>
+          </table>
+      </div>
+      <div class="main-table thin-scroll desktop-visibility">
+          <!-- <table style="width: 100%" class="mobile-table"> -->
+          <div class="table-block">
+              <table class="desktop-table">
+                  <tbody *ngIf="tradeListData.length > 0">
+
+                    <tr *ngFor="let dataObj of tradeListData | orderBy: order:val; let i = index" (click)="dropClick(dataObj.srNo ,tradeListData)">
+                          <td>
+                              <div class="upper-part justify-content-start" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                  <div class="client-code-block">
+                                      <span class="client-code">{{dataObj['Exchange']}}</span>
+                                      <!-- <span class="client-type">{{dataObj['clientName']}}</span> -->
+                                  </div>
+                              </div>
+                              <div class="detail-part-fix" #detail *ngIf="dataObj['isVisible']">
+                                  <div class="detail-part">
+                                      <span class="detail-heading">Buy Market Rate</span>
+                                      <span class="detail-value">{{dataObj['BuyMarketRate']}}</span>
+                                  </div>
+                                  <div class="detail-part">
+                                      <span class="detail-heading">Buy Brokerage</span>
+                                      <span class="detail-value">{{dataObj['BuyBrokerage']}}</span>
+                                  </div>
+                                  <div class="detail-part">
+                                      <span class="detail-heading">Buy Amt</span>
+                                      <span class="detail-value">{{dataObj['BuyAmt']}}</span>
+                                  </div>
+                                  <div class="detail-part">
+                                      <span class="detail-heading">Sell Qty</span>
+                                      <span class="detail-value">{{dataObj['SellQty']}}</span>
+                                  </div>
+                                  <div class="detail-part">
+                                      <span class="detail-heading">Sell Market Rate</span>
+                                      <span class="detail-value">{{dataObj['SellMarketRate']}}</span>
+                                  </div>
+                                  <div class="detail-part">
+                                      <span class="detail-heading">Sell Brokerage</span>
+                                      <span class="detail-value">{{dataObj['SellBrokerage']}}</span>
+                                  </div>
+                                  <div class="detail-part">
+                                      <span class="detail-heading">Sell Amt</span>
+                                      <span class="detail-value">{{dataObj['SellAmt']}}</span>
+                                  </div>
+                                  <div class="detail-part">
+                                      <span class="detail-heading">Sell Net Rate</span>
+                                      <span class="detail-value">{{dataObj['SellNetRate']}}</span>
+                                  </div>
+                                  <!-- <div class="detail-part">
+                                    <span class="detail-heading">Sell Qty</span>
+                                    <span class="detail-value">{{dataObj['SellQty']}}</span>
+                                </div> -->
+                                <div class="detail-part">
+                                    <span class="detail-heading">Sell Market Rate</span>
+                                    <span class="detail-value">{{dataObj['SellMarketRate']}}</span>
+                                </div>
+                               
+                                <div class="detail-part">
+                                    <span class="detail-heading">Net Qty</span>
+                                    <span class="detail-value">{{dataObj['NetQty']}}</span>
+                                </div>
+                                <div class="detail-part">
+                                    <span class="detail-heading">Net Value</span>
+                                    <span class="detail-value">{{dataObj['NetValue']}}</span>
+                                </div>
+                                <div class="detail-part">
+                                    <span class="detail-heading">Closing price as on</span>
+                                    <span class="detail-value">{{dataObj['ClosingPriceAsOn']}}</span>
+                                </div>
+                                <div class="detail-part">
+                                    <span class="detail-heading">Closing value as on</span>
+                                    <span class="detail-value">{{dataObj['ClosingValueAsOn']}}</span>
+                                </div>
+                              </div>
+                          </td>
+                          <td>
+                              <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                {{dataObj['TradeDate']}}
+                              </div>
+                          </td>
+                          <td>
+                              <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                {{dataObj['Code']}}
+                              </div>
+                          </td>
+                          <td>
+                              <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                {{dataObj['Name']}}
+                              </div>
+                          </td>
+                          <td>
+                              <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                {{dataObj['ExpiryDate']}}
+                              </div>
+                          </td>
+                          <td>
+                              <div class="upper-part"  [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                {{dataObj['StrikePrice']}}
+                              </div>
+                          </td>
+                          <td>
+                              <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                {{dataObj['BuyQty']}}
+                              </div>
+                          </td>
+                          <td>
+                            <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                
+                            </div>
+                        </td>
+                        <td>
+                            <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                                <ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg"
+                                    *ngIf="!dataObj['isVisible']"></ion-icon>
+                                <ion-icon *ngIf="dataObj['isVisible']" class="rotate arrow-button down-arrow-button"
+                                    src="./assets/svg/down-arrow.svg"></ion-icon>
+                            </div>
+                        </td>
+                      </tr>
+                  </tbody>
+
+                  <tbody *ngIf="tradeListData.length == 0">
+                        <tr>
+                            <td class="no-data-found">No Data Found</td>
+                        </tr>
+                  </tbody>
+              </table>
+          </div>
+      </div>
+  </div>
+  <div class="loader" *ngIf="!dataLoad">
+    <img src="/assets/imgs/loader.gif" alt="">
+</div>
+</div>

@@ -1,0 +1,117 @@
+<ion-header class="mobile-visibility">
+    <ion-toolbar color="tertiary">
+        <div class="title-block title-block-custom">
+            <div class="icon-title">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <ion-title class="title">Product Activation</ion-title>
+            </div>
+        </div>
+	</ion-toolbar>
+
+</ion-header>
+
+
+
+	<form name="form" #productAct="ngForm" class="limit-change-block">
+		<div class="heading desktop-visibility">Product Activation/Deactivation</div>
+		<div class="field-block">
+			<div class="section">
+				<div class="label">Product Name</div>
+
+        <ng-select [items]="productList" bindLabel="productType" bindValue="key" [clearable]="false" [searchable] ="false" name="productName" [(ngModel)]="productActivity.productName"  #productName="ngModel" required>
+                </ng-select>  
+                <div *ngIf="(prodFromSubmitted && productName.invalid)" class="invalid-feedback">
+                    <span *ngIf="productName.errors?.['required']">Please Select the Product Name</span>
+                </div>
+			</div>
+            <div class="section">
+				<div class="label">Type</div>
+				<ion-segment class="calculator-segment" name="fileBlockValue" [(ngModel)]="fileBlockValue" (ionChange)="prodSegmentChanged($event.detail.value)">
+                    <ion-segment-button value="fileUpload">File Upload</ion-segment-button>
+                    <ion-segment-button value="singleClient">Single Client</ion-segment-button>
+                </ion-segment>
+			</div>
+            <div class="section file-upload" *ngIf="fileBlockValue === 'fileUpload'">
+                <div class="label">Upload File</div>
+                    <input type="file" #uploadFile (change)="upload($event)" id="file-2" class="inputfile inputfile-2">
+                <!-- <input type="file" #uploadFile (change)="upload($event.target.files)" name="file-2[]" [(ngModel)]="scanImage" class="inputfile inputfile-2"> -->
+
+                <label for="file-2">
+                    <span style="width:230px;overflow: hidden;">{{uniqueName}}</span>
+                    <img class="svg" src="assets/svg/upload.svg" alt="">
+                </label>
+                <div class="format-message">
+                    Kindly upload CSV format with the Client code and Remark. In CSV File Client Code and Remark should be separated by comma(i.e “,”)
+                </div>
+               <span class="invalid-feedback">{{csvMsg}}</span> 
+            </div>
+            <div class="section" *ngIf="fileBlockValue === 'singleClient'">
+				<div class="label">Client Code</div>
+				<!-- <ng-select [items]="clientCodes" bindLabel="ClientCode" bindValue="ClientCode" name="clientId" [(ngModel)]="productActivity.passClientId"  #passClientId="ngModel" required>
+                </ng-select>  -->
+                <div class="client-code-input">
+                    <ion-toolbar>
+                      <ion-searchbar (ionBlur)="hideDropDown()" (ngModelChange)="searchClient($event)"
+                        search-icon="false" class="bodReprotsInput" name="clientId" [(ngModel)]="productActivity.passClientId"  #passClientId="ngModel" required
+                        placeholder="Type client ID">
+                      </ion-searchbar>
+                    </ion-toolbar>
+                  </div>
+                  <ion-toolbar class="drop-down-toolbar" *ngIf="isListVisible">
+                    <div class="drop-down thin-scroll" *ngIf="allClients.length && dtLoad">
+                      <div class="item" *ngFor="let data of allClients"
+                        (click)="displayClientDetails(data)">
+                        <span class="name">{{data.ClientCode}}</span>
+                      </div>
+                    </div>
+                    <div class="drop-down thin-scroll" *ngIf="allClients.length==0 && dtLoad">
+                      <span>No Data Found</span>
+                    </div>
+                    <div class="loader" *ngIf="!dtLoad">
+                      <img src="/assets/imgs/loader.gif" alt="">
+                    </div>
+                  </ion-toolbar>
+                <div *ngIf="(prodFromSubmitted && passClientId.invalid)" class="invalid-feedback">
+                    <span *ngIf="passClientId.errors?.['required']">Please Select Client Code</span>
+                </div>
+			</div>
+            <div class="section">
+				<div class="label">Action</div>
+				<ion-segment class="calculator-segment" name="activateBlockValue"  [(ngModel)]="activateBlockValue" (ionChange)="actionSegmentChanged($event.detail.value)">
+                    <ion-segment-button value="A">Activate</ion-segment-button>
+                    <ion-segment-button value="D">Deactivate</ion-segment-button>
+                </ion-segment>
+			</div>
+			<div class="section remark desktop-visibility" *ngIf="fileBlockValue === 'singleClient'">
+				<div class="label">Remarks</div>
+				<ion-input type="text" class="ion-input" name="ReqRemark" [(ngModel)]="productActivity.ReqRemark" #ReqRemark="ngModel"
+                class="ion-input" required maxlength="100"></ion-input>
+                <ion-textarea class="ion-textarea mobile-visibility" ></ion-textarea>
+                <div *ngIf="((ReqRemark.invalid) || ( ReqRemark.invalid && ReqRemark.dirty && prodFromSubmitted  || ReqRemark.touched)) && prodFromSubmitted" class="invalid-feedback">
+                <!-- <div *ngIf="(prodFromSubmitted && ReqRemark.invalid) || ( ReqRemark.invalid && ReqRemark.dirty || ReqRemark.touched)" class="invalid-feedback"> -->
+                    <span *ngIf="ReqRemark.errors?.['required']">Remark is required</span>
+					<span *ngIf="ReqRemark.errors?.['maxlength']">Remark cannot be more than 100 Characters</span>
+					<span *ngIf="ReqRemark.errors?.['customValidate']">Invalid Charaters</span>
+				</div>
+            </div>
+            
+            <div class="section remark mobile-visibility span-2" *ngIf="fileBlockValue === 'singleClient'">
+				<div class="label">Remarks</div>
+                <ion-textarea class="ion-textarea " name="ReqRemark" [(ngModel)]="productActivity.ReqRemark" #ReqRemark="ngModel"
+                class="ion-input" required maxlength="100" ></ion-textarea>
+                <div *ngIf="((ReqRemark.invalid) || ( ReqRemark.invalid && ReqRemark.dirty && prodFromSubmitted || ReqRemark.touched)) && prodFromSubmitted" class="invalid-feedback">
+					<span *ngIf="ReqRemark.errors?.['required']">Remark is required</span>
+					<span *ngIf="ReqRemark.errors?.['maxlength']">Remark cannot be more than 100 Characters</span>
+					<span *ngIf="ReqRemark.errors?.['customValidate']">Invalid Charaters</span>
+				</div>
+
+			</div>
+			<div class="section section-button span-2">
+				<ion-button type="submit" (click)="submitForm(productAct.form.valid, productAct)">Submit Request</ion-button>
+			</div>
+        </div>
+        <div class="loader-position" *ngIf="!dataLoad">
+			<img src="/assets/imgs/loader.gif" alt="">
+		</div>
+	</form>
+

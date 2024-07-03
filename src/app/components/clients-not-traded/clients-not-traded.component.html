@@ -1,0 +1,209 @@
+<div class="desktop-visibility">
+	<div class="web-equity thin-scroll">
+		<div class="section download_file ">
+			<div class="option-type-dp-modification" (click)="downloadExcel()">
+				<img src="assets/svg/download_excel.svg" alt="">
+				<span class="tooltiptext">
+					<span>Download Report</span>
+				</span>
+			</div>
+		</div>
+		<div class="header-table">
+			<table style="width: 100%" class="desktop-header-table">
+				<thead>
+					<tr>
+						<th>
+							Client ID
+						</th>
+						<th class="pointer">
+							Client Name 
+                            <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending"> -->
+						</th>
+						<th *ngIf="toggleVal == 'Hierarchy'">
+							Group Code
+						</th>
+						<!-- <th class="pointer" [class.active]="order === 'LedgerBalance'" (click)="setOrder('LedgerBalance')"> -->
+						<th class="pointer" [class.active]="order === 'aum'" (click)="setOrder('aum')">
+							AUM (₹)
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+						</th>
+						<!-- <th class="pointer" [class.active]="order === 'LastTradedDate'" (click)="setOrder('LastTradedDate')"> -->
+						<th class="pointer" [class.active]="order === 'OnboardingDate'" (click)="setOrder('OnboardingDate')">
+							Last Traded Date 
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                        </th>
+                        <!-- <th>
+							Status
+                        </th> -->
+                        <th></th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<div class="main-table thin-scroll" [ngClass]="{'min-height-250': minHeight}" (scroll)="divScroll($event)">
+			<table style="width: 100%" class="mobile-table" *ngIf="dataLoad">
+				
+				<tbody *ngIf="datas.length > 0"> 
+					<tr *ngFor="let dataObj of datas">
+						<td>
+							{{dataObj['ClientCode']}}
+						</td>
+						<td>
+							<span class="hyperlinkstyle" style="cursor:pointer" (click)="goToClientDetails(dataObj)">{{dataObj['ClientName']}}</span>
+                            <!-- {{dataObj['ClientName']}} -->
+							<!-- <span class="hyperlinkstyle">{{dataObj['clientName']}}</span> -->
+						</td>
+						<td *ngIf="toggleVal == 'Hierarchy'">
+							{{dataObj['groupCode']}}
+						</td>
+						<td>
+							{{dataObj['aum']}}
+						</td>
+						<td>
+							{{dataObj['OnboardingDate']}}
+                        </td>
+                        <!-- <td>
+                            <ion-radio-group value="{{dataObj['status']}}">
+                                <ng-select [items]="shareReportTypeList" (click)="addHeight()" class="client-not-traded-select" [(ngModel)]="dataObj['status']" bindLabel="shareType" bindValue="value" [inputAttrs]="inputattr" [clearable]="false" [searchable] ="false">
+                                    <ng-template ng-label-tmp let-item="item">
+                                        <div>{{item.value}}</div>
+                                    </ng-template>
+                                    <ng-template ng-option-tmp let-item="item">
+                                        <ion-item lines="none">
+                                            <ion-label>{{item.value}}</ion-label>
+                                            <ion-radio  (ion-focus)="statusSelect($event)" slot="start" value="{{item.value}}"></ion-radio>
+                                        </ion-item>
+                                    </ng-template>
+                                </ng-select>
+                            </ion-radio-group>
+                        </td> -->
+						<td>
+							<div class="contact-option">
+                                <div class="option">
+                                   
+                                    <div class="option-type" (mouseenter)="hoverCall(dataObj['ClientCode'], 'desktop')"> <img class="option-img" src="/assets/svg/client_phone.svg" alt="">
+										<span class="tooltiptext">
+											<span *ngIf="!HoverdataLoad">Loading...</span>
+											<span *ngIf="HoverdataLoad">{{profileContact}}</span>
+										</span>
+									</div>
+                                </div>
+                            
+                            </div>
+                        </td>
+					</tr>
+				</tbody>
+				<div class="loader" *ngIf="datas.length == 0" style="min-height: 200px;">
+					<h4>No records found.</h4>
+				</div>
+			</table>
+			<div class="loader" *ngIf="!dataLoad" style="min-height: 200px;">
+				<img src="/assets/imgs/loader.gif" alt="">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="mobile-visibility">
+	<div class="web-equity detail-part-dashboard detail-part-aum-inner mobile-visibility">
+        <div class="header-table">
+            <table style="width: 100%" class="desktop-header-table">
+                <thead>
+                    <tr>
+                        <th class="pointer">
+                            <!-- <div class="head-block"> -->
+                                <span>Client Name</span> 
+                                <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending"> -->
+                            <!-- </div> -->
+                        </th>
+						<th *ngIf="toggleVal == 'Hierarchy'" class="pointer" >
+							<span>Group Code</span> 
+						</th>
+                        <th class="pointer" [class.active]="order === 'aum'" (click)="setOrder('aum')">
+                            <div class="head-block">
+                                Led. Bal. (₹)
+                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                            </div>
+                        </th>
+                        <!-- <th>
+                            <div class="head-block">
+                                Status
+                            </div>
+                        </th> -->
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ion-content class="inner-content mobile-visibility">
+    <div class="web-equity detail-part-dashboard detail-part-aum-inner mobile-visibility">
+		<div class="main-table">
+			<table style="width: 100%" class="mobile-table" *ngIf="dataLoad">
+				<tbody *ngIf="datas.length > 0">
+					<tr *ngFor="let dataObj of datas">
+						<td>
+							<div class="code-block">
+								<span class="code">{{dataObj['ClientCode']}}</span>
+								<span class="name hyperlinkstyle" (click)="goToClientDetails(dataObj)">{{dataObj['ClientName']}}</span>
+								<span *ngIf="toggleVal == 'Hierarchy'" class="code">{{dataObj['groupCode']}}</span>
+                                <span>Last Traded on {{dataObj['OnboardingDate']}}</span>
+							</div>
+                            <div class="contact-option">
+                                <div class="option" (click)="hoverCall(dataObj['ClientCode'], 'mobile')">
+                                    <!-- <img class="option-img" src="/assets/svg/person_selected.svg" alt=""> -->
+                                    <img class="option-img" src="/assets/svg/client_phone.svg" alt="">
+                                    <div class="option-type" >
+										<span class="tooltiptext">
+											<span *ngIf="!HoverdataLoad">Loading...</span>
+											<span *ngIf="HoverdataLoad">{{profileContact}}</span>
+										</span>
+									</div>
+                                </div>
+                            </div>
+						</td>
+						<td>
+							{{dataObj['aum']}}
+						</td>
+                        <!-- <td>
+                            <ion-radio-group value="{{dataObj['status']}}">
+                                <ng-select [items]="shareReportTypeList" class="client-not-traded-select" [(ngModel)]="dataObj['status']" bindLabel="shareType" bindValue="value" [inputAttrs]="inputattr" [clearable]="false" [searchable] ="false">
+                                    <ng-template ng-label-tmp let-item="item">
+                                        <div>{{item.value}}</div>
+                                    </ng-template>
+                                    <ng-template ng-option-tmp let-item="item">
+                                        <ion-item lines="none">
+                                            <ion-label>{{item.value}}</ion-label>
+                                            <ion-radio  (ion-focus)="statusSelect($event)" slot="start" value="{{item.value}}"></ion-radio>
+                                        </ion-item>
+                                    </ng-template>
+                                </ng-select>
+                            </ion-radio-group>
+                        </td> -->
+					</tr>
+				</tbody>
+				<div class="loader" *ngIf="datas.length == 0" style="min-height: 200px;">
+					<h4>No records found.</h4>
+				</div>
+			</table>
+			<div class="loader" *ngIf="!dataLoad" style="height:200px">
+				<img src="/assets/imgs/loader.gif" alt="">
+			</div>
+		</div>
+	</div>
+	<ion-infinite-scroll *ngIf="enableNext" threshold="100px" (ionInfinite)="loadData($event)">
+		<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll>
+</ion-content>

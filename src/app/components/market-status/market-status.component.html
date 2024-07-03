@@ -1,0 +1,161 @@
+<div class="container desktop-visibility">
+    <div class="table-block-parent">
+        <div class="table-part">
+            <div class="web-equity">
+                <div class="header-table">
+                    <table class="desktop-header-table width-100">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Market
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="web-equity thin-scroll">
+                <div class="main-table thin-scroll">
+                    <table class="mobile-table width-100">
+                        <tbody *ngIf="statusTable1.length  && dataLoad">
+                            <tr *ngFor="let dataObj of statusTable1; let i = index">
+                                <td>
+                                    <div class="scrip">
+                                     {{dataObj.MarketType}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="value-block status">
+                                      <span *ngIf="dataObj['ExchStatus'] == 'Y'">Open</span>  
+                                      <span *ngIf="dataObj['ExchStatus'] == 'N'" class="loser-colors">Close</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="!statusTable1.length && dataLoad">
+                            <tr>
+                                <td class="no-data-found">No Data Found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="loader loader-height" *ngIf="!dataLoad">
+                    <img src="/assets/imgs/loader.gif" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="table-part">
+            <div class="web-equity">
+                <div class="header-table">
+                    <table class="desktop-header-table width-100">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Market
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="web-equity thin-scroll">
+                <div class="main-table thin-scroll">
+                    <table class="mobile-table width-100">
+                        <tbody *ngIf="statusTable2.length  && dataLoad">
+                            <tr *ngFor="let dataObj of statusTable2; let i = index">
+                                <td>
+                                    <div class="scrip">
+                                        {{dataObj.MarketType}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="value-block status">
+                                      <span *ngIf="dataObj['ExchStatus'] == 'Y'">Open</span>  
+                                      <span *ngIf="dataObj['ExchStatus'] == 'N'" class="loser-colors">Close</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="!statusTable2.length && dataLoad">
+                            <tr>
+                                <td class="no-data-found">No Data Found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="loader loader-height" *ngIf="!dataLoad">
+                    <img src="/assets/imgs/loader.gif" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mobile-visibility">
+    <div class="table-part">
+        <div class="web-equity">
+            <div class="header-table">
+                <table class="desktop-header-table width-100">
+                    <thead>
+                        <tr>
+                            <th>
+                                Market
+                            </th>
+                            <th>
+                                Status
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="web-equity thin-scroll">
+            <div class="main-table thin-scroll">
+                <table class="mobile-table width-100">
+                    <tbody *ngIf="marketStatusList.length  && dataLoad">
+                        <tr *ngFor="let dataObj of marketStatusList; let i = index">
+                            <td>
+                                <div class="scrip">
+                                    {{dataObj.MarketType}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="value-block status">
+                                    <span *ngIf="dataObj['ExchStatus'] == 'Y'">Open</span>  
+                                    <span *ngIf="dataObj['ExchStatus'] == 'N'" class="loser-colors">Close</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="!marketStatusList.length && dataLoad">
+                        <tr>
+                            <td class="no-data-found">No Data Found</td>
+                        </tr>
+                    </tbody>
+                     <!-- new code for skeleton start -->
+                    <tbody *ngIf="!dataLoad">
+                        <tr class="tablebot" *ngFor="let data of skeletonHight">
+                            <td class="v-h-6">
+                                <ion-skeleton-text animated class="height-19"></ion-skeleton-text>
+                            </td>
+                            <td class="v-h-6 height-17">
+                                <div class="skeleton-group d-flex flex-direction-column align-items-end">
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <!-- end -->
+                </table>
+            </div>
+            <!-- <div class="loader loader-height" *ngIf="!dataLoad" style="min-height: calc(100vh - 439px)">
+                <img src="/assets/imgs/loader.gif" alt="">
+            </div> -->
+        </div>
+    </div>
+</div>

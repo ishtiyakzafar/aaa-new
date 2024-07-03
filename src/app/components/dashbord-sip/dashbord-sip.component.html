@@ -1,0 +1,261 @@
+<ion-header class="dashboard_sip_header">
+    <div class="header-bg" *ngIf="option == 'MaturingFDCount'"></div>
+    <div class="title">{{titleBusinessOpps(option, 'displayName')}}</div>
+    <!-- <div class="title">{{titleBusinessOpps(option)['displayName']}}</div> -->
+	<div class="close" (click)="dismiss()">x</div>
+    
+	<!-- <section class="common-content-section">
+		<ion-segment [(ngModel)]="cardSegmentsValue" class="card-type-segment">
+			<ion-segment-button value="{{data['segmentValue']}}" *ngFor="let data of cardSegments">
+				<ion-card class="card">
+					<span class="title">{{data['name']}}</span>
+					<span class="value">{{data['data']}}
+					</span>
+					<img class="indicator" src="assets/imgs/card_down_icon.png">
+				</ion-card>
+			</ion-segment-button>
+		</ion-segment>
+	</section> -->
+</ion-header>
+
+<ion-content class="ionclass-content client-not-traded-select fdsm_60" appScrollbarTheme>
+	<div class="top-section">
+        <section class="common-content-section">
+            <ion-segment [(ngModel)]="cardSegmentsValue" class="card-type-segment" (ionChange)="segmentFdChange($event.detail.value)" *ngIf="option == 'MaturingFDCount'">
+                <ion-segment-button value="{{data['segmentValue']}}" *ngFor="let data of cardSegments">
+                    <ion-card class="card">
+                        <span class="title">{{data['name']}}</span>
+                        <span class="value">{{data['subtitle']}}
+						</span>
+							<div class="card-body">
+								<div class="card-column">
+									<span class="card-label">No of FD</span>
+									<span class="card-value">{{data['totalSip']}}</span>
+								</div>
+								<div class="card-column">
+									<span class="card-label">Value(₹)</span>
+									<span class="card-value">{{data['sipValue'] | formatNumberUnit}}</span>
+								</div>
+							</div>
+                        <img class="indicator" src="assets/imgs/card_down_icon.png">
+                    </ion-card>
+                </ion-segment-button>
+            </ion-segment>
+        </section>
+        <!-- <section class="search-section search-section-changed search-section-changed-revamped filter-section" style="display:none">
+            <ion-segment [(ngModel)]="filterSegmentValue" mode="md">
+                <ion-segment-button *ngFor="let entry of filterSegmentOption" value="{{entry['value']}}" (click)="changeFilterType(entry['value'])">{{entry['name']}}</ion-segment-button>
+            </ion-segment>
+        </section> -->
+    </div>
+
+    <div class="desktop-visibility">
+        <div class="search-section search-section-changed search-section-changed-revamped">
+            <ion-label>Search by</ion-label>
+            <ion-segment [(ngModel)]="clientBlockSegmentValue" mode="md" (ionChange)="segmentChange()">
+                <ion-segment-button *ngFor="let entry of segmentButtonOption" value="{{entry['value']}}">{{entry['name']}}</ion-segment-button>
+            </ion-segment>
+            <ion-searchbar search-icon="false" class="custom-searchbar" [(ngModel)]="searchTerm" customValidate [placeholder]='placeholderInput'></ion-searchbar>
+            <ion-button class="search-button" (click)="searchText()">
+                <img src="assets/svg/updated_search.svg" alt="">
+            </ion-button>
+        </div>
+	</div>
+	
+	<div class="mobile-visibility">
+		<div class="search-section search-section-changed">
+            <div class="upper-part">
+                <ion-label>Search by</ion-label>
+                <ion-segment [(ngModel)]="clientBlockSegmentValue"  mode="md" (ionChange)="segmentChange()">
+                    <ion-segment-button *ngFor="let entry of segmentButtonOption" value="{{entry['value']}}">{{entry['name']}}</ion-segment-button>
+                </ion-segment>
+            </div>
+            <div class="lower-part">
+                <ion-searchbar search-icon="false" class="custom-searchbar" [(ngModel)]="searchTerm" placeholder={{placeholderInput}}></ion-searchbar>
+                <ion-button class="search-button" mode="md" (click)="searchText()">
+                    <img src="assets/svg/updated_search.svg" alt="">
+                </ion-button>
+            </div>
+        </div>
+	</div>
+	
+	<div class="select_date" *ngIf="option == 'MaturingFDCount'">
+		<div class="desktop-visibility date-label">
+			Select Date Range
+		</div>
+
+		<div class="datePopover">
+			<ion-label class="ion-lable-end">Start Date</ion-label>
+			<ion-item class="date_Picker" (click)="toggleStartDatePicker()">
+			  <ion-input placeholder="Select Date" [value]="startDate | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+			  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+			</ion-item>
+			<div class="calendarBackdrop" *ngIf="showStartDatePicker" (click)="hideDatePicker('start')"></div>
+			<ion-datetime class="calendarOpen datePositionRight" *ngIf="showStartDatePicker" presentation="date"
+			  [(ngModel)]="startDate" presentation="date" min="1973-01-01" [max]="currentDate"
+			  (ionChange)="hideDatePicker('start',$event)">
+			</ion-datetime>
+			</div>
+
+			<div class="datePopover">
+			<ion-label class="ion-lable-end">End Date</ion-label>
+			<ion-item class="date_Picker" (click)="toggleEndDatePicker()">
+			  <ion-input placeholder="Select Date" [value]="endDate | date: 'dd/MM/yyyy'" class="ion-text-end date-no-opacity" disabled="true"></ion-input>
+			  <img class="calendar" src="assets/svg/calendar_report.svg" alt="">
+			</ion-item>
+			<div class="calendarBackdrop" *ngIf="showEndDatePicker" (click)="hideDatePicker('end')"></div>
+			<ion-datetime class="calendarOpen datePositionRight" *ngIf="showEndDatePicker" presentation="date"
+			  [(ngModel)]="endDate" presentation="date" min="1973-01-01" [max]="currentDate"
+			  (ionChange)="hideDatePicker('end',$event)">
+			</ion-datetime>
+			</div>
+		
+	</div>
+	
+	<div class="desktop-visibility">
+	
+		<div class="web-equity thin-scroll">
+			<div class="header-table">
+				<table style="width: 100%" class="desktop-header-table">
+					<thead>
+						<tr>
+							<th [class.active]="order === 'clientCode'" (click)="setOrder('clientCode')">
+								Client ID
+								<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+								<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="ascending">
+								<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="!ascending">
+							</th>
+							<th class="pointer" [class.active]="order === 'clientName'" (click)="setOrder('clientName')">
+								Client Name
+								<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+								<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="ascending">
+								<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+									*ngIf="!ascending">
+							</th>
+							<th *ngIf="option == 'BouncedSIPs' || option == 'CeasedSIPs'">
+								Folio No.
+							</th>
+							<th *ngIf="option == 'BouncedSIPs' || option == 'CeasedSIPs'">
+								Scheme
+							</th>
+							<th *ngIf="option == 'BouncedSIPs'">
+								Value (₹)
+							</th>
+							<th *ngIf="option == 'BouncedSIPs'">
+								Date
+							</th>
+
+							<th *ngIf="option == 'CeasedSIPs'">
+								SIP Amt (₹)	
+							</th>
+							<th *ngIf="option == 'CeasedSIPs'">
+								Cease Date
+							</th>
+
+							<th *ngIf="option == 'MaturingFDCount'">
+								No of FDs
+							</th>
+							<th *ngIf="option == 'MaturingFDCount'">
+								Value (₹)
+							</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div class="main-table thin-scroll" (scroll)="divScroll($event)">
+				<table style="width: 100%" class="mobile-table">
+					<tbody *ngIf="(datas).length > 0 && dataLoad">
+						<tr *ngFor="let dataObj of datas">
+							<td>
+								{{dataObj['clientId']}}
+							</td>
+							<td>
+								<span style="cursor:pointer" class="hyperlinkstyle"
+									>{{dataObj['clientName']}}</span>
+							</td>
+							<td>
+								{{dataObj['folio']}}
+							</td>
+							<td *ngIf="option != 'MaturingFDCount'">
+								{{dataObj['scheme']}}
+							</td>
+							<td>
+								{{dataObj['value']}}
+							</td>
+							<td *ngIf="option != 'MaturingFDCount'">
+								{{dataObj['date']}}
+							</td>
+						</tr>
+					</tbody>
+					<div class="loader" *ngIf="datas.length == 0 && dataLoad" style="min-height: 200px;">
+						<h4>No records found.</h4>
+					</div>
+					<div class="loader" *ngIf="!dataLoad" style="min-height: 200x;">
+						<img src="/assets/imgs/loader.gif" alt="">
+					</div>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="mobile-visibility">
+		<div class="web-equity thin-scroll">
+			<div class="header-table">
+				<table style="width: 100%" class="desktop-header-table">
+					<thead>
+						<tr>
+							<th class="pointer" [class.active]="order === 'clientName'" (click)="setOrder('clientName')">
+								Client Name
+								<img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+								<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+								<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+							</th>
+							<!-- <th *ngIf="option == 'MaturingFDCount'">
+								No of FDs
+							</th> -->
+							<!-- <th class="pointer" [class.active]="order === 'aum'" (click)="setOrder('aum')"> -->
+
+							<th>
+								Value (₹)
+								<!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+								<img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+								<img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending"> -->
+							</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<div class="main-table thin-scroll">
+				<table style="width: 100%" class="mobile-table" *ngIf="dataLoad">
+					<tbody *ngIf="datas.length > 0">
+						<tr *ngFor="let dataObj of datas">
+							<td>
+								<div class="data-block">
+									<span class="code">{{dataObj['clientId']}}</span>
+									<span class="name">{{dataObj['clientName']}}</span>
+									<span class="status">{{dataObj['status']}}</span>
+								</div>
+							</td>
+							<!-- <td *ngIf="option == 'MaturingFDCount'">
+								{{dataObj['noOfIds']}}
+							</td> -->
+							<td style="text-align: right !important">
+								{{dataObj['value']}}
+							</td>
+						</tr>
+					</tbody>
+					<div class="loader loader-height-240" *ngIf="datas.length == 0 && dataLoad">
+						<h4>No records found.</h4>
+					</div>
+					<div class="loader loader-height-240" *ngIf="!dataLoad">
+						<img src="/assets/imgs/loader.gif" alt="">
+					</div>
+				</table>
+			</div>
+		</div>
+	</div>
+</ion-content>
+

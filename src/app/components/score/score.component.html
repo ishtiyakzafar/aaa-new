@@ -1,0 +1,21 @@
+<ion-header>
+    <div class="close" (click)="dismiss()">x</div>
+    <div class="current-score">Current Score: 1200</div>
+</ion-header>
+<ion-content appScrollbarTheme>
+    <div class="card-block">
+        <ion-card *ngFor="let dataObj of scoreDetails">
+            <ion-card-header>
+                <ion-card-title>{{dataObj['totalPoints']}}</ion-card-title>
+                <ion-card-subtitle>{{dataObj['pointsType']}}</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+                <div class="des">{{dataObj['des']}}</div>
+                <div class="qualify-block">
+                    <ion-icon *ngIf="dataObj['qualifyStatus']" src="assets/svg/approved.svg"></ion-icon>
+                   <div class="qualify-msg" *ngIf="!dataObj['qualifyStatus']">{{dataObj['qualifyMessage']}}</div> 
+                </div>
+            </ion-card-content>
+        </ion-card>
+    </div>
+</ion-content>

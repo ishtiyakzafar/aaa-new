@@ -1,0 +1,195 @@
+
+
+.change-option-block {
+    display: block;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.change-option {
+    color: #F37921;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 11px;
+    cursor: pointer;
+    display: block;
+    float:right;
+    .change-brokerage{
+        width: 24px;
+        margin-right: 9px;
+    }
+}
+.seg-one{
+    padding-left: 39px;
+    padding-right: 39px;
+    border-bottom: 1px solid silver;
+    margin-top: 16px;
+    margin-bottom: 6px;
+}
+.header-segment-bottom {
+    
+//     .segment-button-checked {
+//         //  border-bottom: 4px solid #F37921 ;
+        
+//   }
+
+
+  .tab1 {
+    border-bottom: 4px solid #F37921;
+    font-family: 'nunitoLight';
+    color: #83838B !important;
+    font-weight: 400px !important;
+    font-size: 15px;
+    
+  }
+  .tab2{
+    border-bottom: 4px solid #F37921;
+    font-family: 'nunitoLight';
+    color: #83838B !important;
+    font-weight: 400px !important;
+    font-size: 15px;
+  }
+  
+  
+}
+
+.header-segment-bottom ion-segment-button{
+    color: #212121 !important;
+    font-weight: bold !important;
+ }
+
+.web-equity {
+    .vasTitle{
+        font-size: 14px;
+        font-family: 'nunitoBold';
+        margin:15px;
+    }
+    td:first-child {
+        font-family: 'nunitoSemiBold';
+    }
+}
+
+.client-code {
+    margin-left: 33px;
+    font-size: 14px;
+    margin-top: 3px;
+}
+
+.norecordClass{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 227px);
+    align-items: center;
+    justify-content: center;
+    border-bottom: 0 !important;
+}
+
+
+
+@media screen and (max-width: 768px) {
+    .main-header {
+        box-shadow: 0px 1px 6px #00000042;
+    }
+    .destop-segment-middle {
+        margin: 0 0 0 16px;
+        ion-segment-button {
+            font-size: 14px;
+        }
+}
+    .updated-slides {
+        swiper-slide {
+            min-height: calc(100vh - 235px);
+            align-items: flex-start;
+            flex-direction: column;
+            justify-content: flex-start;
+            // max-height: calc(100vh - 130px);
+            // overflow: auto;
+            .slide-data {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                border-bottom: 1px solid #cbcbcb;
+                .slide-heading {
+                    font-size: 16px;
+                    font-family: 'nunitoBold';
+                    text-align: left;
+                    padding: 18px 16px;
+                }
+                .segment-data-block {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr 1fr 1fr;
+                    padding: 0 16px;
+                    margin-bottom: 18px;
+                    .segment-data {
+                        display: flex;
+                        flex-direction: column;
+                        .title {
+                            color: #716A90;
+                            font-size: 12px;
+                        }
+                        .value {
+                            color: #000;
+                            font-size: 14px;
+                            font-family: 'nunitoSemiBold';
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // .change-option-mobile {
+    //     background: #fff;
+    //     width: 100%;
+    //     padding: 0 16px;
+    // }
+    .title-block-custom {
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        padding: 16px !important;
+        height: unset;
+    }
+    // .change-option-mobile {
+    //     display: flex;
+    // }
+    .change-option-mobile {
+        background: #fff;
+        width: 100%;
+        padding: 12px 16px;
+        display: flex;
+        .change-brokerage {
+            width: 16px;
+            margin-right: 4px;
+        }
+    }
+    .change-option {
+        margin: 0;
+        // padding: 12px 16px;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .updated-slides {
+        swiper-slide {
+            .slide-data {
+                .slide-heading {
+                    font-size: 15px;
+                    padding: 14px 16px;
+                }
+                .segment-data-block {
+                    .segment-data {
+                        .title {
+                            font-size: 11px;
+                        }
+                        .value {
+                            font-size: 13px;
+                        }
+                    }
+                }
+            }
+        }
+    } 
+}
+

@@ -1,0 +1,1358 @@
+
+<!-- new code -->
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="select-search-block select-search-block-no-graph">
+			<div class="title-block title-block-custom">
+				<div class="icon-title">
+					<ion-icon name="arrow-back-outline" class="back-button" (click)="back()"></ion-icon>
+					<ion-title class="title">AUM</ion-title>
+				</div>
+				<div class="icons">
+                    <ion-icon class="first-icon" src="assets/svg/white-home-icon.svg" (click)="goToDashboard()"></ion-icon>
+				</div>
+			</div>
+			<div class="Equity value">
+                ₹ 24 Cr
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+<ion-content appScrollbarTheme>
+    <div class="header common-header-all">
+        <div class="header-bg"></div>
+        <div class="container">
+            <div class="back-drop-down-section m-t-30">
+                <div class="back-section hide-in-mobile">
+                    <span class="back-icon" (click)="back()">
+                        <ion-icon src="assets/svg/revamp_back.svg"></ion-icon>
+                    </span>
+                    <div class="type-section">
+                        <span class="type">AUM</span>
+                        <span class="value">24 Cr</span>
+                    </div>
+                </div>
+                <div class="revamp-drop-down">
+                    <div class="business-monitor-block">
+                        <div class="business">
+                            <ion-icon name="person"></ion-icon>
+                        </div>
+                        <div class="select-parent">
+                            <div class="cursor-default">
+                                <ion-label class="updated-data">Data last updated on : 4/30/2024 10:27:20 AM</ion-label>
+                            </div>
+                            <div class="select-block pointer">
+                                <div class="value-section">
+                                    <span class="name">C12345</span>
+                                    <span class="account-type">Individual</span>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container dashbaord-container">
+        <article class="common-content-section">
+            <ion-segment [(ngModel)]="equityBlockTabValue" scrollable="true" class="card-type-segment">
+                <ion-segment-button value="{{data['segmentValue']}}" *ngFor="let data of cardSegments">
+                    <ion-card class="card">
+                        <span class="title">{{data['name']}}</span>
+                        <span class="value">{{data['dataValue']}}
+                            <span class="percent">{{data['perValue']}}</span>
+                        </span>
+                        <img class="indicator" src="assets/imgs/card_down_icon.png">
+                    </ion-card>
+                </ion-segment-button>
+            </ion-segment>
+        </article>
+        <!-- this below segment will be visible for mutual fund -->
+        <div class="mutual-all-section" *ngIf="equityBlockTabValue === 'mutualFund'">
+            <ion-segment class="orange-border-segment space-around d-flex" scrollable="true" [(ngModel)]="mutualFundSegmentValue"  >
+                <div *ngFor="let data of mutualFundBlock; let i = index">
+                    <ion-segment-button value={{data.Value}}>
+                        {{data.Name}}
+                    </ion-segment-button>
+                </div>
+            </ion-segment>
+        </div>
+        <!-- end -->
+        <!-- this below segment will be visible for afyp -->
+        <div class="mutual-all-section" *ngIf="equityBlockTabValue === 'afyp'" >
+            <ion-segment class="orange-border-segment d-flex" [(ngModel)]="afypSegmentValue">
+                <div *ngFor="let data of afypBlock; let i = index">
+                    <ion-segment-button value={{data.Value}}>
+                        {{data.Name}}
+                    </ion-segment-button>
+                </div>
+            </ion-segment>
+        </div>
+        <!-- end -->
+        
+        <div class="tab-content" [ngSwitch]="equityBlockTabValue">
+            <div class="content" *ngSwitchCase="'equity'">
+                <div class="desktop-visibility">
+                    <div class="web-equity thin-scroll">
+                        <div class="header-table">
+                            <table style="width: 100%" class="desktop-header-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Client ID
+                                        </th>
+                                        <th class="pointer">
+                                            Client Name 
+                                             </th>
+                                        <th class="pointer">
+                                            AUM(₹) 
+                                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" >
+                                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" >
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="main-table thin-scroll max-height-unset-in-mobile">
+                            <table style="width: 100%" class="mobile-table">
+                                <tbody>
+                                    <tr>
+                                        <td>HSUY989</td>
+                                        <td>
+                                            <span class="hyperlinkstyle" style="cursor:pointer">Aarav Patel</span>
+                                        </td>
+                                        <td>5 Cr</td>
+                                    </tr>
+                                    <tr>
+                                        <td>AIKY231</td>
+                                        <td>
+                                            <span class="hyperlinkstyle" style="cursor:pointer">Niharika Sharma</span>
+                                        </td>
+                                        <td>4 Cr</td>
+                                    </tr>
+                                    <tr>
+                                        <td>FWAQUJB</td>
+                                        <td>
+                                            <span class="hyperlinkstyle" style="cursor:pointer">Vikram Singh</span>
+                                        </td>
+                                        <td>3.5 Cr</td>
+                                    </tr>
+                                    <tr>
+                                        <td>YTSW878</td>
+                                        <td>
+                                            <span class="hyperlinkstyle" style="cursor:pointer">Kavya Desai</span>
+                                        </td>
+                                        <td>3 Cr</td>
+                                    </tr>
+                                    <tr>
+                                        <td>EYSK215</td>
+                                        <td>
+                                            <span class="hyperlinkstyle" style="cursor:pointer">Anuj Gupta</span>
+                                        </td>
+                                        <td>2.5 Cr</td>
+                                    </tr>
+                                    <tr>
+                                        <td>LYHZ139</td>
+                                        <td>
+                                            <span class="hyperlinkstyle" style="cursor:pointer">Neha Reddy</span>
+                                        </td>
+                                        <td>2 Cr</td>
+                                    </tr>
+                                    <tr>
+                                        <td>PLYS175</td>
+                                        <td>
+                                            <span class="hyperlinkstyle" style="cursor:pointer">Rohan Mehta</span>
+                                        </td>
+                                        <td>1.5 Cr</td>
+                                    </tr>
+                                    <tr>
+                                        <td>MUKFEWQ</td>
+                                        <td>
+                                            <span class="hyperlinkstyle" style="cursor:pointer">Priya Choudhary</span>
+                                        </td>
+                                        <td>1 Cr</td>
+                                    </tr>
+                                    <tr>
+                                        <td>JYTW265</td>
+                                        <td>
+                                            <span class="hyperlinkstyle" style="cursor:pointer">Siddharth Shah</span>
+                                        </td>
+                                        <td>1 Cr</td>
+                                    </tr>
+                                    <tr>
+                                        <td>7326909</td>
+                                        <td>
+                                            <span class="hyperlinkstyle" style="cursor:pointer">Ananya Joshi</span>
+                                        </td>
+                                        <td>1 Cr</td>
+                                    </tr>
+
+                              
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="mobile-visibility">
+                    <div class="detail-part-dashboard detail-part-aum-inner mobile-visibility">
+                        <div class="header-part">
+                            <div class="heading">
+                                <span  >Client Name 
+                               </span>
+                                <span>AUM (₹) 
+                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="detail-part-dashboard detail-part-aum-inner mobile-visibility">
+                    <div class="listing-part">
+                       <div class="items" >
+                            <div class="upper-section left-part">
+                                <div class="type code">HSUY989</div>
+                                <div class="change-value name hyperlinkstyle">Aarav Patel</div>
+                            </div>
+                            <div class="lower-section right-part">
+                                5 Cr
+                            </div>
+                        </div>
+                        <div class="items" >
+                            <div class="upper-section left-part">
+                                <div class="type code">AIKY231</div>
+                                <div class="change-value name hyperlinkstyle">Niharika Sharma</div>
+                            </div>
+                            <div class="lower-section right-part">
+                                4 Cr
+                            </div>
+                        </div>
+                        <div class="items" >
+                            <div class="upper-section left-part">
+                                <div class="type code">FWAQUJB</div>
+                                <div class="change-value name hyperlinkstyle">Vikram Singh</div>
+                            </div>
+                            <div class="lower-section right-part">
+                                3.5 Cr
+                            </div>
+                        </div>
+                        <div class="items" >
+                            <div class="upper-section left-part">
+                                <div class="type code">YTSW878</div>
+                                <div class="change-value name hyperlinkstyle">kavya Desai</div>
+                            </div>
+                            <div class="lower-section right-part">
+                                3 Cr
+                            </div>
+                        </div>
+                        <div class="items" >
+                            <div class="upper-section left-part">
+                                <div class="type code">EYSK215</div>
+                                <div class="change-value name hyperlinkstyle">Anuj Gupta</div>
+                            </div>
+                            <div class="lower-section right-part">
+                                2.5 Cr
+                            </div>
+                        </div>
+                        <div class="items" >
+                            <div class="upper-section left-part">
+                                <div class="type code">LYHZ139</div>
+                                <div class="change-value name hyperlinkstyle">Neha Reddy</div>
+                            </div>
+                            <div class="lower-section right-part">
+                                2 Cr
+                            </div>
+                        </div>
+                        <div class="items" >
+                            <div class="upper-section left-part">
+                                <div class="type code">PLYS175</div>
+                                <div class="change-value name hyperlinkstyle">Rohan Mehta</div>
+                            </div>
+                            <div class="lower-section right-part">
+                               2.5 Cr
+                            </div>
+                        </div>
+                        <div class="items" >
+                            <div class="upper-section left-part">
+                                <div class="type code">MUKFEWQ</div>
+                                <div class="change-value name hyperlinkstyle">Priya Choudhary</div>
+                            </div>
+                            <div class="lower-section right-part">
+                                1 Cr
+                            </div>
+                        </div>
+                        <div class="items" >
+                            <div class="upper-section left-part">
+                                <div class="type code">JYTW265</div>
+                                <div class="change-value name hyperlinkstyle">Siddharth Shah</div>
+                            </div>
+                            <div class="lower-section right-part">
+                                1 Cr
+                            </div>
+                        </div>
+                        <div class="items" >
+                            <div class="upper-section left-part">
+                                <div class="type code">7326909</div>
+                                <div class="change-value name hyperlinkstyle">Ananya Joshi</div>
+                            </div>
+                            <div class="lower-section right-part">
+                                1 Cr
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="content" *ngSwitchCase="'mutualFund'">
+                <div class="tab-content inner-tab-cotent" [ngSwitch]="mutualFundSegmentValue">
+                    <div class="content aum-mf" *ngSwitchCase="'totalAum'">
+                        <div class="desktop-visibility">
+                            <div class="web-equity thin-scroll">
+                                <div class="header-table">
+                                    <table style="width: 100%" class="desktop-header-table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Client ID
+                                                </th>
+                                                <th class="pointer">
+                                                    Client Name 
+                                               </th>
+                                                <th class="pointer">
+                                                    Equity MF AUM (₹) 
+                                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" >
+                                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                                </th>
+                                                <th class="pointer">
+                                                    Debt MF AUM 
+                                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" >
+                                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                                </th>
+                                                <th>
+                                                    Hybrid MF AUM (₹)
+                                                </th>
+                                                <th class="pointer">
+                                                    Total AUM (₹)
+                                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="main-table thin-scroll">
+                                    <table style="width: 100%" class="mobile-table">
+                                        <tbody >
+                                            <tr>
+                                                <td>MYJK986 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Aakash Verma</span>
+                                                </td>
+                                                <td>8.75 Cr</td>
+                                                <td>36.7 L </td>
+                                                <td>3.76 Cr</td>
+                                                <td>12.87 Cr </td>
+                                            </tr>
+                                            <tr>
+                                                <td>WDTM098 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Tanvi Malhotra</span>
+                                                </td>
+                                                <td>9.23 Cr</td>
+                                                <td>0</td>
+                                                <td>2.39 Cr</td>
+                                                <td>11.62 Cr</td>
+                                            </tr>
+                                            <tr>
+                                                <td>SKML217 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Pranav Kumar</span>
+                                                </td>
+                                                <td>7.31 Cr</td>
+                                                <td>49.5 L </td>
+                                                <td>2.98 Cr</td>
+                                                <td>10.78 Cr</td>
+                                            </tr>
+                                            <tr>
+                                                <td>MYTW165 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Riya Bhatt</span>
+                                                </td>
+                                                <td>5.29 Cr</td>
+                                                <td>28.2 L</td>
+                                                <td>3.12 Cr</td>
+                                                <td>8.69 Cr</td>
+                                            </tr>
+                                            <tr>
+                                                <td>HTRS521 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Devansh Singhania</span>
+                                                </td>
+                                                <td>5.27 Cr</td>
+                                                <td>0</td>
+                                                <td>2.11 Cr</td>
+                                                <td>7.38 Cr</td>
+                                            </tr>
+                                            <tr>
+                                                <td>FWKP998 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Sneha Rajput</span>
+                                                </td>
+                                                <td>4.21 Cr</td>
+                                                <td>25.7 L </td>
+                                                <td>1.31 Cr</td>
+                                                <td>5.77 Cr</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2987606 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Yash Kapoor</span>
+                                                </td>
+                                                <td>2.51 Cr</td>
+                                                <td>32.8 L</td>
+                                                <td>0</td>
+                                                <td>2.83 Cr</td>
+                                            </tr>
+                                            <tr>
+                                                <td>KTYA287 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Aaradhya Sharma</span>
+                                                </td>
+                                                <td>29.8 L</td>
+                                                <td>1.8 L</td>
+                                                <td>0</td>
+                                                <td>31.6 L</td>
+                                            </tr>
+                                            <tr>
+                                                <td>LTMG376 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Aditya Patel</span>
+                                                </td>
+                                                <td>15.7 L</td>
+                                                <td>1.3 L</td>
+                                                <td>1.1 L</td>
+                                                <td>18.1 L</td>
+                                            </tr>
+                                            <tr>
+                                                <td>WSOQ965 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Sanaya Khanna</span>
+                                                </td>
+                                                <td>6.8 L</td>
+                                                <td>3.4 L</td>
+                                                <td>0</td>
+                                                <td>10.2 L</td>
+                                            </tr>
+                                        </tbody>
+                                        
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mobile-visibility">
+                            <div class="detail-part-dashboard detail-part-aum-inner mobile-visibility">
+                                <div class="header-part">
+                                    <div class="heading">
+                                        <span >Client Name 
+                                      </span>
+                                        <span>AUM (₹) 
+                                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" >
+                                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-part-dashboard detail-part-aum-inner mobile-visibility">  
+                            <div class="listing-part" >
+                                <div class="items">
+                                        <div class="upper-section left-part">
+                                            <div class="type code">MYJK986</div>
+                                            <div class="change-value name hyperlinkstyle">Aakash Verma</div>
+                                        </div>
+                                        <div class="lower-section right-part">
+                                            12.87 Cr
+                                        </div>
+                                </div>
+                                <div class="items">
+                                    <div class="upper-section left-part">
+                                        <div class="type code">WDTM098</div>
+                                        <div class="change-value name hyperlinkstyle">Tanvi Malhotra</div>
+                                    </div>
+                                    <div class="lower-section right-part">11.62 Cr</div>
+                            </div>
+                            <div class="items">
+                                <div class="upper-section left-part">
+                                    <div class="type code">SKML217</div>
+                                    <div class="change-value name hyperlinkstyle">Pranav Kumar</div>
+                                </div>
+                                <div class="lower-section right-part">10.78 Cr</div>
+                        </div>
+                        <div class="items">
+                            <div class="upper-section left-part">
+                                <div class="type code">MYTW165</div>
+                                <div class="change-value name hyperlinkstyle">Riya Bhatt</div>
+                            </div>
+                            <div class="lower-section right-part">8.69 Cr</div>
+                    </div>
+                    <div class="items">
+                        <div class="upper-section left-part">
+                            <div class="type code">HTRS521</div>
+                            <div class="change-value name hyperlinkstyle">Devansh Singhania</div>
+                        </div>
+                        <div class="lower-section right-part">7.38 Cr</div>
+                </div>
+                <div class="items">
+                    <div class="upper-section left-part">
+                        <div class="type code">FWKP998</div>
+                        <div class="change-value name hyperlinkstyle">Sneha Rajput</div>
+                    </div>
+                    <div class="lower-section right-part">5.77 Cr</div>
+            </div>
+            <div class="items">
+                <div class="upper-section left-part">
+                    <div class="type code">2987606</div>
+                    <div class="change-value name hyperlinkstyle">Yash Kapoor</div>
+                </div>
+                <div class="lower-section right-part">2.83 Cr</div>
+        </div>
+        <div class="items">
+            <div class="upper-section left-part">
+                <div class="type code">KTYA287</div>
+                <div class="change-value name hyperlinkstyle">Aaradhya Sharma</div>
+            </div>
+            <div class="lower-section right-part">31.6 L</div>
+    </div>
+    <div class="items">
+        <div class="upper-section left-part">
+            <div class="type code">LTMG376</div>
+            <div class="change-value name hyperlinkstyle">Aditya Patel</div>
+        </div>
+        <div class="lower-section right-part">18.1 L</div>
+</div>
+<div class="items">
+    <div class="upper-section left-part">
+        <div class="type code">WSOQ965</div>
+        <div class="change-value name hyperlinkstyle">Sanaya Khanna</div>
+    </div>
+    <div class="lower-section right-part">10.2 L</div>
+</div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="content sip-live" *ngSwitchCase="'sipBook'">
+                        <div class="desktop-visibility">
+                            <div class="web-equity thin-scroll">
+                                <div class="header-table">
+                                    <table style="width: 100%" class="desktop-header-table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Client ID
+                                                </th>
+                                                <th class="pointer" >
+                                                    Client Name 
+                                                 </th>
+                                                <th class="pointer">
+                                                    No. of SIPs 
+                                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" >
+                                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                                </th>
+                                                <th class="pointer">
+                                                    Value (₹) 
+                                                    <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                                    <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                                    <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="main-table thin-scroll">
+                                    <table style="width: 100%" class="mobile-table">
+                                        <tbody>
+                                            <tr>
+                                                <td>SQYH289 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Devika Kumar</span>
+                                                </td>
+                                                <td>52</td>
+                                                <td>77 K</td>
+                                            </tr>
+                                            <tr>
+                                                <td>LTYS198 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Rajat Mishra</span>
+                                                </td>
+                                                <td>38</td>
+                                                <td>63 K</td>
+                                            </tr>
+                                            <tr>
+                                                <td>YHJT179 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Pooja Verma</span>
+                                                </td>
+                                                <td>26</td>
+                                                <td>48.2 K</td>
+                                            </tr>
+                                            <tr>
+                                                <td>MYHB254 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Aditya Banerjee</span>
+                                                </td>
+                                                <td>23</td>
+                                                <td>36 K</td>
+                                            </tr>
+                                            <tr>
+                                                <td>KRWS176 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Tanvi Rao</span>
+                                                </td>
+                                                <td>17</td>
+                                                <td>29 K</td>
+                                            </tr>
+                                            <tr>
+                                                <td>AQTR232 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Sameer Khanna</span>
+                                                </td>
+                                                <td>10</td>
+                                                <td>18 K</td>
+                                            </tr>
+                                            <tr>
+                                                <td>NYUS287 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Nandini Patil</span>
+                                                </td>
+                                                <td>10</td>
+                                                <td>16 K</td>
+                                            </tr>
+                                            <tr>
+                                                <td>LMTS142 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Rishi Tiwari</span>
+                                                </td>
+                                                <td>7</td>
+                                                <td>11.5 K</td>
+                                            </tr>
+                                            <tr>
+                                                <td>ZWJA265 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Shreya Malik</span>
+                                                </td>
+                                                <td>5</td>
+                                                <td>11 K</td>
+                                            </tr>
+                                            <tr>
+                                                <td>MNBX123 </td>
+                                                <td>
+                                                <span style="cursor:pointer" class="hyperlinkstyle">Karthik Raghavan</span>
+                                                </td>
+                                                <td>5</td>
+                                                <td>9 K</td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mobile-visibility">
+                            <div class="detail-part-dashboard detail-part-aum-inner detail-part-aum-inner-table mobile-visibility">
+                                <div class="header-part">
+                                    <div class="heading">
+                                        <span>Client Name </span>
+                                        <span>No. of SIPs 
+                                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                        </span>
+                                        <span>AUM (₹) 
+                                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mobile-visibility">
+                            <div class="detail-part-dashboard detail-part-aum-inner detail-part-aum-inner-table mobile-visibility">
+                                <div class="listing-part">
+                                   <div class="items">
+                                        <div class="upper-section left-part">
+                                            <div class="type code">SQYH289</div>
+                                            <div class="change-value name hyperlinkstyle">Devika Kumar</div>
+                                        </div>
+                                        <div class="lower-section left-part">52</div>
+                                        <div class="lower-section right-part">77 K</div>
+                                    </div>
+                                    <div class="items">
+                                        <div class="upper-section left-part">
+                                            <div class="type code">LTYS198</div>
+                                            <div class="change-value name hyperlinkstyle">Rajat Mishra</div>
+                                        </div>
+                                        <div class="lower-section left-part">38</div>
+                                        <div class="lower-section right-part">63 K</div>
+                                    </div>
+                                    <div class="items">
+                                        <div class="upper-section left-part">
+                                            <div class="type code">YHJT179</div>
+                                            <div class="change-value name hyperlinkstyle">Pooja Verma</div>
+                                        </div>
+                                        <div class="lower-section left-part">26</div>
+                                        <div class="lower-section right-part">48.2 K</div>
+                                    </div>
+                                    <div class="items">
+                                        <div class="upper-section left-part">
+                                            <div class="type code">MYHB254</div>
+                                            <div class="change-value name hyperlinkstyle">Aditya Banerjee</div>
+                                        </div>
+                                        <div class="lower-section left-part">23</div>
+                                        <div class="lower-section right-part">36 K</div>
+                                    </div>
+                                    <div class="items">
+                                        <div class="upper-section left-part">
+                                            <div class="type code">KRWS176</div>
+                                            <div class="change-value name hyperlinkstyle">Tanvi Rao</div>
+                                        </div>
+                                        <div class="lower-section left-part">17</div>
+                                        <div class="lower-section right-part">29 K</div>
+                                    </div>
+                                    <div class="items">
+                                        <div class="upper-section left-part">
+                                            <div class="type code">AQTR232</div>
+                                            <div class="change-value name hyperlinkstyle">Sameer Khanna</div>
+                                        </div>
+                                        <div class="lower-section left-part">10</div>
+                                        <div class="lower-section right-part">18 K</div>
+                                    </div>
+                                    <div class="items">
+                                        <div class="upper-section left-part">
+                                            <div class="type code">NYUS287</div>
+                                            <div class="change-value name hyperlinkstyle">Nandini Patil</div>
+                                        </div>
+                                        <div class="lower-section left-part">10</div>
+                                        <div class="lower-section right-part">16 K</div>
+                                    </div>
+                                    <div class="items">
+                                        <div class="upper-section left-part">
+                                            <div class="type code">LMTS142</div>
+                                            <div class="change-value name hyperlinkstyle">Rishi Tiwari</div>
+                                        </div>
+                                        <div class="lower-section left-part">7</div>
+                                        <div class="lower-section right-part">11.5 K</div>
+                                    </div>
+                                    <div class="items">
+                                        <div class="upper-section left-part">
+                                            <div class="type code">ZWJA265</div>
+                                            <div class="change-value name hyperlinkstyle">Shreya Malik</div>
+                                        </div>
+                                        <div class="lower-section left-part">5</div>
+                                        <div class="lower-section right-part">11 K</div>
+                                    </div>
+                                    <div class="items">
+                                        <div class="upper-section left-part">
+                                            <div class="type code">MNBX123</div>
+                                            <div class="change-value name hyperlinkstyle">Karthik Raghavan</div>
+                                        </div>
+                                        <div class="lower-section left-part">5</div>
+                                        <div class="lower-section right-part">9 K</div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>   
+                    </div>
+                </div>
+            </div>
+            <div class="content aum-fd" *ngSwitchCase="'fd'">
+                <div class="desktop-visibility">
+                    <div class="web-equity thin-scroll">
+                        <div class="header-table">
+                            <table style="width: 100%" class="desktop-header-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Client ID
+                                        </th>
+                                        <th class="pointer" >
+                                            Client Name </th>
+                                        <th class="pointer">
+                                            FD AUM(₹) 
+                                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                        </th>
+                                        <th class="pointer">
+                                            Bonds AUM(₹) 
+                                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" >
+                                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                        </th>
+                                        <th class="pointer">
+                                            NCD AUM(₹) 
+                                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="main-table thin-scroll">
+                            <table style="width: 100%" class="mobile-table">
+                                <tbody>
+                                    <tr>
+                                        <td>CDSH887SA</td>
+                                        <td>
+                                        <span style="cursor:pointer" class="hyperlinkstyle">Aditya Kapoor</span>
+                                        </td>
+                                        <td>2.5 Cr</td>
+                                        <td>0 </td>
+                                        <td>0 </td>
+                                    </tr>
+                                    <tr>
+                                        <td>WATG998KM</td>
+                                        <td>
+                                        <span style="cursor:pointer" class="hyperlinkstyle">Ishika Verma</span>
+                                        </td>
+                                        <td>1.2 Cr</td>
+                                        <td>21 L</td>
+                                        <td>0 </td>
+                                    </tr>
+                                    <tr>
+                                        <td>SWTY823UK</td>
+                                        <td>
+                                        <span style="cursor:pointer" class="hyperlinkstyle">Rajat Malhotra</span>
+                                        </td>
+                                        <td>80 L</td>
+                                        <td>0 </td>
+                                        <td>0 </td>
+                                    </tr>
+                                    <tr>
+                                        <td>NWWK2347</td>
+                                        <td>
+                                        <span style="cursor:pointer" class="hyperlinkstyle">Divya Khanna</span>
+                                        </td>
+                                        <td>75 L</td>
+                                        <td>0 </td>
+                                        <td>0 </td>
+                                    </tr>
+                                    <tr>
+                                        <td>QWSY9237</td>
+                                        <td>
+                                        <span style="cursor:pointer" class="hyperlinkstyle">Kartik Iyer</span>
+                                        </td>
+                                        <td>55 L</td>
+                                        <td>0 </td>
+                                        <td>0 </td>
+                                    </tr>
+                                    <tr>
+                                        <td>MWAD82WW</td>
+                                        <td>
+                                        <span style="cursor:pointer" class="hyperlinkstyle">Sneha Bhatia</span>
+                                        </td>
+                                        <td>30 L</td>
+                                        <td>0 </td>
+                                        <td>0 </td>
+                                    </tr>
+                                    <tr>
+                                        <td>SNSDD742C</td>
+                                        <td>
+                                        <span style="cursor:pointer" class="hyperlinkstyle">Pranav Mishra</span>
+                                        </td>
+                                        <td>25 L</td>
+                                        <td>0 </td>
+                                        <td>0 </td>
+                                    </tr>
+                                    <tr>
+                                        <td>YJKS176I</td>
+                                        <td>
+                                        <span style="cursor:pointer" class="hyperlinkstyle">Maya Patel</span>
+                                        </td>
+                                        <td>10 L</td>
+                                        <td>0 </td>
+                                        <td>0 </td>
+                                    </tr>
+                                    <tr>
+                                        <td>SXCE762QI</td>
+                                        <td>
+                                        <span style="cursor:pointer" class="hyperlinkstyle">Rishi Kumar</span>
+                                        </td>
+                                        <td>7 L</td>
+                                        <td>0 </td>
+                                        <td>0 </td>
+                                    </tr>
+                                    <tr>
+                                        <td>DCRS2765L</td>
+                                        <td>
+                                        <span style="cursor:pointer" class="hyperlinkstyle">Riya Banerjee</span>
+                                        </td>
+                                        <td>5 L</td>
+                                        <td>0 </td>
+                                        <td>0 </td>
+                                    </tr>
+                                    
+                                </tbody>
+                                
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mobile-visibility">
+                    <div class="web-equity detail-part-dashboard detail-part-aum-inner mobile-visibility">
+                        <div class="header-table">
+                            <table style="width: 100%" class="desktop-header-table">
+                                <thead>
+                                    <tr>
+                                        <th class="pointer" >
+                                            <span>Client Name</span>  </th>
+                                        <th class="pointer">
+                                            <div class="head-block">
+                                                <span>FD AUM(₹)</span> 
+                                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" >
+                                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                            </div>
+                                        </th>
+                                        <th class="pointer">
+                                            <div class="head-block">
+                                                <span>Bonds AUM(₹)</span> 
+                                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                            </div>
+                                        </th>
+                                        <th class="pointer">
+                                            <div class="head-block">
+                                                <span>NCD AUM(₹)</span> 
+                                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" >
+                                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                
+                </div>
+                <div class="web-equity detail-part-dashboard detail-part-aum-inner mobile-visibility">
+                    <div class="main-table">
+                        <table style="width: 100%" class="mobile-table">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">CDSH887SA</span>
+                                            <span class="name hyperlinkstyle">Aditya Kapoor</span>
+                                        </div>
+                                    </td>
+                                    <td>2.5 Cr</td>
+                                        <td>0 </td>
+                                        <td>0 </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">WATG998KM</span>
+                                            <span class="name hyperlinkstyle">Ishika Verma</span>
+                                        </div>
+                                    </td>
+                                    <td>1.2 Cr</td>
+                                    <td>21 L</td>
+                                    <td>0 </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">SWTY823UK</span>
+                                            <span class="name hyperlinkstyle">Rajat Malhotra</span>
+                                        </div>
+                                    </td>
+                                    <td>80 L</td>
+                                        <td>0 </td>
+                                        <td>0 </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">NWWK2347</span>
+                                            <span class="name hyperlinkstyle">Divya Khanna</span>
+                                        </div>
+                                    </td>
+                                    <td>75 L</td>
+                                        <td>0 </td>
+                                        <td>0 </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">QWSY9237</span>
+                                            <span class="name hyperlinkstyle">Kartik Iyer</span>
+                                        </div>
+                                    </td>
+                                    <td>55 L</td>
+                                        <td>0 </td>
+                                        <td>0 </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">MWAD82WW</span>
+                                            <span class="name hyperlinkstyle">Sneha Bhatia</span>
+                                        </div>
+                                    </td>
+                                    <td>30 L</td>
+                                        <td>0 </td>
+                                        <td>0 </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">SNSDD742C</span>
+                                            <span class="name hyperlinkstyle">Pranav Mishra</span>
+                                        </div>
+                                    </td>
+                                    <td>25 L</td>
+                                        <td>0 </td>
+                                        <td>0 </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">YJKS176I</span>
+                                            <span class="name hyperlinkstyle">Maya Patel</span>
+                                        </div>
+                                    </td>
+                                    <td>10 L</td>
+                                        <td>0 </td>
+                                        <td>0 </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">SXCE762QI</span>
+                                            <span class="name hyperlinkstyle">Rishi Kumar</span>
+                                        </div>
+                                    </td>
+                                    <td>7 L</td>
+                                        <td>0 </td>
+                                        <td>0 </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">DCRS2765L</span>
+                                            <span class="name hyperlinkstyle">Riya Banerjee</span>
+                                        </div>
+                                    </td>
+                                    <td>5 L</td>
+                                        <td>0 </td>
+                                        <td>0 </td>
+                                </tr>
+                                
+                            </tbody>
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="content aum-pms" *ngSwitchCase="'pms'">
+                <div class="desktop-visibility">
+                    <div class="web-equity thin-scroll">
+                        <div class="header-table">
+                            <table style="width: 100%" class="desktop-header-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Client ID
+                                        </th>
+                                        <th class="pointer">
+                                            Client Name 
+                                           
+                                        </th>
+                                        <th class="pointer">
+                                            PMS AUM(₹) 
+                                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                        </th>
+                                        <th class="pointer">
+                                            AIF AUM(₹) 
+                                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div class="main-table thin-scroll">
+                            <table style="width: 100%" class="mobile-table">
+                                <tbody>
+                                    <tr>
+                                        <td>HPRK2079</td>
+                                        <td>
+                                        <span class="hyperlinkstyle" style="cursor:pointer">Aditi Krishnan</span>
+                                        </td>
+                                        <td>1.12 Cr</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>BOKSU582</td>
+                                        <td>
+                                        <span class="hyperlinkstyle" style="cursor:pointer">Rahul Verma</span>
+                                        </td>
+                                        <td>1.09 Cr</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>BBWOD0722L</td>
+                                        <td>
+                                        <span class="hyperlinkstyle" style="cursor:pointer">SanjayThakur</span>
+                                        </td>
+                                        <td>1.05 Cr</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>49984207</td>
+                                        <td>
+                                        <span class="hyperlinkstyle" style="cursor:pointer">Aryan Malhotra</span>
+                                        </td>
+                                        <td>85.21 L</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>JBN880099</td>
+                                        <td>
+                                        <span class="hyperlinkstyle" style="cursor:pointer">Pooja Banerjee</span>
+                                        </td>
+                                        <td>70.25 L</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>NSDJHPFD</td>
+                                        <td>
+                                        <span class="hyperlinkstyle" style="cursor:pointer">Yash Rajput</span>
+                                        </td>
+                                        <td>63.22 L</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SSUOD9636K</td>
+                                        <td>
+                                        <span class="hyperlinkstyle" style="cursor:pointer">Riya Kapoor</span>
+                                        </td>
+                                        <td>60.11 L</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>NSUSMLHH</td>
+                                        <td>
+                                        <span class="hyperlinkstyle" style="cursor:pointer">Karan Khanna</span>
+                                        </td>
+                                        <td>58.23 L</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>WSFTTNJ89</td>
+                                        <td>
+                                        <span class="hyperlinkstyle" style="cursor:pointer">Anjali Patel</span>
+                                        </td>
+                                        <td>55.15 L</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>RWSTJU79</td>
+                                        <td>
+                                        <span class="hyperlinkstyle" style="cursor:pointer">Rajesh Sharma</span>
+                                        </td>
+                                        <td>53.12 L</td>
+                                        <td>0</td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mobile-visibility">
+                    <div class="web-equity detail-part-dashboard detail-part-aum-inner mobile-visibility">
+                        <div class="header-table">
+                            <table style="width: 100%" class="desktop-header-table">
+                                <thead>
+                                    <tr>
+                                        <th class="pointer" >
+                                            <span>Client Name</span> 
+                                           </th>
+                                        <th class="pointer">
+                                            <div class="head-block">
+                                                <span>PMS AUM(₹)</span> 
+                                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                            </div>
+                                        </th>
+                                        <th class="pointer">
+                                            <div class="head-block">
+                                                <span>AIF AUM(₹)</span> 
+                                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="">
+                                            </div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="web-equity detail-part-dashboard detail-part-aum-inner mobile-visibility">
+                    <div class="main-table">
+                        <table style="width: 100%" class="mobile-table">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">HPRK2079</span>
+                                            <span class="name hyperlinkstyle">Aditi Krishnan</span>
+                                        </div>
+                                    </td>
+                                    <td>1.12 Cr</td>
+                                    <td>0</td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">BOKSU582</span>
+                                            <span class="name hyperlinkstyle">Rahul Verma</span>
+                                        </div>
+                                    </td>
+                                    <td>1.09 Cr</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">BBWOD0722L</span>
+                                            <span class="name hyperlinkstyle">SanjayThakur</span>
+                                        </div>
+                                    </td>
+                                    <td>1.05 Cr</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">49984207</span>
+                                            <span class="name hyperlinkstyle">Aryan Malhotra</span>
+                                        </div>
+                                    </td>
+                                    <td>85.21 L</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">JBN880099</span>
+                                            <span class="name hyperlinkstyle">Pooja Banerjee</span>
+                                        </div>
+                                    </td>
+                                    <td>70.25 L</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">NSDJHPFD</span>
+                                            <span class="name hyperlinkstyle">Yash Rajput</span>
+                                        </div>
+                                    </td>
+                                    <td>63.22 L</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">SSUOD9636K</span>
+                                            <span class="name hyperlinkstyle">Riya Kapoor</span>
+                                        </div>
+                                    </td>
+                                    <td>60.11 L</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">SSUOD9636K</span>
+                                            <span class="name hyperlinkstyle">Riya Kapoor</span>
+                                        </div>
+                                    </td>
+                                    <td>60.11 L</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">NSUSMLHH</span>
+                                            <span class="name hyperlinkstyle">Karan Khanna</span>
+                                        </div>
+                                    </td>
+                                    <td>58.23 L</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">WSFTTNJ89</span>
+                                            <span class="name hyperlinkstyle">Anjali Patel</span>
+                                        </div>
+                                    </td>
+                                    <td>55.15 L</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="code-block">
+                                            <span class="code">RWSTJU79</span>
+                                            <span class="name hyperlinkstyle">Rajesh Sharma</span>
+                                        </div>
+                                    </td>
+                                    <td>53.12 L</td>
+                                    <td>0</td>
+                                </tr>
+
+
+                            </tbody>
+                            
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ONLY FOR DROPDOWN -->
+</ion-content>
+<!-- end -->

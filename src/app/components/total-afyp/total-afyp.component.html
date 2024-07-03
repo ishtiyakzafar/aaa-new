@@ -1,0 +1,80 @@
+<div class="chart-section" *ngIf="showChart">
+	<div class="chart">
+		<canvas baseChart #dognutChart width="156px" height="156px"
+			[datasets]="chartNewData"
+			[labels]="chartNewLabels"
+			[options]="chartNewOptions"
+			[type]="'doughnut'"
+		></canvas>
+	</div>
+</div>
+<div class="tab-block desktop-visibility sip-book">
+	<ion-segment [(ngModel)]="insuranceBlockTabValue" (ionChange)="onSegmentChanged($event)">
+		<ion-segment-button *ngFor="let dataObj  of insuranceBlock" [value]="dataObj['value']">
+			<div class="items">
+				<div class="upper-section">
+					<img class="icon" src="assets/svg/{{dataObj['icon']}}" alt="">
+					<div class="type">{{dataObj['name']}}</div>
+					<div class="change-value">{{dataObj['changeValue']}}</div>
+				</div>
+				<div class="lower-section">
+					<div class="part">
+						<span class="title">MTD (₹)</span>
+						<span class="data">{{dataObj['mtd']}}</span>
+					</div>
+					<div class="part">
+						<span class="title">YTD (₹)</span>
+						<span class="data">{{dataObj['ytd']}}</span>
+					</div>
+				</div>
+			</div>
+		</ion-segment-button>
+	</ion-segment>
+</div>
+<div class="desktop-visibility">
+	<div class="search-section search-section-changed">
+        <ion-label>Search by</ion-label>
+        <ion-segment [(ngModel)]="clientBlockSegmentValue" mode="md">
+            <ion-segment-button *ngFor="let entry of segmentButtonOption" value="{{entry['value']}}">{{entry['name']}}</ion-segment-button>
+        </ion-segment>
+        <ion-searchbar search-icon="false" class="custom-searchbar" [(ngModel)]="searchTerm" customValidate debouce="1000"  placeholder="Type Client Name"></ion-searchbar>
+        <ion-button class="search-button" (click)="searchText($event)">
+            <img src="assets/svg/search.svg" alt="">
+        </ion-button>
+    </div>
+</div>
+<div class="tab-content desktop-visibility" [ngSwitch]="insuranceBlockTabValue">
+	<div class="content" *ngSwitchCase="'life'">
+		<app-afyp-life-insurance></app-afyp-life-insurance>
+	</div>
+	<div class="content" *ngSwitchCase="'health'">
+		<app-afyp-health-insurance></app-afyp-health-insurance>
+	</div>
+	<div class="content" *ngSwitchCase="'general'">
+		<app-afyp-general-insurance></app-afyp-general-insurance>
+	</div>
+</div>
+<div class="detail-part-dashboard mobile-visibility">
+	<div class="header-part">
+		<div class="heading">
+			<span>Product</span>
+            <span>MTD (₹)</span>
+            <span>YTD (₹)</span>
+		</div>
+	</div>
+	<div class="listing-part">
+		<div class="items" *ngFor="let dataObj  of insuranceBlock" (click)="goToPage(dataObj['page'])">
+			<div class="upper-section left-part">
+				<img class="icon" src="assets/svg/{{dataObj['icon']}}" alt="">
+				<div class="type">{{dataObj['name']}}</div>
+				<div class="change-value">{{dataObj['changeValue']}}</div>
+			</div>
+			<div class="lower-section right-part">
+				{{dataObj['mtd']}}
+            </div>
+            <div class="lower-section right-part">
+				{{dataObj['ytd']}}
+			</div>
+		</div>
+	</div>
+</div>

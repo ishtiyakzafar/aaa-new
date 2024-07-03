@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="230" height="175" viewBox="0 0 230 175">
+  <defs>
+    <filter id="bg" x="0" y="0" width="230" height="175" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feFlood flood-color="#3d13ae" flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_8326" data-name="Group 8326" transform="translate(-826 -326)">
+    <g id="Group_2518" data-name="Group 2518" transform="translate(841 338)">
+      <g transform="matrix(1, 0, 0, 1, -15, -12)" filter="url(#bg)">
+        <rect id="bg-2" data-name="bg" width="200" height="145" rx="10" transform="translate(15 12)" fill="#fff"/>
+      </g>
+    </g>
+    <g id="Group_2539" data-name="Group 2539">
+      <g id="iphone" transform="translate(830 366)">
+        <g id="Group_2530" data-name="Group 2530" transform="translate(96)">
+          <path id="Path_6597" data-name="Path 6597" d="M122.887,0h-23.9A2.992,2.992,0,0,0,96,2.987V44.812A2.99,2.99,0,0,0,98.987,47.8h23.9a2.989,2.989,0,0,0,2.987-2.987V2.987A2.99,2.99,0,0,0,122.887,0Zm-11.95,44.812a2.987,2.987,0,1,1,2.987-2.987A2.989,2.989,0,0,1,110.937,44.812Zm11.95-8.962h-23.9V5.975h23.9Z" transform="translate(-96 0)" fill="#f6a80b"/>
+        </g>
+      </g>
+      <g id="gold" transform="translate(931.5 376.75)">
+        <g id="Group_2531" data-name="Group 2531" transform="translate(4.935 6.754)">
+          <path id="Path_6598" data-name="Path 6598" d="M140.293,182.35a.557.557,0,0,0-.517-.35h-4.453a.557.557,0,0,0-.517.35l-1.781,4.453a.557.557,0,0,0,.517.763h8.016a.557.557,0,0,0,.517-.763Z" transform="translate(-132.984 -182)" fill="#f6a80b"/>
+        </g>
+        <g id="Group_2532" data-name="Group 2532" transform="translate(0 13.434)">
+          <path id="Path_6599" data-name="Path 6599" d="M7.309,362.35a.557.557,0,0,0-.517-.35H2.338a.557.557,0,0,0-.517.35L.04,366.8a.557.557,0,0,0,.517.763H8.573a.557.557,0,0,0,.517-.763Z" transform="translate(0 -362)" fill="#f6a80b"/>
+        </g>
+        <g id="Group_2533" data-name="Group 2533" transform="translate(9.87 13.434)">
+          <path id="Path_6600" data-name="Path 6600" d="M273.276,362.35a.557.557,0,0,0-.517-.35h-4.453a.557.557,0,0,0-.517.35l-1.781,4.453a.557.557,0,0,0,.517.763h8.016a.557.557,0,0,0,.517-.763Z" transform="translate(-265.967 -362)" fill="#f6a80b"/>
+        </g>
+        <g id="Group_2534" data-name="Group 2534" transform="translate(2.252 2.846)">
+          <path id="Path_6601" data-name="Path 6601" d="M63.443,80.231,60.85,77.638a.557.557,0,0,1,.787-.787l2.593,2.593a.557.557,0,0,1-.787.787Z" transform="translate(-60.687 -76.687)" fill="#f6a80b"/>
+        </g>
+        <g id="Group_2535" data-name="Group 2535" transform="translate(13.042 2.846)">
+          <path id="Path_6602" data-name="Path 6602" d="M351.607,80.231a.557.557,0,0,1,0-.787l2.593-2.593a.557.557,0,0,1,.787.787l-2.593,2.593A.557.557,0,0,1,351.607,80.231Z" transform="translate(-351.444 -76.688)" fill="#f6a80b"/>
+        </g>
+        <g id="Group_2536" data-name="Group 2536" transform="translate(5.748 1.823)">
+          <path id="Path_6603" data-name="Path 6603" d="M156.055,52.6l-1.12-2.7a.557.557,0,1,1,1.029-.426l1.12,2.7a.557.557,0,1,1-1.029.426Z" transform="translate(-154.892 -49.123)" fill="#f6a80b"/>
+        </g>
+        <g id="Group_2537" data-name="Group 2537" transform="translate(11.018 1.823)">
+          <path id="Path_6604" data-name="Path 6604" d="M297.259,52.9a.557.557,0,0,1-.3-.727l1.12-2.7a.557.557,0,0,1,1.029.426l-1.12,2.7A.557.557,0,0,1,297.259,52.9Z" transform="translate(-296.915 -49.122)" fill="#f6a80b"/>
+        </g>
+        <g id="Group_2538" data-name="Group 2538" transform="translate(8.943)">
+          <path id="Path_6605" data-name="Path 6605" d="M241.557,5.641A.557.557,0,0,1,241,5.084V.557a.557.557,0,1,1,1.113,0V5.084A.557.557,0,0,1,241.557,5.641Z" transform="translate(-241)" fill="#f6a80b"/>
+        </g>
+      </g>
+    </g>
+    <image id="IIFL-Securities-logo" width="99" height="99" transform="translate(892 340.5)" xlink:href="data:image/png;base64,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"/>
+    <text id="Morning_Mantra" data-name="Morning Mantra" transform="translate(941 455)" fill="#212121" font-size="18" font-family="Nunito-SemiBold, Nunito" font-weight="600"><tspan x="-65.043" y="0">Morning Mantra</tspan></text>
+  </g>
+</svg>

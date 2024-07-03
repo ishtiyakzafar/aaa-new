@@ -1,0 +1,66 @@
+<ion-header>
+    <ion-toolbar color="tertiary" class="mobile-visibility">
+        <div class="title-block title-block-custom">
+            <div class="icon-title">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <ion-title class="title">Help</ion-title>
+            </div>
+        </div>
+    </ion-toolbar>
+    <ion-toolbar class=" desktop-visibility">
+        <div class="container">
+            <div class="heading-part notificationheader raise-query-heading">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <span class="heading">Help</span>
+            </div>
+        </div>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <div class="help_banner">
+        <div class="container">
+            <div class="banner_main">
+                <div>
+                    <h2>Hi, How can we help you?</h2>
+                    <div class="serch_box help_box">
+                        <h3>Search for a question</h3>
+                        <div
+                            class="search-section search-section-changed search-section-changed-revamped serchbar_help_main_box">
+                            <ion-searchbar [debounce]="1000" [(ngModel)]="searchTerm == 'Technology' ? 'Application' : searchTerm" show-clear-button="always" value="Always Show"
+                                (ngModelChange)="changeSearchText($event)" (ionInput)="inputSearch($event)"
+                                search-icon="false" class="serchbar_help"
+                                placeholder="Eg: When will I receive my funds after requesting withdraw?">
+                            </ion-searchbar>
+                        </div>
+                        <div *ngIf="afterSearch" class="thin-scroll h-200">
+                            <div class="search_main">
+                                <div class="parentDivHelp" *ngIf="botCategory.length > 0">
+                                    <p *ngFor="let data of botCategory">
+                                        <button class="outlineHelp" [ngClass]="{'disableHelp': data.disable}"
+                                            [disabled]="afterThirdDrill" (click)="onBotClick(data)">{{
+                                            data.NewSubjectHead == 'Technology'?'Application': data.NewSubjectHead }}</button>
+                                    </p>
+                                </div>
+                            </div>
+                            <ion-list *ngIf="questionList.length > 0">
+                                <ion-item *ngFor="let result of questionList">
+                                    <ion-label (click)="onQuesClick($event,result)">{{ result.title }}</ion-label>
+                                </ion-item>
+                            </ion-list>
+                        </div>
+                        <div *ngIf="afterThirdDrill && searchTerm" class="raiseQueryHelp">
+                            <ion-button class="buttonRaiseHelp" (click)="raiseQueryClick()">{{ buttonText }}</ion-button>
+                        </div>
+                    </div>
+                    <!-- outer_btn add class after  afterThirdDrill -->
+                    <ion-button [ngClass]="{'outer_btn': afterThirdDrill}" (click)="ticketClick()">Previous Queries</ion-button>
+                </div>
+                <div class="help_banner_img">
+                    <img src="assets/svg/help_banner_icon.svg" alt="banner">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container recent_topic" *ngIf="segmentValue == 'Client'">
+    </div>
+</ion-content>

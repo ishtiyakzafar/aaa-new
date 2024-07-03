@@ -1,0 +1,84 @@
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom aum-title">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">
+					<span>Equity AUM</span>
+					<div class="total-clients-block">
+						<div class="item-block" *ngIf="totalClients">
+							<div class="top">Total Clients</div>
+							<div class="lower">{{totalClients}}</div>
+						</div>
+						<div class="item-block" *ngIf="totalAUM">
+							<div class="top">Total AUM</div>
+							<div class="lower">{{totalAUM}}</div>
+						</div>
+					</div>
+				</ion-title>
+				<!-- <ion-icon class="search-icon" name="search"></ion-icon> -->
+			</div>
+		</div>
+	</ion-toolbar>
+	<ion-toolbar class="search-toolbar-block">
+		<!-- <div class="search-section aum-search">
+			<ion-searchbar class="custom-searchbar" [(ngModel)]="searchTerm"></ion-searchbar>
+		</div> -->
+        <div class="search-section search-section-changed">
+            <div class="upper-part">
+                <ion-label>Search by</ion-label>
+                <ion-segment [(ngModel)]="clientBlockSegmentValue"  mode="md" (ionChange)="segmentChange()">
+                    <ion-segment-button *ngFor="let entry of segmentButtonOption" value="{{entry['value']}}">{{entry['name']}}</ion-segment-button>
+                </ion-segment>
+            </div>
+            <div class="lower-part">
+                <ion-searchbar search-icon="false" [(ngModel)]="searchValue" class="custom-searchbar" [placeholder]='placeholderInput'></ion-searchbar>
+                <ion-button class="search-button" mode="md" (click)="searchFilter()">
+                    <img src="assets/svg/search.svg" alt="">
+                </ion-button>
+            </div>
+        </div>
+		<div class="detail-part-dashboard detail-part-aum-inner mobile-visibility">
+			<div class="header-part">
+				<div class="heading">
+					<span [class.active]="order === 'clientName'" (click)="setOrder('clientName')">Client Name 
+                        <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                        <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                        <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                    </span>
+					<span [class.active]="order === 'aum'" (click)="setOrder('aum')">AUM (₹) 
+                        <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                        <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                        <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                    </span>
+				</div>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+<ion-content #scrollArea scrollEvents="true">
+	<div class="detail-part-dashboard detail-part-aum-inner mobile-visibility">
+		<div class="listing-part" *ngIf="datas.length > 0">
+			<!-- <div class="items" *ngFor="let data of datas | orderBy: order:reverse | filter:searchTerm"> -->
+				<div class="items" *ngFor="let data of datas">
+				<div class="upper-section left-part">
+					<div class="type code">{{data['clientId']}}</div>
+					<div class="change-value name hyperlinkstyle" (click)="goToClientDetails(data)">{{data['clientName']}}</div>
+				</div>
+				<div class="lower-section right-part">
+					{{data['aum']}}
+				</div>
+			</div>
+		</div>
+		<div class="listing-part loader" *ngIf="datas.length == 0 && dataLoad">
+			<div style="font-weight: bold;margin-top:40px">No Records Found</div>
+		</div>
+		<div class="loader" *ngIf="!dataLoad" style="min-height: 370px;">
+			<img src="/assets/imgs/loader.gif" alt="">
+		</div>
+	</div>
+	<!-- <ion-infinite-scroll *ngIf="enableNext" threshold="100px" (ionInfinite)="loadData($event)">
+		<ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+		</ion-infinite-scroll-content>
+	</ion-infinite-scroll> -->
+</ion-content>

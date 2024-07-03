@@ -1,0 +1,42 @@
+.web-equity {
+    .header-table {
+        th:first-child, td:first-child {
+            text-align: left !important;
+            padding-left: 20px !important;
+            width: 12% !important;
+            max-width: inherit;
+        }
+        th {
+            width: 9%;
+        }
+        th:nth-child(2) {
+            text-align: left;
+        }
+    }
+    .main-table {
+        // max-height: 260px;
+        max-height: 468px;
+        overflow: auto;
+        td:first-child {
+            text-align: left !important;
+            padding-left: 20px !important;
+            width: 12% !important;
+            max-width: inherit;
+        }
+        td {
+            width: 9%;
+        }
+        td:nth-child(2) {
+            text-align: left;
+            font-family: 'nunitoBold';
+        }
+    }
+}
+
+@media screen and (max-width: 500px){
+    .inner-content {
+        // height: calc(100vh - 501px);
+    }
+}
+
+

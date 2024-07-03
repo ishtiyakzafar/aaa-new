@@ -1,0 +1,35 @@
+<ion-header>
+  <div class="close" (click)="dismiss()">x</div>
+  <div class="title"> 
+    <span>Superstars</span>  
+  </div>
+  <table class="header-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>% Held</th>
+        <th>Value (₹)</th>
+      </tr>
+    </thead>
+  </table>
+</ion-header>
+<ion-content>
+  <div class="table-wrapper thin-scroll">
+    <table class="body-table">
+      <tbody *ngIf="datas.length > 0">
+        <tr *ngFor="let dataObj of datas" (click)="goToCompanyShare(dataObj)" style="cursor: pointer;">  
+          <td>{{dataObj['name']}}</td>
+          <td class="held-value">{{changeFormatData(dataObj['held'])}}</td>
+          <td>{{changeFormatData(dataObj['value']) | formatNumberUnit}}</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="datas.length == 0" style="text-align: center;">
+       <span style="font-size: 12px;margin-top: 20px;">No Data Found</span>
+        
+      </tbody>
+    </table>
+  </div>
+  <div class="view-more" (click)="OtherSuperstars()" *ngIf="showDetails">
+    <span>View Other Superstars</span>
+  </div>
+</ion-content>

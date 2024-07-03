@@ -1,0 +1,412 @@
+
+<div class="container">
+	<h2 class="head-title">
+		<ion-icon name="arrow-back-outline" class="back-button" (click)="back()"></ion-icon>
+		 Account Details</h2>
+	<section class="panel-wrapper">
+		<div class="panel-content">
+			<div class="loader loader-height-300" *ngIf="dataLoad">
+				<img src="/assets/imgs/loader.gif" alt="">
+			</div>
+			<div class="d-flex align-center clientMappMsg" *ngIf="!displayTabs">
+				<img src="assets/imgs/client-mapp.svg">
+				You can view the Account Summary only for the clients mapped under your hierarchy.
+			</div>
+			<div class="ac_details_name d-flex align-center" *ngIf="!dataLoad && displayTabs">
+				<div class="short_name">{{getShortName(clientName)}}</div>
+				<div class="name_details">
+					<span>{{clientName}}</span>
+					<p>Client ID {{clientId}}</p>
+				</div>
+			</div>
+			<div class="account_details_tabs" *ngIf="!dataLoad && displayTabs">
+				<div class="tab-content-block table-2 responsive-scroll">
+					<div class="tableFilter chart-switch-tab responsive-scroll d-flex inner-tapPanel">
+						<input type="radio" id="Personal" name="mf-table" value="yes" checked
+							(click)="tabTableContent('personal_tab')">
+						<label for="Personal">Personal</label>
+
+						<input type="radio" id="Accounts" name="mf-table"
+						(click)="tabTableContent('accounts_tab')" value="yes">
+						<label for="Accounts">Accounts</label>
+
+						<input type="radio" id="Segment" name="mf-table"
+						(click)="tabTableContent('segment_tabmain')" value="yes">
+						<label for="Segment">Segment</label>
+
+						<input type="radio" id="Family" name="mf-table"
+						(click)="tabTableContent('family_tab')" value="yes">
+						<label for="Family">Family</label>
+					</div>
+
+					<div class="ac_tap personal_tab set-scroll personal_scroll">
+						<div class="tab_title">Personal Information</div>
+						<div class="tabs_inner">
+							<div class="ac_details_form">
+								<div class="ac_fr_grid">
+									<label>Mobile Number 
+										<!-- <img src="assets/imgs/acc-details/img/edit_icon.svg"> -->
+									</label>
+									<span>{{clientMobNo}}</span>
+								</div>
+								<div class="ac_fr_grid">
+									<label>Email ID 
+										<!-- <img src="assets/imgs/acc-details/img/edit_icon.svg"> -->
+									</label>
+									<span>{{clientEmail}}</span>
+								</div>
+							</div>
+							<div *ngFor="let item of jointHolders">
+								<div class="holder-count">{{item.title}}</div>
+								<div class="ac_details_form holder_row">
+									<div class="ac_fr_grid">
+										<label>Name</label>
+										<span>{{item.jointHolderName}}</span>
+									</div>
+									<div class="ac_fr_grid">
+										<label>PAN</label>
+										<span>{{item.jointHolderPan}}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<canvas id="desc-treeChart-area" width="800" height="80"></canvas>
+					</div>
+
+					<div class="ac_tap accounts_tab d-none set-scroll">
+						<div class="tab_title">DP Accounts </div>
+						<div class="tabs_inner">
+							<div class="ac_details_form" *ngFor="let dataObj of DpDetails">
+								<div class="ac_fr_grid">
+									<label>BO ID</label>
+									<span>{{dataObj.BOID}}</span>
+								</div>
+								<!-- <div class="ac_fr_grid">
+									<label>Mobile Number</label>
+									<span>--</span>
+								</div> -->
+								<div class="ac_fr_grid">
+									<button class="account_status active">
+										<span>{{dataObj.Status == 'A' ? 'Active' : 'Inactive'}}</span>	
+									</button>
+								</div>
+							</div>
+							<!-- <hr> -->
+							<!-- <div class="ac_details_form">
+								<div class="ac_fr_grid">
+									<label>BO ID</label>
+									<span>123XXXXXX</span>
+								</div>
+								<div class="ac_fr_grid">
+									<label>Mobile Number</label>
+									<span>9876543212</span>
+								</div>
+								<div class="ac_fr_grid">
+									<button class="account_status">Inactive</button>
+								</div>
+							</div> -->
+						</div>
+
+						<!-- <div class="tab_title">Trading Accounts </div>
+						<div class="tabs_inner">
+							<div class="ac_details_form">
+								<div class="ac_fr_grid">
+									<label>BO ID</label>
+									<span>123XXXXXX</span>
+								</div>
+								<div class="ac_fr_grid">
+									<label>Mobile Number</label>
+									<span>9876543212</span>
+								</div>
+								<div class="ac_fr_grid">
+									<button class="account_status active">Active</button>
+								</div>
+							</div>
+						</div>
+
+						<div class="tab_title">Physical MF Account</div>
+						<div class="tabs_inner">
+							<div class="ac_details_form">
+								<div class="ac_fr_grid">
+									<label>BO ID</label>
+									<span>123XXXXXX</span>
+								</div>
+								<div class="ac_fr_grid"></div>
+								<div class="ac_fr_grid">
+									<button class="account_status active">Active</button>
+								</div>
+							</div>
+						</div> -->
+
+
+					</div>
+
+					<div class="ac_tap segment_tabmain d-none set-scroll">
+						<div class="segment_tab">
+							<div class="segment_grid">
+								<div class="tab_title">NSE</div>
+								<div class="tabs_inner">
+									<div class="ac_fr_grid d-flex align-center" *ngFor="let dataObj of nscSegments">
+										<label>{{dataObj.name}}</label>
+										<div class="swtch_status d-flex">
+											<button class="account_status active" *ngIf="dataObj.status">Active</button>
+											<button class="account_status" *ngIf="!dataObj.status">Inactive</button>
+											<div class="switch">
+												<input type="checkbox" [(ngModel)]="dataObj.status" id="switch"><label
+													></label>
+											</div>
+										</div>
+									</div>
+
+									<!-- <div class="ac_fr_grid d-flex align-center">
+										<label>Derivative </label>
+										<div class="swtch_status d-flex">
+											<button class="account_status">Inactive</button>
+											<div class="switch">
+												<input type="checkbox" id="Derivative" /><label
+													for="Derivative"></label>
+											</div>
+										</div>
+									</div>
+
+									<div class="ac_fr_grid d-flex align-center">
+										<label>Currency</label>
+										<div class="swtch_status d-flex">
+											<button class="account_status active">Active</button>
+											<div class="switch">
+												<input type="checkbox" id="Currency" checked /><label
+													for="Currency"></label>
+											</div>
+										</div>
+									</div>
+
+									<div class="ac_fr_grid d-flex align-center">
+										<label>Commodity</label>
+										<div class="swtch_status d-flex">
+											<button class="account_status active">Active</button>
+											<div class="switch">
+												<input type="checkbox" id="Commodity" checked /><label
+													for="Commodity"></label>
+											</div>
+										</div>
+									</div> -->
+
+
+								</div>
+							</div>
+
+							<div class="segment_grid">
+								<div class="tab_title">MCX</div>
+								<div class="tabs_inner">
+
+									<div class="ac_fr_grid d-flex align-center" *ngFor="let dataObj of mcxSegments">
+										<label>{{dataObj.name}} </label>
+										<div class="swtch_status d-flex">
+											<button class="account_status active" *ngIf="dataObj.status">Active</button>
+											<button class="account_status" *ngIf="!dataObj.status">Inactive</button>
+											<div class="switch">
+												<input type="checkbox" [(ngModel)]="dataObj.status" [disabled]="true" id="switch"><label
+													></label>
+											</div>
+										</div>
+									</div>
+
+									<!-- <div class="ac_fr_grid d-flex align-center">
+										<label>Commodity</label>
+										<div class="swtch_status d-flex">
+											<button class="account_status active">Active</button>
+											<div class="switch">
+												<input type="checkbox" id="Commoditymcx" checked /><label
+													for="Commoditymcx"></label>
+											</div>
+										</div>
+									</div> -->
+
+
+								</div>
+							</div>
+
+							<div class="segment_grid">
+								<div class="tab_title">BSE</div>
+								<div class="tabs_inner">
+									<div class="ac_fr_grid d-flex align-center" *ngFor="let dataObj of bscSegments">
+										<label>{{dataObj.name}}</label>
+										<div class="swtch_status d-flex">
+											<button class="account_status active" *ngIf="dataObj.status">Active</button>
+											<button class="account_status" *ngIf="!dataObj.status">Inactive</button>
+											<div class="switch">
+												<input type="checkbox" [(ngModel)]="dataObj.status" id="switch"><label
+													></label>
+											</div>
+										</div>
+									</div>
+
+									<!-- <div class="ac_fr_grid d-flex align-center">
+										<label>Derivative </label>
+										<div class="swtch_status d-flex">
+											<button class="account_status">Inactive</button>
+											<div class="switch">
+												<input type="checkbox" id="Derivativebsc" /><label
+													for="Derivativebsc"></label>
+											</div>
+										</div>
+									</div>
+
+									<div class="ac_fr_grid d-flex align-center">
+										<label>Currency</label>
+										<div class="swtch_status d-flex">
+											<button class="account_status active">Active</button>
+											<div class="switch">
+												<input type="checkbox" id="Currencybsc" checked /><label
+													for="Currencybsc"></label>
+											</div>
+										</div>
+									</div>
+
+									<div class="ac_fr_grid d-flex align-center">
+										<label>Commodity</label>
+										<div class="swtch_status d-flex">
+											<button class="account_status active">Active</button>
+											<div class="switch">
+												<input type="checkbox" id="Commoditybsc" checked /><label
+													for="Commoditybsc"></label>
+											</div>
+										</div>
+									</div> -->
+
+
+								</div>
+							</div>
+
+							<div class="segment_grid">
+								<div class="tab_title">NCDEX</div>
+								<div class="tabs_inner">
+
+									<div class="ac_fr_grid d-flex align-center" *ngFor="let dataObj of ncdexSegments">
+										<label>{{dataObj.name}} </label>
+										<div class="swtch_status d-flex">
+											<button class="account_status active" *ngIf="dataObj.status">Active</button>
+											<button class="account_status" *ngIf="!dataObj.status">Inactive</button>
+											<div class="switch">
+												<input type="checkbox" [(ngModel)]="dataObj.status" id="switch"><label
+													></label>
+											</div>
+										</div>
+									</div>
+
+									<!-- <div class="ac_fr_grid d-flex align-center">
+										<label>Commodity</label>
+										<div class="swtch_status d-flex">
+											<button class="account_status active">Active</button>
+											<div class="switch">
+												<input type="checkbox" id="Commodityncdex" checked /><label
+													for="Commodityncdex"></label>
+											</div>
+										</div>
+									</div> -->
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="family_tab ac_tap d-none set-scroll">
+						<div class="tabs_inner">
+							<div class="fm_card_main">
+								<div class="family_cards" *ngFor="let dataObj of familyMappList">
+									<div class="ac_details_name d-flex align-center">
+										<div class="short_name">{{getShortName(dataObj.ClientName)}}</div>
+										<div class="name_details">
+											<span>{{dataObj.ClientName}}<span>({{dataObj.Relation}})</span></span>
+											<p>Client ID {{dataObj.ClientCode}}</p>
+										</div>
+										<a class="pointer" *ngIf="dataObj.Relation != 'SELF'" (click)="removeMember(dataObj)">Remove</a>
+									</div>
+								</div>
+
+								<!-- <div class="family_cards">
+									<div class="ac_details_name d-flex align-center">
+										<div class="short_name">MC</div>
+										<div class="name_details">
+											<span>Mahendar Chavan <span>(Father)</span></span>
+											<p>Client ID PC234567</p>
+										</div>
+										<a href="javascript:void(0)">Remove</a>
+									</div>
+								</div> -->
+
+							</div>
+							<span class="add_family_btn" (click)="addMemberForm()"><img
+									src="assets/imgs/acc-details/img/add_mem_plus.svg">Add Family Member</span>
+						</div>
+					</div>
+
+					
+				</div>
+			</div>
+		</div>
+	</section>
+</div>	
+
+<div class="tableoverlay1 d-none"></div>
+<div class="addmemeberForm1 d-none modal-box">
+	<div class="modal-head d-flex">
+		<div class="modal-title">Add Family Member</div>
+		<a href="javascript:void(0)" class="close_btn" (click)="closeForm()">
+			<img src="assets/imgs/close_btn.svg"></a>
+	</div>
+	<div class="modal-body">
+		<div class="modal-content">
+			<div class="otp_section_main" id="memberPop">
+				<h2>OTP sent to your family member’s registered
+					mobile number.</h2>
+
+				<form class="addmemberfrom_box" *ngIf="display1">
+					<div class="form-group">
+						<label for="clientid">Family Member’s Client ID</label>
+						<input type="clientid" class="form-control" id="clientId" [(ngModel)]="memberClientCode"
+							[ngModelOptions]="{standalone: true}">
+					</div>
+					<div class="form-group">
+						<label for="Relation">Family Member’s Relation</label>
+						<select class="form-control" id="Relation" [(ngModel)]="selectRelation"
+							[ngModelOptions]="{standalone: true}">
+							<option value="Brother">Brother</option>
+							<option value="Son">Son</option>
+							<option value="Father">Father</option>
+							<option value="Mother">Mother</option>
+							<option value="Spouse">Spouse</option>
+							<option value="Other">Other</option>
+						</select>
+					</div>
+					<button type="submit" id="memberBtn" class="btn btn-default orange-btn"
+						(click)="addMemberFormnext()">Continue</button>
+				</form>
+				<form class="addmemberfrom_box verification-code" *ngIf="display2">
+					<div class="verification_code_inputs d-flex">
+						<code-input #codeInput [isCodeHidden]="false" [codeLength]="6" [code]="otpInput"
+							[initialFocusField]="0" (codeChanged)="onOtpChanged($event)"
+							(codeCompleted)="onotpFieldCompleted($event)">
+						</code-input>
+						<!-- <input type="number" id="text1" maxlength="1" />
+					<input type="number" id="text2" maxlength="1" />
+					<input type="number" id="text2" maxlength="1" />
+					<input type="number" maxlength="1" />
+					<input type="number" maxlength="1" />
+					<input type="number" maxlength="1" /> -->
+					</div>
+					<span class="error d-flex">Please enter a valid OTP</span>
+					<span class="otp_msg">Didn’t receive the OTP? Retry in <span> 00:59 secs</span></span>
+
+					<button type="submit" class="btn btn-default orange-btn" [disabled]="verifyBtn"
+						(click)="verifyMember()">Verify</button>
+				</form>
+			</div>
+			<div class="add_member_successfully" *ngIf="display3">
+				<img src="assets/imgs/acc-details/img/member_success.svg">
+				<span>Your family member added successfully</span>
+				<button type="submit" class="btn btn-default orange-btn" (click)="closeForm()">Done</button>
+			</div>
+		</div>
+	</div>
+</div>
+	

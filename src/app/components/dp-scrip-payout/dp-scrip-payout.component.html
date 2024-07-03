@@ -1,0 +1,145 @@
+<section class="desktop-visibility dp_script_main">
+	<div class="desktop-table overflow-hidden">
+    <div class="search_and_download">
+      <div class="search-section search-section-changed search-section-changed-revamped w-60  dp_script_search">
+        <ion-searchbar search-icon="false" class="custom-searchbar hold_search" placeholder="Client ID"
+          [(ngModel)]="searchValue">
+        </ion-searchbar>
+      
+        
+        <ion-button class="search-button">
+          <img src="assets/svg/updated_search.svg" alt="">
+        </ion-button>
+        
+      </div>
+
+      <div class="download_file">
+        <div (click)="onPdfExcelDownload('pdf')">
+          <img src="assets/svg/pdf.svg" alt="">            
+        </div>
+        <div (click)="onPdfExcelDownload('excel')">
+          <img src="assets/svg/download_excel.svg" alt="">            
+        </div>
+        </div>
+    </div>
+
+    <table class="desktop-table">
+     
+
+      <thead style="width: 100%">
+          <tr>
+              <th class="pointer">Partner code
+              </th>
+              <th class="pointer ">Client id
+              </th>
+              <th [class.active]="order === 'ScriptName'" class="pointer text-center" (click)="setOrder('ScriptName')"><span class="sc_45">Scrip <br>Name</span>
+                 <span class="vr_middle">
+                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                  <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                      *ngIf="ascending">
+                  <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                      *ngIf="!ascending">
+                    </span>
+              </th>
+              <th class="pointer">Slip <br>No.
+              </th>
+              <th class="pointer">Status
+              </th>
+              <th class="pointer">Qty
+              </th>
+              <th  class="pointer ">Entry date
+              </th>
+              <th  class="pointer text-left" >DP Remark
+            </th>
+              <th></th>
+          </tr>
+      </thead>
+      <tbody >
+
+        <tr *ngFor="let dataObj of dpScripData | orderBy: order:val | filterSearch: searchValue : 'ClientCode'">
+              <td>
+                <div class="upper-part">
+                {{dataObj.PartnerCode}}
+              </div>
+                  <div class="detail-part-fix" #detail *ngIf="dataObj['isVisible']">
+                      <div class="detail-part">
+                          <span class="detail-heading">Cl. price</span>
+                          <span class="detail-value">{{dataObj.ClsPrice}}</span>
+                      </div>
+                      <div class="detail-part">
+                          <span class="detail-heading">AppDt</span>
+                          <span class="detail-value">{{moment(dataObj.AppDt).format('DD/MM/YYYY')}}</span>
+                      </div>
+                      <div class="detail-part">
+                          <span class="detail-heading">Dispute</span>
+                          <span class="detail-value">{{dataObj.Dispute}}</span>
+                      </div>
+                      <div class="detail-part">
+                          <span class="detail-heading">Risk Remark</span>
+                          <span class="detail-value">{{dataObj.RiskRemark}}</span>
+                      </div>
+                  </div>
+              </td>
+              
+              <td>
+                  <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                    {{dataObj.ClientCode}}
+                  </div>
+              </td>
+              <td>
+                  <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                    {{dataObj.ScriptName}}
+                  </div>
+              </td>
+              <td>
+                  <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                    {{dataObj.SlipNo}}
+                  </div>
+              </td>
+              <td>
+                  <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                    {{dataObj.Status}}
+                  </div>
+              </td>
+              <td>
+                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                  {{dataObj.Qty}}
+                </div>
+            </td>
+            <td>
+                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                  {{moment(dataObj.EntryDate).format('DD/MM/YYYY')}}
+                </div>
+            </td>
+            <td>
+                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                  {{dataObj.DpRemark}}
+                </div>
+            </td>
+              
+              <td (click)="dropClick(dataObj.srNo ,dpScripData)">
+                  <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 10) + 'px': ''}">
+                    <ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg"
+					*ngIf="!dataObj['isVisible']"></ion-icon>
+				<ion-icon *ngIf="dataObj['isVisible']" class="rotate arrow-button down-arrow-button"
+					src="./assets/svg/down-arrow.svg"></ion-icon>
+                      <!-- <ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg"
+                          ></ion-icon>
+                      <ion-icon class="rotate arrow-button down-arrow-button"
+                          src="./assets/svg/down-arrow.svg"></ion-icon> -->
+                  </div>
+              </td>
+          </tr>
+      </tbody>
+      <tbody *ngIf="dpScripData && dpScripData.length == 0">
+          <tr>
+              <td colspan="8" class="no-data-found text-center">No Data Found</td>
+          </tr>
+      </tbody>
+  </table>
+
+    </div>
+    <div class="loader" *ngIf="dataLoad" style="min-height: 100px">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+</section>

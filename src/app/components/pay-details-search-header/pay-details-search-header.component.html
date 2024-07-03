@@ -1,0 +1,16 @@
+<div>
+	<div class="search-section search-section-changed pay-detail-search-section">
+		<ion-searchbar [(ngModel)]="searchTerm" class="custom-searchbar" debounce="2000"
+			placeholder = {{searchPlaceholer}} customValidate (ngModelChange)="changeValue($event)"></ion-searchbar>
+		<!-- <ion-select class="filter-select" [(ngModel)]="PayoutMonth" (ngModelChange)="changeSelectOption($event, PayoutMonth)">
+			<ion-select-option *ngFor="let obj of monthYearList" [value]="obj">{{obj}}</ion-select-option>
+		</ion-select> -->
+		<!-- <ion-select-option value="August-2020">August 2020 </ion-select-option>
+          <ion-select-option value="September-2020">September 2020</ion-select-option>
+          <ion-select-option value="October-2020">October 2020</ion-select-option> -->
+		<div class="download-block">
+			<!-- <img src="assets/svg/download.svg" alt="">
+			<span class="text">dowonload report</span> -->
+		</div>
+	</div>
+</div>

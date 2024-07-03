@@ -1,0 +1,526 @@
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<!-- <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon> -->
+				<ion-title class="title">Dashboard</ion-title>
+			</div>
+			<div class="search-block">
+				<ion-buttons class="header-icon-block">
+					<!-- <ion-icon class="iconsize first-icon m-r-15"
+						src="./assets/svg/help-btn-icon-white.svg"></ion-icon>
+					<ion-icon class="iconsize first-icon m-r-15" (click)="goToNotification()"
+						src="./assets/svg/notification.svg"></ion-icon>
+					<ion-icon class="iconsize m-r-15" src="./assets/svg/search.svg" (click)="goToSearch()"></ion-icon> -->
+					<div>
+						<ion-icon name="power" class="logout-icon" (click)="confirmLogout()"></ion-icon>
+					</div>
+				</ion-buttons>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content appScrollbarTheme>
+	<div class="dashboard-bg">
+		<div class="market-update mobile-visibility">
+			<div class="market-updates-grid d-flex">
+				<div class="d-flex gp">
+				<span class="market-type-value d-flex"><strong>NIFTY</strong> 18,567.60</span>
+				<span class="market-position negative d-flex ion-align-items-center"><img src="assets/svg/negative-arrow.svg" alt="negative-arrow">55.60 (-5.6%)</span>
+				</div>
+				<div class="d-flex gp">
+					<span class="market-type-value d-flex"><strong>SENSEX</strong> 18,567.60</span>
+					<span class="market-position positive d-flex ion-align-items-center"><img src="assets/svg/positive-arrow.svg" alt="positive-arrow">55.60 (-5.6%)</span>
+					</div>
+	
+				</div>
+		</div>
+	<div class="container">
+	<div class="new-common-header parent-section">
+			<div class="left-section">
+				<div class="d-flex new-common-header-left">
+					<ion-button class="w-150" (click)="redirectTo('register')">Become a Partner</ion-button>
+					<div class="dash-filter d-flex">
+						<span class="active"><img src="assets/svg/team-icon.svg" alt="team"> <label>Team</label></span>
+						<span> <img src="assets/svg/self-icon.svg" alt="self"> <label>Self</label></span>
+					</div>
+				</div>
+
+				<div class="tabs-main">
+				<div class="dashboard-tabs d-flex ion-justify-content-between ion-align-items-center">
+						<ion-segment class="d-flex" [(ngModel)]="equityBlockTabValue" (ionChange)="equityBlockSegmentChanged(equityBlockTabValue,$event.detail.value)">
+							<div *ngFor="let data of equityBlockButton; let i = index">
+								<ion-segment-button class="d-flex" value={{data.Value}}>
+									<span>{{data.Name}} <span class="set-default d-none"><img src="assets/svg/set-default.svg" alt="set-default" width="13px"></span></span> 
+								</ion-segment-button>
+							</div>
+						</ion-segment>
+						<div class="d-flex set-default-right ion-align-items-center desktop-visibility"><img src="assets/svg/set-default.svg" alt="set-default" width="13px">
+							<span>Default</span>
+							<span class="d-none">Set Default</span>
+						</div>
+					</div>
+
+					<ion-row>
+						<div class="dash-tab-inner" [ngSwitch]="equityBlockTabValue">
+							<div class="business-overview">
+								<h2 class="overview-main-title">Business Overview</h2>
+								<span class="search_note">The data shown below is sample data</span>
+							</div>
+							<div *ngSwitchCase="'Overall'">
+								<div class="overview">
+									<div class="overview-main-card">
+								   <div class="aum-card" (click)="onAumClick()">
+									<div class="d-flex ion-justify-content-between ion-align-items-start">
+										<div class="d-flex aum-ti">
+											<img src="assets/svg/aum-icon.svg" alt="aum-icon" width="45px">
+											<span>AUM <img src="assets/svg/next-arrow-purple.svg" alt="next-arrow" width="9px"></span>
+										</div>
+										<div class="d-flex stats ion-align-items-center">
+											<img src="assets/svg/stats-purple.svg" alt="stats">
+										<span>Stats</span>
+										</div>
+									</div>
+									<div class="aum-amt"><span class="rupees">₹</span> 150 Cr</div>
+									<div class="growth-map-msg d-flex ion-align-items-baseline">
+										<img src="assets/svg/growth-path.svg" alt="growth-path" width="22px">
+										<span class="positive percentage">25% <label>higher AUM generated from Last Month</label></span>
+									 </div>
+								   </div>
+								   <div class="overview-right-card d-flex">
+									<div class="overview-small-card" (click)="onBrokerageClick()">
+										<div class="d-flex ion-justify-content-between ion-align-items-start">
+										<span class="overview-small-card-amt-ti">Brokerage <img src="assets/svg/next-arrow-orange.svg" alt="next-arrow" width="8px"></span>
+										<div class="d-flex stats ion-align-items-center">
+											<img src="assets/svg/stats-orange.svg" alt="stats">
+											<span>Stats</span>
+										</div>
+									</div>
+								
+									<div class="growth-map-msg d-flex ion-align-items-baseline">
+										<div class="overview-small-card-amt"><span class="rupees">₹</span> 5 Cr</div>
+										<img src="assets/svg/growth-path.svg" alt="growth-path" width="20px">
+										<span class="positive percentage">15% <label>Higher from last month</label></span>
+										
+									</div>
+								
+									</div>
+								
+									<div class="overview-small-card" (click)="onClientsClick()">
+										<div class="d-flex ion-justify-content-between ion-align-items-start">
+										<span class="overview-small-card-amt-ti">Clients <img src="assets/svg/next-arrow-orange.svg" alt="next-arrow" width="8px"></span>
+										<div class="d-flex stats ion-align-items-center">
+											<img src="assets/svg/stats-orange.svg" alt="stats">
+											<span>Stats</span>
+										</div>
+									</div>
+								
+									<div class="growth-map-msg d-flex ion-align-items-baseline">
+										<div class="overview-small-card-amt">1.5k</div>
+										<img src="assets/svg/growth-path.svg" alt="growth-path" width="20px">
+										<span class="positive percentage">+150 <label>Added from last month</label></span>
+									</div>
+								
+									</div>
+								   </div>
+									</div>
+									<div class="overview-child-card">
+										<div class="ov-ch-card">
+											<label>Equity AUM</label>
+											<div class="amt d-flex ion-align-items-center"><span class="rupees">₹</span> 65Cr</div>
+										</div>
+										<div class="ov-ch-card">
+											<label>MF AUM</label>
+											<div class="amt d-flex ion-align-items-center"><span class="rupees">₹</span> 60Cr</div>
+										</div>
+										<div class="ov-ch-card">
+											<label>Other AUM</label>
+											<div class="amt d-flex ion-align-items-center"><span class="rupees">₹</span> 25Cr</div>
+										</div>
+										<div class="ov-ch-card">
+											<label>Active Clients</label>
+											<div class="amt">1.46 K</div>
+										</div>
+										<div class="ov-ch-card">
+											<label>Dormant Clients</label>
+											<div class="amt">350</div>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+							<div *ngSwitchCase="'Mutual Funds'">
+								<div class="overview">
+									<div class="overview-main-card">
+								   <div class="aum-card" (click)="onAumMFClick()">
+									<div class="d-flex ion-justify-content-between ion-align-items-start">
+										<div class="d-flex aum-ti">
+											<img src="assets/svg/aum-icon.svg" alt="aum-icon" width="45px">
+											<span>MF AUM <img src="assets/svg/next-arrow-purple.svg" alt="next-arrow" width="9px"></span>
+										</div>
+										<div class="d-flex stats ion-align-items-center">
+											<img src="assets/svg/stats-purple.svg" alt="stats">
+										<span>Stats</span>
+										</div>
+									</div>
+									<div class="aum-amt"><span class="rupees">₹</span> 60 Cr</div>
+									<div class="growth-map-msg d-flex ion-align-items-baseline">
+										<img src="assets/svg/growth-path.svg" alt="growth-path" width="22px">
+										<span class="positive percentage">15% <label>Higher AUM generated from last month</label></span>
+									</div>
+								   </div>
+								   <div class="overview-right-card d-flex">
+									<div class="overview-small-card" (click)="onBrokerageMFClick()">
+										<div class="d-flex ion-justify-content-between ion-align-items-start">
+										<span class="overview-small-card-amt-ti">Payout <img src="assets/svg/next-arrow-orange.svg" alt="next-arrow" width="8px"></span>
+										<div class="d-flex stats ion-align-items-center">
+											<img src="assets/svg/stats-orange.svg" alt="stats">
+											<span>Stats</span>
+										</div>
+									</div>
+								
+									<div class="growth-map-msg d-flex ion-align-items-baseline">
+										<div class="overview-small-card-amt"><span class="rupees">₹</span> 1.5 Cr</div>
+										<img src="assets/svg/growth-path.svg" alt="growth-path" width="20px">
+										<span class="positive percentage">15% <label>Higher from last month</label></span>
+									</div>
+								
+									</div>
+								
+									<div class="overview-small-card" (click)="onClientsMFClick()">
+										<div class="d-flex ion-justify-content-between ion-align-items-start">
+										<span class="overview-small-card-amt-ti">Clients <img src="assets/svg/next-arrow-orange.svg" alt="next-arrow" width="8px"></span>
+										<div class="d-flex stats ion-align-items-center">
+											<img src="assets/svg/stats-orange.svg" alt="stats">
+											<span>Stats</span>
+										</div>
+									</div>
+								
+									<div class="growth-map-msg d-flex ion-align-items-baseline">
+										<div class="overview-small-card-amt">1.5k</div>
+										<img src="assets/svg/growth-path.svg" alt="growth-path" width="20px">
+										<span class="positive percentage">+150 <label>Added from last month</label></span>
+									</div>
+								
+									</div>
+								   </div>
+									</div>
+									<div class="overview-child-card tab-child-card-wrap">
+										<div class="ov-ch-card">
+											<label>Total New SIP <span>(MTD)</span></label>
+											<div class="amt d-flex ion-align-items-center">45</div>
+										</div>
+										<div class="ov-ch-card">
+											<label>New SIP Amt <span>(MTD)</span></label>
+											<div class="amt d-flex ion-align-items-center"><span class="rupees">₹</span> 3.5 L</div>
+											</div>
+										<div class="ov-ch-card">
+											<label>Live SIP Amt</label>
+											<div class="amt d-flex ion-align-items-center"><span class="rupees">₹</span> 1350</div>
+										</div>
+										<div class="ov-ch-card">
+											<label>Total Live SIP</label>
+											<div class="amt">10.87 L</div>
+										</div>
+										<div class="ov-ch-card">
+											<label>Non-Broking Clients</label>
+											<div class="amt">56</div>
+										</div>
+										<div class="ov-ch-card">
+											<label>Only MF Clients</label>
+											<div class="amt">79</div>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+							<div *ngSwitchCase="'Equity'">
+								<div class="overview">
+									<div class="overview-main-card">
+								   <div class="aum-card" (click)="onAumClick()">
+									<div class="d-flex ion-justify-content-between ion-align-items-start">
+										<div class="d-flex aum-ti">
+											<img src="assets/svg/aum-icon.svg" alt="aum-icon" width="45px">
+											<span>Equity AUM <img src="assets/svg/next-arrow-purple.svg" alt="next-arrow" width="9px"></span>
+										</div>
+										<div class="d-flex stats ion-align-items-center">
+											<img src="assets/svg/stats-purple.svg" alt="stats">
+										<span>Stats</span>
+										</div>
+									</div>
+									<div class="aum-amt"><span class="rupees">₹</span> 25 Cr</div>
+									<div class="growth-map-msg d-flex ion-align-items-baseline">
+										<img src="assets/svg/growth-path.svg" alt="growth-path" width="22px">
+										<span class="positive percentage">25%  <label>Higher AUM generated from last month</label></span>
+									</div>
+								   </div>
+								   <div class="overview-right-card d-flex">
+									<div class="overview-small-card" (click)="onBrokerageClick()">
+										<div class="d-flex ion-justify-content-between ion-align-items-start">
+										<span class="overview-small-card-amt-ti">Brokerage <img src="assets/svg/next-arrow-orange.svg" alt="next-arrow" width="8px"></span>
+										<div class="d-flex stats ion-align-items-center">
+											<img src="assets/svg/stats-orange.svg" alt="stats">
+											<span>Stats</span>
+										</div>
+									</div>
+								
+									<div class="growth-map-msg d-flex ion-align-items-baseline">
+										<div class="overview-small-card-amt"><span class="rupees">₹</span> 5 Cr</div>
+										<img src="assets/svg/growth-path.svg" alt="growth-path" width="20px">
+										<span class="positive percentage">15% <label>Higher from last month</label></span>
+									</div>
+								
+									</div>
+								
+									<div class="overview-small-card" (click)="onClientsClick()">
+										<div class="d-flex ion-justify-content-between ion-align-items-start">
+										<span class="overview-small-card-amt-ti">Clients <img src="assets/svg/next-arrow-orange.svg" alt="next-arrow" width="8px"></span>
+										<div class="d-flex stats ion-align-items-center">
+											<img src="assets/svg/stats-orange.svg" alt="stats">
+											<span>Stats</span>
+										</div>
+									</div>
+								
+									<div class="growth-map-msg d-flex ion-align-items-baseline">
+										<div class="overview-small-card-amt">1.5K</div>
+										<img src="assets/svg/growth-path.svg" alt="growth-path" width="20px">
+										<span class="positive percentage">+150 <label>Added from last month</label></span>
+									</div>
+								
+									</div>
+								   </div>
+									</div>
+									<div class="overview-child-card tab-child-card-wrap">
+										<div class="ov-ch-card">
+											<label>Dormant Clients</label>
+											<div class="amt d-flex ion-align-items-center">350</div>
+										</div>
+										<div class="ov-ch-card">
+											<label>New Clients<span>(YTD)</span></label>
+											<div class="amt d-flex ion-align-items-center">320</div>
+											</div>
+										<div class="ov-ch-card">
+											<label>Active Clients</label>
+											<div class="amt d-flex ion-align-items-center">1.46 K</div>
+										</div>
+										
+									</div>
+								</div>
+								
+							</div>
+							<div *ngSwitchCase="'Cross-Sell'">
+								<div class="overview">
+									<div class="overview-main-card">
+								   <div class="aum-card" (click)="onAumFDClick()">
+									<div class="d-flex ion-justify-content-between ion-align-items-start">
+										<div class="d-flex aum-ti">
+											<img src="assets/svg/aum-icon.svg" alt="aum-icon" width="45px">
+											<span>AUM <img src="assets/svg/next-arrow-purple.svg" alt="next-arrow" width="9px"></span>
+										</div>
+										<div class="d-flex stats ion-align-items-center">
+											<img src="assets/svg/stats-purple.svg" alt="stats">
+										<span>Stats</span>
+										</div>
+									</div>
+									<div class="aum-amt"><span class="rupees">₹</span> 25 Cr</div>
+									<div class="growth-map-msg d-flex ion-align-items-baseline">
+										<img src="assets/svg/growth-path.svg" alt="growth-path" width="22px">
+										<span class="positive percentage">15% <label>Higher AUM generated from last month</label></span>
+									</div>
+								   </div>
+								   <div class="overview-right-card d-flex">
+									<div class="overview-small-card" (click)="onBrokerageFDClick()">
+										<div class="d-flex ion-justify-content-between ion-align-items-start">
+										<span class="overview-small-card-amt-ti">Payout <img src="assets/svg/next-arrow-orange.svg" alt="next-arrow" width="8px"></span>
+										<div class="d-flex stats ion-align-items-center">
+											<img src="assets/svg/stats-orange.svg" alt="stats">
+											<span>Stats</span>
+										</div>
+									</div>
+								
+									<div class="growth-map-msg d-flex ion-align-items-baseline">
+										<div class="overview-small-card-amt"><span class="rupees">₹</span>65 L</div>
+										<img src="assets/svg/growth-path.svg" alt="growth-path" width="20px">
+										<span class="positive percentage">15% <label>Higher from last month</label></span>
+									</div>
+								
+									</div>
+								
+									<div class="overview-small-card" (click)="onClientsFDClick()">
+										<div class="d-flex ion-justify-content-between ion-align-items-start">
+										<span class="overview-small-card-amt-ti">Clients <img src="assets/svg/next-arrow-orange.svg" alt="next-arrow" width="8px"></span>
+										<div class="d-flex stats ion-align-items-center">
+											<img src="assets/svg/stats-orange.svg" alt="stats">
+											<span>Stats</span>
+										</div>
+									</div>
+								
+									<div class="growth-map-msg d-flex ion-align-items-baseline">
+										<div class="overview-small-card-amt">45</div>
+										<img src="assets/svg/growth-path.svg" alt="growth-path" width="20px">
+										<span class="positive percentage">+15 <label>Added from last month</label></span>
+									</div>
+								
+									</div>
+								   </div>
+									</div>
+									<div class="overview-child-card cross-sell-child-card">
+										<div class="ov-ch-card">
+											<label>FD/Bonds/NCDs</label>
+											<div class="amt d-flex ion-align-items-center"><span class="rupees">₹</span> 16 Cr</div>
+										</div>
+										<div class="ov-ch-card">
+											<label>PMS/AIF</label>
+											<div class="amt d-flex ion-align-items-center"><span class="rupees">₹</span> 7.5 Cr</div>
+										</div>
+										<div class="ov-ch-card">
+											<label>MLDs/Gold</label>
+											<div class="amt d-flex ion-align-items-center"><span class="rupees">₹</span> 1.5 Cr</div>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+					</ion-row>
+
+					
+				</div>
+
+				<div class="mobile-visibility" style="margin-top: 15px;">
+					<div class="quick-link-grid-main right-gr-mb">
+						<div class="quick-title-grid d-flex ion-align-items-center ion-justify-content-between">
+							<h2>Quick Links</h2>
+							<span (click)="callBecomePartnerModal()">Manage Links</span>
+						</div>
+						<div class="quick-link-grid" >
+							<div (click)="callBecomePartnerModal()">Risk Report</div>
+							<div (click)="callBecomePartnerModal()">Real Time  Margin Shortfall</div>
+							<div (click)="callBecomePartnerModal()">Family Portfolio</div>
+							<div (click)="callBecomePartnerModal()">Brokerage Request Status</div>
+							<div (click)="callBecomePartnerModal()">Realized PnL</div>
+							<div (click)="callBecomePartnerModal()">Forms for Partners</div>
+							<div (click)="callBecomePartnerModal()" class="add-link-btn">Add <br> Quick Link</div>
+						</div>
+					</div>
+					
+				</div>
+			<div class="business-opportunities order-5">
+					<div class="heading business_opportunity_md_lg">
+						<span>Business Opportunities</span>
+						<a class="view-all mobile-visibility md_lg">View All</a>
+					</div>
+					<div class="opportunities-block">
+						<div class="opportunitiy" (click)="displyPopupManageQuickLink()">
+							<div class="value-section">
+								<div class="value">10</div>
+								<div class="type">Clients</div>
+							</div>
+							<div class="description">Having Birthday in Next 30 Days</div>
+							<div class="icon-section">
+								<ion-icon src="assets/svg/cake.svg"></ion-icon>
+							</div>
+						</div>
+						<div class="opportunitiy not-invested-sip" (click)="displyPopupNotInvest()">
+							<div class="value-section">
+								<div class="value">6</div>
+								<div class="type">Clients</div>
+							</div>
+							<div class="description">Not invested in SIP</div>
+							<div class="icon-section">
+								<ion-icon src="assets/svg/not_inv_sip.svg"></ion-icon>
+							</div>
+						</div>
+						<div class="opportunitiy client-fo" (click)="displyPopupPMS()">
+							<div class="value-section">
+								<div class="value">7</div>
+								<div class="type">Clients</div>
+							</div>
+							<div class="description">PMS AIF Leads</div>
+							<div class="icon-section">
+								<ion-icon src="assets/svg/pmsleads.svg"></ion-icon>
+							</div>
+						</div>
+						<div class="opportunitiy" style="visibility: hidden;"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="right-section desktop-visibility">
+<div class="open-account-main d-flex desktop-visibility">
+    <div class="d-flex iy-aum">
+       <img src="assets/svg/increase-aum.svg" alt="increase-aum">
+       <span>Increase your AUM</span>
+       </div>
+       <div (click)="callBecomePartnerModal()" class="open-account-btn">Open Account</div>
+   
+
+   </div>
+   <div class="market-updates-box right-gr-mb">
+    <swiper-container class="markets-slide" [autoplay]="indiciesSlider" direction="vertical" loop="true" >
+        <swiper-slide>
+   <div class="market-updates-grid">
+        <div>
+        <span class="market-type-value d-flex ion-justify-content-start"><strong>NIFTY</strong> 18,567.60</span>
+        <span class="market-position negative d-flex ion-align-items-center ion-justify-content-start">55.60 (-5.6%) <img src="assets/svg/negative-arrow.svg" alt="negative-arrow"></span>
+        </div>
+        <div>
+            <span class="market-type-value d-flex"><strong>SENSEX</strong> 18,567.60</span>
+            <span class="market-position positive d-flex ion-align-items-center"><img src="assets/svg/positive-arrow.svg" alt="positive-arrow">55.60 (-5.6%)</span>
+            </div>
+    
+        </div>
+    </swiper-slide>
+    <swiper-slide>
+        <div class="market-updates-grid">
+             <div>
+             <span class="market-type-value d-flex ion-justify-content-start"><strong>BANKNIFTY</strong> 18,567.60</span>
+             <span class="market-position negative d-flex ion-align-items-center ion-justify-content-start">55.60 (-5.6%) <img src="assets/svg/negative-arrow.svg" alt="negative-arrow"></span>
+             </div>
+             <div>
+                 <span class="market-type-value d-flex"><strong>INDIAVIX</strong> 18,567.60</span>
+                 <span class="market-position positive d-flex ion-align-items-center"><img src="assets/svg/positive-arrow.svg" alt="positive-arrow">55.60 (-5.6%)</span>
+                 </div>
+         
+             </div>
+         </swiper-slide>
+    </swiper-container>
+    </div>
+				<!-- Add quick link section -->
+				<div class="quick-link-grid-main right-gr-mb">
+					<div class="quick-title-grid d-flex ion-align-items-center ion-justify-content-between">
+						<h2>Quick Links</h2>
+						<span (click)="callBecomePartnerModal()">Manage Links</span>
+					</div>
+					<div class="quick-link-grid">
+						<div (click)="callBecomePartnerModal()">Risk Report</div>
+						<div (click)="callBecomePartnerModal()">Real Time  Margin Shortfall</div>
+						<div (click)="callBecomePartnerModal()">Family Portfolio</div>
+						<div (click)="callBecomePartnerModal()">Brokerage Request Status</div>
+						<div (click)="callBecomePartnerModal()">Realized PnL</div>
+						<div (click)="callBecomePartnerModal()">Forms for Partners</div>
+						<div (click)="callBecomePartnerModal()" class="add-link-btn">Add <br> Quick Link</div>
+					</div>
+				</div>
+				
+				<!-- Add quick link section -->
+
+				<!-- <div>
+					<swiper-container *ngIf="filteredData" #bannerSlides [options]="slidebannerWeb" (swiperactiveindexchange)="bannerChanged($event)"
+								pager="true" [pagination]="{ clickable: true}" autoplay="true">
+						<swiper-slide  *ngFor="let slide of filteredData">
+							<a href="{{slide.imgHref}}" target="_blank">
+								<img src="{{slide.imgUrl}}" alt="banner">
+							</a>
+						</swiper-slide>
+					</swiper-container>			
+				</div> -->
+
+				</div>
+		</div>
+	</div>
+</div>
+	<!-- ONLY FOR DROPDOWN -->
+	<div *ngIf="isDropDownVisible" class="overlay-div" (click)="overlayClicked($event)"></div>
+</ion-content>

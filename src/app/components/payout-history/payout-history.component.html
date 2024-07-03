@@ -1,0 +1,169 @@
+<ion-header>
+
+  <ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Pay Out History</ion-title>
+			</div>
+		</div>
+	</ion-toolbar>
+
+	<div class="mobile-visibility">
+		<div class="web-equity">
+			<div class="header-table">
+				<table style="width: 100%" class="desktop-header-table">
+					<thead>
+						<tr>
+							<th>
+								Requested (₹)
+							</th>
+							<th>
+								Bank Details
+							</th>
+							<th>
+								  Payout (₹)
+							</th>
+
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+
+  <div class="desktop-visibility">
+    <div class="close" (click)="dismiss()">x</div>
+    <div class="payout-header">
+      <span class="title">Pay Out History</span>
+    </div>
+  </div>
+  
+  
+</ion-header>
+
+<ion-content class="desktop-visibility">
+  <div class="table-block-parent" *ngIf="dataLoad">
+		<div class="table-width">
+			<div class="web-equity">
+				<div class="header-table">
+					<table style="width: 100%" class="desktop-header-table">
+						<thead>
+							<tr>
+								<th>
+									Requested (₹)
+								</th>
+								<th>
+									Bank Details
+								</th>
+								<th>
+									Cheque No
+								</th>
+								<th>
+									Token No
+								</th>
+								<th>
+									Product
+								</th>
+								<th>
+									Payout Status
+								</th>
+								<th>
+									Payout (₹)
+								</th>
+
+							</tr>
+						</thead>
+					</table>
+				</div>
+			</div>
+			<div class="table-wrapper thin-scroll" style="max-height: calc(100vh - 300px);">
+				<table class="body-table">
+					<tbody *ngIf="payoutHistory.length > 0">
+						<tr *ngFor="let dataObj of payoutHistory; let i = index">
+							<td>
+								<div class="scrip value-block">
+									<div class="upper">{{dataObj.RequestAmount}}</div>
+									<div class="lower">{{moment(dataObj.RequestDate).format('DD/MM/YYYY')}}</div>
+								</div>
+							</td>
+							<td> 
+								<div class="upper">{{dataObj.Bank ? dataObj.Bank : '-'}}</div>
+								<div class="lower">{{dataObj.AccountNo ? dataObj.AccountNo : '-'}}</div>
+							</td>
+							<td>
+								<div class="upper">{{dataObj.ChequeNo ? dataObj.ChequeNo : '-'}}</div>
+							</td>
+							<td>
+								<div class="upper">{{dataObj.TokenNO ? dataObj.TokenNO : '-'}}</div>
+							</td>
+							<td>
+								<div class="upper">{{dataObj.Product ? dataObj.Product : '-'}}</div>
+							</td>
+							<td>
+								<div class="upper">{{dataObj.PayoutStatus ? dataObj.PayoutStatus : '-'}}</div>
+							</td>
+							<td>
+								<div class="value-block">
+									<div class="upper">{{dataObj.PayoutAmount}}</div>
+									<div class="lower">{{moment(dataObj.PayoutDate).format('DD/MM/YYYY')}}</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+              <tbody *ngIf="payoutHistory.length === 0">
+                  <tr>
+                      <td class="no-data-found">
+                          No Data found
+                      </td>
+                  </tr>
+              </tbody>
+				</table>
+			</div>
+		</div>
+
+
+
+	</div>
+    <div class="loader" *ngIf="!dataLoad" style="min-height: calc(100vh - 286px);">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+
+</ion-content>
+
+
+
+
+<ion-content class="mobile-visibility">
+	<div class="web-equity thin-scroll" *ngIf="dataLoad">
+		<div class="main-table thin-scroll">
+			<table style="width: 100%" class="mobile-table">
+				<tbody *ngIf="payoutHistory.length > 0">
+					<tr *ngFor="let dataObj of payoutHistory; let i = index">
+						<td>
+							<div class="type-bold-text">{{dataObj.RequestAmount}}</div>
+							<div class="type-light-text">{{moment(dataObj.RequestDate).format('DD/MM/YYYY')}}</div>
+						</td>
+						<td> 
+							<div class="type-bold-text">{{dataObj.Bank ? dataObj.Bank : '-'}}</div>
+							<div class="type-light-text">{{dataObj.AccountNo ? dataObj.AccountNo : '-'}}</div>
+						</td>
+						<td>
+							<div class="type-bold-text">{{dataObj.PayoutAmount}}</div>
+							<div class="type-light-text">{{moment(dataObj.PayoutDate).format('DD/MM/YYYY')}}</div>
+						</td>
+					</tr>
+				</tbody>
+
+				<div class="no-data-found" *ngIf="payoutHistory.length == 0">
+					<span>No Data Found</span>
+				</div>
+			</table>
+		</div>
+	</div>
+
+	<div class="loader" *ngIf="!dataLoad" style="min-height: calc(100vh - 286px);">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+	
+</ion-content>

@@ -1,0 +1,36 @@
+.button-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 35px;
+    text-align: center;
+    z-index: 1;
+  
+    ion-button {
+      --background: #F37921;
+      box-shadow: 0px 2px 18px #f37921ad;
+      font-size: 15px;
+      font-family: "nunitoExtraBold";
+      height: 41px;
+      border-radius: 50px;
+      --border-radius: 50px;
+    }
+  }
+  
+  .section {
+    margin-bottom: 20px;
+  
+    .label {
+      color: #808080;
+      font-size: 14px;
+      text-align: left;
+      min-height: 24px
+    }
+  }
+  
+  .disclaimer{
+    font-size: 14px;
+  }
+  
+  
+  

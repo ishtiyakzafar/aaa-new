@@ -1,0 +1,8 @@
+.pop_close{position: absolute; right: 15px; width: 12px; top: 15px;}
+.card_details_pop{padding: 16px;}
+.bod_hold_list{padding: 0px 20px; margin-top: 30px;}
+.bod_hold_list li{display: flex ; justify-content: space-between; padding: 5px;}
+.bod_hold_list li:last-child{border-top: 2px solid #DFE0E3; padding-top: 10px;}
+.bod_hold_list li span{color: #010101; font-size: 14px;}
+.bod_hold_list li:last-child span{font-weight: bold;}
+.bod_hold_list li:last-child label{font-weight: bold; color: #212121;}

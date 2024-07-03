@@ -1,0 +1,37 @@
+<div class="container-block">
+	<!-- <div class="close" (click)="dismiss()">x</div> -->
+	<p class="message">
+		Your Session Expired. Please Login again!
+	</p>
+	<form class="form-block">
+		<div class="field-block">
+			<ion-item lines="none">
+				<div class="field m-b-16">
+					<ion-label [ngClass]="{'focus-label': isFocusUser}">User ID</ion-label>
+					<ion-input class="added-value" [ngClass]="{'focus-input': isFocusUser}" 
+						type="text" (ionFocus)="focusUser()" (ionBlur)="focusOutUser()" autocomplete="off"
+						disabled [value]="userID"></ion-input>
+				</div>
+			</ion-item>
+			<ion-item lines="none">
+				<div class="field">
+					<ion-label [ngClass]="{'focus-label': isFocusPassword}">Password</ion-label>
+					<ion-input [ngClass]="{'focus-input': isFocusPassword}" style="--padding-end:32px"
+						[type]="passwordVisible ? 'text' : 'password'" clearOnEdit="false" autocomplete="off"
+						inputmode="password"
+						(ionChange)="passwordChange($event)" (ionFocus)="focusPassword()" name="password"
+						(ionBlur)="focusOutPassword()"></ion-input>
+					<ion-icon [name]="passwordVisible ? 'eye' : 'eye-off' " (click)="passwordVisible = !passwordVisible"
+						class="eye-icon"></ion-icon>
+
+				</div>
+      </ion-item>
+      <div class="text-right m-t-5">
+        <span class="forgot-password">Forgot Password?</span>
+      </div>
+		</div>
+		<div class="login-btn">
+			<ion-button shape="round" expand="full" [disabled]="showLoader" (click)="login()"><span *ngIf="!showLoader"> Login </span> <ion-spinner *ngIf="showLoader" name="circles"></ion-spinner> </ion-button>
+		</div>
+	</form>
+</div>

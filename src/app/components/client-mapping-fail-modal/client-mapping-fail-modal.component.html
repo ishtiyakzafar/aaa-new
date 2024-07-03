@@ -1,0 +1,20 @@
+<div class="bod_hold_modal" >
+  <div class="top_bg">
+<div class="pop_close" (click)="dismiss()"><img src="assets/svg/close_icon_white.svg" width="20" alt="close"></div>
+<img src="assets/svg/fail.svg" width="60" alt="fail">
+</div>
+<div class="card_details_pop">
+<h2>Uh ohh.</h2>
+<h5>Client Mapping Failed</h5>
+<p>Some Clients could not be mapped due to one of the reason:
+<br>
+  1) Clients are not mapped under provided Dealer ID
+  <br>
+  2) They are Dormant/Freezed/NRI Clients
+  <br>
+  3) Clients already mapped under the provided Dealer ID</p>
+  <span>Kindly download the error file</span>
+  <ion-button (click)="SaveDemo()"> <img *ngIf="dataLoad" src="assets/svg/download_arrow.svg" width="27" alt="download"> ErrorFile.csv</ion-button>
+</div>
+
+</div>

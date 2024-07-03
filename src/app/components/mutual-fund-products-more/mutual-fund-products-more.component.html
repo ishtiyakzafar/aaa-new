@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar color="tertiary" class="mobile-visibility">
+    <!-- <ion-buttons slot="start"> -->
+      <!-- <ion-back-button></ion-back-button> -->
+      <div class="back-title-block">
+        <ion-icon name="arrow-back-outline" class="back-button" (click)="dissmiss()"></ion-icon>
+        <span>Mutual Fund Products</span>
+      </div>
+    <!-- </ion-buttons> -->
+    <!-- <ion-title>Search</ion-title> -->
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-item lines="full" *ngFor="let dataObj of datas" (click)="redirect(dataObj['type'])">
+    <ion-label>
+      {{dataObj['productName']}}
+    </ion-label>
+  </ion-item>
+  <div class="go-to-mutual" (click)="navigateLink('http://mf.indiainfoline.com')">
+    <span>Go to Mutual Fund Website</span>
+  </div>
+</ion-content>

@@ -1,0 +1,158 @@
+<ion-header class="mobile-visibility main-header">
+	<ion-toolbar color="tertiary">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">DP Transaction</ion-title>
+			</div>
+		</div>
+        <div class="change-option-mobile">
+            <img src="assets/svg/download_excel.svg" alt="">
+            <div class="change-option" (click)="downloadReport()">Download Report</div>
+        </div>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content class="mobile-visibility">
+	<div *ngIf="transactionData.length > 0 && !dataLoad">
+		<div class="slide-data" *ngFor="let dataObj of transactionData">
+			<div class="slide-heading">
+				<span class="scrip">{{dataObj['companyName']}}</span>
+				<span class="transaction-date">{{dataObj.Transaction_date}}</span>
+				<span class="particular">{{dataObj['Particular']}}</span>
+			</div>
+			<div class="segment-data-block">
+				<div class="segment-data">
+					<span class="title">Credit(₹)</span>
+					<span class="value">{{dataObj['creditAmount'] | formatNumerDecimal}}</span>
+				</div>
+				<div class="segment-data">
+					<span class="title">Debit(₹)</span>
+					<span class="value">{{dataObj['debitAmount'] | formatNumerDecimal}}</span>
+				</div>
+				<div class="segment-data">
+					<!-- <span class="title">Opening Balance(₹)</span> -->
+					<span class="title">Opening Bal(₹)</span>
+					<span class="value">{{dataObj['openingBalance'] | formatNumerDecimal}}</span>
+				</div>
+				<div class="segment-data">
+					<!-- <span class="title">Closing Balance(₹)</span> -->
+					<span class="title">Closing Bal(₹)</span>
+					<span class="value">{{dataObj['closingBalance'] | formatNumerDecimal}}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+   
+	<div class="no-data-found" *ngIf="transactionData.length == 0 && !dataLoad">
+		<span>No Data Found</span>
+	</div>
+	<div class="loader" *ngIf="dataLoad">
+		<img src="/assets/imgs/loader.gif" alt="">
+	</div>
+
+</ion-content>
+
+<div class="container smaller-container desktop-visibility">
+	<div class="web-equity thin-scroll" *ngIf="!dataLoad">
+		<div class="header-table">
+			<table style="width: 100%" class="desktop-header-table">
+				<thead>
+					<tr>
+						<th [class.active]="order === 'convertDate'" class="pointer" (click)="setOrder('convertDate')">
+							Trx Date
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                *ngIf="!ascending">
+						</th>
+						<th>
+							Company Name
+						</th>
+						<th>
+							Particulars
+						</th>
+						<th [class.active]="order === 'creditAmount'" class="pointer" (click)="setOrder('creditAmount')">
+							Credit(₹)
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                *ngIf="!ascending">
+						</th>
+						<th [class.active]="order === 'debitAmount'" class="pointer" (click)="setOrder('debitAmount')">
+							Debit(₹)
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                *ngIf="!ascending">
+						</th>
+						<th [class.active]="order === 'openingBalance'" class="pointer" (click)="setOrder('openingBalance')">
+							Opening Balance(₹)
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                *ngIf="!ascending">
+						</th>
+						<th [class.active]="order === 'closingBalance'" class="pointer" (click)="setOrder('closingBalance')">
+							Closing Balance(₹)
+                            <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                            <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                *ngIf="ascending">
+                            <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                *ngIf="!ascending">
+						</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+		<div class="main-table thin-scroll">
+			<!-- <table style="width: 100%" class="mobile-table"> -->
+			<table style="width: 100%">
+				<tbody *ngIf="transactionData.length > 0">
+
+					<tr *ngFor="let dataObj of transactionData | orderBy: order:val; let i = index">
+						<td>
+							{{dataObj.Transaction_date}}
+						</td>
+						<td>
+							{{dataObj.companyName}}
+						</td>
+						<td>
+							{{dataObj.Particular}}
+						</td>
+						<td>
+							<!-- <span class="rupees">₹</span> -->
+							{{dataObj.creditAmount | formatNumerDecimal}}
+						</td>
+						<td>
+							<!-- <span class="rupees">₹</span> -->
+							{{dataObj.debitAmount | formatNumerDecimal}}
+						</td>
+						<td>
+							<!-- <span class="rupees">₹</span> -->
+							{{dataObj.openingBalance | formatNumerDecimal}}
+						</td>
+						<td>
+							<!-- <span class="rupees">₹</span> -->
+							{{dataObj.closingBalance | formatNumerDecimal}}
+						</td>
+					</tr>
+				</tbody>
+				<tbody *ngIf="transactionData.length === 0 && !dataLoad">
+					<tr>
+						<td class="no-data-found">No Records Found</td>
+					</tr>
+					<!-- <span>No Records Found</span> -->
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+	<div class="loader" *ngIf="dataLoad" style="min-height: 100px;">
+		<img src="/assets/imgs/loader.gif" alt="">
+	</div>
+</div>

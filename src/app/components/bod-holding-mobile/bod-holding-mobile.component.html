@@ -1,0 +1,511 @@
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Reports</ion-title>
+			</div>
+		</div>
+
+	</ion-toolbar>
+	<div class="download_file" style="margin-top: 20px; margin-bottom: 0px;">
+		<div class="option-type" (click)="onPdfExcelDownload('pdf')">
+			<img src="assets/svg/pdf.svg" alt="">            
+		</div>
+		<div class="option-type" (click)="onPdfExcelDownload('excel')">
+			<img src="assets/svg/download_excel.svg" alt="">            
+		</div>
+	</div>
+  </ion-header>
+
+  <ion-content>
+<div class="mobile-visibility bod_holding_mobile_view">
+	<div class="bod_silder">
+	<div class="bod_card">
+<h2>Client Information</h2>
+<ul class="bod_card_list">
+<li>
+	<label>Client Category</label>
+	<span>{{headerDetailsData && headerDetailsData['ClientCategory'] ? headerDetailsData['ClientCategory'] : ''}}</span>
+</li>
+
+<li>
+	<label>Cash</label>
+	<span>{{headerDetailsData && headerDetailsData['Cash'] ? headerDetailsData['Cash'] : ''}}</span>
+</li>
+
+<li>
+	<label>F&O</label>
+  <span>{{headerDetailsData && headerDetailsData['FNO'] ? headerDetailsData['FNO'] : ''}}</span>
+</li>
+
+<li>
+	<label>Wire code</label>
+	<span>{{headerDetailsData && headerDetailsData['WireCode'] ? headerDetailsData['WireCode'] : ''}}</span>
+</li>
+
+<li>
+	<label>POA</label>
+	<span>{{headerDetailsData && headerDetailsData['POA'] ? headerDetailsData['POA'] : ''}}</span>
+</li>
+
+<li>
+	<label>Activation Date</label>
+  <span>{{headerDetailsData && headerDetailsData['ActivationDate'] ? formatChange(headerDetailsData['ActivationDate']) : ''}}</span>
+</li>
+
+</ul>
+</div>
+
+	<div class="bod_card">
+		<h2>Ledger Balance</h2>
+		<ul class="bod_card_list">
+		<li>
+			<label>ALB</label>
+			<span [ngClass]="{'alb-color': headerDetailsData && headerDetailsData['ALB'] && convertFunc(headerDetailsData['ALB']) < 0}">{{headerDetailsData && headerDetailsData['ALB'] ? convertFunc(headerDetailsData['ALB']) : ''}}</span>
+		</li>
+		
+		<li>
+			<label>Uncl. Cheque</label>
+			<span>{{headerDetailsData && headerDetailsData['UnclCheque'] ? convertFunc(headerDetailsData['UnclCheque']) : ''}}</span>
+		</li>
+		
+		<li>
+			<label>MtoM Dr/ Cr</label>
+      <span>{{headerDetailsData && headerDetailsData['MtoMDrCr'] ? convertFunc(headerDetailsData['MtoMDrCr']) : ''}}</span>
+		</li>
+		
+		<li>
+			<label>Led. Bal. (T2)</label>
+      <span>{{headerDetailsData && headerDetailsData['LedBalT2'] ? convertFunc(headerDetailsData['LedBalT2']) : ''}}</span>
+		</li>
+		
+		<li>
+			<label>FDR</label>
+			<span>{{headerDetailsData && headerDetailsData['FDR'] ? convertFunc(headerDetailsData['FDR']) : ''}}</span>
+		</li>
+		
+		<li>
+			<label>BMFD / BNPL Ledger Balance</label>
+			<span>{{headerDetailsData && headerDetailsData['BMFDBNPLLedgerBalance'] ? convertFunc(headerDetailsData['BMFDBNPLLedgerBalance']) : ''}}</span>
+		</li>
+		
+		</ul>
+		</div>
+
+		<div class="bod_card">
+			<h2>Holdings</h2>
+			<ul class="bod_card_list">
+			<li>
+				<label>Networth</label>
+				<span>{{headerDetailsData && headerDetailsData['NetWorth'] ? convertFunc(headerDetailsData['NetWorth']) : ''}}</span>
+			</li>
+			
+			<li>
+				<label>Span+ Exposure margin</label>
+				<span>{{headerDetailsData && headerDetailsData['SpanExposureMargin'] ? convertFunc(headerDetailsData['SpanExposureMargin']) : ''}}
+         <img src="assets/svg/info.svg" width="13px" alt="info" class="info_img" (click)="displyPopupBodholdingbreakdownn()"></span>
+			</li>
+			
+			<li>
+				<label>Margin THV</label>
+				<span>{{headerDetailsData && headerDetailsData['MarginTHV'] ? convertFunc(headerDetailsData['MarginTHV']) : ''}}</span>
+			</li>
+			
+			<li>
+				<label>Margin AGHV</label>
+        <span>{{headerDetailsData && headerDetailsData['MarginGHV'] ? convertFunc(headerDetailsData['MarginGHV']) : ''}}</span>
+			</li>
+			
+			<li>
+				<label>Margin AHV</label>
+				<span>{{headerDetailsData && headerDetailsData['MarginAHV'] ? convertFunc(headerDetailsData['MarginAHV']) : ''}}</span>
+			</li>
+			
+			
+			</ul>
+			</div>
+			<!-- <div class="bod_card">
+				<h2>Covers</h2>
+				<ul class="bod_card_list">
+				<li>
+					<label>AGHV cover</label>
+					<span>{{headerDetailsData && headerDetailsData['GHVCover'] ? headerDetailsData['GHVCover'] : ''}}</span>
+				</li>
+				
+				<li>
+					<label>AHV cover</label>
+					<span>{{headerDetailsData && headerDetailsData['AHVCover'] ? headerDetailsData['AHVCover'] : ''}}</span>
+				</li>
+				
+				
+				
+				</ul>
+				</div> -->
+
+</div>
+<div class="download_file" style=" margin-top: 10px;">
+	<div class="option-type" (click)="onDownloadReport('pdf')">
+		<img src="assets/svg/pdf.svg" alt="">            
+	</div>
+	<div class="option-type" (click)="onDownloadReport('excel')">
+		<img src="assets/svg/download_excel.svg" alt="">            
+	</div>
+</div>
+<div class="search-section segment-section">
+<div class="seg-one">
+	<ion-segment class="header-segment-bottom d-flex" [(ngModel)]="equityBlockTabValue"
+		(ionChange)="equityBlockSegmentChanged(equityBlockTabValue)">
+		<div *ngFor="let data of equityBlockButton; let i = index">
+			<ion-segment-button value={{data.Value}}>
+				{{data.Name}}
+			</ion-segment-button>
+		</div>
+	</ion-segment>
+</div>
+</div>
+<div class="container">
+	<div class="segment-parent-block" [ngSwitch]="equityBlockTabValue">
+		<div class="segment-block-child" *ngSwitchCase="'equity'">
+			<div class="box-container">
+				<div class="items">
+					<span class="itemtitle">Total</span>
+					<span class="itemvalue value-bold">₹{{bodAllData && bodAllData.Total ? convertFunc(bodAllData.Total) : 0}}</span>
+				</div>
+				<div class="items">
+					<span class="itemtitle">ZHV</span>
+					<span class="itemvalue value-bold">₹{{bodAllData && bodAllData.Zhv ? convertFunc(bodAllData.Zhv) : 0}}</span>
+				</div>
+				<div class="items">
+					<span class="itemtitle">AGHV</span>
+					<span class="itemvalue value-bold">₹{{bodAllData && bodAllData.Aghv ? convertFunc(bodAllData.Aghv) : 0}}</span>
+				</div>
+			</div>
+		   <div class="bod_card table_card_bod_main" *ngFor="let dataObj of bodHoldingList; let i = index">
+			<div class="slbm_ti">
+				<div><h2>{{dataObj && dataObj.ScripName ? dataObj.ScripName : ''}}</h2></div>
+			<div><div class="upper-part">
+				<ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg"
+					*ngIf="dataObj && !dataObj.onClick" (click)="iconClick(dataObj)"></ion-icon>
+				<ion-icon *ngIf="dataObj && dataObj.onClick" class="rotate arrow-button down-arrow-button"
+					src="./assets/svg/down-arrow.svg" (click)="iconClick(dataObj)"></ion-icon>
+			</div></div>
+			</div>
+				<ul class="bod_card_list table_card_bod">
+				<li>
+					<label>Seg.</label>
+					<span>{{dataObj && dataObj.Segment ? dataObj.Segment : ''}}</span>
+				</li>
+				
+				<li>
+					<label>Cl. Price</label>
+					<span>&#8377; {{dataObj && dataObj.Closingprice ? dataObj.Closingprice : ''}}</span>
+				</li>
+				
+				<li>
+					<label>Total Value</label>
+					<span>&#8377; {{dataObj && dataObj.TotalVal ? dataObj.TotalVal : ''}}</span>
+				</li>
+
+				<li>
+					<label>H/C %</label>
+					<span>{{dataObj && dataObj.HaircutPer ? dataObj.HaircutPer : ''}}</span>
+				</li>
+
+				<li>
+					<label>Adj Hold</label>
+					<span>&#8377; {{dataObj && dataObj.AdjHold ? dataObj.AdjHold : ''}}</span>
+				</li>
+				
+
+				<li>
+					<label>Total Qty</label>
+					<span>{{dataObj && dataObj.TotalSum ? dataObj.TotalSum : ''}} <img src="assets/svg/info.svg" width="13px" alt="info" class="info_img" (click)="displyPopupBodholdingtable(dataObj)"></span>
+				</li>
+		
+				</ul>
+
+				<div *ngIf="dataObj && dataObj.onClick" [ngClass]="{'table_inside_box': dataObj && dataObj.onClick}">
+					<ul class="bod_card_list table_card_bod">
+						<li>
+							<label>BMFD Funded</label>
+							<span>{{dataObj['BMFDFunded']}}</span>
+						</li>
+						
+						<li>
+							<label>BMFD Ear Mark</label>
+							<span>{{dataObj['BMFDEarmark']}}</span>
+						</li>
+						
+						<li>
+							<label>BMFD Funded Pledge</label>
+							<span>{{dataObj['BMFDFundedPledge']}}</span>
+						</li>
+				
+						<li>
+							<label>BMFD Earmarked Pledge</label>
+							<span>{{dataObj['BMFDEarmarkedPledge']}}</span>
+						</li>
+				
+						<li>
+							<label>NSDL Pledge Margin</label>
+							<span>{{dataObj['BMFDEarmarkedPledge']}}</span>
+						</li>
+						
+				
+						<li>
+							<label>CDSL Pledge Margin</label>
+							<span>{{dataObj['CDSLPledgeMargin']}}</span>
+						</li>
+						</ul>
+				</div>
+
+				</div>
+
+
+		</div>
+		<div class="segment-block-child" *ngSwitchCase="'fo'">
+			<div class="box-container">
+				<div class="items">
+					<span class="itemtitle">Total</span>
+					<span class="itemvalue value-bold">₹{{bodAllData && bodAllData.Total ? convertFunc(bodAllData.Total) : 0}}</span>
+				</div>
+			</div>
+			
+			<div class="bod_card table_card_bod_main" *ngFor="let dataObj of fnoPositionList; let i = index">
+				<div class="slbm_ti">
+					<div><h2>{{dataObj && dataObj.Symbol ? dataObj.Symbol : ''}}</h2></div>
+				<div><div class="upper-part">
+					<ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg"
+					*ngIf="dataObj && !dataObj.onClick" (click)="iconClick(dataObj)"></ion-icon>
+				<ion-icon *ngIf="dataObj && dataObj.onClick" class="rotate arrow-button down-arrow-button"
+					src="./assets/svg/down-arrow.svg" (click)="iconClick(dataObj)"></ion-icon>
+				</div></div>
+			</div>
+				<ul class="bod_card_list table_card_bod">
+				<li>
+					<label>Exchange</label>
+					<span>{{dataObj && dataObj.Exchange ? dataObj.Exchange : ''}}</span>
+				</li>
+				
+				<li>
+					<label>Exchange Type</label>
+					<span>{{dataObj && dataObj.ExchangeType ? dataObj.ExchangeType : ''}}</span>
+				</li>
+				
+				<li>
+					<label>Product</label>
+					<span>{{dataObj && dataObj.Product ? dataObj.Product : ''}}</span>
+				</li>
+
+				<li>
+					<label>FO_ExpiryDt</label>
+					<span>{{dataObj && dataObj.Expiry ? formatChange(dataObj.Expiry) : ''}}</span>
+				</li>
+
+				<li>
+					<label>Call/Put</label>
+					<span>{{dataObj['CallPut'] == " " ? '-' : dataObj['CallPut'] }}</span>
+				</li>
+				
+
+				<li>
+					<label>StkPrice</label>
+					<span>&#8377; {{dataObj && dataObj.StkPrice ? convertFunc(dataObj.StkPrice) : ''}}</span>
+				</li>
+				</ul>
+
+				<div *ngIf="dataObj && dataObj.onClick" [ngClass]="{'table_inside_box': dataObj && dataObj.onClick}">
+					<ul class="bod_card_list table_card_bod">
+						<li>
+							<label>Buy</label>
+							<span>{{dataObj['Buy']}}</span>
+						</li>
+						
+						<li>
+							<label>Sell</label>
+							<span>{{dataObj['Sell']}}</span>
+						</li>
+						
+						<li>
+							<label>Net</label>
+							<span>{{dataObj['Net']}}</span>
+						</li>
+				
+						<li>
+							<label>AvgRate</label>
+							<span>{{convertFunc(dataObj['AvgRate'])}}</span>
+						</li>
+				
+						<li>
+							<label>Last Price</label>
+							<span>{{convertFunc(dataObj['LastPrice'])}}</span>
+						</li>
+						
+				
+						<li>
+							<label>Margin</label>
+							<span>{{dataObj['Margin']}}</span>
+						</li>
+
+						<li>
+							<label>Value</label>
+							<span>{{dataObj['Value']}}</span>
+						</li>
+						</ul>
+				</div>
+
+
+				</div>
+
+
+		</div>
+		<div class="segment-block-child" *ngSwitchCase="'slbm'">
+			<div class="box-container">
+				<div class="items">
+					<span class="itemtitle">Total</span>
+					<span class="itemvalue value-bold">₹{{bodAllData && bodAllData.Total ? convertFunc(bodAllData.Total) : 0}}</span>
+				</div>
+			</div>
+			
+			<div class="bod_card table_card_bod_main" *ngFor="let dataObj of slbmHoldingList; let i = index">
+				<div class="slbm_ti">
+				<div><h2>{{dataObj && dataObj.Symbol ? dataObj.Symbol : ''}}</h2></div>
+<div><div class="upper-part">
+	<ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg"
+					*ngIf="dataObj && !dataObj.onClick" (click)="iconClick(dataObj)"></ion-icon>
+				<ion-icon *ngIf="dataObj && dataObj.onClick" class="rotate arrow-button down-arrow-button"
+					src="./assets/svg/down-arrow.svg" (click)="iconClick(dataObj)"></ion-icon>
+</div></div>
+</div>
+
+
+				<ul class="bod_card_list table_card_bod">
+				<li>
+					<label>Exchange</label>
+					<span>{{dataObj && dataObj.Exchange ? dataObj.Exchange : ''}}</span>
+				</li>
+				
+				<li>
+					<label>Exchange Type</label>
+					<span>{{dataObj && dataObj.ExchangeType ? dataObj.ExchangeType : ''}}</span>
+				</li>
+				
+				<li>
+					<label>Date</label>
+					<span>{{dataObj && dataObj.Date ? formatChange(dataObj.Date) : ''}}</span>
+				</li>
+
+				<li>
+					<label>Symbol</label>
+					<span>{{dataObj && dataObj.Symbol ? dataObj.Symbol : ''}}</span>
+				</li>
+
+				<li>
+					<label>Net Qty</label>
+					<span>{{dataObj && dataObj.NetQty ? dataObj.NetQty : ''}}</span>
+				</li>
+				
+
+				<li>
+					<label>Value</label>
+					<span>&#8377; {{dataObj && dataObj.Values ? convertFunc(dataObj.Values) : ''}}</span>
+				</li>
+				</ul>
+
+				<div *ngIf="dataObj && dataObj.onClick" [ngClass]="{'table_inside_box': dataObj && dataObj.onClick}">
+					<ul class="bod_card_list table_card_bod">
+						<li>
+							<label>Series</label>
+							<span>{{dataObj['Series']}}</span>
+						</li>
+						
+						<li>
+							<label>BLFLag</label>
+							<span> {{dataObj['BLFlag']}}</span>
+						</li>
+						
+						<li>
+							<label>ExpDate</label>
+							<span>{{formatChange(dataObj['ExpDate'])}}</span>
+						</li>
+
+						<li>
+							<label>Price</label>
+							<span>{{convertFunc(dataObj['Price'])}}</span>
+						</li>
+
+						<li>
+							<label>Buy Qty</label>
+							<span>{{dataObj['BuyQty']}}</span>
+						</li>
+						
+
+						<li>
+							<label>Sell Qty</label>
+							<span>{{dataObj['SellQty']}}</span>
+						</li>
+						</ul>
+				</div>
+
+
+
+
+
+
+				</div>
+
+		</div>
+		<div class="segment-block-child" *ngSwitchCase="'col'">
+				<div class="detail-part-fix-2 grd_inhrit" #detail>
+					<div class="box-container">
+						<div class="items">
+							<span class="itemtitle">Total</span>
+							<span class="itemvalue value-bold">₹{{bodAllData && bodAllData.Total ? convertFunc(bodAllData.Total) : 0}} <img src="assets/svg/info.svg" width="13px" alt="info" class="info_img" (click)="displyPopupCollatralmodal()"></span>
+						</div>
+					</div>
+				</div>
+			
+				<div class="bod_card table_card_bod_main" *ngFor="let dataObj of collateralPositionList; let i = index">
+					<h2>{{dataObj && dataObj.Symbol ? dataObj.Symbol : ''}}</h2>
+					<ul class="bod_card_list">
+					<li>
+						<label>Qty.</label>
+						<span>{{dataObj && dataObj.Qty ? dataObj.Qty : ''}}</span>
+					</li>
+					
+					<li>
+						<label>Cl. Price</label>
+						<span>&#8377; {{dataObj && dataObj.Price ? convertFunc(dataObj.Price) : ''}}</span>
+					</li>
+					
+					<li>
+						<label>Haircut(%)</label>
+						<span>{{dataObj && dataObj.Haircut ? convertFunc(dataObj.Haircut) : ''}}</span>
+					</li>
+					
+					<li>
+						<label>Value (With HC)</label>
+						<span>&#8377; {{dataObj && dataObj.Value_WithHC ? convertFunc(dataObj.Value_WithHC) : ''}}</span>
+					</li>
+					<li>
+						<label>Value (Without HC)</label>
+						<span>&#8377; {{dataObj && dataObj.Value_WithoutHC ? convertFunc(dataObj.Value_WithoutHC) : ''}}</span>
+					</li>
+					<li>
+						<label>Is Cash Component</label>
+						<span>{{dataObj && dataObj.IsCashComponent ? dataObj.IsCashComponent : ''}}</span>
+					</li>
+
+					</ul>
+					</div>
+
+		</div>
+	</div>
+</div>
+
+</div>
+<div class="loader" *ngIf="dataLoad">
+  <img src="/assets/imgs/loader.gif" alt="">
+</div>
+</ion-content>

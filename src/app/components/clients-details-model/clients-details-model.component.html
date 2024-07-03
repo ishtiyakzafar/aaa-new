@@ -1,0 +1,216 @@
+<ion-header>
+	<div class="close" (click)="dismiss()">x</div>
+	<div class="title">
+	   <span>Client Details</span>
+	</div>
+	<div class="client-details-heading">
+	   <span class="title">{{clientName}}</span>
+	   <span class="subtitle">Client ID {{clientCode}}</span>
+	</div>
+ </ion-header>
+ <ion-content appScrollbarTheme>
+	
+	<div class="details-container" *ngIf="dataLoad">
+	   <div class="details-section">
+		<div class="client-info">
+			<div class="section-brokerage">
+			   <div class="section-row">
+				  <span class="label">Current Brokerage plan</span><span class="value">{{currentBrokeragePlan}}</span>
+			   </div>
+			   <div class="section-row">
+				  <span class="label">Client Status:</span><span class="value">{{clientStatus}}</span>
+			   </div>
+			</div>
+			
+		 </div>
+		  <div class="section-heading">
+			 <span>General Details</span>
+		  </div>
+		  <div class="client-info">
+			 <div class="section">
+				<div class="section-row">
+				   <span class="label">Mobile No.:</span><span class="value">{{clientMobile}}</span>
+				</div>
+				<div class="section-row">
+				   <span class="label">Email:</span><span class="value">{{clientEmail}}</span>
+				</div>
+			 </div>
+			 <div class="section">
+				<div class="section-row">
+				   <span class="label">PAN:</span><span class="value">{{clientPan}}</span>
+				</div>
+				<div class="section-row">
+				   <span class="label">Address:</span><span class="value">{{clientAddress}}</span>
+				</div>
+			 </div>
+		  </div>
+	   </div>
+	   <div class="details-section">
+		  <div class="section-heading">
+			 <span>RM Details</span>
+		  </div>
+		  <div class="client-info">
+			 <div class="section">
+				<div class="section-row">
+				   <span class="label">RM Code:</span><span class="value">{{rmCode == '' ? '-':rmCode}}</span>
+				</div>
+				<div class="section-row">
+				   <span class="label">RM Name:</span><span class="value">{{rmName == '' ? '-':rmName}}</span>
+				</div>
+			 </div>
+			 <div class="section">
+				<div class="section-row">
+				   <span class="label">Email:</span><span class="value">{{rmEmail == '' ? '-':rmEmail}}</span>
+				</div>
+				<div class="section-row">
+				   <span class="label">Mobile No.:</span><span class="value">{{rmMobile == '' ? '-':rmMobile}}</span>
+				</div>
+			 </div>
+		  </div>
+	   </div>
+	   <div class="details-section">
+		  <div class="section-heading active-segment">
+			 <span>Active Segment</span>
+		  </div>
+		  <div class="section-description">
+			 <span>{{spacepipe(activeSegment)}}</span>
+		  </div>
+	   </div>
+	   <div class="details-section">
+		  <div class="section-heading">
+			 <span>DP Details</span>
+		  </div>
+			<div class="client-info dp_details">
+			<div *ngFor="let obj of DpDetils; index as i" style="margin-bottom: 15px !important;">
+
+				<div class="section">
+					<div class="section-row">
+						<span class="label">DP ID:</span>
+						<span class="value">
+							{{obj.DPID}}
+						</span>
+					</div>
+				</div>
+				<div class="section">
+					<div class="section-row">
+						<span class="label">DP Status:</span>
+						<span class="value">
+							{{obj.Status}} 
+							</span>
+						</div>
+					</div>
+				<div class="section">
+					<div class="section-row">
+						<span class="label">Default DP:</span>
+						<span class="value">
+							{{obj.Default}} 
+						</span>
+					</div>
+				</div>
+				<div class="section">
+					<div class="section-row">
+						<span class="label">BO ID:</span>
+							<span class="value">
+								{{BoDetils[i]}}
+							</span>
+					</div>
+				</div>
+
+				</div>
+			</div>
+			<div *ngFor="let item of jointHolders">
+				<div class="label holder-count">{{item.title}}</div>
+				<div class="client-info">
+					<div class="section">
+						<div class="section-row holder-row">
+							<span class="label">Name:</span><span class="value">
+								<li>{{item.jointHolderName}}</li>
+							</span>
+							<span class="label">PAN:</span><span class="value">
+								<li>{{item.jointHolderPan}}</li>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	   <div class="details-section">
+		  <div class="section-heading">
+			 <span>Account Details</span>
+		  </div>
+		  <div class="client-info" *ngFor="let obj of bankDetail">
+			 <div class="section" >
+				<div class="section-row">
+				   <span class="label">Bank Name:</span><span class="value">{{obj.BankName}}</span>
+				</div>
+				<div class="section-row">
+				   <span class="label">Bank Acc No.:</span><span class="value">{{obj['AccountNo']}}</span>
+				</div>
+			 </div>
+			 <div class="section">
+				<div class="section-row">
+				   <span class="label">IFSC Code:</span><span class="value">{{obj.IFSCCode}}</span>
+				</div>
+				<div class="section-row">
+				   <span class="label">Default Bank:</span><span class="value">{{obj.DefaultBankAct}}</span>
+				</div>
+			 </div>
+		  </div>
+	   </div>
+	   <div class="details-section">
+		<div class="section-heading">
+		   <span>Other Details</span>
+		</div>
+		<div class="client-info">
+		   <div class="section-brokerage" >
+			  <div class="section-row">
+				 <span class="label">Settlement Frequency:</span><span class="value">{{settlementFrequency}}</span>
+			  </div>
+			  <div class="section-row">
+				 <span class="label">Running A/C Authorization:</span><span class="value">{{runningACAuth}}</span>
+			  </div>
+			  <div class="section-row">
+				<span class="label">Freeze</span><span class="value">{{freeze}}</span>
+			 </div>
+		   </div>
+		   <div class="section">
+			  <div class="section-row">
+				 <span class="label">POA</span><span class="value">{{POA}}</span>
+			  </div>
+			  <div class="section-row">
+				<span class="label">Dormant</span><span class="value">{{dormant}}</span>
+			 </div>
+		   </div>
+		</div>
+	 </div>
+	 <div class="details-section" *ngIf="authValue.Name || authValue.Relation || authValue.Email || authValue.Mobile">
+		<div class="section-heading">
+		   <span>Authorised Person Details</span>
+		</div>
+		<div class="client-info">
+		   <div class="section-brokerage auth" >
+			  <div class="section-row">
+				 <span class="label">Name :</span><span class="value">{{authValue.Name ? authValue.Name : '-'}}</span>
+			  </div>
+			  <div class="section-row">
+				 <span class="label">Relation :</span><span class="value">{{authValue.Relation ? authValue.Relation : '-'}}</span>
+			  </div>
+		   </div>
+		   <div class="section">
+			  <div class="section-row">
+				 <span class="label">Email :</span><span class="value">{{authValue.Email ? authValue.Email : '-'}}</span>
+			  </div>
+			  <div class="section-row auth-last-child">
+				<span class="label">Mobile No. :</span><span class="value">{{authValue.Mobile ? authValue.Mobile : '-'}}</span>
+			 </div>
+		   </div>
+		</div>
+	 </div>
+	</div>
+
+	<div class="loader" *ngIf="!dataLoad">
+		<img src="/assets/imgs/loader.gif" alt="">
+	</div>
+	
+	
+ </ion-content>

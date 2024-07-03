@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar color="tertiary" class="mobile-visibility">
+    <div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Calculators</ion-title>
+			</div>
+		</div>
+  </ion-toolbar>
+  <ion-toolbar class="desktop-visibility">
+    <div class="seg-one container">
+      <ion-segment scrollable class="header-segment-bottom" [(ngModel)]="calculatorTabValue" (ngModelChange)="segmentChanged($event)">
+        <ion-segment-button value="individual" *ngFor="let buttonOption of calculatorType" value={{buttonOption.value}}>
+          {{buttonOption['name']}}
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container desktop-visibility">
+    <div class="tab-content" [ngSwitch]="calculatorTabValue">
+      <div class="section" *ngSwitchCase="'emi'">
+        <app-emi-calculator></app-emi-calculator>
+      </div>
+      <div class="section" *ngSwitchCase="'sip'">
+        <app-sip-calculator></app-sip-calculator>
+      </div>
+      <div class="section" *ngSwitchCase="'sipRevenue'">
+        <app-sip-revenue-calculator></app-sip-revenue-calculator>
+      </div>
+      <div class="section" *ngSwitchCase="'spanMargin'">
+        <app-span-margin-calculator></app-span-margin-calculator>
+      </div>
+      <div class="section" *ngSwitchCase="'goal'">
+        <app-goal-calculator></app-goal-calculator>
+      </div>
+    </div>
+  </div>
+  <div class="mobile-visibility">
+    <div class="calculator-item" *ngFor="let dataObj of calculatorType" (click)="goToCalculator(dataObj['value'])">
+      {{dataObj['name']}}
+    </div>
+  </div>
+</ion-content>

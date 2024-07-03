@@ -1,0 +1,705 @@
+<ion-header class="mobile-visibility white-screen">
+    <ion-toolbar color="tertiary" class="mobile-visibility">
+        <div class="title-block title-block-custom">
+            <div class="icon-title">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <ion-title class="title">Brokerage Request</ion-title>
+            </div>
+        </div>
+    </ion-toolbar>
+    <div *ngIf="brokTypeParams == 'H'">
+        <form [formGroup]="brokerageForm">
+        <div class="checkbox-section">
+            <ion-list class="ion-list">
+                <ion-item lines="none">
+                  <ion-label slot="end">Equity</ion-label>
+                  <ion-checkbox formControlName="EquityCheckbox" (ionChange)="equityCheckboxClick($event.detail.checked)"></ion-checkbox>
+                </ion-item>
+                <ion-item lines="none">
+                    <ion-label slot="end">F&O</ion-label>
+                    <ion-checkbox formControlName="foCheckbox" (ionChange)="foCheckboxClick($event.detail.checked)"></ion-checkbox>
+                  </ion-item>
+              </ion-list>
+            <div class="value-section">
+                <span>Flat Brokerage </span>
+                <span class="value">Rs.{{flatBrokValue}}</span>
+                <span>{{ displayMsg }}</span>
+            </div>
+        </div>
+    </form> 
+</div>
+    
+    
+    <ion-toolbar>
+        <div class="container">
+            <ion-row class="colorback">
+                <ion-segment scrollable mode="md"
+                    class="destop-segment-middle wathlist-block-segment equity-block-segment d-flex"
+                    [(ngModel)]="equityBlockTabValue" (ionChange)="segmentChange($event)">
+                    <div *ngFor="let data of buttonData">
+                        <ion-segment-button value="{{data['value']}}">{{data['name']}}</ion-segment-button>
+                    </div>
+                </ion-segment>
+            </ion-row>
+        </div>
+    </ion-toolbar>
+</ion-header>
+
+    <form [formGroup]="brokerageForm" class="container limit-change-block desktop-visibility">
+        <div class="checkbox-section" *ngIf="brokerageType == 'Hybrid Brokerage'">
+            <ion-list class="ion-list">
+                <ion-item lines="none">
+                    <ion-label slot="end">Equity</ion-label>
+                    <ion-checkbox formControlName="EquityCheckbox" (ionChange)="equityCheckboxClick($event.detail.checked)"></ion-checkbox>
+                </ion-item>
+                <ion-item lines="none">
+                      <ion-label slot="end">F&O</ion-label>
+                      <ion-checkbox formControlName="foCheckbox" (ionChange)="foCheckboxClick($event.detail.checked)"></ion-checkbox>
+                </ion-item>
+              </ion-list>
+            <div class="value-section">
+                <span>Flat Brokerage </span>
+                <span class="value">Rs.{{flatBrokValue}}</span>
+                <span>{{ displayMsg }}</span>
+            </div>
+        </div>
+        <div class="limit-change-block m-t-8">
+            <div class="heading heading-bold">Equity</div>
+            <table class="common-table">
+                <thead>
+                    <tr class="upper-row">
+                        <th></th>
+                        <th colspan="2">First Side</th>
+                        <th>Second Side</th>
+                        <th colspan="2">Minimum Per Share</th>
+                    </tr>
+                    <tr class="lower-row">
+                        <th></th>
+                        <th>Current</th>
+                        <th>New</th>
+                        <th>New</th>
+                        <th>Current</th>
+                        <th>New</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="body-row">
+                        <td>Intraday (%)</td>
+                        <td>{{cashIntra1stSideCurr}}</td>
+                        <td>
+                            <ion-input type="number" (ionChange)='onInputChange($event.target.value)' formControlName="cashIntradayFirstSide" onkeydown="return event.keyCode !== 69"></ion-input>
+                            <!-- <div *ngIf="brokerageForm.controls['cashIntradayFirstSide'].errors" class="invalid-feedback hhh">
+                                <div *ngFor="let validation of validation_messages.cashIntradayFirstSide">
+                                    <div *ngIf="brokerageForm.get('cashIntradayFirstSide')?.hasError(validation.type)">
+                                        {{validation.message}}
+                                   </div>   
+                                </div>
+                            </div> -->
+                            <div *ngIf="brokerageForm.controls['cashIntradayFirstSide'].errors && (brokerageForm.controls['cashIntradayFirstSide'].dirty  || brokerageForm.controls['cashIntradayFirstSide'].touched || submitted)" class="invalid-feedback ">
+                                <div *ngFor="let validation of validation_messages.cashIntradayFirstSide">
+                                    <div *ngIf="brokerageForm.get('cashIntradayFirstSide')?.hasError(validation.type)">
+                                        {{validation.message}}
+                                    </div>   
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <ion-input type="number" [disabled]="true" formControlName="cashIntradaySecondSide" onkeydown="return event.keyCode !== 69"></ion-input>
+                        </td>
+                        <td>{{cashIntraMpsCurr}}</td>
+                        <td>
+                            <ion-input type="number" formControlName="cashIntradayMps" onkeydown="return event.keyCode !== 69"></ion-input>
+                            <div *ngIf="brokerageForm.controls['cashIntradayMps'].errors && (brokerageForm.controls['cashIntradayMps'].dirty  || brokerageForm.controls['cashIntradayMps'].touched || submitted)" class="invalid-feedback">
+                                <div *ngFor="let validation of validation_messages.cashIntradayMps">
+                                    <div *ngIf="brokerageForm.get('cashIntradayMps')?.hasError(validation.type)">
+                                        {{validation.message}}
+                                   </div>   
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="body-row">
+                        <td>Delivery (%)</td>
+                        <td>{{cashDel1stCurr}}</td>
+                        <td>
+                            <ion-input type="number" formControlName="cashDeliveryFirstSide" onkeydown="return event.keyCode !== 69"> </ion-input>
+                            <div *ngIf="brokerageForm.controls['cashDeliveryFirstSide'].errors && (brokerageForm.controls['cashDeliveryFirstSide'].dirty  || brokerageForm.controls['cashDeliveryFirstSide'].touched || submitted)" class="invalid-feedback">
+                                <div *ngFor="let validation of validation_messages.cashDeliveryFirstSide">
+                                    <div *ngIf="brokerageForm.get('cashDeliveryFirstSide')?.hasError(validation.type)">
+                                        {{validation.message}}
+                                    </div>   
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <!-- <ion-input type="number"></ion-input> -->
+                        </td>
+                        <td>{{cashDelMpsCurr}}</td>
+                        <td>
+                            <ion-input type="number" formControlName="cashDeliveryMps" onkeydown="return event.keyCode !== 69"></ion-input>
+                                <div *ngIf="brokerageForm.controls['cashDeliveryMps'].errors && (brokerageForm.controls['cashDeliveryMps'].dirty  || brokerageForm.controls['cashDeliveryMps'].touched || submitted)" class="invalid-feedback">
+                                    <div *ngFor="let validation of validation_messages.cashDeliveryMps">
+                                        <div *ngIf="brokerageForm.get('cashDeliveryMps')?.hasError(validation.type)">
+                                            {{validation.message}}
+                                        </div>   
+                                    </div>
+                                </div>
+                        </td>
+                    </tr>
+                    <tr class="body-row">
+                        <td>T2T (%)</td>
+                        <td>{{cashDelT2TCurr}}</td>
+                        <td>
+                            <ion-input type="number" formControlName="cashT2TFirstSide" onkeydown="return event.keyCode !== 69"></ion-input>
+                            <div *ngIf="brokerageForm.controls['cashT2TFirstSide'].errors && (brokerageForm.controls['cashT2TFirstSide'].dirty  || brokerageForm.controls['cashT2TFirstSide'].touched || submitted)" class="invalid-feedback">
+                                <div *ngFor="let validation of validation_messages.cashT2TFirstSide">
+                                    <div *ngIf="brokerageForm.get('cashT2TFirstSide')?.hasError(validation.type)">
+                                        {{validation.message}}
+                                    </div>   
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <!-- <ion-input value="{{dataObj['secondNew']}}"></ion-input> -->
+                        </td>
+                        <td>{{cashDelT2TMpsCurr}}</td>
+                        <td>
+                            <ion-input type="number" formControlName="cashT2TMps" onkeydown="return event.keyCode !== 69"></ion-input>
+                            <div *ngIf="brokerageForm.controls['cashT2TMps'].errors && (brokerageForm.controls['cashT2TMps'].dirty  || brokerageForm.controls['cashT2TMps'].touched || submitted)" class="invalid-feedback">
+                                <div *ngFor="let validation of validation_messages.cashT2TMps">
+                                    <div *ngIf="brokerageForm.get('cashT2TMps')?.hasError(validation.type)">
+                                        {{validation.message}}
+                                    </div>   
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="limit-change-block">
+            <div class="heading heading-bold">Futures</div>
+            <table class="common-table">
+                <thead>
+                    <tr class="upper-row">
+                        <th></th>
+                        <th colspan="2">First Side</th>
+                        <th>Second Side</th>
+                        <th colspan="2">Minimum Per Share</th>
+                    </tr>
+                    <tr class="lower-row">
+                        <th></th>
+                        <th>Current</th>
+                        <th>New</th>
+                        <th>New</th>
+                        <th>Current</th>
+                        <th>New</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="body-row">
+                        <td>Intraday (%)</td>
+                        <td>{{futureIntra1stCurr}}</td>
+                        <td>
+                            <!-- <ion-input type="number" formControlName="futureIntradayFirstSide" onkeydown="return event.keyCode !== 69"></ion-input>
+                            <div *ngIf="brokerageForm.controls['futureIntradayFirstSide'].invalid && (brokerageForm.controls['futureIntradayFirstSide'].dirty  || brokerageForm.controls['futureIntradayFirstSide'].touched)" class="invalid-feedback">
+                                <div *ngIf="brokerageForm.controls['futureIntradayFirstSide'].errors.min">
+                                    Future Intra 1st side % Cannot be less than zero
+                                </div>
+                            </div> -->
+                            <ion-input type="number" formControlName="futureIntradayFirstSide" (ionChange)='onInputChangeFirst($event.target.value)' onkeydown="return event.keyCode !== 69"></ion-input>
+                            <div *ngIf="brokerageForm.controls['futureIntradayFirstSide'].errors && (brokerageForm.controls['futureIntradayFirstSide'].dirty  || brokerageForm.controls['futureIntradayFirstSide'].touched)" class="invalid-feedback">
+                                <div *ngFor="let validation of validation_messages.futureIntradayFirstSide">
+                                    <div *ngIf="brokerageForm.get('futureIntradayFirstSide')?.hasError(validation.type)">
+                                        {{validation.message}}
+                                    </div>   
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <ion-input type="number" [disabled]="true" formControlName="futureIntradaySecondSide" onkeydown="return event.keyCode !== 69"></ion-input>
+                            <!-- {{futureIntradaySecondSideVal}} -->
+                            <!-- <ion-input type="number" formControlName="futureIntradaySecondSide" onkeydown="return event.keyCode !== 69"></ion-input>
+                            <div *ngIf="brokerageForm.controls['futureIntradaySecondSide'].invalid && (brokerageForm.controls['futureIntradaySecondSide'].dirty  || brokerageForm.controls['futureIntradaySecondSide'].touched)" class="invalid-feedback">
+                                <div *ngIf="brokerageForm.controls['futureIntradaySecondSide'].errors.min">
+                                    Future Intra 2nd side % Cannot be less than 0
+                                </div>
+                            </div> -->
+                        </td>
+                        <td>{{futureIntraMpsCurr}}</td>
+                        <td>
+                            <ion-input type="number" formControlName="futureIntradayMps" (ionChange)='onInputChangeSecond($event.target.value)' onkeydown="return event.keyCode !== 69"></ion-input>
+                            <div *ngIf="brokerageForm.controls['futureIntradayMps'].errors && (brokerageForm.controls['futureIntradayMps'].dirty  || brokerageForm.controls['futureIntradayMps'].touched || submitted)" class="invalid-feedback">
+                                <div *ngFor="let validation of validation_messages.futureIntradayMps">
+                                   <div *ngIf="brokerageForm.get('futureIntradayMps')?.hasError(validation.type)">
+                                       {{validation.message}}
+                                   </div>   
+                               </div>
+                           </div>
+                        </td>
+                    </tr>
+
+                    <tr class="body-row">
+                        <td>Day brokerage (%)</td>
+                        <td>{{dayBrok1stCurr}}</td>
+                        <td>
+                            <ion-input type="number" [disabled]="true" formControlName="futureDeliveryFirstSide" onkeydown="return event.keyCode !== 69"></ion-input>
+                            <!-- <div *ngIf="brokerageForm.controls['futureDeliveryFirstSide'].invalid && (brokerageForm.controls['futureDeliveryFirstSide'].dirty  || brokerageForm.controls['futureDeliveryFirstSide'].touched)" class="invalid-feedback">
+                                <div *ngIf="brokerageForm.controls['futureDeliveryFirstSide'].errors.min">
+                                    Day Brokerage 1st % Cannot be less than zero
+                                </div>
+                            </div> -->
+                        </td>
+                        <td>
+                            <!-- <ion-input></ion-input> -->
+                        </td>
+                        <td>{{dayBrokMpsCurr}}</td>
+                        <td>
+                            <ion-input type="number" [disabled]="true" formControlName="futureDeliveryMps" onkeydown="return event.keyCode !== 69"></ion-input>
+                            <!-- <ion-input type="number" formControlName="futureDeliveryMps" onkeydown="return event.keyCode !== 69"></ion-input>
+                            <div *ngIf="brokerageForm.controls['futureDeliveryMps'].errors && (brokerageForm.controls['futureDeliveryMps'].dirty  || brokerageForm.controls['futureDeliveryMps'].touched || submitted)" class="invalid-feedback">
+                                <div *ngFor="let validation of validation_messages.futureDeliveryMps">
+                                    <div *ngIf="brokerageForm.get('futureDeliveryMps')?.hasError(validation.type)">
+                                        {{validation.message}}
+                                    </div>   
+                                </div>
+                            </div>     -->
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="limit-change-block">
+            <div class="heading heading-bold">Options</div>
+            <table class="common-table options-table">
+                <thead>
+                    <tr class="upper-row">
+                        <th colspan="3">Option Brokerage will be charged &#64; per Lot Rs. XXX or Option% Whichever is Higher</th>
+                    </tr>
+                    <tr class="lower-row">
+                        <th></th>
+                        <th>Current</th>
+                        <th>New</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="body-row">
+                        <td>
+                            <div class="type-block">
+                                <span class="type">Options Per Lot (Rs.)</span>
+                                <span class="option">Options Per Lot cannot be greater than current options slab.</span>
+                                <!-- <span class="option">Min: 2, Max: 100</span> -->
+                            </div>
+                        </td>
+                        <td>{{optPerLotCurr}}</td>
+                        <td>
+                            <ion-input type="number" class="ion-input" formControlName="optionPerLot" onkeydown="return event.keyCode !== 69"></ion-input>
+                            <div *ngIf="brokerageForm.controls['optionPerLot'].errors && (brokerageForm.controls['optionPerLot'].dirty  || brokerageForm.controls['optionPerLot'].touched || submitted)" class="invalid-feedback">
+                                <div *ngFor="let validation of validation_messages.optionPerLot">
+                                    <div *ngIf="brokerageForm.get('optionPerLot')?.hasError(validation.type)">
+                                        {{validation.message}}
+                                    </div>   
+                                </div>
+                            </div>    
+                        </td>
+                    </tr>
+
+                    <tr class="body-row">
+                        <td>
+                            <div class="type-block">
+                                <span class="type">Options Percent (%)</span>
+                                <span class="option">Zero % = Flat (Min: 0, Max: 2.5)</span>
+                            </div>
+                        </td>
+                        <td>{{indexOptCurr}}</td>
+                        <td><ion-input type="number" formControlName="optionIndex" onkeydown="return event.keyCode !== 69"></ion-input>
+                            <div *ngIf="brokerageForm.controls['optionIndex'].errors && (brokerageForm.controls['optionIndex'].dirty  || brokerageForm.controls['optionIndex'].touched || submitted)" class="invalid-feedback">
+                                <div *ngFor="let validation of validation_messages.optionIndex">
+                                   <div *ngIf="brokerageForm.get('optionIndex')?.hasError(validation.type)">
+                                       {{validation.message}}
+                                   </div>   
+                               </div>
+                            </div>   
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="limit-change-block m-b-20">
+            <div class="heading heading-bold">Special Cases</div>
+            <div class="field-block">
+                <div class="section checkbox-block ">
+                    <ion-checkbox type="checkbox" formControlName="acceptTerms" class="checkbox"></ion-checkbox>
+                    <span class="message">No Brokerage for second side</span>
+                </div>
+            </div>
+        </div>
+            <div class="cli_date_main">
+                <ion-label class="d-block cli_msg">For all pending cases please check the status post 4PM. Also please note Requests
+                    approved post 2:30 PM will be processed on the next working day.</ion-label>
+            </div>
+        <div class="section section-button">
+            <ion-button [disabled]="!passClientIdValidation" (click)="submitBrokerge()">Submit Request</ion-button>
+        </div>
+    </form>
+    
+ 
+    <ion-content  class="mobile-visibility">
+        <form [formGroup]="brokerageForm">
+            <swiper-container class="updated-slides updated-slides-height"  [ngClass]="{'slides0': sliderUpdatedIndex === 0,
+                                                            'slides1': sliderUpdatedIndex === 1,
+                                                            'slides2': sliderUpdatedIndex === 2,
+                                                            'slides3': sliderUpdatedIndex === 3,
+                                                            'brok-type-permanent': brokTypeParams !== 'H',
+                                                            'brok-type-hybrid': brokTypeParams === 'H'
+                                                           }" 
+                                                        #slidesUpdated [options]="{ autoHeight: 'true' }" 
+                                                        (swiperactiveindexchange)="slideChanged($event)">
+                <swiper-slide>
+                    <div class="limit-change-block first-limit-change-block m-t-8">
+                        <div class="heading">First Side</div>
+                        <table class="common-table">
+                            <thead>
+                                <tr class="lower-row">
+                                    <th></th>
+                                    <th>Current</th>
+                                    <th>New</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="body-row">
+                                    <td>Intraday</td>
+                                    <td>{{cashIntra1stSideCurr}}</td>
+                                    <td>
+                                        <ion-input type="number" formControlName="cashIntradayFirstSide"></ion-input>
+                                        <!-- <div *ngIf="brokerageForm.controls['cashIntradayFirstSide'].invalid" class="invalid-feedback">
+                                            <div *ngIf="brokerageForm.controls['cashIntradayFirstSide'].errors.min">
+                                                 1st side % Cannot be less than zero
+                                            </div>
+                                        </div> -->
+                                        <div *ngIf="brokerageForm.controls['cashIntradayFirstSide'].errors && (brokerageForm.controls['cashIntradayFirstSide'].dirty  || brokerageForm.controls['cashIntradayFirstSide'].touched || submitted)" class="invalid-feedback ">
+                                            <div *ngFor="let validation of validation_messages.cashIntradayFirstSide">
+                                                <div *ngIf="brokerageForm.get('cashIntradayFirstSide')?.hasError(validation.type)">
+                                                    {{validation.message}}
+                                                </div>   
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="body-row">
+                                    <td>Delivery  (%)</td>
+                                    <td>{{cashDel1stCurr}}</td>
+                                    <td>
+                                        <ion-input type="number" formControlName="cashDeliveryFirstSide"> </ion-input>
+                                        <div *ngIf="brokerageForm.controls['cashDeliveryFirstSide'].errors && (brokerageForm.controls['cashDeliveryFirstSide'].dirty  || brokerageForm.controls['cashDeliveryFirstSide'].touched || submitted)" class="invalid-feedback">
+                                            <div *ngFor="let validation of validation_messages.cashDeliveryFirstSide">
+                                                <div *ngIf="brokerageForm.get('cashDeliveryFirstSide')?.hasError(validation.type)">
+                                                    {{validation.message}}
+                                                </div>   
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="body-row">
+                                    <td>T2T (%)</td>
+                                    <td>{{cashDelT2TCurr}}</td>
+                                    <td>
+                                        <ion-input type="number" formControlName="cashT2TFirstSide"></ion-input>
+                                        <div *ngIf="brokerageForm.controls['cashT2TFirstSide'].errors && (brokerageForm.controls['cashT2TFirstSide'].dirty  || brokerageForm.controls['cashT2TFirstSide'].touched || submitted)" class="invalid-feedback">
+                                            <div *ngFor="let validation of validation_messages.cashT2TFirstSide">
+                                                <div *ngIf="brokerageForm.get('cashT2TFirstSide')?.hasError(validation.type)">
+                                                    {{validation.message}}
+                                                </div>   
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="limit-change-block second-limit-change-block m-t-8">
+                        <div class="heading">Second Side</div>
+                        <table class="common-table">
+                            <thead>
+                                <tr class="lower-row">
+                                    <th></th>
+                                    <th colspan="2">New</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="body-row">
+                                    <td>Intraday (%)</td>
+                                    <td colspan="2">
+                                        {{cashIntradaySecondSideVal}}
+                                        <!-- <ion-input type="number" formControlName="cashIntradaySecondSide"></ion-input>
+                                <div *ngIf="brokerageForm.controls['cashIntradaySecondSide'].invalid" class="invalid-feedback">
+                                    <div *ngIf="brokerageForm.controls['cashIntradaySecondSide'].errors.min">
+                                         2nd side % Cannot be less than 0
+                                    </div>
+                                </div> -->
+                                    </td>
+                                </tr>
+                                <tr class="body-row">
+                                    <td>Delivery (%)</td>
+                                    <td colspan="2">
+                                        
+                                    </td>
+                                </tr>
+                                <tr class="body-row">
+                                    <td>T2T (%)</td>
+                                    <td colspan="2">
+    
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="limit-change-block third-limit-change-block m-t-8">
+                        <div class="heading">Minimum Per Share</div>
+                        <table class="common-table">
+                            <thead>
+                                <tr class="lower-row">
+                                    <th></th>
+                                    <th>Current</th>
+                                    <th>New</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="body-row">
+                                    <td>Intraday (%)</td>
+                                    <td>{{cashIntraMpsCurr}}</td>
+                                    <td>
+                                        <ion-input type="number" formControlName="cashIntradayMps"></ion-input>
+                                        <div *ngIf="brokerageForm.controls['cashIntradayMps'].errors && (brokerageForm.controls['cashIntradayMps'].dirty  || brokerageForm.controls['cashIntradayMps'].touched || submitted)" class="invalid-feedback">
+                                            <div *ngFor="let validation of validation_messages.cashIntradayMps">
+                                                <div *ngIf="brokerageForm.get('cashIntradayMps')?.hasError(validation.type)">
+                                                    {{validation.message}}
+                                               </div>   
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="body-row">
+                                    <td>Delivery (%)</td>
+                                    <td>{{cashDelMpsCurr}}</td>
+                                    <td>
+                                        <ion-input type="number" formControlName="cashDeliveryMps"></ion-input>
+                                        <div *ngIf="brokerageForm.controls['cashDeliveryMps'].errors && (brokerageForm.controls['cashDeliveryMps'].dirty  || brokerageForm.controls['cashDeliveryMps'].touched || submitted)" class="invalid-feedback">
+                                            <div *ngFor="let validation of validation_messages.cashDeliveryMps">
+                                                <div *ngIf="brokerageForm.get('cashDeliveryMps')?.hasError(validation.type)">
+                                                    {{validation.message}}
+                                                </div>   
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="body-row">
+                                    <td>T2T (%)</td>
+                                    <td>{{cashDelT2TMpsCurr}}</td>
+                                    <td>
+                                        <ion-input type="number" formControlName="cashT2TMps"></ion-input>
+                                        <div *ngIf="brokerageForm.controls['cashT2TMps'].errors && (brokerageForm.controls['cashT2TMps'].dirty  || brokerageForm.controls['cashT2TMps'].touched || submitted)" class="invalid-feedback">
+                                            <div *ngFor="let validation of validation_messages.cashT2TMps">
+                                                <div *ngIf="brokerageForm.get('cashT2TMps')?.hasError(validation.type)">
+                                                    {{validation.message}}
+                                                </div>   
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </swiper-slide>
+                <swiper-slide>
+                    <div class="limit-change-block height-unset max-height-unset overflow-unset m-t-8">
+                        <div class="heading">First Side</div>
+                        <table class="common-table">
+                            <thead>
+                                <tr class="lower-row">
+                                    <th></th>
+                                    <th>Current</th>
+                                    <th>New</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="body-row">
+                                    <td>Intraday (%)</td>
+                                    <td>{{futureIntra1stCurr}}</td>
+                                    <td>
+                                        <ion-input type="number" formControlName="futureIntradayFirstSide"></ion-input>
+                                        <div *ngIf="brokerageForm.controls['futureIntradayFirstSide'].invalid && (brokerageForm.controls['futureIntradayFirstSide'].dirty  || brokerageForm.controls['futureIntradayFirstSide'].touched)" class="invalid-feedback">
+                                            <div *ngIf="brokerageForm.controls['futureIntradayFirstSide'].errors?.['min']">
+                                                Future Intra 1st side % Cannot be less than zero
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+    
+                                <tr class="body-row">
+                                    <td>Day brokerage (%)</td>
+                                    <td>{{dayBrok1stCurr}}</td>
+                                    <td>
+                                        <ion-input type="number" formControlName="futureDeliveryFirstSide"></ion-input>
+                                        <div *ngIf="brokerageForm.controls['futureDeliveryFirstSide'].invalid && (brokerageForm.controls['futureDeliveryFirstSide'].dirty  || brokerageForm.controls['futureDeliveryFirstSide'].touched)" class="invalid-feedback">
+                                            <div *ngIf="brokerageForm.controls['futureDeliveryFirstSide'].errors?.['min']">
+                                                Day Brokerage 1st % Cannot be less than zero
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="limit-change-block m-t-8">
+                        <div class="heading">Second Side</div>
+                        <table class="common-table">
+                            <thead>
+                                <tr class="lower-row">
+                                    <th></th>
+                                    <th colspan="2">New</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="body-row">
+                                    <td>Intraday (%)</td>
+                                    <td colspan="2">
+                                        <ion-input type="number" formControlName="futureIntradaySecondSide"></ion-input>
+                                        <div *ngIf="brokerageForm.controls['futureIntradaySecondSide'].invalid && (brokerageForm.controls['futureIntradaySecondSide'].dirty  || brokerageForm.controls['futureIntradaySecondSide'].touched)" class="invalid-feedback">
+                                            <div *ngIf="brokerageForm.controls['futureIntradaySecondSide'].errors?.['min']">
+                                                Future Intra 2nd side % Cannot be less than 0
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="body-row">
+                                    <td>Day brokerage (%)</td>
+                                    <td colspan="2">
+    
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="limit-change-block m-t-8">
+                        <div class="heading">Minimum Per Share</div>
+                        <table class="common-table">
+                            <thead>
+                                <tr class="lower-row">
+                                    <th></th>
+                                    <th>Current</th>
+                                    <th>New</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="body-row">
+                                    <td>Intraday (%)</td>
+                                    <td>{{futureIntraMpsCurr}}</td>
+                                    <td>
+                                        <ion-input type="number" formControlName="futureIntradayMps"></ion-input>
+                                        <div *ngIf="brokerageForm.controls['futureIntradayMps'].errors && (brokerageForm.controls['futureIntradayMps'].dirty  || brokerageForm.controls['futureIntradayMps'].touched || submitted)" class="invalid-feedback">
+                                            <div *ngFor="let validation of validation_messages.futureIntradayMps">
+                                               <div *ngIf="brokerageForm.get('futureIntradayMps')?.hasError(validation.type)">
+                                                   {{validation.message}}
+                                               </div>   
+                                           </div>
+                                       </div>
+                                    </td>
+                                </tr>
+                                <tr class="body-row">
+                                    <td>Day brokerage (%)</td>
+                                    <td>{{dayBrokMpsCurr}}</td>
+                                    <td>
+                                        <ion-input type="number" formControlName="futureDeliveryMps"></ion-input>
+                                        <div *ngIf="brokerageForm.controls['futureDeliveryMps'].errors && (brokerageForm.controls['futureDeliveryMps'].dirty  || brokerageForm.controls['futureDeliveryMps'].touched || submitted)" class="invalid-feedback">
+                                            <div *ngFor="let validation of validation_messages.futureDeliveryMps">
+                                                <div *ngIf="brokerageForm.get('futureDeliveryMps')?.hasError(validation.type)">
+                                                    {{validation.message}}
+                                                </div>   
+                                            </div>
+                                        </div> 
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </swiper-slide>
+                <swiper-slide>
+                    <div class="limit-change-block m-t-8 option-block">
+                        <!-- <div class="heading">First Side</div> -->
+                        <div class="options-heading-mobile">
+                            Option Brokerage will be charged &#64; per Lot Rs. XXX or Option% Whichever is Higher
+                        </div>
+                        <table class="common-table">
+                            <thead>
+                                <tr class="lower-row">
+                                    <th></th>
+                                    <th>Current</th>
+                                    <th>New</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="body-row">
+                                    <td>Per Lot Rs <br>
+                                        <span class="subtitle">Options Per Lot cannot be greater than current options slab.</span>
+                                         <!-- <span class="subtitle">Min: 2, Max: 100</span> -->
+                                    </td>
+                                    <td>{{optPerLotCurr}}</td>
+                                    <td>
+                                        <ion-input type="number" class="ion-input" formControlName="optionPerLot"></ion-input>
+                                        <div *ngIf="brokerageForm.controls['optionPerLot'].errors && (brokerageForm.controls['optionPerLot'].dirty  || brokerageForm.controls['optionPerLot'].touched || submitted)" class="invalid-feedback">
+                                            <div *ngFor="let validation of validation_messages.optionPerLot">
+                                                <div *ngIf="brokerageForm.get('optionPerLot')?.hasError(validation.type)">
+                                                    {{validation.message}}
+                                                </div>   
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="body-row">
+                                    <td>Index Option
+                                        <span class="subtitle">Zero % = Flat (Min: 0, Max: 2.5)</span>
+                                    </td>
+                                    <td>{{indexOptCurr}}</td>
+                                    <td>
+                                        <ion-input type="number" formControlName="optionIndex"></ion-input>
+                                        <div *ngIf="brokerageForm.controls['optionIndex'].errors && (brokerageForm.controls['optionIndex'].dirty  || brokerageForm.controls['optionIndex'].touched || submitted)" class="invalid-feedback">
+                                            <div *ngFor="let validation of validation_messages.optionIndex">
+                                               <div *ngIf="brokerageForm.get('optionIndex')?.hasError(validation.type)">
+                                                   {{validation.message}}
+                                               </div>   
+                                           </div>
+                                        </div>   
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </swiper-slide>
+                <swiper-slide>
+                    <div class="container mobile-visibility">
+                        <div class="limit-change-block height-unset">
+                            <div class="field-block flex-field-block">
+                                <div class="section checkbox-block ">
+                                    <ion-checkbox class="checkbox" type="checkbox" formControlName="acceptTerms"></ion-checkbox>
+                                    <span class="message">No Brokerage for second side</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </swiper-slide>
+            
+            </swiper-container>
+            <div class="section submit-btn">
+                <div class="cli_date_main">
+                    <ion-label class="d-block cli_msg">For all pending cases please check the status post 4PM. Also please note Requests
+                        approved post 2:30 PM will be processed on the next working day.</ion-label>
+                </div>
+                    <ion-button (click)="submitBrokerge()">Submit Request</ion-button>
+            </div>
+        </form>
+    </ion-content> 
+    
+    <div class="set-loader" *ngIf="!dataLoad"> 
+        <img class="width-40" src="/assets/imgs/loader.gif" alt="">
+    </div>

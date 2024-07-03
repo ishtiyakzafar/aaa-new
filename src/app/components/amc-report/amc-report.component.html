@@ -1,0 +1,161 @@
+<ion-header class="mobile-visibility main-header" *ngIf="typeOfClient != 'iiflClients'">
+	<ion-toolbar color="tertiary">
+		<div class="title-block title-block-custom">
+			<div class="icon-title">
+				<ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+				<ion-title class="title">Share Report</ion-title>
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+<div class="desktop-visibility container" style="margin-top: 15px;">
+	<div *ngIf="searchValue && searchValue != '' && searchValue != undefined" class="amc_non_client">
+		<ng-container *ngIf="typeOfClient != 'offlineClients'; else icl">
+			<span class="name">{{ clientDetails?.ClientName }}</span>
+		</ng-container>
+		<ng-template #icl>
+			<span class="code">PAN NO. <span class="pannumber">{{ searchValue }}</span></span>
+		</ng-template>
+		<div class="non_client_type">
+			<div>
+				<div class="label">Report Type</div>
+				<ng-select class="ng-select ng-select-single" [items]="reportTypeData" bindLabel="reportType"
+					bindValue="value" [clearable]="false" name="rType" [(ngModel)]="selectedReportType" #rType="ngModel"
+					required>
+				</ng-select>
+			</div>
+			<div>
+				<div class="label">Select AMC</div>
+
+				<ng-select [items]="amcList" bindLabel="AMCName" bindValue="AMCCode" [searchable]="false"
+					name="name" (change)="amcChange($event)" [(ngModel)]="AMCType" required>
+				</ng-select>
+			</div>
+		</div>
+		<ul class="statement_period">
+			<li>
+				<div class="reg1">
+					<input type="radio" name="daterange" id="amc1" value="pdf" checked (click)="onItemChange('amc1')">
+				</div>
+				<div class="statment_value">
+					<label>Current Year</label>
+					<span> {{currentYearStartDate}} - Today</span>
+				</div>
+			</li>
+			<li>
+				<div class="reg1">
+					<input type="radio" value="pdf" name="daterange" id="amc2" (click)="onItemChange('amc2')">
+				</div>
+				<div class="statment_value">
+					<label>Previous Year </label>
+					<span>{{lastYearStartDate}} - {{lastYearEndDate}}</span>
+				</div>
+			</li>
+			<li>
+				<div class="reg1">
+					<input type="radio" value="pdf" name="daterange" id="amc3" (click)="onItemChange('amc3')" matInput
+						ngxDaterangepickerMd [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}" [maxDate]='maxDate'
+						[(ngModel)]="selectedCustomDate" (datesUpdated)="dateChange($event)" [showDropdowns]="true">
+				</div>
+				<div class="statment_value">
+					<label>Custom Period</label>
+					<ng-container *ngIf="customEnd && customSt; else noCustmDate">
+						<span>{{ customSt }} - {{ customEnd }}</span>
+					</ng-container>
+					<ng-template #noCustmDate>
+						<span>Choose your custom range</span>
+					</ng-template>
+				</div>
+			</li>
+		</ul>
+		<div *ngIf="showError" class="amc_error_msg">
+			<img src="assets/svg/error_msg_red.svg" alt="error">
+			<span> {{ showError }}</span>
+		</div>
+		<div class="loader" *ngIf="dataLoad">
+			<img src="/assets/imgs/loader.gif" alt="">
+		</div>
+		<div style="font-size:80%;padding-left:30px;"><b>Note:</b>
+			<ol style="padding-left:13px;margin:4px 0;">
+				
+				<li>Password to open the statement would be PAN of client in uppercase (in capital letters).</li>
+				<li *ngIf="showNote">Select the custom date range within one year to download the Report.</li>
+	
+			</ol>
+		</div>
+		<a href="javascript:void(0)" (click)="onDownloadClick()" class="btn_orange">Download PDF</a>
+	</div>
+</div>
+<ion-content>
+<div class="mobile-visibility container">
+	<div *ngIf="searchValue && searchValue != '' && searchValue != undefined" class="amc_non_client">
+		<ng-container *ngIf="typeOfClient != 'iiflClients'; else icl">
+			<span class="code pan_label">PAN NO. <span class="pannumber">{{ searchValue }}</span></span>
+		</ng-container>
+		<ng-template #icl>
+			<!-- <span class="name">{{ clientDetails?.ClientName }}</span> -->
+		</ng-template>
+		<div class="non_client_type">
+			<div>
+				<div class="label">Report Type</div>
+				<ng-select class="ng-select ng-select-single" [items]="reportTypeData" bindLabel="reportType"
+					bindValue="value" [clearable]="false" name="rType" [(ngModel)]="selectedReportType" #rType="ngModel"
+					required>
+				</ng-select>
+			</div>
+			<div>
+				<div class="label">Select AMC</div>
+
+				<ng-select [items]="amcList" bindLabel="AMCName" bindValue="AMCCode" [searchable]="false"
+					name="name" (change)="amcChange($event)" [(ngModel)]="AMCType" required>
+				</ng-select>
+			</div>
+		</div>
+		<ul class="statement_period">
+			<li>
+				<div class="reg1">
+					<input type="radio" name="daterangemob" id="amc1" value="pdf" checked
+						(click)="onItemChange('amc1')">
+				</div>
+				<div class="statment_value">
+					<label>Current Month</label>
+					<span> {{currentMonthStart}} - Today</span>
+				</div>
+			</li>
+			<li>
+				<div class="reg1">
+					<input type="radio" value="pdf" name="daterangemob" id="amc2" (click)="onItemChange('amc2')">
+				</div>
+				<div class="statment_value">
+					<label>Previous Month </label>
+					<span>{{prevMonthFirstDate}} - {{prevMonthLastDate}}</span>
+				</div>
+			</li>
+			<li>
+				<div class="reg1">
+					<input type="radio" value="pdf" name="daterangemob" id="amc3" (click)="onItemChange('amc3')"
+						matInput ngxDaterangepickerMd [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}"
+						[maxDate]='maxDate' [(ngModel)]="selectedCustomDate" (datesUpdated)="dateChange($event)">
+				</div>
+				<div class="statment_value">
+					<label>Custom Period</label>
+					<ng-container *ngIf="customEnd && customSt; else noCustmDate">
+						<span>{{ customSt }} - {{ customEnd }}</span>
+					</ng-container>
+					<ng-template #noCustmDate>
+						<span>Choose your custom range</span>
+					</ng-template>
+				</div>
+			</li>
+		</ul>
+		<div *ngIf="showError" class="amc_error_msg">
+			<img src="assets/svg/error_msg_red.svg" alt="error">
+			<span> {{ showError }}</span>
+		</div>
+		<div class="loader" *ngIf="dataLoad">
+			<img src="/assets/imgs/loader.gif" alt="">
+		</div>
+		<a href="javascript:void(0)" (click)="onDownloadClick()" class="btn_orange">Download PDF</a>
+	</div>
+</div>
+</ion-content>

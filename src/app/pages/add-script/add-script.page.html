@@ -1,0 +1,691 @@
+
+<ion-header>
+	<ion-toolbar color="tertiary" class="mobile-visibility">
+		<div class="back-title-block">
+			<ion-icon name="arrow-back-outline" class="back-button" (click)="goToPrevious()"></ion-icon>
+			<span>Search</span>
+		</div>
+	</ion-toolbar>
+
+	<div class="container">
+		<ion-toolbar class="search-toolbar" *ngIf="equityBlockTabValue != 'clients'">
+			<ion-searchbar autofocus="true" #search class="ion-searchbar searchheader" [(ngModel)]="search_item" debounce="1000" (ngModelChange)="getItems($event)"></ion-searchbar>
+			<span class="error_msg">{{ minStringMsg }}</span>
+		</ion-toolbar>
+		<!-- only for Client Tab start -->
+		<ion-toolbar class="search-toolbar search_sec_add_script" *ngIf="equityBlockTabValue == 'clients'">
+			<ion-searchbar class="ion-searchbar" [(ngModel)]="clientSearchValue" (ionFocus)="showDropDown()" (ionBlur)="hideDropDown()" placeholder="Search by Client Code / Scrip Name"></ion-searchbar>
+		</ion-toolbar>
+		<!-- only for Client Tab End -->
+
+		<ion-toolbar>
+			<div class="seg-one">
+				<ion-segment class="header-segment-bottom search-segment-block d-flex" [(ngModel)]="equityBlockTabValue" (ionChange)="equityBlockSegmentChanged(equityBlockTabValue,$event.detail.value)">
+					<div *ngFor="let data of equityBlockButton; let i = index">
+						<ion-segment-button value={{data.Value}}>
+							{{data.Name}}
+						</ion-segment-button>
+					</div>
+				</ion-segment>
+			</div>
+		</ion-toolbar>
+
+		<ion-toolbar class="seg-two" *ngIf="equityBlockTabValue !== 'clients'">
+			<ion-row style="width: 100%;">
+				<div class="cash-future-option" [ngSwitch]="equityBlockTabValue">
+					<div *ngSwitchCase="'equity'">
+						<ion-segment scrollable class="header-segment-top d-flex" [(ngModel)]="cashFutureOptionTabValue" (ionChange)="equitySegmentChanged(equityBlockTabValue,$event.detail.value)">
+							<div *ngFor="let data of cashFutureOptionButton">
+								<ion-segment-button value={{data.Value}}>
+									{{data.Name}}
+								</ion-segment-button>
+							</div>
+						</ion-segment>
+					</div>
+					<div *ngSwitchCase="'currency'">
+						<ion-segment scrollable class="header-segment-top d-flex" [(ngModel)]="cashFutureOptionTabValue" (ionChange)="equitySegmentChanged(equityBlockTabValue,$event.detail.value)">
+							<div *ngFor="let data of cashFutureOptionButton">
+								<ion-segment-button value={{data.Value}}>
+									{{data.Name}}
+								</ion-segment-button>
+							</div>
+						</ion-segment>
+					</div>
+					<div *ngSwitchCase="'commodity'">
+						<ion-segment scrollable class="header-segment-top d-flex" [(ngModel)]="cashFutureOptionTabValue" (ionChange)="equitySegmentChanged(equityBlockTabValue,$event.detail.value)">
+							<div *ngFor="let data of cashFutureOptionButton">
+								<ion-segment-button value={{data.Value}}>
+									{{data.Name}}
+								</ion-segment-button>
+							</div>
+						</ion-segment>
+					</div>
+				</div>
+			</ion-row>
+		</ion-toolbar>
+
+		<ion-toolbar class="drop-down-toolbar" *ngIf="isDropDownVisible">
+			<div class="drop-down thin-scroll">
+				<div *ngIf="(displayClientList | filter:clientSearchValue).length > 0">
+					<div class="item" *ngFor="let data of displayClientList | filter:clientSearchValue" (click)="displayClientDetails(data)">
+						<span class="name">{{data.ClientCode}}</span>
+						<span class="first" *ngIf="typeFlag == '1'">{{data.ClientName}}</span>
+						<span class="first" *ngIf="typeFlag == '2'">{{data.First_Name}}</span>
+
+					</div>
+				</div>
+				<div class="no-data-found" *ngIf="(displayClientList | filter:clientSearchValue).length == 0">
+					<span style="font-weight:bold;">No Data Found</span>
+				</div>	
+
+				
+			</div>
+		</ion-toolbar>
+
+		<!-- mobile header table -->
+		<ion-toolbar style="--min-height: 46px;--background: #f2f4f4 !important;" class="mobile-visibility">
+			<table width="100%" class="mobile-header-table" *ngIf="equityBlockTabValue !== 'clients'">
+				<thead class="fontT">
+					<tr>
+						<th style="text-align: left; padding-left: 66px; width: 44%;">Scrip</th>
+						<th style="width: 27%; text-align: right; padding-right: 16px;">LTP</th>
+					</tr>
+				</thead>
+			</table>
+            <table style="width: 100%" *ngIf="equityBlockTabValue === 'clients'" class="mobile-header-table client-header-table">
+                <thead class="fontT">
+                    <tr>
+                        <th *ngIf="isRMFAN">
+                            <div class="td-block">
+                                Name
+                            </div>
+                        </th>
+                        <th [ngClass]="{'noRMFAN': !isRMFAN}">
+                            <div class="td-block">
+                                Client Code
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+		</ion-toolbar>
+
+		<!-- desktop header table -->
+		<ion-toolbar class="desktop-header-table desktop-visibility desktop-search-table-header">
+			<div class="container desktop-visibility">
+				<!-- <table style="width: 98.4%"> -->
+				<table style="width: 100%" *ngIf="equityBlockTabValue !== 'clients'" class="desktop-header-table">
+					<thead class="fontT">
+						<tr>
+							<th>
+								<div class="td-block">
+									Exchange
+								</div>
+							</th>
+							<th>
+
+								<div class="td-block">
+									Scrip
+								</div>
+							</th>
+							<th>
+								<div class="td-block">
+									LTP
+								</div>
+							</th>
+							<th>
+								<div class="td-block">
+									% Change
+								</div>
+							</th>
+							<th>
+								<div class="td-block" style="visibility: hidden;">
+									Others
+								</div>
+							</th>
+						</tr>
+					</thead>
+				</table>
+                <table style="width: 100%" *ngIf="equityBlockTabValue === 'clients'" class="desktop-header-table client-header-table">
+					<thead class="fontT">
+						<tr>
+							<th *ngIf="isRMFAN">
+								<div class="td-block">
+									Name
+								</div>
+							</th>
+                            <th [ngClass]="{'noRMFAN': !isRMFAN}">
+								<div class="td-block">
+									Client Code
+								</div>
+							</th>
+						</tr>
+					</thead>
+				</table>
+				<!-- <div class="table-after"></div> -->
+			</div>
+		</ion-toolbar>
+	</div>
+</ion-header>
+
+<ion-content>
+	<div class="container mobile-visibility">
+		<div class="tab-content" *ngIf="dataLoad && equityBlockTabValue !== 'clients'" [ngSwitch]="cashFutureOptionTabValue">
+			<div *ngSwitchCase="'cash'">
+				<table style="width: 100%" class="mobile-table search-table">
+					<tbody *ngIf ="equityCashTabList.length > 0"> 
+						<tr class="tablebot" *ngFor="let data of equityCashTabList; let i = index"
+							(click)="dropClick(i, equityCashTabList)">
+							<td style="width: 44%;">
+								<div class="td-heading first-column">
+									<div class="heading-block">
+										<span class="first-span exchange exchange-mobile"
+										*ngIf="data.Exchange == 'N'">NSE
+										</span>
+										<div>
+										<span class="first-span exchange exchange-mobile"
+										*ngIf="data.Exchange == 'B'" [ngClass]="{'bse': data.Exchange === 'B'}">BSE
+										</span>
+										<span class="spanStyle font_Bold">{{data['Symbol']}}</span>
+										</div>
+									</div>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']" (click)="disableParentEvent($event)">
+									<div class="divT clientDetail justify-content-end m-l-16" (click)="goToClientList(data)">
+										<ion-icon src="./assets/svg/clients_colored.svg"></ion-icon>
+										<span>Clients</span>
+									</div>
+									<div class="divT clientDetail justify-content-end" (click)="goToCompanyDetails(data)">
+                                        <img class="search-detail" src="assets/imgs/search_detail.png" alt="">
+										<span>Details</span>
+									</div>
+								</div>
+							</td>
+							<td style="text-align: right; padding-right: 16px; width: 28%"
+							[ngStyle]="{'color':(data.PClose == 0 || data.LastRate == data.PClose) ? '#656565' : (data.LastRate > data.PClose ? '#17C257' : '#F55858')}">
+								<div class="td-heading">
+									<span>{{data['LastRate'] | number: '1.2-2'}}</span>
+									<span>
+									<span *ngIf="data.PClose != 0">{{data.LastRate - data.PClose | number: '1.2-2'}}&nbsp;({{((data.LastRate - data.PClose)/data.PClose *100)  | number:'1.2-2'}}%)</span>	
+									<span *ngIf="data.PClose == 0">0.00 (0.00%)</span>	
+								</span>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']" (click)="disableParentEvent($event)">
+									<div class="divT clientDetail" (click)="goToWatchList(data)">
+										<ion-icon src="./assets/svg/watchlist_colored.svg"></ion-icon>
+										<span>Watchlist</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+					<tbody *ngIf ="equityCashTabList.length == 0" class="nodataFoundClass">
+						<tr>
+							<td>{{scripSearch}}</td>
+						</tr>
+						<!-- <span>{{scripSearch}}</span> -->
+					</tbody>
+				</table>
+			</div>
+
+			<div *ngSwitchCase="'future'">
+				<table style="width: 100%" class="mobile-table search-table expire-block-table-mobile">
+					<tbody *ngIf="equityFutureTabList.length > 0">
+						<tr class="tablebot" *ngFor="let data of combineFutureData; let i = index"
+							(click)="dropClick(i, combineFutureData)">
+							<td style="width: 44%;">
+								<div class="td-heading first-column">
+									<div class="heading-block">
+
+										<span class="first-span exchange exchange-mobile"
+											*ngIf="data.Exchange == 'N'">NSE</span>
+										<span class="first-span exchange exchange-mobile"
+										*ngIf="data.Exchange == 'M'">MCX</span>
+										<span class="first-span exchange exchange-mobile"
+										*ngIf="data.Exchange == 'B'" [ngClass]="{'bse': data.Exchange === 'B'}">BSE</span>
+										<div>
+											<span class="spanStyle font_Bold">{{data['Name']}}</span><br>
+											<span class="spanStyle m_l10">{{changeDateFormat(data['dateActive'])}}</span>
+										</div>
+									
+									</div>
+								</div>
+								<div class="inner-tr-style-block m-l-16" *ngIf="data['isVisible']" (click)="disableParentEvent($event)">
+									<div class="expiry-block">
+										<span>Expiry Dates</span>
+										<div class="dates-option dates-option-desktop thin-scroll">
+											<ion-segment class="expiry-date-segment" [(ngModel)]="data.activeModelDate">
+												<ion-segment-button *ngFor="let data1 of data.array let j = index" value={{monthYearDateFormat(data1.Expiry)}} (click)="selectExpiryDate(data1,i,j)">{{monthYearDateFormat(data1.Expiry)}}</ion-segment-button>
+											</ion-segment>
+										</div>
+										
+										<!-- <div class="dates-option">
+											<span class="font-bold">30 Jul</span>
+											<span>27 Aug</span>
+											<span>24 Sep</span>
+										</div> -->
+									</div>
+									<div class="divT clientDetail justify-content-end" (click)="goToClientList(data)">
+										<ion-icon src="./assets/svg/clients_colored.svg"></ion-icon>
+										<span>Clients</span>
+									</div>
+									<div class="divT clientDetail justify-content-end" (click)="goToCompanyDetails(data)">
+										<img class="search-detail" src="assets/imgs/search_detail.png" alt="">
+										<span>Details</span>  
+									</div>
+								</div>
+							</td>
+							<td style="text-align: right; padding-right: 16px; width: 28%" 
+							[ngStyle]="{'color':(data.PClose == 0 || data.LastRate == data.PClose) ? '#656565' : (data.LastRate > data.PClose ? '#17C257' : '#F55858')}">
+								<div class="td-heading">
+									<span>{{changeNumerAfterDecimal(data['LastRate'])}}</span>
+									<span *ngIf="data.PClose != 0 ">{{changeNumerAfterDecimal(data.LastRate - data.PClose)}}&nbsp;({{changeNumerAfterDecimal((data.LastRate - data.PClose)/data.PClose *100)}}%)</span>
+									<span *ngIf="data.PClose == 0">{{changeNumerAfterDecimal(data.LastRate - data.PClose)}}(0.00%)</span>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']" (click)="disableParentEvent($event)">
+									<div class="divT clientDetail" (click)="goToWatchList(data)">
+										<ion-icon src="./assets/svg/watchlist_colored.svg"></ion-icon>
+										<span>Watchlist</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+					<tbody *ngIf="equityFutureTabList.length == 0" class="nodataFoundClass">
+						<tr>
+							<td>{{scripSearch}}</td>
+						</tr>
+						<!-- <span>{{scripSearch}}</span> -->
+					</tbody>
+				</table>
+			</div>
+			<div *ngSwitchCase="'options'">
+				<table style="width: 100%"
+					class="mobile-table search-table expire-block-table-mobile mobile-option-table">
+					<tbody *ngIf="equityOptionTabList.length > 0">
+						<tr class="tablebot" *ngFor="let data of combineOptionData; let i = index"
+							(click)="dropClick(i, combineOptionData)">
+							<td style="width: 44%;">
+								<div class="td-heading first-column">
+									<div class="heading-block">
+										<span class="first-span exchange exchange-mobile"
+											*ngIf="data.Exchange == 'N'">NSE</span>
+										<span class="first-span exchange exchange-mobile" *ngIf="data.Exchange == 'B'"
+										[ngClass]="{'bse': data.Exchange === 'B'}">BSE</span>
+										<div>
+											<span class="spanStyle font_Bold">{{data['Name']}}</span><br>
+											<span class="spanStyle m_l10">{{changeDateFormat(data['dateActive'])}}&nbsp;{{data['CPType']}}&nbsp;{{data['defaultstrikeRate']}}</span>
+										</div>	
+										
+									</div>
+								</div>
+								<div class="inner-tr-style-block m-l-16" *ngIf="data['isVisible']" (click)="disableParentEvent($event)">
+									<div class="expiry-block">
+										<span>Expiry Dates</span>
+										<div class="dates-option dates-option-desktop thin-scroll">
+											<ion-segment class="expiry-date-segment" [(ngModel)]="data.activeModelDate">
+												<ion-segment-button *ngFor="let data1 of data.array let j = index" value={{monthYearDateFormat(data1.Expiry)}} (click)="selectOptiosExpiryDate(data1,data, i, j)">{{monthYearDateFormat(data1.Expiry)}}</ion-segment-button>
+											</ion-segment>
+										</div>
+									</div>
+									<div class="toggle-block">
+										<label class="switch" (click)="checkUncheck(data,i)">
+											<input type="checkbox" id="togBtn" [attr.checked]="data.callPutOption ? 'checked' : null"  name="callPutBtn" >
+											<!-- <input type="checkbox" id="togBtn"  (click)="clickChild($event)" [(ngModel)]="data.callPutOption" (ngModelChange)="toggleCallPutBtn(data, i)" name="callPutBtn"> -->
+											<div class="slider round">
+												<!--ADDED HTML --><span class="on">Call</span><span
+													class="off">Put</span>
+												<!--END-->
+											</div>
+										</label>
+										
+										<div class="date_selectfield custom-select">
+											<h5 class="datetitle p0_m0 right-0">Strike Price</h5>
+											<ion-select [(ngModel)]= "data.defaultstrikeRate" (ngModelChange)="strikeRateChangeOption($event, data, i)">
+												<ion-select-option *ngFor="let data2 of data.strikeRate; let i = index" [value]="data2['StrikeRate']">{{data2['StrikeRate']}}</ion-select-option>
+												<!-- <ion-select-option value="2,340.00">2,340.00</ion-select-option>
+												<ion-select-option value="2,348.00">2,348.00</ion-select-option>
+												<ion-select-option value="2,342.00">2,342.00</ion-select-option> -->
+											</ion-select>
+											<!-- <ion-icon name="chevron-down-outline" class="downiconalingment"></ion-icon> -->
+										</div>
+									</div>
+									<div class="divT clientDetail justify-content-end" (click)="goToClientList(data)">
+										<ion-icon src="./assets/svg/clients_colored.svg"></ion-icon>
+										<span>Clients</span>
+									</div>
+									<div class="divT clientDetail justify-content-end" (click)="goToCompanyDetails(data)">
+										<img class="search-detail" src="assets/imgs/search_detail.png" alt="">
+										<span>Details</span> 
+									</div>
+								</div>
+							</td>
+							<td style="text-align: right; padding-right: 16px; width: 28%"
+							[ngStyle]="{'color':(data.PClose == 0 || data.LastRate == data.PClose) ? '#656565' : (data.LastRate > data.PClose ? '#17C257' : '#F55858')}">
+								<div class="td-heading">
+									<span>{{changeNumerAfterDecimal(data['LastRate'])}}</span>
+										<span *ngIf="data.PClose != 0 ">{{changeNumerAfterDecimal(data.LastRate - data.PClose)}}&nbsp;({{changeNumerAfterDecimal((data.LastRate - data.PClose)/data.PClose *100)}}%)</span>
+										<span *ngIf="data.PClose == 0">{{changeNumerAfterDecimal(data.LastRate - data.PClose)}}(0.00%)</span>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']" (click)="disableParentEvent($event)">
+									<div class="divT clientDetail" (click)="goToWatchList(data)">
+										<ion-icon src="./assets/svg/watchlist_colored.svg"></ion-icon>
+										<span>Watchlist</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+					<tbody *ngIf="equityOptionTabList.length == 0" class="nodataFoundClass">
+						<tr>
+							<td>{{scripSearch}}</td>
+						</tr>
+						<!-- <span>{{scripSearch}}</span> -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+        <div class="tab-content" *ngIf="dataLoad && equityBlockTabValue === 'clients'">
+			<div class="mobile-table search-table">
+				<table style="width: 100%" class="desktop-table container desktop-search-table client-body-table" id="thin-scroll2">
+					<tbody *ngIf="localSerchList.length > 0"> 
+						<tr class="tablebot" *ngFor="let data of localSerchList; let i = index" (click)="displayClientDetails(data)">
+							<td class="scrip-data" *ngIf="isRMFAN">
+								<span *ngIf="typeFlag == '1'">{{data['ClientName'] == "" ? '-': data['ClientName']}}</span>
+								<span *ngIf="typeFlag == '2'">{{data['First_Name'] == null ? "-":data['First_Name'] }}</span>
+							</td>
+                            <td>
+								{{data['ClientCode']}}
+							</td>
+						</tr>
+					</tbody>
+					<tbody *ngIf="localSerchList.length == 0">
+						<tr>
+							<td class="no-data-found">No Recent Search Data Found</td>
+						</tr>	
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="loader" *ngIf="!dataLoad" style="min-height: calc(100vh - 301px);">
+			<img src="/assets/imgs/loader.gif" alt="">
+		</div>
+	</div>
+
+	<div class="container desktop-visibility">
+		<div class="tab-content" *ngIf="dataLoad && equityBlockTabValue !== 'clients'" [ngSwitch]="cashFutureOptionTabValue">
+			<div *ngSwitchCase="'cash'" class="thin-scroll table-block">
+				<table style="width: 100%" class="desktop-table container desktop-search-table" id="thin-scroll2">
+					<tbody *ngIf ="equityCashTabList.length > 0"> 
+						<tr class="tablebot" *ngFor="let data of equityCashTabList; let i = index">
+							<td >
+								<span class="exchange" *ngIf="data.Exchange == 'N'">NSE</span>
+								<span class="exchange" *ngIf="data.Exchange == 'B'"
+								[ngClass]="{'bse': data.Exchange === 'B'}">BSE</span>	
+							</td>
+							<td class="scrip-data">
+								{{data['Symbol']}}
+							</td>
+							<td  [ngStyle]="{'color':(data.PClose == 0 || data.LastRate == data.PClose) ? '#656565' : (data.LastRate > data.PClose ? '#17C257' : '#F55858')}">
+								{{data['LastRate'] | number: '1.2-2'}}
+							</td>
+							<td [ngStyle]="{'color':(data.PClose == 0 || data.LastRate == data.PClose) ? '#656565' : (data.LastRate > data.PClose ? '#17C257' : '#F55858')}">
+								<!-- {{data['perChange']}} -->
+								<span *ngIf="data.PClose != 0">{{data.LastRate - data.PClose | number: '1.2-2'}}&nbsp;({{((data.LastRate - data.PClose)/data.PClose *100)  | number:'1.2-2'}}%)</span>
+								<span *ngIf="data.PClose == 0">0.00 (0.00%)</span>
+								
+							</td>
+							<td>
+								<div class="detail-block">
+									<div class="detail" (click)="goToWatchList(data)" style="cursor:pointer" style="cursor:pointer">
+										<!-- <ion-icon src="./assets/svg/client.svg"></ion-icon> -->
+										<img src="assets/svg/watchlist.svg" style="margin-right: 5px;" alt="">
+										<span>Watchlist</span>
+									</div>
+									<div class="detail" (click)="goToCompanyDetails(data)" style="cursor:pointer">
+										<!-- <ion-icon src="./assets/svg/client.svg"></ion-icon> -->
+										<img src="assets/svg/document.svg" style="margin-right: 5px;" alt="">
+										<span>Details</span>
+									</div>
+									<!-- <div class="detail" (click)="goToClientList(data)"  style="cursor:pointer"> -->
+										<div class="detail" style="cursor:pointer" (click)="goToClientList(data)" >
+										<!-- <ion-icon src="./assets/svg/client.svg"></ion-icon> -->
+										<img src="assets/svg/clients.svg" style="margin-right: 5px;" alt="">
+										<span>Clients</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+					<tbody *ngIf ="equityCashTabList.length == 0" class="nodataFoundClass">
+						<tr>
+							<td>{{scripSearch}}</td>
+						</tr>
+						<!-- <span>{{scripSearch}}</span> -->
+					</tbody>
+				</table>
+			</div>
+			<div *ngSwitchCase="'future'" class="withExpiryTable thin-scroll table-block">
+				<table style="width: 100%" class="desktop-table container desktop-search-table" id="thin-scroll2">
+					<tbody *ngIf="equityFutureTabList.length > 0">
+						<tr class="tablebot" *ngFor="let data of combineFutureData; let i = index">
+							<td >
+								<div class="upper-part">
+									<span class="exchange" *ngIf="data.Exchange == 'N'">NSE</span>
+									<span class="exchange" *ngIf="data.Exchange == 'M'">MCX</span>
+									<span class="exchange" *ngIf="data.Exchange == 'B'"
+									[ngClass]="{'bse': data.Exchange === 'B'}">BSE</span>	
+								</div>
+								<!-- <div class="expiryBlock other-expiry m-l-25 p-l-6">
+                  Other Expiry Dates
+                </div> -->
+								<div class="expiry-block">
+									<span class="expiry-date">Expiry Dates</span>
+									<div class="dates-option dates-option-desktop thin-scroll">
+										<ion-segment class="expiry-date-segment" [(ngModel)]="data.activeModelDate">
+											<ion-segment-button *ngFor="let data1 of data.array let j = index" value={{monthYearDateFormat(data1.Expiry)}} (click)="selectExpiryDate(data1,i,j)">{{monthYearDateFormat(data1.Expiry)}}</ion-segment-button>
+										</ion-segment>
+									</div>
+								</div>
+							</td>
+							<td class="scrip-data">
+								<div class="upper-part">
+									<div class="scrip-date">
+										<span class="scrip">{{data['Name']}}</span>
+										<span class="date">{{changeDateFormat(data.dateActive)}}</span>
+									</div>
+								</div>
+								<!-- <div class="expiryBlock date-section">
+                  <span class="date-bold">30 Jul</span><span>27 Aug</span><span>24 Sep</span>
+                </div> -->
+							</td>
+							<td  [ngStyle]="{'color':(data.PClose == 0 || data.LastRate == data.PClose) ? '#656565' : (data.LastRate > data.PClose ? '#17C257' : '#F55858')}">
+								<div class="upper-part justify-content-end">
+									<span>{{changeNumerAfterDecimal(data['LastRate'])}}</span>
+								</div>
+							</td>
+							<!-- <td  *ngIf="equityBlockTabValue == 'commodity' || equityBlockTabValue == 'currency' ">
+								<div class="upper-part justify-content-end">
+									{{data['LastRate']}}
+								</div>
+							</td> -->
+
+
+							<!-- <td *ngIf="equityBlockTabValue == 'equity'"  [ngStyle]="{'color':(data.PClose == 0 || data.CashLastRate == data.PClose) ? '#656565' : (data.CashLastRate > data.PClose ? '#17C257' : '#F55858')}"> 
+								<div class="upper-part justify-content-end">
+									{{data['perChange']}}
+								<span *ngIf="data.PClose != 0">{{data.CashLastRate - data.PClose | number: '1.2-2'}}&nbsp;({{((data.CashLastRate - data.PClose)/data.PClose *100)  | number:'1.2-2'}}%)</span>
+								<span *ngIf="data.PClose == 0">0.00 (0.00%)</span>
+								</div>
+							</td> -->
+
+							<td  [ngStyle]="{'color':(data.PClose == 0 || data.LastRate == data.PClose) ? '#656565' : (data.LastRate > data.PClose ? '#17C257' : '#F55858')}"> 
+								<div class="upper-part justify-content-end">
+									{{data['perChange']}}
+								<!-- <span *ngIf="data.PClose != 0 && equityBlockTabValue != 'currency' ">{{data.LastRate - data.PClose | number: '1.2-2'}}&nbsp;({{((data.LastRate - data.PClose)/data.PClose *100)  | number:'1.2-2'}}%)</span>
+								<span *ngIf="data.PClose != 0 && equityBlockTabValue == 'currency' ">{{data.LastRate - data.PClose | number: '1.2-2'}}00&nbsp;({{((data.LastRate - data.PClose)/data.PClose *100)  | number:'1.2-4'}}%)</span>
+								<span *ngIf="data.PClose == 0">0.00<span *ngIf="equityBlockTabValue == 'currency'">00</span>(0.00%)</span> -->
+								<span *ngIf="data.PClose != 0 ">{{changeNumerAfterDecimal(data.LastRate - data.PClose)}}&nbsp;({{changeNumerAfterDecimal((data.LastRate - data.PClose)/data.PClose *100)}}%)</span>
+								<!-- <span *ngIf="data.PClose != 0">{{data.LastRate - data.PClose | number: '1.2-2'}}00&nbsp;({{((data.LastRate - data.PClose)/data.PClose *100)  | number:'1.2-4'}}%)</span> -->
+								<span *ngIf="data.PClose == 0">{{changeNumerAfterDecimal(data.LastRate - data.PClose)}}(0.00%)</span>
+								</div>
+							</td>
+
+							<td>
+								<div class="upper-part">
+									<div class="detail-block">
+										<div class="detail" (click)="goToWatchList(data)" style="cursor:pointer">
+											<!-- <ion-icon src="./assets/svg/client.svg"></ion-icon> -->
+											<img src="assets/svg/watchlist.svg" style="margin-right: 5px;" alt="">
+											<span>Watchlist</span>
+										</div>
+										<div class="detail" (click)="goToCompanyDetails(data)" style="cursor:pointer">
+											<!-- <ion-icon src="./assets/svg/client.svg"></ion-icon> -->
+											<img src="assets/svg/document.svg" style="margin-right: 5px;" alt="">
+											<span>Details</span>
+										</div>
+										<!-- <div class="detail" (click)="goToClientList(data)"  style="cursor:pointer"> -->
+											<div class="detail" style="cursor:pointer" (click)="goToClientList(data)">
+											<!-- <ion-icon src="./assets/svg/client.svg"></ion-icon> -->
+											<img src="assets/svg/clients.svg" style="margin-right: 5px;" alt="">
+											<span>Clients</span>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+					<tbody *ngIf="equityFutureTabList.length == 0" class="nodataFoundClass">
+						<tr>
+							<td>{{scripSearch}}</td>
+						</tr>
+						<!-- <span>{{scripSearch}}</span> -->
+					</tbody>
+				</table>
+			</div>
+			<div *ngSwitchCase="'options'" class="withExpiryTable withtoggleOption thin-scroll table-block">
+				<table style="width: 100%" class="desktop-table container desktop-search-table" id="thin-scroll2">
+					<tbody *ngIf="equityOptionTabList.length > 0">
+						<tr class="tablebot" *ngFor="let data of combineOptionData; let i = index">
+							<td >
+								<div class="upper-part">
+									<span class="exchange" *ngIf="data.Exchange == 'N'">NSE</span>
+										<span class="exchange" *ngIf="data.Exchange == 'B'"
+										[ngClass]="{'bse': data.Exchange === 'B'}">BSE</span>	
+								</div>
+								<div class="expiry-block expiry-toggle-block">
+									<div class="expiry">
+										<span class="expiry-date">Expiry Dates</span>
+											<div class="dates-option dates-option-desktop thin-scroll">
+												<ion-segment class="expiry-date-segment" [(ngModel)]="data.activeModelDate">
+													<ion-segment-button *ngFor="let data1 of data.array let j = index" value={{monthYearDateFormat(data1.Expiry)}} (click)="selectOptiosExpiryDate(data1,data, i, j)">{{monthYearDateFormat(data1.Expiry)}}</ion-segment-button>
+												</ion-segment>
+											</div>
+										</div>
+									<div class="toggle-block">
+										<div class="option-type-block">
+											<span class="option-type">Option Type</span>
+											<label class="switch">
+												<input type="checkbox" id="togBtn" [(ngModel)]="data.callPutOption" (ngModelChange)="toggleCallPutBtn(data, i)" name="callPutBtn">
+												<div class="slider round">
+													<!--ADDED HTML --><span class="on">Call</span><span
+														class="off">Put</span>
+													<!--END-->
+												</div>
+											</label>
+										</div>
+										<div class="date_selectfield custom-select">
+											<h5 class="datetitle p0_m0 right-0">Strike Price</h5>
+											<ion-select [(ngModel)]= "data.defaultstrikeRate" (ngModelChange)="strikeRateChangeOption($event, data, i)" >
+												<ion-select-option *ngFor="let data2 of data.strikeRate" [value]="data2['StrikeRate']">{{data2['StrikeRate']}}</ion-select-option>
+												<!-- <ion-select-option value="2,340.00">2,340.00</ion-select-option>
+												<ion-select-option value="2,348.00">2,348.00</ion-select-option>
+												<ion-select-option value="2,342.00">2,342.00</ion-select-option> -->
+											</ion-select>
+											<!-- <ion-icon name="chevron-down-outline" class="downiconalingment"></ion-icon> -->
+										</div>
+									</div>
+								</div>
+							</td>
+							<td class="scrip-data">
+								<div class="upper-part">
+									<div class="scrip-date">
+										<span class="scrip">{{data['Name']}}</span>
+										<span class="date">{{changeDateFormat(data['dateActive'])}}</span>
+									</div>
+								</div>
+							</td>
+							<td  [ngStyle]="{'color':(data.PClose == 0 || data.LastRate == data.PClose) ? '#656565' : (data.LastRate > data.PClose ? '#17C257' : '#F55858')}">
+								<div class="upper-part justify-content-end">
+									<span>{{changeNumerAfterDecimal(data['LastRate'])}}</span>
+								</div>
+							</td>
+							<td  [ngStyle]="{'color':(data.PClose == 0 || data.LastRate == data.PClose) ? '#656565' : (data.LastRate > data.PClose ? '#17C257' : '#F55858')}">
+								<div class="upper-part justify-content-end">
+									<!-- {{data['perChange']}} -->
+									<span *ngIf="data.PClose != 0 ">{{changeNumerAfterDecimal(data.LastRate - data.PClose)}}&nbsp;({{changeNumerAfterDecimal((data.LastRate - data.PClose)/data.PClose *100)  | number:'1.2-2'}}%)</span>
+									<!-- <span *ngIf="data.PClose != 0 && equityBlockTabValue == 'currency' ">{{data.LastRate - data.PClose | number: '1.2-2'}}00&nbsp;({{((data.LastRate - data.PClose)/data.PClose *100)  | number:'1.2-4'}}%)</span> -->
+									<span *ngIf="data.PClose == 0">{{changeNumerAfterDecimal(data.LastRate - data.PClose)}}(0.00%)</span>
+								</div>
+							</td>
+							<td>
+								<div class="upper-part">
+									<div class="detail-block">
+										<div class="detail" (click)="goToWatchList(data)" style="cursor:pointer">
+											<!-- <ion-icon src="./assets/svg/client.svg"></ion-icon> -->
+											<img src="assets/svg/watchlist.svg" style="margin-right: 5px;" alt="">
+											<span>Watchlist</span>
+										</div>
+										<div class="detail" (click)="goToCompanyDetails(data)"  style="cursor:pointer" >
+										<!-- <div class="detail" style="cursor:not-allowed" > -->
+											<!-- <ion-icon src="./assets/svg/client.svg"></ion-icon> -->
+											<img src="assets/svg/document.svg" style="margin-right: 5px;" alt="">
+											<span>Details</span>
+										</div>
+										<!-- <div class="detail" (click)="goToClientList(data)"  style="cursor:pointer"> -->
+											<div class="detail" style="cursor:pointer" (click)="goToClientList(data)">
+											<!-- <ion-icon src="./assets/svg/client.svg"></ion-icon> -->
+											<img src="assets/svg/clients.svg" style="margin-right: 5px;" alt="">
+											<span>Clients</span>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+					<tbody *ngIf="equityOptionTabList.length == 0" class="nodataFoundClass">
+						<tr>
+							<td>{{scripSearch}}</td>
+						</tr>
+						<!-- <span>{{scripSearch}}</span> -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+        <div class="tab-content" *ngIf="dataLoad && equityBlockTabValue === 'clients'">
+			<div class="thin-scroll table-block">
+				<table style="width: 100%" class="desktop-table container desktop-search-table client-body-table" id="thin-scroll2">
+					<tbody *ngIf="localSerchList.length > 0"> 
+						<tr class="tablebot" *ngFor="let data of localSerchList; let i = index" style="cursor:pointer" (click)="displayClientDetails(data)">
+							<td class="scrip-data" *ngIf="isRMFAN">
+								<span *ngIf="typeFlag == '1'">{{data['ClientName'] == "" ? '-': data['ClientName']}}</span>
+								<span *ngIf="typeFlag == '2'">{{data['First_Name'] == null ? "-":data['First_Name'] }}</span>
+							</td>
+                            <td>
+								{{data['ClientCode']}}
+							</td>
+						</tr>
+					</tbody>
+					<tbody *ngIf="localSerchList.length == 0"> 
+						<tr>
+							<td class="no-data-found">No Recent Search Data Found</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="loader" *ngIf="!dataLoad" style="min-height: calc(100vh - 301px);">
+			<img src="/assets/imgs/loader.gif" alt="">
+		</div>
+	</div>
+</ion-content>

@@ -1,0 +1,52 @@
+@import 'src/app/pages/wire-requests/wire-requests.page.scss';
+
+.field-block .epi_table{grid-column: span 3;}
+.common-table {
+    width: 100%;
+    text-align: center;
+    td, th {
+        padding: 10px 4px;
+        border: 1px solid #CBCBCB;
+        width: 16.5%;
+    }
+    thead {
+        background: #fafafa;
+    }
+    .lower-row {
+        th {
+            font-family: 'nunitoSemiBold';
+        }
+    }
+    .body-row {
+        td:first-child {
+            font-family: 'nunitoSemiBold';
+            text-align: left;
+            padding-left: 12px;
+        }
+        td {
+            ion-input {
+                border: 1px solid #cbcbcb;
+                border-radius: 2px;
+                height: 30px;
+                width: 60% !important;
+                font-size: 15px;
+                margin: auto;
+            }
+        }
+        .subtitle{
+            font-size: 12px;
+            color:#D3D3D3;
+        }
+    }
+}
+.epi_table th:first-child, .epi_table td:first-child{width: 30%; padding-right: 12px; text-align: left;}
+.epi_table th, .epi_table td{padding: 10px;}
+.total_qty{display: block; padding: 4px; text-align: center; font-size: 10px; color: #000; font-weight: 600;}
+.epi-block .heading { background: #f2f4f4; border-radius: 8px 8px 0 0; padding: 8px 24px; color: #6e6e6e; font-family: "nunitoBold"; font-size: 14px; }
+.overlay-div{
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+    z-index: 99;
+    top: 0;
+}

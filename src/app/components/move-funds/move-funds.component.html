@@ -1,0 +1,57 @@
+<div class="container">
+	<div class="move-fund-title-section">
+		<div class="section-1">
+			<span class="upper-row">
+				Equity Account Balance
+			</span>
+			<span class="lower-row">
+				<span class="rupees">₹</span> {{equityPayoutAmount}}
+			</span>
+		</div>
+		<div class="section-1">
+			<span class="upper-row">
+				MF Account Balance
+			</span>
+			<span class="lower-row">
+				<span class="rupees">₹</span>{{mfPayoutAmount}}
+			</span>
+		</div>
+	</div>
+
+	<div class="move-fund-container">
+		<div class="section">
+
+			<div class="label">Select Account to Transfer From</div>
+
+			<ion-segment class="fund-segments" name="accountTr" [(ngModel)]="accountTr"
+				(ionChange)="segmentChangedTrAccount($event.detail.value)">
+				<!-- <ion-segment-button value="EM">Equity to MF</ion-segment-button> -->
+				<ion-segment-button value="ME">MF to Equity</ion-segment-button>
+			</ion-segment>
+
+		</div>
+
+		<div class="section">
+
+			<div class="label">Enter Amount <span class="rupees">(₹)</span></div>
+
+			<ion-input type="number" [(ngModel)]="enterAmount" class="inputClass" (ngModelChange)="changeAmountValue($event)"></ion-input>
+
+				<div style="font-size: small;color: #c51244;">
+					<!-- <span *ngIf="enterAmount == null">Amount is required</span> -->
+					<!-- <span *ngIf="accountTr === 'EM'"> {{ enterAmount != null && enterAmount > equityPayoutAmount ? 'Amount should not be more than Equity Balance Amount' : '' }}</span> -->
+					<span> {{ enterAmount != null && enterAmount > mfPayoutAmount ? 'Amount should not be more than MF Account Balance' : '' }}</span>
+				</div>
+				
+
+		</div>
+
+		<div class="section buttonfund" >
+			<ion-button (click)="transferFund()" [disabled]="!transferBtnEnable || enterAmount === null" color="success">Transfer</ion-button>
+		</div>
+
+	</div>
+	<div style="position:absolute;top:30%; left:30%" *ngIf="!dataLoad">
+		<img style="width:30px" src="/assets/imgs/loader.gif" alt="">
+	</div>
+</div>

@@ -1,0 +1,202 @@
+.notificationheader{
+    justify-content: space-between;
+    .titleName{
+        display:flex;
+        align-items: center;
+    }
+    ion-button{
+        --background-hover: #ffffff !important;
+        --background-focused: #ffffff !important;
+        --border-color:#593CC7;
+        --color:#593CC7;
+         font-family: 'nunitoBold';
+    }
+}
+
+.block-parent {
+    display: flex;
+    flex-direction: column;
+    margin-top: 32px;
+    .message-block {
+        display: flex;
+        flex-direction: column;
+        margin: 16px 0;
+        padding-left: 5px;
+        border-left: 3px solid #17C257;
+        .message-title {
+            color: #000;
+            font-size: 14px; font-weight: 600;
+            font-family: 'nunitoRegular';
+            margin-bottom: 5px;
+        }
+        .message-time {
+            font-size: 12px;
+            font-family: 'nunitoRegular';
+            color: #9C9C9C;
+        }
+    }
+    
+}
+
+.block-parent.version-parent{
+    .message-block {
+        border-left: none;
+        position: relative;
+        .message-title, .message-time{
+            padding-left: 35px;
+        }
+  
+        .pdf-link{
+            position: absolute;
+            left:0;
+            top:0px;
+            width:18px;
+        }
+    }
+}
+
+.filter-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 5px;
+    position: relative;
+        .selection-block {
+            cursor: pointer;
+            z-index: 999;
+            img {
+                width: 8px;
+            }
+            span {
+                color: #212121;
+                font-size: 14px;
+                font-family: 'nunitoSemiBold';
+                margin-right: 4px;
+            }
+        }
+        .option-block {
+            position: absolute;
+            top: 24px;
+            box-shadow: 0px 5px 20px #00000029;
+            min-width: 176px;
+            border-radius: 6px;
+            ion-list {
+                border-radius: 6px;
+                ion-item {
+                    --ripple-color: transparent;
+                    ion-label {
+                        font-size: 14px !important;
+                        padding-left: 3px;
+                        color: #212121;
+                        font-family: 'nunitoBold' !important;
+                        border-left: 3px solid #17C257;
+                        line-height: 15px;
+                    }
+                    ion-checkbox {
+                        --size: 14px;
+                        --background-checked: transparent;
+                        --border-color-checked: #17C257;
+                        --checkmark-color: #17C257;
+                    }
+                }
+            }
+        }
+}
+
+
+
+.message-block:after {
+    content: "";
+    width: 100%;
+    height: .5px;
+    background: #E8E8E8;
+    position: relative;
+    top: 16px;
+}
+
+.personalize {
+    border-left:3px solid #BE47E8 !important;
+}
+
+.ideas {
+    border-left:3px solid #7F51F5 !important;
+}
+
+.news {
+    border-left:3px solid #FCB91D !important;
+}
+
+
+@media screen and (max-width: 768px) {
+    .segment-title-block {
+        display: flex;
+        flex-direction: column;
+        background-size: cover;
+        padding-bottom: 8px;
+        .title-block-custom {
+            background: none;
+        }
+    }
+    .mobile-button{
+        display:flex;
+        text-align: center;
+        justify-content: center;
+        padding:20px 0 0 10px;
+        ion-button{
+            --background-hover: #ffffff !important;
+            --background-focused: #ffffff !important;
+            --border-color:#593CC7;
+            --color:#593CC7;
+             font-family: 'nunitoBold';
+        }
+    }
+    .filter-block {
+        align-items: flex-start;
+        margin: 8px 16px 0;
+    }
+    .block-parent {
+        padding: 0 16px;
+        margin-top: 0;
+
+    }
+    .filter-block {
+        .option-block {
+            width: calc(100% - 32px);
+            top: 31px;
+        }
+    }
+    ion-item:after {
+        content: "";
+        /* border: 1px solid blue; */
+        height: .5px;
+        width: calc(100% - 32px);
+        position: absolute;
+        background: #cbcbcb;
+        z-index: 999;
+        bottom: 1px;
+        left: 16px;
+    }
+    ion-item:last-child:after {
+        content: none;
+    }
+}
+
+.border-bottom {
+    border-bottom: 0.5px solid #cbcbcb;
+}
+.notification-block-segment{
+    display: flex;
+}
+
+.btnPDF{
+    background: transparent;
+    width: 30px;
+}
+@media (max-width:768px) {
+    .btnPDF{ width: 40px;}
+    .block-parent {
+      
+        .message-block {
+            
+            .message-title {padding-left: 40px;}}}
+}

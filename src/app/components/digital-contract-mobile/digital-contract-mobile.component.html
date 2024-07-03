@@ -1,0 +1,54 @@
+<ion-header class="main-header">
+    <ion-toolbar color="tertiary" class="mobile-visibility">
+        <div class="title-block title-block-custom">
+            <div class="icon-title">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <ion-title class="title">Share Report</ion-title>
+            </div>
+            <div class="search-block">
+				<ion-buttons class="header-icon-block">
+					<ion-icon class="iconsize first-icon" (click)="goToNotification()" src="./assets/svg/notification.svg"></ion-icon>
+					<ion-icon class="iconsize" style="margin-left: 15px;" src="./assets/svg/search.svg" (click)="goToSearch()"></ion-icon>
+				</ion-buttons>
+			</div>
+        </div>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+    <div class="mobile-visibility">
+        <div *ngIf="settlementList && settlementList.length>0 && listLoad" class="digital-main-section">
+            <div *ngFor="let dataObj of settlementList" class="digital-note-details">
+                <div class="client-Code">Client Code <span>{{settlementList[0].clientCode}}</span></div>
+                <div class="client-Details">
+                    <table>
+                        <tr>
+                            <th>Date</th>
+                            <th>Settlement No.</th>
+                            <th>Settlement Type</th>
+                        </tr>
+                        <tr>
+                            <td>{{dataObj.Date}}</td>
+                            <td>{{dataObj.SettlementNo}}</td>
+                            <td>{{dataObj.Type.option}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="digitalnote-Reach">
+                    <div class="digital-download" (click)="download(dataObj)"><img src="assets/svg/download-blue.svg"
+                            alt="download-pdf"> Download PDF</div>
+                    <div class="digital-msg" (click)="email(dataObj)"><img src="assets/svg/message.svg" alt="message">
+                        Email to Client</div>
+                </div>
+            </div>
+        </div>
+        <div class="no-data-found" *ngIf="settlementList.length == 0 && listLoad">
+            <span>No Data Found</span>
+        </div>
+        <div class="loaderCss loader" *ngIf="!listLoad">
+            <img src="/assets/imgs/loader.gif" alt="">
+        </div>
+    </div>
+    <div class="loaderCss down-loader" *ngIf="dataLoad">
+        <img src="/assets/imgs/loader.gif" alt="">
+    </div>
+</ion-content>

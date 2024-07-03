@@ -1,0 +1,1605 @@
+<!-- <ion-header [translucent]="true"> -->
+<ion-header>
+	<div class="overlay-div mobile-visibility" (click)="overlayVisible = !overlayVisible" [ngClass]="{'visible': overlayVisible}">
+		<div class="bg-img">
+			<div class="text-left">
+				<h4 (click)="titleClick($event)" class="font-bold">Markets
+					<img class="arrow-down-white" src="assets/svg/arrow-down-white.svg" alt="arrow">
+				</h4>
+				<div class="search-block">
+					<ion-buttons class="header-icon-block">
+						<ion-icon class="iconsize first-icon" src="./assets/svg/white-home-icon.svg" (click)="goToDashboard()">
+
+						</ion-icon>
+						<ion-icon class="iconsize first-icon" src="./assets/svg/notification.svg"
+							(click)="goToNotification()"></ion-icon>
+						<ion-icon class="iconsize" src="./assets/svg/search.svg" (click)="goToAddScript()"></ion-icon>
+					</ion-buttons>
+				</div>
+			</div>
+			<div class="sensex-parent-block">
+				<div class="item-block" *ngFor="let dataObj of displayHeader" (click)="headerClick($event, dataObj)">
+					<h6>{{dataObj['Symbol']}}</h6>
+					<label class="lbl" for="">{{dataObj['LastRate'] | formatNumerDecimal}}</label>
+					<label class="lbl2" for="" [ngStyle]="{'color':(dataObj.PerChange == 0) ? '#656565' : (dataObj.PerChange > 0 ? '#17C257' : '#F55858')}">
+					<img class="arrow-green-up" *ngIf="dataObj.PerChange > 0" src="assets/imgs/arrow-green-up.png" alt="arrow">
+					<img class="arrow-red-down" *ngIf="dataObj.PerChange < 0" src="assets/imgs/arrow-red-down.png" alt="arrow">
+						{{dataObj['Change'] | formatNumerDecimal}} ({{dataObj['PerChange'] | formatNumerDecimal}}%)</label>
+				</div>
+			
+				<!-- <div class="item-block">
+					<h6>BANK NIFTY</h6>
+					<label for="">10302.22</label>
+					<label for="">11.15 (0.05%)</label>
+				</div>
+			
+				<div class="item-block">
+					<h6>SENSEX</h6>
+					<label for="">10302.22</label>
+					<label for="">11.15 (0.05%)</label>
+				</div> -->
+			</div>
+			<div class="text-center view-details">
+				<span>Tap on the index to view details</span>
+			</div>
+		</div>
+	</div>
+
+	<!-- top header select option and watchlist segment for mobile -->
+	<ion-toolbar class="mobile-header mobile-visibility">
+		<div class="select-search-block">
+			<div class="container mobile-visibility select-block">
+				<!-- <ion-row class="m-t-6 header-upper-top ">
+            <ion-col size="8"> -->
+				<div class="select">
+					<h4 (click)="overlayVisible = !overlayVisible" class="font-bold">Markets 
+						<img class="arrow-down-white" src="assets/svg/arrow-down-white.svg" alt="arrow">
+					</h4>
+				</div>
+				<!-- </ion-col>
+            <ion-col size="1" class="web"></ion-col> -->
+				<!-- <ion-col size="3" class="web" justify-content-end> -->
+				<div class="search-block">
+					<ion-buttons class="header-icon-block">
+						<ion-icon class="iconsize first-icon" src="./assets/svg/white-home-icon.svg" (click)="goToDashboard()">
+							
+						</ion-icon>
+						<ion-icon class="iconsize first-icon" src="./assets/svg/notification.svg"
+							(click)="goToNotification()"></ion-icon>
+						<ion-icon class="iconsize" src="./assets/svg/search.svg" (click)="goToAddScript()"></ion-icon>
+					</ion-buttons>
+				</div>
+				<!-- </ion-col>
+        </ion-row> -->
+			</div>
+
+			<div class="container mobile-visibility">
+				<ion-row class="m-b-20">
+					<ion-segment scrollable mode="md" class="header-segment-top d-flex"  [(ngModel)]="mobileWatchlistBlockTabValue">
+						<div *ngFor="let data of buttonData">
+							<ion-segment-button mode="md" value={{data.Value}}
+								(click)="watchlistSegmentBlockMobile(data.Value, buttonData, buttonDataTwo)">
+								{{data.Name}}
+							</ion-segment-button>
+						</div>
+					</ion-segment>
+				</ion-row>
+			</div>
+		</div>
+	</ion-toolbar>
+    <!-- <common-header [displayHeaderDetails]="displayHeader"></common-header> -->
+	<!-- watchlist segment for desktop -->
+	<!-- <ion-toolbar class="desktop-visibility">
+		<div class="container desktop-visibility">
+			<ion-row class="colorback border-bottom" style="margin-top:24px">
+				<ion-segment scrollable class="destop-segment-middle wathlist-block-segment"
+					[(ngModel)]="desktopWatchlistBlockTabValue">
+					<div *ngFor="let data of buttonData">
+						<ion-segment-button (click)="segmentChanged(data.Value, buttonData, buttonDataTwo)"
+							value={{data.Value}}>
+							{{data.Name}}
+						</ion-segment-button>
+					</div>
+				</ion-segment>
+			</ion-row>
+		</div>
+	</ion-toolbar> -->
+
+	<!-- nifty block segment for mobile -->
+	<ion-toolbar *ngIf="segmentOne === 'watchlist'" style="--min-height:unset; --padding-bottom:0"
+		class="mobile-visibility">
+		<div class="container mobile-visibility">
+			<ion-segment scrollable class="header-segment-bottom d-flex" [(ngModel)]="niftyBlockTabValue"
+				(ionChange)="mobileNiftyBlockSegmentChanged($event)">
+				<div *ngFor="let data of buttonDataTwo; let i = index" class="mobile-default">
+					<ion-segment-button
+						[ngClass]="{'segment-button-checked' : data['active'], 'first-segment' : i === 0}"
+						value={{data.Value}}
+						(click)="segmentChangedTwo(data['CanEditOrDelete'], data['CanRenMW'], data['isDefault'], data.Value, buttonDataTwo,i, 'watchlist')">
+						<div class="segment-block">
+							<span>{{data.Name}}</span>
+							<!-- <ion-badge color="warning">{{data.default}}</ion-badge> -->
+							<ion-badge color="warning" *ngIf="data['isDefault']">D</ion-badge>
+						</div>
+					</ion-segment-button>
+				</div>
+			</ion-segment>
+		</div>
+	</ion-toolbar>
+
+	<!--snapshot block segment for mobile -->
+	<!-- <ion-toolbar *ngIf="segmentOne === 'snapshot'" style="--min-height:unset; --padding-bottom:0"
+		class="mobile-visibility">
+		<div class="container mobile-visibility">
+			<ion-segment scrollable class="header-segment-bottom  snapshot-segment" [(ngModel)]="snapshotBlockTabValue">
+				<div *ngFor="let data of buttonDataSegment; let i = index" class="mobile-default">
+					<ion-segment-button
+						[ngClass]="{'segment-button-checked' : data['active'], 'first-segment' : i === 0}"
+						value={{data.Value}} (ionChange)="mobileSnapshotChange($event, data.Value)"
+						(click)="segmentChangedTwo(data['CanEditOrDelete'], data['CanRenMW'], data['isDefault'], data.Value, buttonDataSegment,i, 'snapshot')">
+						<div class="segment-block">
+							<span>{{data.Name}}</span>
+							<ion-badge color="warning" *ngIf="data['isDefault']">D</ion-badge>
+						</div>
+					</ion-segment-button>
+				</div>
+			</ion-segment>
+		</div>
+	</ion-toolbar> -->
+
+	<!-- header table for mobile  in watchlist-->
+	<ion-toolbar *ngIf="!showDeleteScripMob && segmentOne === 'watchlist'" style="--min-height:unset"
+		class="mobile-visibility toolbar-paddding-0">
+		<div class="container mobile-visibility">
+			<table class="mobile-header-table width-100">
+				<thead class="fontT">
+					<tr>
+						<th style="text-align: left; padding-left: 15px; width: 44%;">Scrip</th>
+						<th style="text-align: right; width: 27%; padding-right: 0;">LTP</th>
+						<th style="width: 27%; text-align: right; padding-right: 16px;">Day's High <br />Day's Low</th>
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</ion-toolbar>
+	<!-- header table for mobile  in snapshot-->
+	
+
+
+	<!-- delete scrip header mobile -->
+	<ion-toolbar *ngIf="showDeleteScripMob" class="mobile-visibility delete-scrip-toolbar-mobile">
+		<div class="container">
+			<div class="header delete-scrip-header">
+				Scrip
+			</div>
+		</div>
+	</ion-toolbar>
+</ion-header>
+
+
+<!-- body table for mobile -->
+<ion-content *ngIf="segmentOne === 'watchlist'" class="mobile-visibility">
+	<ion-refresher slot="fixed" (ionRefresh)="ionRefresh($event)" (ionPull)="ionPull($event)"
+		(ionStart)="ionStart($event)">
+		<ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles"
+			refreshingText="Refreshing...">
+		</ion-refresher-content>
+	</ion-refresher>
+	<div class="tabs-content tabs-content-style" *ngIf="!showDeleteScripMob">
+		
+		<!-- review. Commented IonSlides -->
+		<swiper-container #slides [options]="{ autoHeight: 'true' }" (swiperactiveindexchange)="slideChanged($event)">
+			<swiper-slide>
+				<table class="mobile-table width-100" *ngIf="dataLoad && mainObj[tabNames[0]].length">
+					<tbody>
+						<tr class="tablebot" *ngFor="let data of mainObj[tabNames[0]]; let i = index"
+							(click)="dropClick(i, mainObj[segmentTwo])">
+							<td>
+								<div class="td-heading first-column">
+									<span class="first-span-block">
+										<span class="first-span">{{data.ShortName}}</span>
+										<span class="spanStyle">{{data.Exch}},{{data.ExchType}}</span>
+									</span>
+									<span class="spanStyle"
+										*ngIf="data['ExchType'] === 'U' || data['ExchType'] === 'D'">{{data['FullName']}}</span>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT inner-tr-style">
+										<span>Open</span>
+										<span>{{data['OpenRate'] | formatNumerDecimal: data.ExchType}}</span>
+
+									</div>
+									<div class="divT inner-tr-style">
+										<span>P.Close</span>
+										<span>{{data.PClose | formatNumerDecimal: data.ExchType}}</span>
+									</div>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT clientDetail justify-content-end" (click)="clientList(data)">
+										<ion-icon src="./assets/svg/client.svg"></ion-icon>
+										<span class="client-detail">Clients</span>
+									</div>
+								</div>
+							</td>
+							<td 
+								[ngStyle]="{'color':(data.PClose == 0 || data.LastTradePrice == data.PClose) ? '#656565' : (data.LastTradePrice > data.PClose ? '#17C257' : '#F55858')}">
+								<div class="td-heading">
+									<span class="LTP">{{data.LastTradePrice | formatNumerDecimal: data.ExchType}}</span>
+									<span
+										*ngIf="data.PClose != 0 ">{{changeNumerAfterDecimal(data.ExchType,data.LastTradePrice - data.PClose)}}({{changeNumerAfterDecimal(data.ExchType,((data.LastTradePrice - data.PClose)/data.PClose *100))}}%)</span>
+									<span
+										*ngIf="data.PClose == 0">{{changeNumerAfterDecimal(data.ExchType,data.LastTradePrice - data.PClose)}}(0.00%)</span>
+
+								</div>
+								<div class="divT inner-tr-style" *ngIf="data['isVisible']">
+									<span>Qty/Best Bid</span>
+									<span>{{data.QtyBid | formatNumerDecimal: data.ExchType}}/{{data.PriceBid | formatNumerDecimal: data.ExchType}}</span>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT clientDetail" (click)="goToCompanyDetail(data)">
+										<ion-icon src="./assets/svg/detail.svg"></ion-icon>
+										<span class="client-detail">Details</span>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="td-heading highLow">
+									<span>{{data.DayHigh | number: '1.2-2'}}<span class="font-14"
+											*ngIf="data.ExchType == 'U'">00</span></span>
+									<span>{{data.DayLow | number: '1.2-2'}}<span class="font-14"
+											*ngIf="data.ExchType == 'U'">00</span></span>
+								</div>
+								<div class="divT inner-tr-style" *ngIf="data['isVisible']">
+									<span>Qty/Best Ask</span>
+									<span>{{data.QtyAsk | formatNumerDecimal: data.ExchType}}/{{data.PriceAsk | formatNumerDecimal: data.ExchType}}</span>
+								</div>
+								<div class="inner-tr-style-block visibility-hidden" *ngIf="data['isVisible']">
+									<div class="divT clientDetail" (click)="goToCompanyDetail(data)">
+										<ion-icon src="./assets/svg/detail.svg"></ion-icon>
+										<span>Details</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- existing -->
+				<!-- <div class="loader" *ngIf="!dataLoad" style="min-height: calc(100vh - 286px);">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div> -->
+                <!-- new code for skeleton start -->
+				<!-- existing -->
+
+                <table class="mobile-table width-100" *ngIf="!dataLoad">
+					<tbody>
+						<tr class="tablebot" *ngFor="let data of skeletonHight">
+							<td >
+								<ion-skeleton-text animated></ion-skeleton-text>
+							</td>
+							<td >
+								<div class="skeleton-group d-flex flex-direction-column align-items-end">
+                                    <ion-skeleton-text animated class="height-20"></ion-skeleton-text>
+                                    <ion-skeleton-text animated> </ion-skeleton-text>
+                                </div>
+							</td>
+							<td >
+								<div class="skeleton-group d-flex flex-direction-column align-items-end">
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                </div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- existing -->
+                <!-- end -->
+				<!-- existing -->
+
+			</swiper-slide>
+			<swiper-slide>
+				<table class="mobile-table width-100" *ngIf="dataLoad && mainObj[tabNames[1]].length">
+					<tbody>
+						<tr class="tablebot" *ngFor="let data of mainObj[tabNames[1]]; let i = index"
+							(click)="dropClick(i, mainObj[segmentTwo])">
+							<td >
+								<div class="td-heading first-column">
+									<span class="first-span-block">
+										<span class="first-span"> {{data.ShortName}}</span>
+										<span class="spanStyle">{{data.Exch}},{{data.ExchType}}</span>
+									</span>
+									<span class="spanStyle"
+										*ngIf="data['ExchType'] === 'U' || data['ExchType'] === 'D'">{{data['FullName']}}</span>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT inner-tr-style">
+										<span>Open</span>
+										<span>{{data['OpenRate'] | formatNumerDecimal: data.ExchType}}</span>
+									</div>
+									<div class="divT inner-tr-style">
+										<span>P.Close</span>
+										<span>{{data.PClose | formatNumerDecimal: data.ExchType}}</span>
+									</div>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT clientDetail justify-content-end" (click)="clientList(data)">
+										<ion-icon src="./assets/svg/client.svg"></ion-icon>
+										<span class="client-detail">Clients</span>
+									</div>
+								</div>
+							</td>
+							<td 
+								[ngStyle]="{'color':(data.PClose == 0 || data.LastTradePrice == data.PClose) ? '#656565' : (data.LastTradePrice > data.PClose ? '#17C257' : '#F55858')}">
+								<div class="td-heading">
+									<span class="LTP">
+										{{data.LastTradePrice | formatNumerDecimal: data.ExchType}}</span>
+									<span
+										*ngIf="data.PClose != 0 ">{{changeNumerAfterDecimal(data.ExchType,data.LastTradePrice - data.PClose)}}({{changeNumerAfterDecimal(data.ExchType,((data.LastTradePrice - data.PClose)/data.PClose *100))}}%)</span>
+									<span
+										*ngIf="data.PClose == 0">{{changeNumerAfterDecimal(data.ExchType,data.LastTradePrice - data.PClose)}}(0.00%)</span>
+								</div>
+								<div class="divT inner-tr-style" *ngIf="data['isVisible']">
+									<span>Qty/Best Bid</span>
+									<span>{{data.QtyBid | formatNumerDecimal: data.ExchType}}/{{data.PriceBid | formatNumerDecimal: data.ExchType}}</span>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT clientDetail" (click)="goToCompanyDetail(data)">
+										<ion-icon src="./assets/svg/detail.svg"></ion-icon>
+										<span class="client-detail">Details</span>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="td-heading highLow">
+									<span>{{data.DayHigh | number: '1.2-2'}}<span class="font-14"
+											*ngIf="data.ExchType == 'U'">00</span></span>
+									<span>{{data.DayLow | number: '1.2-2'}}<span class="font-14"
+											*ngIf="data.ExchType == 'U'">00</span></span>
+								</div>
+								<div class="divT inner-tr-style" *ngIf="data['isVisible']">
+									<span>Qty/Best Ask</span>
+									<span>{{data.QtyAsk | formatNumerDecimal: data.ExchType}}/{{data.PriceAsk | formatNumerDecimal: data.ExchType}}
+									</span>
+								</div>
+								<div class="inner-tr-style-block visibility-hidden" *ngIf="data['isVisible']">
+									<div class="divT clientDetail" (click)="goToCompanyDetail(data)">
+										<ion-icon src="./assets/svg/detail.svg"></ion-icon>
+										<span>Details</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- existing -->
+				<!-- <div class="loader" *ngIf="!dataLoad" style="min-height: calc(100vh - 286px);">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div> -->
+                <!-- new code for skeleton start -->
+				<!-- existing -->
+
+                <table class="mobile-table width-100" *ngIf="!dataLoad">
+					<tbody>
+						<tr class="tablebot" *ngFor="let data of skeletonHight">
+							<td >
+								<ion-skeleton-text animated></ion-skeleton-text>
+							</td>
+							<td >
+								<div class="skeleton-group d-flex flex-direction-column align-items-end">
+                                    <ion-skeleton-text animated class="height-20"></ion-skeleton-text>
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                </div>
+							</td>
+							<td >
+								<div class="skeleton-group d-flex flex-direction-column align-items-end">
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                </div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- existing -->
+                <!-- end -->
+				<!-- existing -->
+
+				<div class="emptyData" *ngIf="dataLoad && mainObj[tabNames[1]].length === 0">
+					<div>
+						<div class="wrapper">
+							<h6>You have not added anything to the watchlist</h6>
+							<ion-button fill="outline" (click)="addScript()">
+								<ion-icon slot="start" name="add"></ion-icon>
+								Add Scrips
+							</ion-button>
+						</div>
+					</div>
+				</div>
+			</swiper-slide>
+			<swiper-slide>
+				<table class="mobile-table width-100" *ngIf="dataLoad && mainObj[tabNames[2]].length">
+					<tbody>
+						<tr class="tablebot" *ngFor="let data of mainObj[tabNames[2]]; let i = index"
+							(click)="dropClick(i, mainObj[segmentTwo])">
+							<td >
+								<div class="td-heading first-column">
+									<span class="first-span-block">
+										<span class="first-span">{{data.ShortName}}</span>
+										<span class="spanStyle">{{data.Exch}},{{data.ExchType}}</span>
+									</span>
+									<span class="spanStyle"
+										*ngIf="data['ExchType'] === 'U' || data['ExchType'] === 'D'">{{data['FullName']}}</span>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT inner-tr-style">
+										<span>Open</span>
+										<span>{{data['OpenRate'] | formatNumerDecimal: data.ExchType}}</span>
+									</div>
+									<div class="divT inner-tr-style">
+										<span>P.Close</span>
+										<span>{{data.PClose | formatNumerDecimal: data.ExchType}}</span>
+									</div>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT clientDetail justify-content-end" (click)="clientList(data)">
+										<ion-icon src="./assets/svg/client.svg"></ion-icon>
+										<span class="client-detail">Clients</span>
+									</div>
+								</div>
+							</td>
+							<td 
+								[ngStyle]="{'color':(data.PClose == 0 || data.LastTradePrice == data.PClose) ? '#656565' : (data.LastTradePrice > data.PClose ? '#17C257' : '#F55858')}">
+								<div class="td-heading">
+									<span class="LTP">{{data.LastTradePrice | formatNumerDecimal: data.ExchType}}</span>
+									<span
+										*ngIf="data.PClose != 0 ">{{changeNumerAfterDecimal(data.ExchType,data.LastTradePrice - data.PClose)}}({{changeNumerAfterDecimal(data.ExchType,((data.LastTradePrice - data.PClose)/data.PClose *100))}}%)</span>
+									<span
+										*ngIf="data.PClose == 0">{{changeNumerAfterDecimal(data.ExchType,data.LastTradePrice - data.PClose)}}(0.00%)</span>
+								</div>
+								<div class="divT inner-tr-style" *ngIf="data['isVisible']">
+									<span>Qty/Best Bid</span>
+									<span>{{data.QtyAsk | formatNumerDecimal: data.ExchType}}/{{data.PriceAsk | formatNumerDecimal: data.ExchType}}
+									</span>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT clientDetail" (click)="goToCompanyDetail(data)">
+										<ion-icon src="./assets/svg/detail.svg"></ion-icon>
+										<span class="client-detail">Details</span>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="td-heading highLow">
+									<span>{{data.DayHigh | number: '1.2-2'}}<span class="font-14"
+											*ngIf="data.ExchType == 'U'">00</span></span>
+									<span>{{data.DayLow | number: '1.2-2'}}<span class="font-14"
+											*ngIf="data.ExchType == 'U'">00</span> </span>
+								</div>
+								<div class="divT inner-tr-style" *ngIf="data['isVisible']">
+									<span>Qty/Best Ask</span>
+									<span>{{data.QtyAsk | formatNumerDecimal: data.ExchType}}/{{data.PriceAsk | formatNumerDecimal: data.ExchType}}
+									</span>
+								</div>
+								<div class="inner-tr-style-block visibility-hidden" *ngIf="data['isVisible']">
+									<div class="divT clientDetail" (click)="goToCompanyDetail(data)">
+										<ion-icon src="./assets/svg/detail.svg"></ion-icon>
+										<span>Details</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- existing -->
+				<!-- <div class="loader" *ngIf="!dataLoad" style="min-height: calc(100vh - 286px);">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div> -->
+                <!-- new code for skeleton start -->
+				<!-- existing -->
+                
+				<table class="mobile-table width-100" *ngIf="!dataLoad">
+					<tbody>
+						<tr class="tablebot" *ngFor="let data of skeletonHight">
+							<td >
+								<ion-skeleton-text animated></ion-skeleton-text>
+							</td>
+							<td >
+								<div class="skeleton-group d-flex flex-direction-column align-items-end">
+                                    <ion-skeleton-text animated class="height-20"></ion-skeleton-text>
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                </div>
+							</td>
+							<td >
+								<div class="skeleton-group d-flex flex-direction-column align-items-end">
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                </div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- existing -->
+				<!-- end -->
+				<!-- existing -->
+
+				<div class="emptyData" *ngIf="dataLoad && mainObj[tabNames[2]].length === 0">
+					<div>
+						<div class="wrapper">
+							<h6>You have not added anything to the watchlist</h6>
+							<ion-button fill="outline" (click)="addScript()">
+								<ion-icon slot="start" name="add"></ion-icon>
+								Add Scrips
+							</ion-button>
+						</div>
+					</div>
+				</div>
+			</swiper-slide>
+			<swiper-slide>
+				<table class="mobile-table width-100" *ngIf="dataLoad && mainObj[tabNames[3]].length">
+					<tbody>
+						<tr class="tablebot" *ngFor="let data of mainObj[tabNames[3]]; let i = index"
+							(click)="dropClick(i, mainObj[segmentTwo])">
+							<td >
+								<div class="td-heading first-column">
+									<span class="first-span-block">
+										<span class="first-span">{{data.ShortName}}</span>
+										<span class="spanStyle">{{data.Exch}},{{data.ExchType}}</span>
+									</span>
+									<span class="spanStyle"
+										*ngIf="data['ExchType'] === 'U' || data['ExchType'] === 'D'">{{data['FullName']}}</span>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT inner-tr-style">
+										<span>Open</span>
+										<span>{{data['OpenRate'] | formatNumerDecimal: data.ExchType}}</span>
+									</div>
+									<div class="divT inner-tr-style">
+										<span>P.Close</span>
+										<span>{{data.PClose | formatNumerDecimal: data.ExchType}}</span>
+									</div>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT clientDetail justify-content-end" (click)="clientList(data)">
+										<ion-icon src="./assets/svg/client.svg"></ion-icon>
+										<span class="client-detail">Clients</span>
+									</div>
+								</div>
+							</td>
+							<td 
+								[ngStyle]="{'color':(data.PClose == 0 || data.LastTradePrice == data.PClose) ? '#656565' : (data.LastTradePrice > data.PClose ? '#17C257' : '#F55858')}">
+								<div class="td-heading">
+									<span class="LTP">{{data.LastTradePrice | formatNumerDecimal: data.ExchType}}</span>
+									<span
+										*ngIf="data.PClose != 0 ">{{changeNumerAfterDecimal(data.ExchType,data.LastTradePrice - data.PClose)}}({{changeNumerAfterDecimal(data.ExchType,((data.LastTradePrice - data.PClose)/data.PClose *100))}}%)</span>
+									<span
+										*ngIf="data.PClose == 0">{{changeNumerAfterDecimal(data.ExchType,data.LastTradePrice - data.PClose)}}(0.00%)</span>
+
+								</div>
+								<div class="divT inner-tr-style" *ngIf="data['isVisible']">
+									<span>Qty/Best Bid</span>
+									<span>{{data.QtyBid | formatNumerDecimal: data.ExchType}}/{{data.PriceBid | formatNumerDecimal: data.ExchType}}</span>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT clientDetail" (click)="goToCompanyDetail(data)">
+										<ion-icon src="./assets/svg/detail.svg"></ion-icon>
+										<span class="client-detail">Details</span>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="td-heading highLow">
+									<span>{{data.DayHigh | number: '1.2-2'}}<span class="font-14"
+											*ngIf="data.ExchType == 'U'">00</span></span>
+									<span>{{data.DayLow | number: '1.2-2'}}<span class="font-14"
+											*ngIf="data.ExchType == 'U'">00</span></span>
+								</div>
+								<div class="divT inner-tr-style" *ngIf="data['isVisible']">
+									<span>Qty/Best Ask</span>
+									<span>{{data.QtyAsk | formatNumerDecimal: data.ExchType}}/{{data.PriceAsk | formatNumerDecimal: data.ExchType}}</span>
+								</div>
+								<div class="inner-tr-style-block visibility-hidden" *ngIf="data['isVisible']">
+									<div class="divT clientDetail" (click)="goToCompanyDetail(data)">
+										<ion-icon src="./assets/svg/detail.svg"></ion-icon>
+										<span>Details</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- existing -->
+				<!-- <div class="loader" *ngIf="!dataLoad" style="min-height: calc(100vh - 286px);">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div> -->
+                <!-- new code for skeleton start -->
+				<!-- existing -->
+
+                <table class="mobile-table width-100" *ngIf="!dataLoad">
+					<tbody>
+						<tr class="tablebot" *ngFor="let data of skeletonHight">
+							<td >
+								<ion-skeleton-text animated></ion-skeleton-text>
+							</td>
+							<td >
+								<div class="skeleton-group d-flex flex-direction-column align-items-end">
+                                    <ion-skeleton-text animated class="height-20"></ion-skeleton-text>
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                </div>
+							</td>
+							<td >
+								<div class="skeleton-group d-flex flex-direction-column align-items-end">
+                                    <ion-skeleton-text></ion-skeleton-text>
+                                    <ion-skeleton-text></ion-skeleton-text>
+                                </div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				
+				<!-- existing -->
+                <!-- end -->
+				<!-- existing -->
+				
+				<div class="emptyData" *ngIf="dataLoad && mainObj[tabNames[3]].length === 0">
+					<div>
+						<div class="wrapper">
+							<h6>You have not added anything to the watchlist</h6>
+							<ion-button fill="outline" (click)="addScript()">
+								<ion-icon slot="start" name="add"></ion-icon>
+								Add Scrips
+							</ion-button>
+						</div>
+					</div>
+				</div>
+			</swiper-slide>
+			<swiper-slide>
+				<table class="mobile-table width-100" *ngIf="dataLoad && mainObj[tabNames[4]].length">
+					<tbody>
+						<tr class="tablebot" *ngFor="let data of mainObj[tabNames[4]]; let i = index"
+							(click)="dropClick(i, mainObj[segmentTwo])">
+							<td >
+								<div class="td-heading first-column">
+									<span class="first-span-block">
+										<span class="first-span">{{data.ShortName}}</span>
+										<span class="spanStyle">{{data.Exch}},{{data.ExchType}}</span>
+									</span>
+									<span class="spanStyle"
+										*ngIf="data['ExchType'] === 'U' || data['ExchType'] === 'D'">{{data['FullName']}}</span>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT inner-tr-style">
+										<span>Open</span>
+										<span>{{data['OpenRate'] | formatNumerDecimal: data.ExchType}}</span>
+									</div>
+									<div class="divT inner-tr-style">
+										<span>P.Close</span>
+										<span>{{data.PClose | formatNumerDecimal: data.ExchType}}</span>
+									</div>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT clientDetail justify-content-end" (click)="clientList(data)">
+										<ion-icon src="./assets/svg/client.svg"></ion-icon>
+										<span class="client-detail">Clients</span>
+									</div>
+								</div>
+							</td>
+							<td 
+								[ngStyle]="{'color':(data.PClose == 0 || data.LastTradePrice == data.PClose) ? '#656565' : (data.LastTradePrice > data.PClose ? '#17C257' : '#F55858')}">
+								<div class="td-heading">
+									<span class="LTP">{{data.LastTradePrice | formatNumerDecimal: data.ExchType}}</span>
+									<span
+										*ngIf="data.PClose != 0 ">{{changeNumerAfterDecimal(data.ExchType,data.LastTradePrice - data.PClose)}}({{changeNumerAfterDecimal(data.ExchType,((data.LastTradePrice - data.PClose)/data.PClose *100))}}%)</span>
+									<span
+										*ngIf="data.PClose == 0">{{changeNumerAfterDecimal(data.ExchType,data.LastTradePrice - data.PClose)}}(0.00%)</span>
+								</div>
+								<div class="divT inner-tr-style" *ngIf="data['isVisible']">
+									<span>Qty/Best Bid</span>
+									<span>{{data.QtyBid | formatNumerDecimal: data.ExchType}}/{{data.PriceBid | formatNumerDecimal: data.ExchType}}</span>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT clientDetail" (click)="goToCompanyDetail(data)">
+										<ion-icon src="./assets/svg/detail.svg"></ion-icon>
+										<span class="client-detail">Details</span>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="td-heading highLow">
+									<span>{{data.DayHigh | number: '1.2-2'}}<span class="font-14"
+											*ngIf="data.ExchType == 'U'">00</span></span>
+									<span>{{data.DayLow | number: '1.2-2'}}<span class="font-14"
+											*ngIf="data.ExchType == 'U'">00</span></span>
+								</div>
+								<div class="divT inner-tr-style" *ngIf="data['isVisible']">
+									<span>Qty/Best Ask</span>
+									<span>{{data.QtyAsk | formatNumerDecimal: data.ExchType}}/{{data.PriceAsk | formatNumerDecimal: data.ExchType}}
+									</span>
+								</div>
+								<div class="inner-tr-style-block visibility-hidden" *ngIf="data['isVisible']">
+									<div class="divT clientDetail" (click)="goToCompanyDetail(data)">
+										<ion-icon src="./assets/svg/detail.svg"></ion-icon>
+										<span class="client-detail">Details</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				
+				<!-- existing -->
+				<!-- <div class="loader" *ngIf="!dataLoad" style="min-height: calc(100vh - 286px);">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div> -->
+                <!-- new code for skeleton start -->
+				<!-- existing -->
+
+                <table class="mobile-table width-100" *ngIf="!dataLoad">
+					<tbody>
+						<tr class="tablebot" *ngFor="let data of skeletonHight">
+							<td >
+								<ion-skeleton-text animated></ion-skeleton-text>
+							</td>
+							<td >
+								<div class="skeleton-group d-flex flex-direction-column align-items-end">
+                                    <ion-skeleton-text animated class="height-20"></ion-skeleton-text>
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                </div>
+							</td>
+							<td >
+								<div class="skeleton-group d-flex flex-direction-column align-items-end">
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                </div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				
+				<!-- existing -->
+                <!-- end -->
+				<!-- existing -->
+
+				<div class="emptyData" *ngIf="dataLoad && mainObj[tabNames[4]].length === 0">
+					<div>
+						<div class="wrapper">
+							<h6>You have not added anything to the watchlist</h6>
+							<ion-button fill="outline" (click)="addScript()">
+								<ion-icon slot="start" name="add"></ion-icon>
+								Add Scrips
+							</ion-button>
+						</div>
+					</div>
+				</div>
+			</swiper-slide>
+			<swiper-slide>
+				<table class="mobile-table width-100" *ngIf="dataLoad && mainObj[tabNames[5]].length">
+					<tbody>
+						<tr class="tablebot" *ngFor="let data of mainObj[tabNames[5]]; let i = index"
+							(click)="dropClick(i, mainObj[segmentTwo])">
+							<td >
+								<div class="td-heading first-column">
+									<span class="first-span-block">
+										<span class="first-span">{{data.ShortName}}</span>
+										<span class="spanStyle">{{data.Exch}},{{data.ExchType}}</span>
+									</span>
+									<span class="spanStyle"
+										*ngIf="data['ExchType'] === 'U' || data['ExchType'] === 'D'">{{data['FullName']}}</span>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT inner-tr-style">
+										<span>Open</span>
+										<span>{{data['OpenRate'] | formatNumerDecimal: data.ExchType}}</span>
+									</div>
+									<div class="divT inner-tr-style">
+										<span>P.Close</span>
+										<span>{{data.PClose | formatNumerDecimal: data.ExchType}}</span>
+									</div>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT clientDetail justify-content-end" (click)="clientList(data)">
+										<ion-icon src="./assets/svg/client.svg"></ion-icon>
+										<span class="client-detail">Clients</span>
+									</div>
+								</div>
+							</td>
+							<td 
+								[ngStyle]="{'color':(data.PClose == 0 || data.LastTradePrice == data.PClose) ? '#656565' : (data.LastTradePrice > data.PClose ? '#17C257' : '#F55858')}">
+								<div class="td-heading">
+									<span class="LTP">{{data.LastTradePrice | formatNumerDecimal: data.ExchType}}</span>
+									<span
+										*ngIf="data.PClose != 0 ">{{changeNumerAfterDecimal(data.ExchType,data.LastTradePrice - data.PClose)}}({{changeNumerAfterDecimal(data.ExchType,((data.LastTradePrice - data.PClose)/data.PClose *100))}}%)</span>
+									<span
+										*ngIf="data.PClose == 0">{{changeNumerAfterDecimal(data.ExchType,data.LastTradePrice - data.PClose)}}(0.00%)</span>
+								</div>
+								<div class="divT inner-tr-style" *ngIf="data['isVisible']">
+									<span>Qty/Best Bid</span>
+									<span>{{data.QtyBid | formatNumerDecimal: data.ExchType}}/{{data.PriceBid | formatNumerDecimal: data.ExchType}}</span>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT clientDetail" (click)="goToCompanyDetail(data)">
+										<ion-icon src="./assets/svg/detail.svg"></ion-icon>
+										<span class="client-detail">Details</span>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="td-heading highLow">
+									<span>{{data.DayHigh | number: '1.2-2'}}<span class="font-14"
+											*ngIf="data.ExchType == 'U'">00</span></span>
+									<span>{{data.DayLow | number: '1.2-2'}}<span class="font-14"
+											*ngIf="data.ExchType == 'U'">00</span></span>
+								</div>
+								<div class="divT inner-tr-style" *ngIf="data['isVisible']">
+									<span>Qty/Best Ask</span>
+									<span>{{data.QtyAsk | formatNumerDecimal: data.ExchType}}/{{data.PriceAsk | formatNumerDecimal: data.ExchType}}
+									</span>
+								</div>
+								<div class="inner-tr-style-block visibility-hidden" *ngIf="data['isVisible']">
+									<div class="divT clientDetail" (click)="goToCompanyDetail(data)">
+										<ion-icon src="./assets/svg/detail.svg"></ion-icon>
+										<span class="client-detail">Details</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<!-- existing -->
+				<!-- <div class="loader" *ngIf="!dataLoad" style="min-height: calc(100vh - 286px);">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div> -->
+                <!-- new code for skeleton start -->
+				<!-- existing -->
+
+                <table class="mobile-table width-100" *ngIf="!dataLoad">
+					<tbody>
+						<tr class="tablebot" *ngFor="let data of skeletonHight">
+							<td >
+								<ion-skeleton-text animated></ion-skeleton-text>
+							</td>
+							<td >
+								<div class="skeleton-group d-flex flex-direction-column align-items-end">
+                                    <ion-skeleton-text animated class="height-20"></ion-skeleton-text>
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                </div>
+							</td>
+							<td >
+								<div class="skeleton-group d-flex flex-direction-column align-items-end">
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                </div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				
+				<!-- existing -->
+                <!-- end -->
+				<!-- existing -->
+
+				<div class="emptyData" *ngIf="dataLoad && mainObj[tabNames[5]].length === 0">
+					<div>
+						<div class="wrapper">
+							<h6>You have not added anything to the watchlist</h6>
+							<ion-button fill="outline" (click)="addScript()">
+								<ion-icon slot="start" name="add"></ion-icon>
+								Add Scrips
+							</ion-button>
+						</div>
+					</div>
+				</div>
+			</swiper-slide>
+			<swiper-slide>
+				<table class="mobile-table width-100" *ngIf="dataLoad && mainObj[tabNames[6]].length">
+					<tbody>
+						<tr class="tablebot" *ngFor="let data of mainObj[tabNames[6]]; let i = index"
+							(click)="dropClick(i, mainObj[segmentTwo])">
+							<td >
+								<div class="td-heading first-column">
+									<span class="first-span-block">
+										<span class="first-span">{{data.ShortName}}</span>
+										<span class="spanStyle">{{data.Exch}},{{data.ExchType}}</span>
+									</span>
+									<span class="spanStyle"
+										*ngIf="data['ExchType'] === 'U' || data['ExchType'] === 'D'">{{data['FullName']}}</span>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT inner-tr-style">
+										<span>Open</span>
+										<span>{{data['OpenRate'] | formatNumerDecimal: data.ExchType}}</span>
+									</div>
+									<div class="divT inner-tr-style">
+										<span>P.Close</span>
+										<span>{{data.PClose | formatNumerDecimal: data.ExchType}}</span>
+									</div>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT clientDetail justify-content-end" (click)="clientList(data)">
+										<ion-icon src="./assets/svg/client.svg"></ion-icon>
+										<span class="client-detail">Clients</span>
+									</div>
+								</div>
+							</td>
+							<td 
+								[ngStyle]="{'color':(data.PClose == 0 || data.LastTradePrice == data.PClose) ? '#656565' : (data.LastTradePrice > data.PClose ? '#17C257' : '#F55858')}">
+								<div class="td-heading">
+									<span class="LTP">{{data.LastTradePrice | formatNumerDecimal: data.ExchType}}</span>
+									<span
+										*ngIf="data.PClose != 0 ">{{changeNumerAfterDecimal(data.ExchType,data.LastTradePrice - data.PClose)}}({{changeNumerAfterDecimal(data.ExchType,((data.LastTradePrice - data.PClose)/data.PClose *100))}}%)</span>
+									<span
+										*ngIf="data.PClose == 0">{{changeNumerAfterDecimal(data.ExchType,data.LastTradePrice - data.PClose)}}(0.00%)</span>
+								</div>
+								<div class="divT inner-tr-style" *ngIf="data['isVisible']">
+									<span>Qty/Best Bid</span>
+									<span>{{data.QtyBid | formatNumerDecimal: data.ExchType}}/{{data.PriceBid | formatNumerDecimal: data.ExchType}}</span>
+								</div>
+								<div class="inner-tr-style-block" *ngIf="data['isVisible']">
+									<div class="divT clientDetail" (click)="goToCompanyDetail(data)">
+										<ion-icon src="./assets/svg/detail.svg"></ion-icon>
+										<span class="client-detail">Details</span>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="td-heading highLow">
+									<span>{{data.DayHigh | number: '1.2-2'}}<span class="font-14"
+											*ngIf="data.ExchType == 'U'">00</span></span>
+									<span>{{data.DayLow | number: '1.2-2'}}<span class="font-14"
+											*ngIf="data.ExchType == 'U'">00</span></span>
+								</div>
+								<div class="divT inner-tr-style" *ngIf="data['isVisible']">
+									<span>Qty/Best Ask</span>
+									<span>{{data.QtyAsk | formatNumerDecimal: data.ExchType}}/{{data.PriceAsk | formatNumerDecimal: data.ExchType}}
+									</span>
+								</div>
+								<div class="inner-tr-style-block visibility-hidden" *ngIf="data['isVisible']">
+									<div class="divT clientDetail" (click)="goToCompanyDetail(data)">
+										<ion-icon src="./assets/svg/detail.svg"></ion-icon>
+										<span class="client-detail">Details</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				
+				<!-- existing -->
+				<!-- <div class="loader" *ngIf="!dataLoad" style="min-height: calc(100vh - 286px);">
+					<img src="/assets/imgs/loader.gif" alt="">
+				</div> -->
+                <!-- new code for skeleton start -->
+				<!-- existing -->
+
+                <table class="mobile-table width-100" *ngIf="!dataLoad">
+					<tbody>
+						<tr class="tablebot" *ngFor="let data of skeletonHight">
+							<td >
+								<ion-skeleton-text animated></ion-skeleton-text>
+							</td>
+							<td >
+								<div class="skeleton-group d-flex flex-direction-column align-items-end">
+                                    <ion-skeleton-text animated class="height-20"></ion-skeleton-text>
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                </div>
+							</td>
+							<td >
+								<div class="skeleton-group d-flex flex-direction-column align-items-end">
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                    <ion-skeleton-text animated></ion-skeleton-text>
+                                </div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+                <!-- existing. end -->
+				<div class="emptyData" *ngIf="dataLoad && mainObj[tabNames[6]].length === 0">
+					<div>
+						<div class="wrapper">
+							<h6>You have not added anything to the watchlist</h6>
+							<ion-button fill="outline" (click)="addScript()">
+								<ion-icon slot="start" name="add"></ion-icon>
+								Add Scrips
+							</ion-button>
+						</div>
+					</div>
+				</div>
+			</swiper-slide>
+		</swiper-container>
+		<!-- review. commented IonSlides -->
+
+	</div>
+	<div *ngIf="showDeleteScripMob">
+
+		<app-delete-scrip [MWname]="editWatchListOption" [data]="marketwatchData" *ngIf="showDeleteScripMob">
+		</app-delete-scrip>
+
+		<div class="btn-block">
+			<ion-button (click)="hideDeleteData(showDeleteScripMob,showDeleteScripDesk)">Go to watchlist</ion-button>
+		</div>
+	</div>
+</ion-content>
+<!-- headers section for snapshot tab -->
+<ion-toolbar *ngIf="segmentOne === 'snapshot'" style="--min-height:0" class="mobile-visibility">
+	<div [ngSwitch]="snapshotBlockTabValue">
+		<!-- header for gainers & losers in snapshot tab -->
+		<!-- <div *ngSwitchCase="'gainers'">
+        <div class="gainer-container">
+           <div class="displaytabletitle mt10">
+              <span class="titleheader"> Gainers </span>
+              <span>
+                 <label class="switch">
+                    <input type="checkbox" id="togBtn">
+                    <div class="slider round">
+                       <span class="on">BSE</span><span class="off">NSE</span>
+                    </div>
+                 </label>
+              </span>
+              <span class="titleheader" style="color: #B92121"> Losers </span>
+           </div>
+           <div class="gainerstable">
+              <div class="gainertableleft">
+                 <table class="mt10">
+                    <thead>
+                       <tr>
+                          <th>Scrip</th>
+                          <th>LTP</th>
+                       </tr>
+                    </thead>
+                 </table>
+              </div>
+              <div class="gainertableright">
+                 <table class="mt10">
+                    <thead style="background: #FCCCCC">
+                       <tr>
+                          <th>Scrip</th>
+                          <th>LTP</th>
+                       </tr>
+                    </thead>
+                 </table>
+              </div>
+           </div>
+        </div>
+     </div> -->
+		<!-- header for vol toppers -->
+		<!-- <div *ngSwitchCase="'toppers'">
+        <div class="toppers_container">
+           <div class="toppers_list">
+              <table class="commontablewidth">
+                 <thead>
+                    <th class="leftalignwithpadding commonth">Scrip</th>
+                    <th class="commonth" style="text-align: right;">LTP</th>
+                    <th class="commonth" style="text-align: right;">Volume</th>
+                    <th class="commonth rightalignwithpadding">
+                       <p class="m-pt0">30 Days</p>
+                       <p class="m-pt0">Avg Vol (K)</p>
+                    </th>
+                 </thead>
+              </table>
+           </div>
+        </div>
+     </div> -->
+		<!-- header for bulk and block deals -->
+		<!-- <div *ngSwitchCase="'deals'">
+          <div class="gainer-container">
+             <div class="displaytabletitle mt10">
+                <span class="titleheader" style="color: #000000;"> Bulk Deals </span>
+                <span>
+                   <label class="switch">
+                      <input type="checkbox" id="togBtn">
+                      <div class="slider round">
+                         <span class="on">BSE</span><span class="off">NSE</span>
+                      </div>
+                   </label>
+                </span>
+                <span class="titleheader" style="color: #000000;"> Block Deals </span>
+             </div>
+             <div class="gainerstable">
+                <div class="gainertableleft">
+                   <table class="mt10">
+                      <thead style="background: #F2F4F4">
+                         <tr>
+                            <th>Scrip</th>
+                            <th>Price</th>
+                         </tr>
+                      </thead>
+                   </table>
+                </div>
+                <div class="gainertableright">
+                   <table class="mt10">
+                      <thead style="background: #F2F4F4">
+                         <tr>
+                            <th>Scrip</th>
+                            <th>Price</th>
+                         </tr>
+                      </thead>
+                   </table>
+                </div>
+             </div>
+          </div>
+       </div> -->
+
+	</div>
+</ion-toolbar>
+
+<!-- when click on spapshot for mobile -->
+<!-- <ion-content *ngIf="device === 'mobile' && segmentOne === 'snapshot'"> -->
+<ion-content *ngIf="segmentOne === 'snapshot'" class="mobile-visibility">
+	<!-- <div class="tabs-content-snapshot" [ngSwitch]="snapshotBlockTabValue">
+		<ion-slides class="snapshot-slider" #snapSlides [options]="{ autoHeight: 'true' }" (ionSlideWillChange)="snapSlideChanged($event)">
+			<ion-slide>
+				<div *ngSwitchCase="'gainers'" class="full-width">
+					<app-gainers-losers [gainerLoserData]="gainersdata"
+					[bseGainers]="bseGainers" [bseLosers]="bseLosers" [loosersData]="losersData"></app-gainers-losers>
+				</div>
+			</ion-slide>
+			<ion-slide>
+				<div *ngSwitchCase="'52week'" class="full-width">
+					<app-week-hl [weekHighLowList]="lowHighList" [weekDataLoad]="weekDataLoad"></app-week-hl>
+				</div>
+			</ion-slide>
+			<ion-slide>
+				<div *ngSwitchCase="'toppers'" class="full-width">
+					<app-vol-toppers [volToppersList]="volumeList" [volumeDataLoad]="volumeDataLoad"></app-vol-toppers>
+				</div>
+			</ion-slide>
+			<ion-slide>
+				<div *ngSwitchCase="'deals'" class="full-width">
+					<app-bulk-block-deals class="full-width" [bulkBlockDealsList]="dealsList" [dealDataLoad]="dealDataLoad"
+					[dealDataLoad]="dealDataLoad"></app-bulk-block-deals>
+				</div>
+			</ion-slide>
+		</ion-slides>
+	</div> -->
+	<div class="snapshot-block">
+        <div class="title-heading">Equity</div>
+        <div class="item" *ngFor="let dataObj of snapshotOpton[0]['equity']" (click)="navigateFromSnapshot(dataObj['value'])">
+            <div class="left-section">
+                <div class="icon-block">
+                    <img src="assets/svg/{{dataObj['icon']}}" alt=""> 
+                </div>
+                <span class="item-value">{{dataObj['option']}}</span>
+            </div>
+            <img class="arrow" src="assets/svg/right-arrow.svg" alt="">
+        </div>
+        <div class="title-heading">Derivatives</div>
+        <div class="item" *ngFor="let dataObj of snapshotOpton[1]['derivatives']" (click)="navigateFromSnapshot(dataObj['value'])">
+            <div class="left-section">
+                <div class="icon-block">
+                    <img src="assets/svg/{{dataObj['icon']}}" alt="">
+                </div>
+                <span class="item-value">{{dataObj['option']}}</span>
+            </div>
+            <img class="arrow" src="assets/svg/right-arrow.svg" alt="">
+        </div>
+    </div>
+</ion-content>
+
+<!-- when click on indices for mobile-->
+<!-- <ion-content *ngIf="device === 'mobile' && segmentOne === 'indices'"> -->
+<ion-content *ngIf="segmentOne === 'indices'" class="mobile-visibility">
+	<!-- <ion-segment mode="md" class="indices-segment header-segment-bottom  snapshot-segment" [(ngModel)]="indicesSegmentValue">
+		<ion-segment-button mode="md" *ngFor="let option of indicesSegmentOptions" value="{{option['value']}}">
+			{{option['name']}}
+		</ion-segment-button>
+	</ion-segment>
+	<div class="indices-content-block indices" [ngSwitch]="indicesSegmentValue">
+		<div class="block" *ngSwitchCase="'indices'">
+			<app-indices-indices></app-indices-indices>
+		</div>
+		<div class="block" *ngSwitchCase="'currency'">
+			<app-indices-currency></app-indices-currency>
+		</div>
+		<div class="block" *ngSwitchCase="'commodity'">
+			<app-indices-commodity></app-indices-commodity>
+		</div>
+		<div class="block" *ngSwitchCase="'global'">
+			<app-indices-markets></app-indices-markets>
+		</div>
+	</div> -->
+
+	<ion-segment mode="md" class="indices-segment header-segment-bottom  d-flex snapshot-segment" [(ngModel)]="indicesSegmentValue">
+		<div *ngFor="let option of indicesSegmentOptions; let i = index;" class="mobile-default">
+			<ion-segment-button mode="md" value="{{option['value']}}"
+			(click)="indiceSegmentClick(option.value, i)" (ionChange)="mobileIndiceChange($event)">
+				{{option['name']}}
+			</ion-segment-button>
+		</div>
+	</ion-segment>
+	<div class="indices-content-block" [ngSwitch]="indicesSegmentValue">
+		
+		<!-- review. commented IonSlides -->
+		<swiper-container #indiceSlides [options]="{ autoHeight: 'true' }" (swiperactiveindexchange)="indiceSlideChanged($event)">
+			<swiper-slide>
+				<div *ngSwitchCase="'indices'" class="full-width">
+					<app-indices-indices></app-indices-indices>
+				</div>
+			</swiper-slide>
+			<swiper-slide>
+				<div *ngSwitchCase="'currency'" class="full-width">
+					<app-indices-currency></app-indices-currency>
+				</div>
+			</swiper-slide>
+			<swiper-slide>
+				<div *ngSwitchCase="'commodity'" class="full-width">
+					<app-indices-commodity></app-indices-commodity>
+				</div>
+			</swiper-slide>
+			<swiper-slide>
+				<div *ngSwitchCase="'global'" class="full-width">
+					<app-indices-markets></app-indices-markets>
+				</div>
+			</swiper-slide>
+		</swiper-container>
+
+	</div>
+</ion-content>
+
+<!-- when click on status for mobile-->
+<ion-content *ngIf="segmentOne === 'status'"  class="mobile-visibility">
+	<div class="market-status-content-mobile">
+        <app-market-status></app-market-status>
+    </div>
+</ion-content>
+
+<!-- when click on exposure for mobile -->
+<ion-content *ngIf="segmentOne === 'exposure'"  class="mobile-visibility">
+	<div>
+		<app-exposure-list></app-exposure-list>
+	</div>
+</ion-content>
+
+<!-- body table for desktop, when click watchlist -->
+<ion-content class="desktop-visibility">
+			<!-- watchlist segment for desktop -->
+			<ion-toolbar class="desktop-visibility">
+				<div class="container desktop-visibility">
+					<ion-row class="colorback border-bottom" style="margin-top:15px">
+						<ion-segment scrollable class="destop-segment-middle wathlist-block-segment d-flex"
+							[(ngModel)]="desktopWatchlistBlockTabValue">
+							<div *ngFor="let data of buttonData">
+								<ion-segment-button (click)="segmentChanged(data.Value, buttonData, buttonDataTwo)"
+									value={{data.Value}}>
+									{{data.Name}}
+								</ion-segment-button>
+							</div>
+						</ion-segment>
+					</ion-row>
+				</div>
+			</ion-toolbar>
+			<!-- nifty segment for desktop -->
+			<ion-toolbar class="colorback m-b-0 desktop-visibility" *ngIf="segmentOne === 'watchlist'">
+				<div class="container desktop-visibility">
+					<ion-row>
+						<ion-segment scrollable class="desktop-segment-bottom desktop-segment-market d-flex thin-scroll p-b-2" [(ngModel)]="niftyBlockTabValueDesktop">
+							<div *ngFor="let data of buttonDataTwo; let i = index">
+								<ion-segment-button class="desktop-segment-bottom-button d-flex"
+									[ngClass]="{'first-segment-desktop' : data['isDefault']}" value={{data.Value}}
+									(click)="segmentChangedTwo(data['CanEditOrDelete'], data['CanRenMW'], data['isDefault'], data.Value, buttonDataTwo,null, 'watchlist')">
+									<!-- {{data['Name']}} -->
+									<div class="segment-block">
+										<span>{{data['Name']}}</span>
+										<!-- <ion-badge color="warning">{{data.default}}</ion-badge> -->
+										<ion-badge class="desktop-badge" color="warning" *ngIf="data['isDefault']">D</ion-badge>
+										<!-- <ion-badge class="desktop-badge" color="warning" *ngIf="data.Value === 'NIFTY50'">D</ion-badge> -->
+									</div>
+								</ion-segment-button>
+							</div>
+						</ion-segment>
+						<div class="edit-block" (click)="editWatchlistDesktop()">
+							<ion-icon src="./assets/svg/edit.svg"></ion-icon>
+							<span>Edit</span>
+						</div>
+					</ion-row>
+				</div>
+			</ion-toolbar>
+		
+			<!-- header talbe for desktop -->
+			<ion-toolbar *ngIf="!showDeleteScripDesk && segmentOne === 'watchlist'"
+				class="desktop-header-table desktop-visibility">
+				<div class="container desktop-visibility watchlist-style-parent watchlist-style-parent-header">
+					<!-- <table style="width: 98.4%"> -->
+					<table class="desktop-header-table watchlist-table width-100">
+						<thead class="fontT">
+							<tr>
+								<th>
+									<div class="td-block">
+										Scrip
+									</div>
+								</th>
+								<th>
+		
+									<div class="td-block">
+										LTP
+									</div>
+								</th>
+								<th>
+									<div class="td-block">
+										% Change
+									</div>
+								</th>
+								<th>
+									<div class="td-block">
+										Volume (K)
+									</div>
+								</th>
+								<th>
+									<div class="td-block">
+										Day's High
+									</div>
+		
+								</th>
+								<th>
+									<div class="td-block">
+										Day's Low
+									</div>
+								</th>
+								<th>
+									<div class="td-block" style="visibility: hidden;">
+										D
+									</div>
+								</th>
+							</tr>
+						</thead>
+					</table>
+					<!-- <div class="table-after"></div> -->
+				</div>
+			</ion-toolbar>
+		
+			<!-- delete scrip header desktop -->
+			<ion-toolbar *ngIf="showDeleteScripDesk" class="desktop-visibility delete-scrip-toolbar-desktop">
+				<div class="container">
+					<div class="header delete-scrip-header">
+						Scrip
+					</div>
+				</div>
+			</ion-toolbar>
+	<section *ngIf="segmentOne === 'watchlist'" class="desktop-visibility">
+
+	<div *ngIf="!showDeleteScripDesk" class="desktop-table container desktop-visibility watchlist-style-parent" id="thin-scroll"
+		[ngClass]="{'noData': marketwatchData.length === 0}">
+		<table *ngIf="marketwatchData.length > 0" class="width-100">
+			<!-- <thead class="fontT">
+                <tr>
+                    <th style="text-align: left; padding-left: 15px;">Scrip</th>
+                    <th style="text-align: right; padding-left: 60px;">LTP</th>
+                    <th style="text-align: right; padding-left: 60px;">% Change</th>
+                    <th style="text-align: right; padding-left: 60px;">Volume (K)</th>
+                    <th style="text-align: right; padding-left: 60px;">Day's High</th>
+                    <th style="text-align: right; padding-left: 60px;">Day's Low</th>
+                    <th style="text-align: right; padding-left: 60px;"></th>
+                </tr>
+            </thead> -->
+			<tbody>
+				<!-- <div *ngFor="let data of marketwatchData; let i = index"> -->
+				<tr class="tablebot" [ngClass]="{'bigger-height': data['ExchType'] === 'U' || data['ExchType'] === 'D'}"
+					*ngFor="let data of marketwatchData ;let i = index" (click)="dropClick(i, marketwatchData)">
+					<td>
+						<div class="parent-block">
+							<div style="font-size: small; font-weight: bold; padding-left: 15px;"
+								class="td-block alignVertical">
+								<div class="flex-column">
+									<div>
+										{{data.ShortName}}<span class="spanStyle m-l-3">{{data.Exch}},{{data.ExchType}}</span>
+									</div>
+									<span class="spanStyle"
+										*ngIf="data['ExchType'] === 'U' || data['ExchType'] === 'D'">{{data['FullName']}}</span>
+								</div>
+							</div>
+							<div class="client-details client-details-style">
+								<div class="divT client-section" *ngIf="data['isVisible']" (click)="clientList(data)">
+									<!-- <ion-icon src="./assets/svg/client.svg" style="margin-left:15px"></ion-icon> -->
+									<img src="assets/svg/client.svg" class="image"alt="">
+									<span class="client-detail">Clients</span>
+								</div>
+								<div class="divT details-section" *ngIf="data['isVisible']" (click)="goToCompanyDetail(data)">
+									<!-- <ion-icon src="./assets/svg/detail.svg" ></ion-icon> -->
+									<img src="assets/svg/detail.svg" class="image" alt="">
+									<span style="cursor: pointer;" class="client-detail">Details</span>
+								</div>
+							</div>
+						</div>
+					</td>
+					<td
+						[ngStyle]="{'color':(data.PClose == 0 || data.LastTradePrice == data.PClose) ? '#656565' : (data.LastTradePrice > data.PClose ? '#17C257' : '#F55858')}">
+						<div class="parent-block">
+							<div class="td-block alignVertical">
+								<span class="LTP">{{data.LastTradePrice | formatNumerDecimal: data.ExchType}}</span>
+							</div>
+							<div class="divT" *ngIf="data['isVisible']">
+								<!-- <ion-icon src="./assets/svg/detail.svg" >Details</ion-icon> -->
+								<span></span>
+							</div>
+						</div>
+					</td>
+					<td
+						[ngStyle]="{'color': (data.PClose == 0 || data.LastTradePrice == data.PClose) ? '#656565' : (data.LastTradePrice > data.PClose ? '#17C257' : '#F55858')}">
+						<div class="parent-block">
+							<div class="td-block alignVertical">
+								<!-- <span *ngIf="data.PClose != 0 && data.ExchType !== 'U' ">{{data.LastTradePrice - data.PClose | number: '1.2-2'}}({{((data.LastTradePrice - data.PClose)/data.PClose *100)  | number:'1.2-2'}}%)</span>
+                          <span *ngIf="data.PClose != 0 && data.ExchType == 'U' ">{{data.LastTradePrice - data.PClose | number: '1.2-2'}}00({{((data.LastTradePrice - data.PClose)/data.PClose *100)  | number:'1.2-4'}}%)</span>
+                          <span *ngIf="data.PClose == 0">{{data.LastTradePrice - data.PClose | number: '1.2-2'}}<span *ngIf="data.ExchType == 'U'">00</span>(0.00<span *ngIf="data.ExchType == 'U'">00</span>%)</span> -->
+								<!-- {{data.LastTradePrice - data.PClose | number: '1.2-2'}}({{((data.LastTradePrice - data.PClose)/data.PClose *100)  | number:'1.2-2'}})% -->
+								<span
+									*ngIf="data.PClose != 0 ">{{data.LastTradePrice - data.PClose | formatNumerDecimal: data.ExchType}}({{(data.LastTradePrice - data.PClose)/data.PClose *100 | formatNumerDecimal: data.ExchType}}%)</span>
+								<span
+									*ngIf="data.PClose == 0">{{data.LastTradePrice - data.PClose | formatNumerDecimal: data.ExchType}}(0.00%)</span>
+							</div>
+							<div class="divT inner-tr-style" *ngIf="data['isVisible']">
+								<span>Open</span>
+								<span>{{data['OpenRate'] | formatNumerDecimal: data.ExchType}}</span>
+							</div>
+						</div>
+					</td>
+					<td>
+						<div class="parent-block">
+							<div class="td-block alignVertical">
+								<span>{{data.Volume | numberformat}}</span>
+							</div>
+							<div class="divT inner-tr-style" *ngIf="data['isVisible']">
+								<span>P.Close</span>
+								<span>{{data.PClose | formatNumerDecimal: data.ExchType}}</span>
+							</div>
+						</div>
+					</td>
+					<td>
+						<div class="parent-block">
+							<div class="td-block alignVertical highLow">
+								<span>{{data.DayHigh | formatNumerDecimal: data.ExchType}}</span>
+							</div>
+							<div class="divT inner-tr-style" *ngIf="data['isVisible']">
+								<span>Qty/Best Bid</span>
+								<span>{{data.QtyBid | formatNumerDecimal: data.ExchType}}/{{data.PriceBid | formatNumerDecimal: data.ExchType}}</span>
+							</div>
+						</div>
+					</td>
+					<td>
+						<div class="parent-block">
+							<div class="td-block alignVertical">
+								<span>{{data.DayLow | formatNumerDecimal: data.ExchType}}</span>
+							</div>
+							<div class="divT inner-tr-style align-items-end" *ngIf="data['isVisible']">
+								<span>Qty/Best Ask</span>
+								<span>{{data.QtyAsk | formatNumerDecimal: data.ExchType}}/{{data.PriceAsk | formatNumerDecimal: data.ExchType}}</span>
+							</div>
+						</div>
+					</td>
+					<td>
+						<div class="parent-block m-r-15">
+							<div class="td-block alignVertical">
+								<!-- <ion-button class="arrow-button" *ngIf="!data['isVisible']"> -->
+								<ion-icon class="arrow-button" *ngIf="!data['isVisible']"
+									src="./assets/svg/down-arrow.svg"></ion-icon>
+								<!-- </ion-button> -->
+								<!-- <ion-button class="arrow-button down-arrow-button" *ngIf="data['isVisible']"> -->
+								<ion-icon class="rotate arrow-button down-arrow-button" *ngIf="data['isVisible']"
+									src="./assets/svg/down-arrow.svg"></ion-icon>
+								<!-- </ion-button> -->
+							</div>
+							<div class="divT inner-tr-style" *ngIf="data['isVisible']">
+							</div>
+						</div>
+					</td>
+				</tr>
+				<!-- </div> -->
+			</tbody>
+		</table>
+		<div *ngIf="marketwatchData.length == 0 && dataLoad">
+			<div>
+				<div class="wrapper wrapper-add-scrip">
+					<h6>You have not added anything to the watchlist</h6>
+					<ion-button fill="outline" (click)="addScript()">
+						<ion-icon slot="start" name="add"></ion-icon>
+						Add Scrips
+					</ion-button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="loader loader-height" *ngIf="!dataLoad">
+		<img src="/assets/imgs/loader.gif" alt="">
+	</div>
+	<div *ngIf="showDeleteScripDesk">
+		
+		<app-delete-scrip [MWname]="editWatchListOption" [data]="marketwatchData" class="delete-scrip-deskop"
+			*ngIf="showDeleteScripDesk"></app-delete-scrip>
+		<div class="btn-block">
+			<ion-button (click)="hideDeleteData(showDeleteScripMob,showDeleteScripDesk)">Go to watchlist</ion-button>
+		</div>
+	</div>
+	</section>
+
+<!-- when click on spapshot for desktop -->
+<!-- <ion-content *ngIf="device === 'desktop' && segmentOne === 'snapshot'"> -->
+<section *ngIf="segmentOne === 'snapshot'" class="desktop-visibility">
+	<div class="container">
+		<div class="gainer-deal-block">
+
+			<app-gainers-losers class="gainers-losers" [gainerLoserData]="gainersdata" [bseGainers]="bseGainers"
+				[bseLosers]="bseLosers" [loosersData]="losersData">
+			</app-gainers-losers>
+			<app-bulk-block-deals class="bulk-block-deals" [bulkBlockDealsList]="dealsList"
+				[dealDataLoad]="dealDataLoad"></app-bulk-block-deals>
+		</div>
+        <div class="gainer-deal-block">
+            
+			<app-week-hl class="bulk-block-deals" [weekHighLowList]="lowHighList" [weekDataLoad]="weekDataLoad"></app-week-hl>
+            <app-vol-toppers class="bulk-block-deals" [volToppersList]="volumeList" [volumeDataLoad]="volumeDataLoad"></app-vol-toppers>
+        </div>
+        <div class="gainer-deal-block">
+            
+			<app-fut-gainer-loser class="bulk-block-deals"></app-fut-gainer-loser>
+            <app-fut-oi-gainer-loser class="bulk-block-deals"></app-fut-oi-gainer-loser>
+        </div>
+        <div class="gainer-deal-block">
+            
+			<app-rollover-delivery class="bulk-block-deals"></app-rollover-delivery>
+            <app-premium-discount class="bulk-block-deals"></app-premium-discount>
+        </div>
+        <div class="gainer-deal-block m-b-30">
+            
+			<app-most-active-stock-index class="bulk-block-deals most-attive-stock width-60"></app-most-active-stock-index>
+        </div>
+	</div>
+</section>
+
+<!-- when click on indices for desktop -->
+<!-- <ion-content *ngIf="device === 'desktop' && segmentOne === 'indices'"> -->
+<section *ngIf="segmentOne === 'indices'" class="desktop-visibility">
+	<!-- <common-header></common-header> -->
+	<div class="container indices">
+		<div class="block">
+			
+			<app-indices-indices></app-indices-indices>
+		</div>
+		<div class="block">
+			
+			<app-indices-currency></app-indices-currency>
+		</div>
+		<div class="block">
+			
+			<app-indices-commodity></app-indices-commodity>
+		</div>
+		<div class="block">
+			
+			<app-indices-markets></app-indices-markets>
+		</div>
+	</div>
+</section>
+
+<!-- when click on status for desktop -->
+<section *ngIf="segmentOne === 'status'" class="desktop-visibility">
+    <div class="container indices market-status">
+		<div class="market-status-content">
+			
+			<app-market-status></app-market-status>
+		</div>
+	</div>
+</section>
+
+<!-- when click on exposure for desktop -->
+<section *ngIf="segmentOne === 'exposure'" class="desktop-visibility">
+	
+	<div class="container">
+		
+			<app-exposure-list></app-exposure-list>
+
+			
+		<!-- <h4 style="text-align: center;"> Exposure under construction</h4> -->
+		
+	</div>
+</section>
+</ion-content>
+<ion-fab class="web" vertical="bottom" horizontal="end" slot="fixed" *ngIf="segmentOne === 'watchlist'"
+	(click)="editWatchlistMobile()">
+	<ion-fab-button style="width: 52px;height: 52px;">
+		<!-- <ion-icon name="pencil"></ion-icon> -->
+		<ion-icon src="./assets/svg/edit.svg"></ion-icon>
+	</ion-fab-button>
+</ion-fab>

@@ -1,0 +1,132 @@
+.acc-header {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    background: #F2F4F4;
+    padding: 18px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    align-items: center;
+  
+   
+.block-segment {
+    width: 200px !important;
+    margin-right: 16px;
+    width: 45vw;
+        ion-segment-button {
+            font-family: nunitoLight;
+            color: #586A7A;
+            text-transform: capitalize;
+            font-size: 14px;
+            // margin-right:20px;
+            letter-spacing: .5px;
+            --indicator-height: 0;
+            height: 26px;
+            min-height: 26px;
+            border-radius: 20px;
+            &:hover{
+                color: #fff !important;
+            }
+        }
+        .segment-button-checked {
+            background: #2D197F;
+            color: #fff !important;
+        }
+    }
+    .date-picker-block{
+        font-size:10px;
+        color:#F37921;
+    }
+
+}
+
+.loader-height-300 {
+    min-height: 300px;
+}
+
+.input-wrapper{
+flex-wrap: initial!important;
+}
+.main-table{
+    margin:20px 0 20px 0;
+    max-height: calc(100vh - 320px);
+    overflow-x: auto;
+    border-radius: 8px;
+    border: 1px solid #cbcbcb;
+   
+    .table-block{
+        width: 100%;
+        border-bottom: 1px solid #cbcbcb;
+        .section-header{
+            display:flex;
+            flex-direction: row;
+            padding:20px 20px 0 20px;
+            color:#000000;
+            font-family: "nunitoBold";
+            font-size: 18px;
+        }
+        .section-details{
+            padding:20px;
+            display:flex;
+            flex-direction: row;
+            justify-content: space-between;
+            .sec-column{
+                display:flex;
+                flex-direction: column;
+                text-align: center;
+                font-family: 'nunitoSemiBold';
+                .label{
+                    font-size: 12px;
+                    color: #716A90;
+                }
+                .value{
+                    font-size: 14px;
+                    color: #212121;
+                }
+            }
+        }
+        .updated-section-details {
+            .sec-column{ 
+                width: 20%;
+            }
+        }
+    }
+} 
+
+
+@media screen and (max-width: 500px){
+    .acc-header {
+       justify-content: space-between;
+       padding: 10px;
+        
+    }  
+    .main-table{
+        border: 0;
+        margin:0px 0 10px 0;
+        max-height: none;
+        .section-header-mob{
+            display:flex;
+            flex-direction: column;
+            padding:20px 20px 0 20px;
+            font-family: "nunitoBold";
+            .title-mob{
+                font-size: 12px;
+                color:#9C9C9C;
+            }
+            .value-mob{
+                font-size: 16px;
+            }
+            //font-size: 18px;
+        }
+        // .section-header{
+        //     flex-direction: column !important;
+        // }
+    }
+   
+
+}
+@media screen and (min-width: 501px) and (max-width: 1200px)  {
+    .acc-header{justify-content: start !important;}
+}
+.datePopover .calendar { position: absolute; right: 0px; bottom: 9px; }

@@ -1,0 +1,337 @@
+<ion-header class="main-header">
+    <ion-toolbar color="tertiary" class="mobile-visibility">
+        <div class="title-block title-block-custom">
+            <div class="icon-title">
+                <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                <ion-title class="title">Realised PnL</ion-title>
+            </div>
+            <div class="client-code code-block">
+                <span class="total-pnl">Total Realised PnL (₹)</span>
+                <span class="code">{{grandTotalPL | formatNumerDecimal}}</span>
+            </div>
+        </div>
+        <div class="change-option-mobile">
+            <img src="assets/svg/download_excel.svg" alt="">
+            <div class="change-option" (click)="downloadReport()">Download Report</div>
+        </div>
+    </ion-toolbar>
+</ion-header>
+<div class="container fm-po">
+    <div class="desktop-visibility desktop-table overflow-hidden m-t-8">
+        <!-- <div class="search-section">
+            <ion-searchbar class="custom-searchbar" debounce="2000" placeholder="Search for client name or client code">
+            </ion-searchbar>
+            <div class="downloads-section">
+                <img src="assets/svg/download.svg" alt="" class="downloadIcon">
+                <span>Download Report</span>
+            </div>
+        </div> -->
+        
+        <div class="main-table thin-scroll scroll-inner">
+            <!-- <div class="table-header"> -->
+            <div class="table-block header-part">
+                <table class="desktop-table">
+                    <thead style="width: 100%">
+                        <tr>
+                            <th></th>
+                            <th>Scrip Name
+                            </th>
+                            <th>Qty
+                            </th>
+                            <th>Buy Date
+                                <!-- <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="!ascending"> -->
+                            </th>
+                            <th [class.active]="order === 'TotalBuyAvgRate'" class="pointer" (click)="setOrder('TotalBuyAvgRate')">Buy Avg Rate(₹)
+                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="!ascending">
+                            </th>
+                            <th [class.active]="order === 'TotalBuyCharges'" class="pointer" (click)="setOrder('TotalBuyCharges')">Buy Charges(₹)
+                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="!ascending">
+                            </th>
+                            <th [class.active]="order === 'TotalBuyValue'" class="pointer" (click)="setOrder('TotalBuyValue')">Buy Value(₹)
+                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="!ascending">
+                            </th>
+                            <th>Sell Date
+                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="!ascending">
+                            </th>
+                            <th>Sell Avg Rate(₹)
+                            </th>
+                            <th [class.active]="order === 'TotalSellCharges'" class="pointer" (click)="setOrder('TotalSellCharges')">Sell Charges(₹)
+                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="!ascending">
+                            </th>
+                            <th [class.active]="order === 'TotalSellValue'" class="pointer" (click)="setOrder('TotalSellValue')">Sell Value(₹)
+                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="!ascending">
+                            </th>
+                            <th>Long Term PL
+                            </th>
+                            <th>Short Term PL
+                            </th>
+                            <th>Intraday PL
+                            </th>
+                            <th [class.active]="order === 'TotalPl'" class="pointer" (click)="setOrder('TotalPl')">Total PL
+                                <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                                <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="ascending">
+                                <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt=""
+                                    *ngIf="!ascending">
+                            </th>
+                            <th>Rate As on 08 June 2021
+                            </th>
+                            <th>Long Term Tax PL
+                            </th>
+                        </tr>
+                        <tr class="lower-header">
+                            <th></th>
+                            <th>Grand Total</th>
+                            <th>-</th>
+                            <th>-</th>
+                            <th>-</th>
+                            <th>{{grandTotalBuyCharge | formatNumerDecimal}}</th>
+                            <th>{{grandTotalBuyValue | formatNumerDecimal}}</th>
+                            <th>-</th>
+                            <th>{{grandTotalSellAvgRate | formatNumerDecimal}}</th>
+                            <th>{{grandTotalSellCharge | formatNumerDecimal}}</th>
+                            <th>{{grandTotalSellValue | formatNumerDecimal}}</th>
+                            <th>{{grandTotalLongTermPl | formatNumerDecimal}}</th>
+                            <th>{{grandTotalShortTermPl | formatNumerDecimal}}</th>
+                            <th>{{grandTotalIntradayPL | formatNumerDecimal}}</th>
+                            <th>{{grandTotalPL | formatNumerDecimal}}</th>
+                            <th>-</th>
+                            <th>{{grandTotalLongTermTaxPL | formatNumerDecimal}}</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            
+            <div class="table-block body-part thin-scroll">
+                <table class="desktop-table" *ngIf="dataLoad">
+                    <tbody *ngIf="consRealizedPlList.length > 0">
+                        <tr *ngFor="let dataObj of consRealizedPlList | orderBy: order:val; let i = index"(click)="dropClick(dataObj.srNo ,consRealizedPlList)">
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+                                    <ion-icon class="arrow-button" src="./assets/svg/down-arrow.svg"
+                                        *ngIf="!dataObj['isVisible']"></ion-icon>
+                                    <ion-icon *ngIf="dataObj['isVisible']" class="rotate arrow-button down-arrow-button"
+                                        src="./assets/svg/down-arrow.svg"></ion-icon>
+                                </div>
+                                <div class="detail-part-fix" #detail *ngIf="dataObj['isVisible']">
+                                    <div class="table-block  detail-table-block">
+                                        <table class="desktop-table">
+                                            <tbody>
+                                                <tr *ngFor="let detailDataObj of dataObj['Data']; let i = index">
+                                                    <td class="width-57"></td>
+                                                    <td>
+                                                        <!-- {{detailDataObj['scripName']}} -->
+                                                    </td>
+                                                    <td>{{detailDataObj['Qty']}}</td>
+                                                    <td>{{moment(detailDataObj['BuyDate']).format("DD MMM YYYY")}}</td>
+                                                    <td>{{detailDataObj['BuyAvgRate'] | formatNumerDecimal}}</td>
+                                                    <td>{{detailDataObj['BuyCharges'] | formatNumerDecimal}}</td>
+                                                    <td>{{detailDataObj['BuyValue'] | formatNumerDecimal}}</td>
+                                                    <td>{{moment(detailDataObj['SellDate'].toString()).format("DD MMM YYYY")}}</td>
+                                                    <td>{{detailDataObj['SellAvgRate'] | formatNumerDecimal}}</td>
+                                                    <td>{{detailDataObj['SellCharges'] | formatNumerDecimal}}</td>
+                                                    <td>{{detailDataObj['SellValue'] | formatNumerDecimal}}</td>
+                                                    <td>{{detailDataObj['LongTermPL'] | formatNumerDecimal}}</td>
+                                                    <td>{{detailDataObj['ShortTermPL'] | formatNumerDecimal}}</td>
+                                                    <td>{{detailDataObj['IntradayPL'] | formatNumerDecimal}}</td>
+                                                    <td>{{detailDataObj['TotalPL'] | formatNumerDecimal}}</td>
+                                                    <td>
+                                                      <span *ngIf="detailDataObj['RateAsOn'] == ''">-</span>
+                                                      <span *ngIf="detailDataObj['RateAsOn'] != ''">{{detailDataObj['RateAsOn']}}</span>  
+                                                    </td>
+                                                    <td>{{detailDataObj['LongTermTaxPL']}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part justify-content-start" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+                                    {{dataObj['ScripName']}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+                                    {{dataObj['TotalQty']}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+                                    <!-- {{dataObj['buyDate']}} -->-
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+                                    {{dataObj['TotalBuyAvgRate'] | formatNumerDecimal}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+                                    {{dataObj['TotalBuyCharges'] | formatNumerDecimal}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+                                    {{dataObj['TotalBuyValue'] | formatNumerDecimal}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+                                    <!-- {{dataObj['sellDate']}} -->-
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+                                    {{dataObj['SellAvgRate'] | formatNumerDecimal}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+                                    {{dataObj['TotalSellCharges'] | formatNumerDecimal}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+                                    {{dataObj['TotalSellValue'] | formatNumerDecimal}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+                                    {{dataObj['TotalLongTermPl'] | formatNumerDecimal}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+                                    {{dataObj['TotalShortTermPl'] | formatNumerDecimal}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+                                    {{dataObj['TotalIntraDayPl'] | formatNumerDecimal}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+                                    {{dataObj['TotalPl'] | formatNumerDecimal}}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+                                    <!-- {{dataObj['rateAs']}} -->-
+                                </div>
+                            </td>
+                            <td>
+                                <div class="upper-part" [ngStyle]="{'margin-bottom':  dataObj['isVisible'] ? '' + (detailHeight + 1) + 'px': ''}">
+                                    {{dataObj['TotalLongTaxPl'] | formatNumerDecimal}}
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="consRealizedPlList.length == 0">
+                        <tr>
+                            <td class="no-data-found">No Records Found</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="loader" *ngIf="!dataLoad">
+                    <img src="/assets/imgs/loader.gif" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mobile-visibility" *ngIf="realizedParams && realizedParams.callFrom360">
+        <div *ngIf="consRealizedPlList.length > 0 && dataLoad">
+            <div class="slide-data" *ngFor="let dataObj of consRealizedPlList">
+                <div class="slide-heading">{{dataObj.ScripName}}</div>
+                <div class="segment-data-block">
+                    <div class="segment-data">
+                        <span class="title">Quantity</span>
+                        <span class="value">{{dataObj.TotalQty}}</span>
+                    </div>
+                    <div class="segment-data">
+                        <span class="title">Sell Rate(₹)</span>
+                        <span class="value">{{dataObj.SellAvgRate | formatNumerDecimal}}</span>
+                    </div>
+                    <div class="segment-data">
+                        <span class="title">Buy Rate(₹)</span>
+                        <span class="value">{{dataObj.TotalBuyAvgRate | formatNumerDecimal}}</span>
+                    </div>
+                    <div class="segment-data">
+                        <span class="title">P&L(₹)</span>
+                        <span [ngStyle]="{'color':(dataObj.TotalPl == 0) ? '#656565' : (dataObj.TotalPl > 0 ? '#17C257' : '#F55858')}" class="value">{{dataObj.TotalPl | formatNumerDecimal}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="no-data-found" *ngIf="consRealizedPlList.length == 0 && dataLoad">
+            <span>No Data Found</span>
+        </div>
+        <div class="loaderCss" *ngIf="!dataLoad">
+            <img src="/assets/imgs/loader.gif" alt="">
+        </div>
+    </div>
+</div>
+<ion-content *ngIf="realizedParams && !realizedParams.callFrom360">
+    <div class="mobile-visibility">
+        <div *ngIf="consRealizedPlList.length > 0 && dataLoad">
+            <div class="slide-data" *ngFor="let dataObj of consRealizedPlList">
+                <div class="slide-heading">{{dataObj['ScripName']}}</div>
+                <div class="segment-data-block">
+                    <div class="segment-data">
+                        <span class="title">Quantity</span>
+                        <span class="value">{{dataObj.TotalQty}}</span>
+                    </div>
+                    <div class="segment-data">
+                        <span class="title">Sell Rate(₹)</span>
+                        <span class="value">{{dataObj.SellAvgRate | formatNumerDecimal}}</span>
+                    </div>
+                    <div class="segment-data">
+                        <span class="title">Buy Rate(₹)</span>
+                        <span class="value">{{dataObj.TotalBuyAvgRate | formatNumerDecimal}}</span>
+                    </div>
+                    <div class="segment-data">
+                        <span class="title">P&L(₹)</span>
+                        <span [ngStyle]="{'color':(dataObj.TotalPl == 0) ? '#656565' : (dataObj.TotalPl > 0 ? '#17C257' : '#F55858')}" class="value">{{dataObj.TotalPl | formatNumerDecimal}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="no-data-found" *ngIf="consRealizedPlList.length == 0 && dataLoad">
+            <span>No Data Found</span>
+        </div>
+        <div class="loaderCss" *ngIf="!dataLoad">
+            <img src="/assets/imgs/loader.gif" alt="">
+        </div>
+    </div>
+</ion-content>

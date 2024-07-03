@@ -1,0 +1,25 @@
+<div class="search">
+  <span class="dismiss" (click)="dismiss('close')">X</span>
+  <ion-searchbar type="text" name="search" [(ngModel)]="selectedValue" placeholder="Search by Client ID" (ionFocus)="showDropDown()" (ionBlur)="hideDropDown()"></ion-searchbar>
+  <div class="drop-down-toolbar thin-scroll" *ngIf="isDropDownVisible">
+    
+    <!-- review. removed filter -->
+    <!-- <div class="drop-down" *ngIf="(checkupList|filter:selectedValue).length > 0">
+      <div class="item" *ngFor="let dataObj of checkupList | filter:selectedValue"> -->
+
+    <div class="drop-down" *ngIf="(checkupList|filter:selectedValue).length > 0">
+      <div class="item" *ngFor="let dataObj of checkupList | filter:selectedValue">
+        <span class="first" (click)="getValue(dataObj)">{{dataObj.ClientCode}}</span>
+        <!-- <span class="name">Prashanjeet Chakravarty</span> -->
+      </div>
+    </div>
+
+    <!-- review. removed filter -->
+    <!-- <div class="drop-down" *ngIf="(checkupList|filter:selectedValue).length == 0"> -->
+
+    <div class="drop-down" *ngIf="(checkupList|filter:selectedValue).length == 0">
+      <div class="text-center font-bold">No Records Found</div>
+    </div>
+  </div>
+</div>
+

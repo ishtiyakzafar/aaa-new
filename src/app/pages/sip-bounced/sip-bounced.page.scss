@@ -1,0 +1,54 @@
+.web-equity {
+    .header-table {
+        th {
+            padding: 6px 2px;
+            width: 40vw !important;
+            font-size: 12px;
+            .head-block {
+                display: flex;
+                justify-content: flex-end;
+            }
+        }
+        th:first-child {
+            width: 60vw !important;
+            border-radius: 0 !important;
+        }
+        th:last-child {
+            padding-right: 12px;
+            border-radius: 0 !important;
+        }
+    }
+    .main-table {
+        border-radius: 0 !important;
+        border: 0 !important;
+        td {
+            padding: 10px 2px;
+            width: 40vw !important;
+            max-width: 40vw !important;
+            font-family: 'nunitoSemiBold';
+        }
+        td:first-child {
+            width: 60vw !important;
+        }
+        td:last-child {
+            padding-right: 12px;
+            border-radius: 0 !important;
+            // font-family: 'nunitoBold';
+        }
+        tr:last-child {
+            border-bottom: 1px solid #cbcbcb;
+        }
+    }
+}
+
+.detail-part-aum-inner {
+    .code-block {
+        .name {
+            max-width: 60vw;
+        }
+    }
+}
+
+.title-block-custom .icon-title .title {
+    margin-right: 0;
+}

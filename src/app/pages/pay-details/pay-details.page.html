@@ -1,0 +1,314 @@
+<ion-header>
+    <ion-toolbar color="tertiary" class="mobile-visibility">
+        <div class="title-block title-block-custom">
+                <div class="icon-title">
+                    <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+                    <ion-title class="title">Pay Details</ion-title>
+                </div>
+            </div>
+      </ion-toolbar>
+  <ion-toolbar class=" desktop-visibility">
+    <div class="container">
+        <div class="heading-part notificationheader">
+            <ion-icon name="arrow-back-outline" class="back-button" (click)="goBack()"></ion-icon>
+             <span class="heading">Pay Details</span>
+         </div>
+        </div>
+    </ion-toolbar>
+  </ion-header>   
+  
+  <ion-content>
+    <div class="container">
+        <!-- <div class="left-section" [ngClass]="{'aboveAll': isDropDownVisible}">
+			<div class="business-monitor-block mobile-visibility">
+				<div class="select-parent">
+					<div>
+						<ion-label class="updated-data" *ngIf="dataAsOn">Data last updated on : {{dataAsOn}}</ion-label>
+					</div>
+					<div class="select-block" *ngIf="selectOptionArr.length > 0" (click)="select()">
+						<div class="value-section">
+							<span class="name">{{clientName}}</span>
+							<span class="account-type">{{clientType}}</span>
+						</div>
+						<div class="select-icon">
+							<img class="drop-down-icon" src="assets/svg/down-arrow.svg" alt="">
+						</div>
+					</div>
+					<div *ngIf="isDropDownVisible && selectOptionArr.length > 0" class="select-drop-down thin-scroll">
+						first hierarchy
+						<div class="parent-check-block thin-scroll" *ngFor="let level5 of selectOptionArr;let topIndex = index;">
+							<div class="top-check-block">
+								<ion-checkbox [(ngModel)]="level5.isChecked"
+									(click)="selectUnselectChildAll(selectOptionArr, topIndex)"></ion-checkbox>
+								<div class="name-section">
+									<div class="name">{{level5['name']}}</div>
+									<div class="type">{{level5['type']}}</div>
+								</div>
+							</div>
+							<div class="lower-check-block">
+								second hierarchy
+								<div class="inner-check-block-parent"
+									*ngFor="let level4 of level5['innerDetail']; let indLevel5 = index">
+									<div class="inner-check-block">
+										<ion-checkbox [(ngModel)]="level4.isChecked"
+											(click)="selectUnselectChildAll(level5['innerDetail'], indLevel5, level5)"></ion-checkbox>
+										<div class="name-section" (click)="openHide(indLevel5, level5['innerDetail'])"
+											[ngClass]="{'pointer': level4['innerDetail'] != undefined}">
+											<div class="name">{{level4['name']}}</div>
+											<div class="type">{{level4['type']}}</div>
+										</div>
+										<img class="drop-down-icon pointer"
+											(click)="openHide(indLevel5, level5['innerDetail'])"
+											*ngIf="level4['innerDetail']" src="assets/svg/down-arrow.svg" alt="">
+									</div>
+									third hierarchy
+									<div *ngIf="level4['isVisible']" class="third-hierarchy">
+										<div class="inner-check-block-child"
+											*ngFor="let level3 of level4['innerDetail']; let indLevel4 = index">
+											<div class="inner-check-block">
+												<ion-checkbox [(ngModel)]="level3.isChecked"
+													(click)="selectUnselectChildAll(level4['innerDetail'], indLevel4, level4)">
+												</ion-checkbox>
+												<div class="name-section"
+													(click)="openHide(indLevel4, level4['innerDetail'])"
+													[ngClass]="{'pointer': level3['innerDetail'] != undefined}">
+													<div class="name">{{level3['name']}}</div>
+													<div class="type">{{level3['type']}}</div>
+												</div>
+												<img class="drop-down-icon pointer"
+													(click)="openHide(indLevel4, level4['innerDetail'])"
+													src="assets/svg/down-arrow.svg" alt=""
+													*ngIf="level3['innerDetail']">
+											</div>
+											fourth hierarchy
+											<div *ngIf="level3['isVisible']" class="fourth-hierarchy">
+												<div class="inner-check-block-child"
+													*ngFor="let level2 of level3['innerDetail']; let indLevel3 = index">
+													<div class="inner-check-block">
+														<ion-checkbox [(ngModel)]="level2.isChecked"
+															(click)="selectUnselectChildAll(level3['innerDetail'], indLevel3, level3)">
+														</ion-checkbox>
+														<div class="name-section"
+															(click)="openHide(indLevel3, level3['innerDetail'])"
+															[ngClass]="{'pointer': level3['innerDetail'] != undefined}">
+															<div class="name">{{level2['name']}}</div>
+															<div class="type">{{level2['type']}}</div>
+														</div>
+														<img class="drop-down-icon pointer"
+															src="assets/svg/down-arrow.svg" alt=""
+															(click)="openHide(indLevel3, level3['innerDetail'])"
+															*ngIf="level2['innerDetail']">
+													</div>
+													fifth hierarchy
+													<div *ngIf="level2['isVisible']" class="fifth-hierarchy">
+														<div class="inner-check-block-child"
+															*ngFor="let level1 of level2['innerDetail']; let indLevel2 = index">
+															<div class="inner-check-block">
+																<ion-checkbox [(ngModel)]="level1.isChecked">
+																</ion-checkbox>
+																<div class="name-section">
+																	<div class="name">{{level1['name']}}</div>
+																	<div class="type">{{level1['type']}}</div>
+																</div>
+																<img class="drop-down-icon pointer" *ngIf="entry['innerDetail']" src="assets/svg/down-arrow.svg" alt="">
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="apply-btn">
+							<ion-button (click)="applyFilter()" class="orange-button" shape="round" expand="full">Apply
+							</ion-button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
+       <div class="chart-section" *ngIf="dataLoad">
+            <!-- <div class="chart">
+                <canvas #dognutChart width="200px" height="200px"></canvas>
+            </div> -->
+            <div class="total-payout">
+                <span class="payout">Total Payout</span>
+                <span class="rupees">₹</span>
+                <span class="value">{{totalPayoutValue | formatNumberUnit}}</span>
+            </div>
+            <div class="date_with_search">
+             <div class="date-select">
+                <ion-select class="filter-select" [(ngModel)]="PayoutMonth" (ngModelChange)="changeSelectOption($event)">
+                    <ion-select-option *ngFor="let obj of monthYearList" [value]="obj">{{obj}}</ion-select-option>
+                </ion-select>
+            </div>
+            <div class="revamp-drop-down">
+                <div class="business-monitor-block">
+                    <div class="business">
+                        <ion-icon name="person"></ion-icon>
+                    </div>
+                    <div class="select-parent">
+                        <!-- <div class="cursor-default">
+                            <ion-label class="updated-data">Data last updated on : {{dataAsOn}}</ion-label>
+                        </div> -->
+                        <div class="select-block pointer" (click)="selectNew()">
+                            <div class="value-section">
+                                <span class="name">{{clientName ? clientName : clientCode}}</span>
+                                <span class="account-type">Individual</span>
+                            </div>
+                            <div class="select-icon">
+                                <img class="drop-down-icon" src="assets/svg/down-arrow.svg" alt="">
+                            </div>
+                        </div>
+            
+                        <div class="hierarchy-wrapper thin-scroll"
+                            [ngClass]="{'add-hierarchy-height': showDropDown, 'specificHeight': optionArrCpy.length === 1 && showDropDown}">
+                            <ng-container *ngTemplateOutlet="recursiveList; context: { $implicit: optionArrCpy }">
+                            </ng-container>
+                        </div>
+                        <ng-template #recursiveList let-optionArrCpy>
+                            <div class="input-name-list">
+                                <ion-input [ngModelOptions]="{standalone: true}" type="text" class="ion-input search-Hierarchy"
+                                    [(ngModel)]="searchHierarchyList" (keyup)="typeHierarchyText($event)"
+                                    [placeholder]='placeholderInputHierarchy'>
+                                </ion-input>
+                                <img *ngIf="isShowCross" class="cross-btn" (click)="dismiss()" src="assets/svg/close_delete.svg"
+                                    width="16" alt="close">
+                            </div>
+                            <div class="select-drop-down thin-scroll">
+                                <div *ngIf="noRecord && searchHierarchyList.length>3" class="noRecord">
+                                    <p>No data found</p>
+                                </div>
+                                <div class="thin-scroll"
+                                    *ngFor="let item of optionArrCpy; let ind = index;">
+                                    <div *ngIf="item['isVisible']">
+                                        <div class="top-check-block">                                   
+                                            <div class="name-section" (click)="openHideNew(ind, item['innerDetail'], item)">
+                                                <div class="name">{{item['EmployeeName'] ? item['EmployeeName'] :
+                                                    item['EmployeeCode']}}</div>
+                                                <div class="type">{{item['EmployeeCode']}}</div>
+                                            </div>
+                                            <img class="drop-down-icon pointer" src="assets/svg/down-arrow.svg" alt=""
+                                                (click)="openHideNew(ind, item['innerDetail'], item)"
+                                                *ngIf="item['innerDetail'] && item['innerDetail'].length > 0">
+                                        </div>
+                                    </div>
+                                    <div class="inner-check-block-child"
+                                        *ngIf="(item && item['innerDetail'] && item['innerDetail'].length > 0 && item['isVisible'])">
+                                        <ng-container class="name-section" (click)="openHideNew(ind, item['innerDetail'], item)"
+                                            *ngTemplateOutlet="recursiveList; context: { $implicit: item['innerDetail'] }">
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div> 
+            
+        </div>
+
+        <div *ngIf="showDropDown" class="overlay-div" (click)="overlayClicked($event)"></div> 
+         
+                  
+        </div>
+        
+
+     
+        <div class="detail-part-dashboard mobile-visibility" *ngIf="dataLoad">
+            <div class="header-part">
+                <div class="heading">
+                    <span [class.active]="order === 'name'" (click)="setOrder('name')">Product
+                        <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                        <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                        <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                        </span>
+                    <span [class.active]="order === 'dataValue'" (click)="setOrder('dataValue')">Payout(₹)
+                        <img class="sorting-img updated-sorting-img" src="/assets/svg/sorting.svg" alt="">
+                        <img class="sorting-img-ascending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="ascending">
+                        <img class="sorting-img-descending" src="/assets/svg/sorting_ascending.svg" alt="" *ngIf="!ascending">
+                    </span>
+                </div>
+            </div>
+            <div class="listing-part">
+                <div class="items" *ngFor="let dataObj  of equityBlockSegment | orderBy: order:reverse" (click)="goToPage(dataObj['symbol'], dataObj['dataValue'])">
+                    <div class="upper-section left-part">
+                        <img class="icon" src="assets/svg/{{dataObj['icon']}}" alt="">
+                        <!-- <img class="icon" src="assets/svg/{{dataObj['icon']}}" alt=""> -->
+                        <div class="type">{{dataObj['name']}}</div>
+                        <div class="change-value">({{(dataObj['dataValue']/totalPayoutValue) * 100 | formatNumerDecimal}}%)</div>
+                        
+                    </div>
+                    <div class="lower-section right-part">
+                        <span *ngIf="dataObj['dataValue'] != 0">{{dataObj['dataValue'] | formatNumberUnit}}</span>
+                        <span *ngIf="dataObj['dataValue'] == 0 ">0.00</span>
+                        <ion-icon class="right-arrow" src="/assets/svg/down-arrow.svg"></ion-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="loader" *ngIf="!dataLoad" style="min-height: 340px;">
+            <img src="/assets/imgs/loader.gif" alt="">
+        </div>
+        <div class="slider-block desktop-visibility" *ngIf="dataLoad">
+            <!-- <ion-icon name="arrow-back-outline" class="back-button start-arrow" (click)="slidePrev()"></ion-icon> -->
+            <img *ngIf="sliderIndex !== 0" src="assets/svg/right-arrow-slider.svg" class="start-arrow pointer" (click)="slidePrev()" alt="icon">
+            <img *ngIf="sliderIndex === 0" src="assets/svg/disable-right-arrow.svg" class="start-arrow" alt="icon">
+            <!-- review. removed slides -->
+            <swiper-container #Slides [options]="slideOpts" [slidesPerView]="7" (slidechangetransitionstart)="changeSlide()">
+                <swiper-slide  [class.active]="i === customIndex" *ngFor="let dataObj of equityBlockSegment; let i = index" (click)="activeSlide(i)">
+                    <div class="items">
+                        <div class="upper-section">
+                            <img class="icon" src="assets/svg/{{dataObj['icon']}}" alt="">
+                            <div class="type">{{dataObj['name']}}</div>
+                            <div class="change-value">({{(dataObj['dataValue']/totalPayoutValue) * 100  | formatNumerDecimal}}%)</div>
+                        </div>
+                        <div class="lower-section">
+                            <span *ngIf="dataObj['dataValue'] != 0">{{dataObj['dataValue'] | formatNumberUnit}}</span>
+                            <span *ngIf="dataObj['dataValue'] == 0 ">0.00</span>
+                        </div>
+                    </div>
+                </swiper-slide>
+            </swiper-container>
+            <!-- <ion-icon name="arrow-back-outline" class="end-arrow" (click)="slideNext()"></ion-icon> -->
+            <img *ngIf="sliderIndex < 3" src="assets/svg/right-arrow-slider.svg" class="end-arrow pointer" (click)="slideNext()" alt="icon">
+            <img *ngIf="sliderIndex > 2" src="assets/svg/disable-right-arrow.svg" class="end-arrow" alt="icon">
+        </div>
+        <div class="slider-content-block desktop-visibility" [ngSwitch]="customIndex">
+            <div class="slider-content" *ngSwitchCase = "0">
+                <app-pay-details-equity [PayoutMonth]="PayoutMonth" [clientCode]="clientCode" [isMobile]="isMobile"></app-pay-details-equity>
+            </div>
+            <div class="slider-content" *ngSwitchCase = "1">
+                <app-pay-details-insurance [PayoutMonth]="PayoutMonth" [clientCode]="clientCode" [isMobile]="isMobile"></app-pay-details-insurance>
+            </div>
+            <div class="slider-content" *ngSwitchCase = "2">
+                <app-pay-details-mutual-fund [PayoutMonth]="PayoutMonth" [clientCode]="clientCode" [isMobile]="isMobile"></app-pay-details-mutual-fund>
+            </div>
+            <div class="slider-content" *ngSwitchCase = "3">
+                <app-pay-details-with-view [tableOption]="tableOption" [clientCode]="clientCode" [fdTabList]="fdTabList" [PayoutMonth]="PayoutMonth" [isMobile]="isMobile"></app-pay-details-with-view>
+            </div>
+            <div class="slider-content" *ngSwitchCase = "4">
+                <app-pay-details-with-view [tableOption]="tableOption" [clientCode]="clientCode" [bondsTabList]="bondsTabList" [PayoutMonth]="PayoutMonth" [isMobile]="isMobile"></app-pay-details-with-view>
+            </div>
+            <div class="slider-content" *ngSwitchCase = "5">
+                <app-pay-details-with-view [tableOption]="tableOption" [clientCode]="clientCode" [ncdTabList]="ncdTabList" [PayoutMonth]="PayoutMonth" [isMobile]="isMobile"></app-pay-details-with-view>
+            </div>
+            <div class="slider-content" *ngSwitchCase = "6">
+                <app-pay-details-with-view [tableOption]="tableOption" [clientCode]="clientCode" [mldTabList]="mldTabList" [PayoutMonth]="PayoutMonth" [isMobile]="isMobile"></app-pay-details-with-view>
+            </div>
+            <div class="slider-content" *ngSwitchCase = "7">
+                <app-pay-details-with-view [tableOption]="tableOption" [clientCode]="clientCode" [aifTabList]="aifTabList" [PayoutMonth]="PayoutMonth" [isMobile]="isMobile"></app-pay-details-with-view>
+            </div>
+            <div class="slider-content" *ngSwitchCase = "8">
+                <app-pay-details-with-view [tableOption]="tableOption" [clientCode]="clientCode" [PmsTabList]="PmsTabList" [PayoutMonth]="PayoutMonth" [isMobile]="isMobile"></app-pay-details-with-view>
+            </div>
+            <div class="slider-content" *ngSwitchCase = "9">
+                <app-pay-details-with-view [tableOption]="tableOption" [clientCode]="clientCode" [GoldPtcTabList]="GoldPtcTabList" [PayoutMonth]="PayoutMonth" [isMobile]="isMobile"></app-pay-details-with-view>
+            </div>
+            <div class="slider-content" *ngSwitchCase = "10">
+            </div>
+        </div>
+    </div>
+</ion-content>
